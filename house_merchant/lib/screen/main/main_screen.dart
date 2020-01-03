@@ -8,6 +8,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/screen/main/menu_screen.dart';
+import 'package:house_merchant/screen/main/more_screen.dart';
+import 'package:house_merchant/screen/main/order_screen.dart';
+import 'package:house_merchant/screen/main/promotion_screen.dart';
+import 'package:house_merchant/screen/main/store_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
 class NaviagationBottom {
@@ -57,7 +62,7 @@ class MainScreenState extends State<MainScreen> {
   List<NaviagationBottom> listNaviagation() {
     return [
       new NaviagationBottom(
-        Text('Đơn hàng'),
+        OrderScreen(),
         BottomNavigationBarItem(
           activeIcon: bottomNavItem(SvgPicture.asset('assets/images/ic-order-highlight.svg'), badge: ""),
           icon: bottomNavItem(SvgPicture.asset('assets/images/ic-order-default.svg'), badge: ""),
@@ -65,7 +70,7 @@ class MainScreenState extends State<MainScreen> {
         )
       ),
       new NaviagationBottom(
-        Text('Menu'),
+        MenuScreen(),
         BottomNavigationBarItem(
           activeIcon: bottomNavItem(SvgPicture.asset("assets/images/ic-menu-highlight.svg"), badge: ""),
           icon: bottomNavItem(SvgPicture.asset('assets/images/ic-menu-default.svg'), badge: ""),
@@ -73,7 +78,7 @@ class MainScreenState extends State<MainScreen> {
         )
       ),
       new NaviagationBottom(
-       Text('Ưu đãi'),
+        PromotionScreen(),
         BottomNavigationBarItem(
           activeIcon: bottomNavItem(SvgPicture.asset("assets/images/ic-promotion-highlight.svg"), badge: ""),
           icon: bottomNavItem(SvgPicture.asset('assets/images/ic-promotion-default.svg'), badge: ""),
@@ -81,7 +86,7 @@ class MainScreenState extends State<MainScreen> {
         )
       ),
       new NaviagationBottom(
-       Text('Cửa hàng'),
+        StoreScreen(),
         BottomNavigationBarItem(
           activeIcon: bottomNavItem(SvgPicture.asset("assets/images/ic-store-highlight.svg"), badge: ""),
           icon: bottomNavItem(SvgPicture.asset('assets/images/ic-store-default.svg'), badge: ""),
@@ -89,7 +94,7 @@ class MainScreenState extends State<MainScreen> {
         )
       ),
       new NaviagationBottom(
-       Text('Cửa hàng'),
+        MoreScreen(),
         BottomNavigationBarItem(
           activeIcon: bottomNavItem(SvgPicture.asset("assets/images/ic-more-highlight.svg"), badge: ""),
           icon: bottomNavItem(SvgPicture.asset('assets/images/ic-more-default.svg'), badge: ""),
