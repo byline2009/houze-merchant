@@ -6,13 +6,16 @@ import 'package:house_merchant/utils/localizations_util.dart';
 class BaseScaffold extends StatelessWidget {
 
   final Widget child;
+  final Widget bottom;
   final String title;
+  final Widget trailing;
+  final Color backgroundColor;
 
-  BaseScaffold({this.title, this.child});
+  BaseScaffold({this.title, this.child, this.bottom, this.trailing, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         centerTitle: false,
         leading: IconButton(
@@ -20,15 +23,27 @@ class BaseScaffold extends StatelessWidget {
           onPressed: () {
           },
         ),
+        actions: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+
+              this.trailing != null ? this.trailing : Center()
+
+            ],
+          ),
+        ],
         title: Text(LocalizationsUtil.of(context).translate(this.title),
           style: TextStyle(
             fontSize: ThemeConstant.appbar_font_title,
             color: ThemeConstant.appbar_text_color,
             fontWeight: ThemeConstant.appbar_text_weight_bold)
         ),
-        backgroundColor: ThemeConstant.appbar_background_color,
+        backgroundColor: this.backgroundColor != null ? this.backgroundColor : ThemeConstant.appbar_background_color,
         elevation: 0.0,
+        bottom: this.bottom
       ),
+      backgroundColor: ThemeConstant.background_white_color,
       body: SafeArea(child: child)
     );
   }
