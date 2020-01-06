@@ -75,13 +75,41 @@ class StoreScreenState extends State<StoreScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(top: 15, bottom: 19, left: 10, right: 10),
-          decoration: BoxDecoration(
-            color: ThemeConstant.background_grey_color,
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-          child: Text('This is a description - Body text. Lorem ipsum do sit amet, consectetur adipiscing elito veliada.\nMy store is everything you want!'))
+
+        Row(
+          children: <Widget>[
+
+          ],
+
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Flexible(
+              fit: FlexFit.tight,
+              child: Container(
+              padding: EdgeInsets.only(top: 15, bottom: 19, left: 10, right: 10),
+              decoration: BoxDecoration(
+                color: ThemeConstant.background_grey_color,
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              ),
+              child: Center(child: Text('08:00')))
+            ),
+
+            SizedBox(width: 15),
+
+            Flexible(
+              fit: FlexFit.tight,
+              child: Container(
+              padding: EdgeInsets.only(top: 15, bottom: 19, left: 10, right: 10),
+              decoration: BoxDecoration(
+                color: ThemeConstant.background_grey_color,
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              ),
+              child: Center(child: Text('22:30')))
+            ),
+        ],)
       ],
     );
   }
