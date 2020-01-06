@@ -8,6 +8,7 @@ import 'package:house_merchant/custom/group_radio_tags_widget.dart';
 import 'package:house_merchant/custom/text_limit_widget.dart';
 import 'package:house_merchant/middle/model/promotion_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
+import 'package:house_merchant/screen/base/image_widget.dart';
 
 class PromotionScreen extends StatefulWidget {
   PromotionScreen({Key key}) : super(key: key);
@@ -99,21 +100,7 @@ class PromotionScreenState extends State<PromotionScreen> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(child: ClipRRect(
-                borderRadius: new BorderRadius.all(Radius.circular(4.0)),
-                child: Stack(
-                  overflow: Overflow.clip,
-                  children: <Widget>[
-                    CachedNetworkImage(
-                      imageUrl: promotionModel.imgUrl,
-                      placeholder: (context, url) => Center(child: CupertinoActivityIndicator()),
-                      errorWidget: (context, url, error) => Center(child: Icon(Icons.error)),
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                    ),
-                  ]
-              )), width: 80, height: 80, color: ThemeConstant.background_grey_color),
+              Container(child: ImageWidget(imgUrl: promotionModel.imgUrl, width: 80, height: 80), width: 80, height: 80, color: ThemeConstant.background_grey_color),
               SizedBox(width: 12),
               Expanded(
                 child: Container(child: Column(

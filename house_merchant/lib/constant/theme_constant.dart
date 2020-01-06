@@ -47,9 +47,62 @@ class ThemeConstant {
   static const double label_font_size = 15.0;
   static const double form_font_title = 16.0;
   static const double sub_header_size = 18.0;
+  static const double boxes_font_title = 24.0;
   static const double comment_font_smaller = 12.0;
   static const String form_font_family = 'SFProText';
   static const String form_font_family_display = 'SFProDisplay';
+
+  //Shadow border
+  static BoxDecoration shadowBottom = BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          color: ThemeConstant.background_grey_color,
+          width: 5,
+          style: BorderStyle.solid)
+        ),
+  );
+
+  static BoxDecoration borderBottom = BoxDecoration(
+      color: Colors.white,
+      border: Border(
+        bottom: BorderSide(
+          color: ThemeConstant.background_grey_color,
+          width: 10,
+          style: BorderStyle.solid)
+        ),
+  );
+
+  static BoxDecoration borderSmallBottom = BoxDecoration(
+      color: Colors.white,
+      border: Border(
+        bottom: BorderSide(
+          color: ThemeConstant.background_grey_color,
+          width: 1,
+          style: BorderStyle.solid)
+        ),
+  );
+
+  static BoxDecoration borderTopbottom = BoxDecoration(
+      color: Colors.white,
+      border: Border(
+        top: BorderSide(
+          color: ThemeConstant.background_grey_color,
+          width: 10,
+          style: BorderStyle.solid),
+        bottom: BorderSide(
+          color: ThemeConstant.background_grey_color,
+          width: 10,
+          style: BorderStyle.solid)
+        ),
+  );
+
+  static BoxDecoration borderShadowFull = BoxDecoration(
+      border: Border.fromBorderSide(BorderSide(
+          color: ThemeConstant.background_grey_color,
+          width: 5,
+          style: BorderStyle.solid)
+        ),
+  );
 
   static const Color listview_selected_color = Color(0xfff2e8ff);
 

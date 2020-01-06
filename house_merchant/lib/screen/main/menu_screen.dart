@@ -8,6 +8,7 @@ import 'package:house_merchant/middle/model/category_model.dart';
 import 'package:house_merchant/middle/model/product_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:intl/intl.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -124,22 +125,7 @@ class MenuScreenState extends State<MenuScreen> {
       child: Container(child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-
-          Container(child: ClipRRect(
-            borderRadius: new BorderRadius.all(Radius.circular(4.0)),
-            child: Stack(
-              overflow: Overflow.clip,
-              children: <Widget>[
-                CachedNetworkImage(
-                  imageUrl: product.imgUrl,
-                  placeholder: (context, url) => Center(child: CupertinoActivityIndicator()),
-                  errorWidget: (context, url, error) => Center(child: Icon(Icons.error)),
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
-                ),
-              ]
-          )), width: 60, height: 60, color: ThemeConstant.background_grey_color),
+          ImageWidget(imgUrl: product.imgUrl, width: 60, height: 60,),
           SizedBox(width: 12),
           Expanded(
             child: Column(
