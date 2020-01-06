@@ -96,6 +96,15 @@ class ThemeConstant {
         ),
   );
 
+  static BoxDecoration borderFull = BoxDecoration(
+      border: Border.all(
+        color: ThemeConstant.black_color,
+        width: 1,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(4.0))
+  );
+
   static BoxDecoration borderShadowFull = BoxDecoration(
       border: Border.fromBorderSide(BorderSide(
           color: ThemeConstant.background_grey_color,
