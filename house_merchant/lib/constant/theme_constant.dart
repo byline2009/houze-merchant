@@ -27,7 +27,19 @@ class ThemeConstant {
   static const Color promotion_status_pending = Color(0xffd68100);
   static const Color promotion_status_running = Color(0xff00aa7d);
   static const Color promotion_status_expired = Color(0xffb5b5b5);
-  
+
+  //Form Theme
+  static const double form_border_width = 0.7;
+  static const Color form_text_normal = Color(0xff808080);
+  static const Color form_border_changed = ThemeConstant.primary_color;
+  static const Color status_ok = Color(0xff38d6ac);
+  static const Color status_cancel = Color(0xffff6666);
+  static const Color form_border_normal = Color(0xffebeef2);
+  static const Color form_border_small = Color(0xffdcdcdc);
+  static RoundedRectangleBorder formButtonMiniBorder = RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0));
+  static RoundedRectangleBorder formButtonBorder = RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0));
+  static RoundedRectangleBorder formButtonBorderMini = RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0),);
+  static const BorderRadius formButtonBorder_right = BorderRadius.only(topLeft: Radius.circular(25.0), bottomLeft: Radius.circular(25.0));
 
   static const double form_font_normal = 14.0;
   static const double form_font_small = 12.0;
@@ -41,7 +53,10 @@ class ThemeConstant {
 
   static const Color listview_selected_color = Color(0xfff2e8ff);
 
-  static const Color form_border_small = Color(0xffdcdcdc);
+  static const Color button_disable_color =  Color(0xffbdbdbd);
+  static const Color button_gradient_color_right = ThemeConstant.primary_color;
+  static const Color button_gradient_color_left = ThemeConstant.primary_color;
+
   static const BorderRadius button_radius = BorderRadius.all(Radius.circular(5.0));
   static const BorderRadius button_radius_normal = BorderRadius.all(Radius.circular(10.0));
 
