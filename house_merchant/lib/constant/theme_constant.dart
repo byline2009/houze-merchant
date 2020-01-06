@@ -40,6 +40,7 @@ class ThemeConstant {
   static const Color listview_selected_color = Color(0xfff2e8ff);
 
   static const Color form_border_small = Color(0xffdcdcdc);
+  static const Color form_border_error = Color(0xffc50000);
   static const BorderRadius button_radius =
       BorderRadius.all(Radius.circular(5.0));
   static const BorderRadius button_radius_normal =
