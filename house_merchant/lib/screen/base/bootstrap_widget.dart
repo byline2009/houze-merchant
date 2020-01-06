@@ -16,13 +16,11 @@ class BootstrapScreen extends StatefulWidget {
 }
 
 class _BootstrapScreenState extends State<BootstrapScreen> {
-
   // Default Language
   var locale = Locale('vi', 'VN');
 
   @override
   Widget build(BuildContext context) {
-
     //Get default language
     final getLanguage = LanguageModel(
       flag: 'vi',
@@ -32,35 +30,33 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
     locale = Locale(getLanguage.locale, getLanguage.locale.toUpperCase());
 
     return MaterialApp(
-      builder: (BuildContext context, Widget child) {
-        final MediaQueryData data = MediaQuery.of(context);
-        return MediaQuery(
-          data: data.copyWith(
-            textScaleFactor: 1.0,
-          ),
-          child: child
-        );
-      },
-      showPerformanceOverlay: false,
-      localizationsDelegates: [
-        LocalizationsDelegateUtil(),
-        CupertinoLocalizationsVi.delegate,
-        DefaultCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        bottomAppBarColor: ThemeConstant.primary_color,
-        primaryColorBrightness: Brightness.light,
-      ),
-      locale: locale,
-      supportedLocales: [
-        const Locale('en', 'EN'),
-        const Locale('vi', 'VI'),
-      ],
-      debugShowCheckedModeBanner: false,
-      home: MainScreen()
-    );
+        builder: (BuildContext context, Widget child) {
+          final MediaQueryData data = MediaQuery.of(context);
+          return MediaQuery(
+              data: data.copyWith(
+                textScaleFactor: 1.0,
+              ),
+              child: child);
+        },
+        showPerformanceOverlay: false,
+        localizationsDelegates: [
+          LocalizationsDelegateUtil(),
+          CupertinoLocalizationsVi.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          bottomAppBarColor: ThemeConstant.primary_color,
+          primaryColorBrightness: Brightness.light,
+        ),
+        locale: locale,
+        supportedLocales: [
+          const Locale('en', 'EN'),
+          const Locale('vi', 'VI'),
+        ],
+        debugShowCheckedModeBanner: false,
+        home: MainScreen());
   }
 }
