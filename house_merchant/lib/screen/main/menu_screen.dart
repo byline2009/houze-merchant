@@ -7,6 +7,7 @@ import 'package:house_merchant/custom/group_radio_tags_widget.dart';
 import 'package:house_merchant/middle/model/category_model.dart';
 import 'package:house_merchant/middle/model/product_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
+import 'package:house_merchant/screen/base/coming_soon_widget.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -171,8 +172,9 @@ class MenuScreenState extends State<MenuScreen> {
     this._padding = this._screenSize.width * 5 / 100;
 
     return BaseScaffold(
-        title: 'Menu',
-        trailing: Padding(
+      title: 'Menu',
+      child: ComingSoonWidget(),
+      /*trailing: Padding(
             child: ButtonCreateWidget(
               title: "Tạo mới",
               callback: () {
@@ -232,6 +234,7 @@ class MenuScreenState extends State<MenuScreen> {
               itemCount: categories.length,
             ))
           ],
-        ));
+        )*/
+    );
   }
 }
