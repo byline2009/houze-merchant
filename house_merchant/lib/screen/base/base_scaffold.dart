@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/router.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
 class BaseScaffold extends StatelessWidget {
@@ -17,7 +18,7 @@ class BaseScaffold extends StatelessWidget {
       this.trailing,
       this.backgroundColor});
 
-  Widget notificationBoxLeading() {
+  Widget notificationBoxLeading(BuildContext context) {
     return Stack(
       children: <Widget>[
         Container(
@@ -31,7 +32,7 @@ class BaseScaffold extends StatelessWidget {
               fit: BoxFit.contain,
             ),
             onPressed: () {
-              print('Noti clicked');
+              Router.pushDialogNoParams(context, Router.NOTIFICATION_PAGE);
             },
           ),
         ),
@@ -56,7 +57,7 @@ class BaseScaffold extends StatelessWidget {
         AppBar(
           titleSpacing: 20.0,
           centerTitle: false,
-          leading: notificationBoxLeading(),
+          leading: notificationBoxLeading(context),
           actions: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
