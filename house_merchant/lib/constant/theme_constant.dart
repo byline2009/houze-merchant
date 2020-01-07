@@ -32,7 +32,7 @@ class ThemeConstant {
   //Form Theme
   static const double form_border_width = 0.7;
   static const Color form_text_normal = Color(0xff808080);
-  static const Color form_border_changed = ThemeConstant.primary_color;
+  static const Color form_border_changed = ThemeConstant.black_color;
   static const Color status_ok = Color(0xff38d6ac);
   static const Color status_cancel = Color(0xffff6666);
   static const Color form_border_normal = Color(0xffebeef2);
