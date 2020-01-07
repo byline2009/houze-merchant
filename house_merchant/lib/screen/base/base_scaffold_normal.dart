@@ -29,7 +29,11 @@ class BaseScaffoldNormal extends StatelessWidget {
           Navigator.pop(context);
         },
       )),
-      body: this.child
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: this.child)
     );
   }
 
