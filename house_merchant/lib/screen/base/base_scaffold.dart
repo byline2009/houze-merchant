@@ -17,6 +17,36 @@ class BaseScaffold extends StatelessWidget {
       this.trailing,
       this.backgroundColor});
 
+  Widget notificationBoxLeading() {
+    return Stack(
+      children: <Widget>[
+        Container(
+          height: 100.0,
+          padding: EdgeInsets.only(left: 20.0),
+          child: IconButton(
+            icon: SvgPicture.asset(
+              "assets/icons/ic-notification.svg",
+              width: 20.0,
+              height: 24.0,
+              fit: BoxFit.contain,
+            ),
+            onPressed: () {
+              print('Noti clicked');
+            },
+          ),
+        ),
+        Positioned(
+          top: 12.0,
+          right: 6.0,
+          child: Container(
+              width: 10.0,
+              height: 10.0,
+              decoration: ThemeConstant.borderCircleNoti),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -24,14 +54,13 @@ class BaseScaffold extends StatelessWidget {
       children: <Widget>[
         SizedBox(height: 20),
         AppBar(
+          titleSpacing: 20.0,
           centerTitle: false,
-          leading: IconButton(
-            icon: SvgPicture.asset("assets/icons/ic-notification.svg"),
-            onPressed: () {},
-          ),
+          leading: notificationBoxLeading(),
           actions: <Widget>[
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 this.trailing != null ? this.trailing : Center()
               ],
@@ -39,6 +68,7 @@ class BaseScaffold extends StatelessWidget {
           ],
           title: Text(LocalizationsUtil.of(context).translate(this.title),
               style: TextStyle(
+                  letterSpacing: ThemeConstant.appbar_letter_spacing,
                   fontSize: ThemeConstant.appbar_font_title,
                   color: ThemeConstant.appbar_text_color,
                   fontWeight: ThemeConstant.appbar_text_weight_bold)),
