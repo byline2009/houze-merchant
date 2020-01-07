@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/custom/textfield_widget.dart';
+import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
+import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
 class PromotionCreateScreen extends StatefulWidget {
@@ -15,10 +18,40 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
 
   Size _screenSize;
   BuildContext _context;
+  double _padding;
+
+  //Form controller
+  final ftitle = TextFieldWidgetController();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Widget formCreate() {
+
+    final padding = this._screenSize.width * 5 / 100;
+    return Padding(
+      padding: EdgeInsets.only(top: 20, bottom: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+
+          Text(LocalizationsUtil.of(context).translate("* Tiêu đề ưu đãi"),
+            style: TextStyle(
+              fontFamily: 'SFProText',
+              fontSize: 14,
+              color: Colors.black,
+            )
+          ),
+
+          TextFieldWidget(controller: ftitle, defaultHintText: 'Vd: Mua 1 tặng 1 tất cả chi nhánh', callback: (String value) {
+
+          })
+        ],
+      )
+    );
+    
   }
 
   @override
@@ -26,26 +59,27 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
+    this._padding = this._screenSize.width * 5 / 100;
 
-    return new Scaffold(
-      appBar: AppBar(
-        title: Text(LocalizationsUtil.of(context).translate('Gửi yêu cầu'),
-          style: TextStyle(
-          fontSize: ThemeConstant.appbar_scaffold_font_title,
-          color: ThemeConstant.appbar_text_color,
-          fontWeight: ThemeConstant.appbar_text_weight)),
-      backgroundColor: ThemeConstant.appbar_background_color,
-      elevation: 0.0,
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-          color: ThemeConstant.appbar_icon_color,
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      )),
-      body: Text('create promotion')
+    return BaseScaffoldNormal(
+      title: 'Tạo ưu đãi',
+      child: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+
+          SliverToBoxAdapter(
+            child: BoxesContainer(child: Center(),),
+          ),
+
+          SliverToBoxAdapter(
+            child: BoxesContainer(title: 'Hình ảnh', child: Text('hello world'), padding: EdgeInsets.all(this._padding),)
+          ),
+
+          SliverToBoxAdapter(
+            child: BoxesContainer(title: 'Thông tin', child: this.formCreate(), padding: EdgeInsets.all(this._padding),)
+          ),
+        ]
+      ),
     );
 
   }
