@@ -2,13 +2,11 @@ import 'dart:io';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
-import 'package:house_merchant/screen/login/login_screen.dart';
 import 'package:house_merchant/screen/main/menu_screen.dart';
 import 'package:house_merchant/screen/main/more_screen.dart';
 import 'package:house_merchant/screen/main/order_screen.dart';
@@ -75,8 +73,7 @@ class MainScreenState extends State<MainScreen> {
   List<NaviagationBottom> listNaviagation() {
     return [
       new NaviagationBottom(
-          //OrderScreen(),
-          LoginScreen(),
+          OrderScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
                 SvgPicture.asset('assets/images/ic-order-highlight.svg'),
