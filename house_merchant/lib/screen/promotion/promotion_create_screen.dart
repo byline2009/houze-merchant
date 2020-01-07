@@ -31,7 +31,7 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
       appBar: AppBar(
         title: Text(LocalizationsUtil.of(context).translate('Gửi yêu cầu'),
           style: TextStyle(
-          fontSize: ThemeConstant.appbar_font_title,
+          fontSize: ThemeConstant.appbar_scaffold_font_title,
           color: ThemeConstant.appbar_text_color,
           fontWeight: ThemeConstant.appbar_text_weight)),
       backgroundColor: ThemeConstant.appbar_background_color,
