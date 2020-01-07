@@ -122,39 +122,14 @@ class MenuScreenState extends State<MenuScreen> {
           print('ok testing');
         },
         child: Container(
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: <
-                Widget>[
-          ImageWidget(
-            imgUrl: product.imgUrl,
-            width: 60,
-            height: 60,
-          ),
-          SizedBox(width: 12),
-          Expanded(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                Container(
-                    child: ClipRRect(
-                        borderRadius:
-                            new BorderRadius.all(Radius.circular(4.0)),
-                        child:
-                            Stack(overflow: Overflow.clip, children: <Widget>[
-                          CachedNetworkImage(
-                            imageUrl: product.imgUrl,
-                            placeholder: (context, url) =>
-                                Center(child: CupertinoActivityIndicator()),
-                            errorWidget: (context, url, error) =>
-                                Center(child: Icon(Icons.error)),
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                          ),
-                        ])),
-                    width: 60,
-                    height: 60,
-                    color: ThemeConstant.background_grey_color),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ImageWidget(
+                  imgUrl: product.imgUrl,
+                  width: 60,
+                  height: 60,
+                ),
                 SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -186,8 +161,9 @@ class MenuScreenState extends State<MenuScreen> {
                         fontFamily: ThemeConstant.form_font_family_display,
                         fontSize: ThemeConstant.form_font_small,
                         fontWeight: ThemeConstant.appbar_text_weight))
-              ]))
-        ])));
+              ],
+            ),
+            color: ThemeConstant.background_white_color));
   }
 
   @override
