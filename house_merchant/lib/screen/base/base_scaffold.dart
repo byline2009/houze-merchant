@@ -19,33 +19,37 @@ class BaseScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            centerTitle: false,
-            leading: IconButton(
-              icon: SvgPicture.asset("assets/icons/ic-notification.svg"),
-              onPressed: () {},
+    return SafeArea(
+        child: Column(
+      children: <Widget>[
+        SizedBox(height: 20),
+        AppBar(
+          centerTitle: false,
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/icons/ic-notification.svg"),
+            onPressed: () {},
+          ),
+          actions: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                this.trailing != null ? this.trailing : Center()
+              ],
             ),
-            actions: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  this.trailing != null ? this.trailing : Center()
-                ],
-              ),
-            ],
-            title: Text(LocalizationsUtil.of(context).translate(this.title),
-                style: TextStyle(
-                    fontSize: ThemeConstant.appbar_font_title,
-                    color: ThemeConstant.appbar_text_color,
-                    letterSpacing: ThemeConstant.appbar_letter_spacing,
-                    fontWeight: ThemeConstant.appbar_text_weight_bold)),
-            backgroundColor: this.backgroundColor != null
-                ? this.backgroundColor
-                : ThemeConstant.appbar_background_color,
-            elevation: 0.0,
-            bottom: this.bottom),
-        backgroundColor: ThemeConstant.background_white_color,
-        body: SafeArea(child: child));
+          ],
+          title: Text(LocalizationsUtil.of(context).translate(this.title),
+              style: TextStyle(
+                  fontSize: ThemeConstant.appbar_font_title,
+                  color: ThemeConstant.appbar_text_color,
+                  fontWeight: ThemeConstant.appbar_text_weight_bold)),
+          backgroundColor: this.backgroundColor != null
+              ? this.backgroundColor
+              : ThemeConstant.appbar_background_color,
+          elevation: 0.0,
+        ),
+        this.bottom != null ? this.bottom : Center(),
+        Expanded(child: child)
+      ],
+    ));
   }
 }

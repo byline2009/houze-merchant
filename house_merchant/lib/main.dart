@@ -7,11 +7,14 @@ import 'package:house_merchant/screen/base/bootstrap_widget.dart';
 
 void main() async {
 
-  WidgetsFlutterBinding.ensureInitialized();
-  //await SystemChrome.setEnabledSystemUIOverlays([]);
-  //await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  if (Platform.isAndroid) {
+    SystemUiOverlayStyle systemUiOverlayStyle =
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
+
   //App init
-  await AppConfig.init('.env.dev');
+  await AppConfig.init('.env.prod');
 
   // runApp(
   //   BlocProvider(
@@ -21,10 +24,4 @@ void main() async {
   // );
 
   runApp(BootstrapScreen(),);
-
-  if (Platform.isAndroid) {
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  }
 }

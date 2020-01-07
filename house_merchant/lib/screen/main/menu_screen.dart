@@ -8,6 +8,7 @@ import 'package:house_merchant/middle/model/category_model.dart';
 import 'package:house_merchant/middle/model/product_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:intl/intl.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -121,9 +122,19 @@ class MenuScreenState extends State<MenuScreen> {
           print('ok testing');
         },
         child: Container(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: <
+                Widget>[
+          ImageWidget(
+            imgUrl: product.imgUrl,
+            width: 60,
+            height: 60,
+          ),
+          SizedBox(width: 12),
+          Expanded(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
                 Container(
                     child: ClipRRect(
                         borderRadius:
@@ -175,9 +186,8 @@ class MenuScreenState extends State<MenuScreen> {
                         fontFamily: ThemeConstant.form_font_family_display,
                         fontSize: ThemeConstant.form_font_small,
                         fontWeight: ThemeConstant.appbar_text_weight))
-              ],
-            ),
-            color: ThemeConstant.background_white_color));
+              ]))
+        ])));
   }
 
   @override
