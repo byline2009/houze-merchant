@@ -7,6 +7,7 @@ import 'package:house_merchant/custom/button_create_widget.dart';
 import 'package:house_merchant/custom/group_radio_tags_widget.dart';
 import 'package:house_merchant/custom/text_limit_widget.dart';
 import 'package:house_merchant/middle/model/promotion_model.dart';
+import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 
@@ -174,7 +175,7 @@ class PromotionScreenState extends State<PromotionScreen> {
     return BaseScaffold(
       title: 'Ưu đãi',
       trailing: Padding(child: ButtonCreateWidget(title: "Tạo mới", callback: () {
-        print('tạo mới');
+        Router.pushNoParams(context, Router.PROMOTION_CREATE);
       }, icon: Icon(
         Icons.add,
         color: Colors.white,
