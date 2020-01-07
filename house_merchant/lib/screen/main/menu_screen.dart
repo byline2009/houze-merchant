@@ -7,7 +7,6 @@ import 'package:house_merchant/custom/group_radio_tags_widget.dart';
 import 'package:house_merchant/middle/model/category_model.dart';
 import 'package:house_merchant/middle/model/product_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:intl/intl.dart';
 

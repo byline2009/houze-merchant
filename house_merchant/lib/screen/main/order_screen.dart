@@ -22,32 +22,24 @@ class OrderScreenState extends State<OrderScreen>
     super.initState();
   }
 
+  Tab _tabItem(String title) {
+    return new Tab(
+      child: Text(LocalizationsUtil.of(context).translate(title),
+          style: TextStyle(
+              fontFamily: ThemeConstant.form_font_family,
+              fontSize: ThemeConstant.label_font_size,
+              fontWeight: ThemeConstant.appbar_text_weight)),
+    );
+  }
+
   Widget tabBar() {
     return TabBar(
         unselectedLabelColor: ThemeConstant.unselected_color,
         labelColor: ThemeConstant.primary_color,
         tabs: [
-          new Tab(
-            child: Text(LocalizationsUtil.of(context).translate("Đơn mới"),
-                style: TextStyle(
-                    fontFamily: ThemeConstant.form_font_family,
-                    fontSize: ThemeConstant.label_font_size,
-                    fontWeight: ThemeConstant.appbar_text_weight)),
-          ),
-          new Tab(
-            child: Text(LocalizationsUtil.of(context).translate("Đang xử lý"),
-                style: TextStyle(
-                    fontFamily: ThemeConstant.form_font_family,
-                    fontSize: ThemeConstant.label_font_size,
-                    fontWeight: ThemeConstant.appbar_text_weight)),
-          ),
-          new Tab(
-            child: Text(LocalizationsUtil.of(context).translate("Đã xong"),
-                style: TextStyle(
-                    fontFamily: ThemeConstant.form_font_family,
-                    fontSize: ThemeConstant.label_font_size,
-                    fontWeight: ThemeConstant.appbar_text_weight)),
-          ),
+          _tabItem("Đơn mới"),
+          _tabItem("Đang xử lý"),
+          _tabItem("Đã xong"),
         ],
         indicatorColor: ThemeConstant.primary_color,
         indicatorSize: TabBarIndicatorSize.tab,
@@ -75,6 +67,31 @@ class OrderScreenState extends State<OrderScreen>
     ),
   );
 
+  Widget commingSoonView() {
+    return Container(
+      padding: EdgeInsets.only(top: 140.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          SvgPicture.asset(
+            'assets/images/ic-comming-soon.svg',
+            width: 100.0,
+            height: 100.0,
+          ),
+          SizedBox(height: 20.0),
+          Text(
+            'Tính năng đang hoàn thiện\nSẽ ra mắt trong thời gian tới',
+            style: TextStyle(
+                fontSize: 16.0,
+                color: ThemeConstant.grey_color,
+                letterSpacing: 0.26,
+                fontWeight: ThemeConstant.appbar_text_weight),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget contentOrder() {
     return TabBarView(
       children: [_orderEmpty, _orderEmpty, _orderEmpty],
@@ -85,6 +102,8 @@ class OrderScreenState extends State<OrderScreen>
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-        title: 'Đơn hàng', bottom: this.tabBar(), child: this.contentOrder());
+        title: 'Đơn hàng',
+        //bottom: this.tabBar(),
+        child: this.commingSoonView());
   }
 }
