@@ -254,23 +254,4 @@ class MoreScreenState extends State<MoreScreen> {
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return SafeArea(
-  //       child: Column(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       _myListView(context),
-  //       Container(
-  //         padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
-  //         color: ThemeConstant.background_grey_color,
-  //         child: Row(
-  //             crossAxisAlignment: CrossAxisAlignment.end,
-  //             children: <Widget>[Text('House Merchant v1.0', style: TextStyle(fontSize: 13, color: ThemeConstant.grey_color, letterSpacing: 0.26, ))]),
-  //       ),
-  //     ],
-  //   )); //_myListView(context));
-  // }
 }
