@@ -32,10 +32,11 @@ class ThemeConstant {
   //Form Theme
   static const double form_border_width = 0.7;
   static const Color form_text_normal = Color(0xff808080);
+  static const Color form_hint_text = Color(0xffb5b5b5);
   static const Color form_border_changed = ThemeConstant.black_color;
   static const Color status_ok = Color(0xff38d6ac);
   static const Color status_cancel = Color(0xffff6666);
-  static const Color form_border_normal = Color(0xffebeef2);
+  static const Color form_border_normal = Color(0xffdcdcdc);
   static const Color form_border_small = Color(0xffdcdcdc);
   static RoundedRectangleBorder formButtonMiniBorder =
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.0));
@@ -139,6 +140,7 @@ class ThemeConstant {
   static const Color black_color = Color(0xff000000);
   static const Color white_color = Color(0xffffffff);
   static const Color grey_color = Color(0xff838383);
+  static const Color required_color = Color(0xffc50000);
 
   //Login
   static const Color violet_color = Color(0xff5b00e4);

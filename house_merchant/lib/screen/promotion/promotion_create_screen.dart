@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/custom/button_widget.dart';
+import 'package:house_merchant/custom/datepick_range_widget.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
@@ -22,32 +27,86 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
 
   //Form controller
   final ftitle = TextFieldWidgetController();
+  final famount = TextFieldWidgetController();
+  final frangeTime = new StreamController<List<DateTime>>.broadcast();
+  final fdesc = TextFieldWidgetController();
+  StreamController<ButtonSubmitEvent> sendButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
 
   @override
   void initState() {
     super.initState();
   }
 
+  Widget controlHeader(String title) {
+
+    return Row(
+      children: <Widget>[
+
+        Text('*', style: TextStyle(
+          fontFamily: ThemeConstant.form_font_family_display,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: ThemeConstant.required_color,
+        )),
+        SizedBox(width: 5),
+        Text(LocalizationsUtil.of(context).translate(title),
+          style: TextStyle(
+            fontFamily: ThemeConstant.form_font_family_display,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.26,
+            color: ThemeConstant.grey_color,
+          )
+        )
+
+      ],
+    );
+
+  }
+
   Widget formCreate() {
 
     final padding = this._screenSize.width * 5 / 100;
     return Padding(
-      padding: EdgeInsets.only(top: 20, bottom: 10.0),
+      padding: EdgeInsets.only(top: 10, bottom: 10.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
 
-          Text(LocalizationsUtil.of(context).translate("* Tiêu đề ưu đãi"),
+          Text(LocalizationsUtil.of(context).translate('Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'), 
             style: TextStyle(
-              fontFamily: 'SFProText',
-              fontSize: 14,
-              color: Colors.black,
+              fontFamily: ThemeConstant.form_font_family_display,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.23,
+              color: ThemeConstant.grey_color,
             )
           ),
+          SizedBox(height: 25),
 
-          TextFieldWidget(controller: ftitle, defaultHintText: 'Vd: Mua 1 tặng 1 tất cả chi nhánh', callback: (String value) {
+          this.controlHeader('Tiêu đề ưu đãi',),
+          SizedBox(height: 5),
+          TextFieldWidget(controller: ftitle, defaultHintText: 'Vd: Mua 1 tặng 1 tất cả chi nhánh', callback: (String value) {}),
 
-          })
+          SizedBox(height: 25),
+
+          this.controlHeader('Số lượng',),
+          SizedBox(height: 5),
+          TextFieldWidget(controller: famount, defaultHintText: 'Vd: 50', keyboardType: TextInputType.number, callback: (String value) {}),
+
+          SizedBox(height: 25),
+
+          this.controlHeader('Thời gian hiệu lực',),
+          SizedBox(height: 5),
+          DateRangePickerWidget(controller: frangeTime, defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY', callback: (String value) {},),
+
+          SizedBox(height: 25),
+          this.controlHeader('Nội dung ưu đãi',),
+          SizedBox(height: 5),
+          TextFieldWidget(controller: fdesc, defaultHintText: 'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...', keyboardType: TextInputType.multiline, callback: (String value) {}),
+          
+          SizedBox(height: 25),
+          ButtonWidget(controller: sendButtonController, defaultHintText: LocalizationsUtil.of(context).translate('Tạo ưu đãi'), callback: () async {})
         ],
       )
     );

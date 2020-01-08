@@ -37,6 +37,7 @@ class TextFieldWidget extends StatelessWidget {
 
   String defaultHintText;
   bool isChanged = false;
+  bool enabled = false;
   TextInputType keyboardType;
   CallBackHandler callback;
   TextFieldWidgetController controller;
@@ -46,9 +47,9 @@ class TextFieldWidget extends StatelessWidget {
     this.controller,
     this.defaultHintText,
     this.keyboardType = TextInputType.text,
-    this.callback
+    this.callback,
+    this.enabled = true
   }) {
-
     //Init controller
     this.controller._callbackRefresh = () {
       this.controller.Controller.clear();
@@ -66,13 +67,6 @@ class TextFieldWidget extends StatelessWidget {
         return Container(
           padding: EdgeInsets.only(left: 10, right: 10),
           decoration: BoxDecoration(
-              boxShadow: [
-                new BoxShadow(
-                  color: Color(0xffd2d4d6),
-                  offset: new Offset(0, 2.0),
-                  blurRadius: 0.5,
-                )
-              ],
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
               color: Colors.white,
               border: Border.all(
@@ -85,6 +79,7 @@ class TextFieldWidget extends StatelessWidget {
             keyboardType: keyboardType,
             textAlign: TextAlign.left,
             onTap: () {},
+            enabled: this.enabled,
             maxLines: keyboardType == TextInputType.multiline ? 5 : 1,
             style: TextStyle(
               color: ThemeConstant.normal_color,
@@ -94,7 +89,7 @@ class TextFieldWidget extends StatelessWidget {
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: this.defaultHintText,
-              hintStyle: TextStyle(color: ThemeConstant.form_text_normal, fontFamily: ThemeConstant.form_font_family, fontSize: ThemeConstant.form_font_normal), //Text olor
+              hintStyle: TextStyle(color: ThemeConstant.form_hint_text, fontFamily: ThemeConstant.form_font_family, fontSize: ThemeConstant.form_font_normal), //Text olor
             ),
 //             onChanged: (String value) {
 // //              if (_textController.text.length != "") {
