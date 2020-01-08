@@ -10,6 +10,7 @@ class ThemeConstant {
   static const double appbar_font_title = 27.0;
   static const double appbar_letter_spacing = 0.43;
   static const double appbar_scaffold_font_title = 16.0;
+  static const double sub_title_letter_spacing = 0.29;
 
   //background
   static const Color background_grey_color = Color(0xfff5f5f5);
@@ -57,6 +58,15 @@ class ThemeConstant {
   static const double comment_font_smaller = 12.0;
   static const String form_font_family = 'SFProText';
   static const String form_font_family_display = 'SFProDisplay';
+
+  //Text Style
+  static TextStyle headerTitleStyle(Color color) {
+    return TextStyle(
+        fontSize: sub_header_size,
+        fontWeight: appbar_text_weight_bold,
+        letterSpacing: sub_title_letter_spacing,
+        color: color);
+  }
 
   //Shadow border
   static BoxDecoration shadowBottom = BoxDecoration(
@@ -143,4 +153,5 @@ class ThemeConstant {
   //Login
   static const Color violet_color = Color(0xff5b00e4);
   static const Color alto_color = Color(0xffd0d0d0);
+  static const Color start_yelow_color = Color(0xffffcc44);
 }
