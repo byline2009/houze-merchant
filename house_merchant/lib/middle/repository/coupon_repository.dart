@@ -1,72 +1,25 @@
 
+import 'package:house_merchant/middle/api/coupon_api.dart';
+import 'package:house_merchant/middle/model/coupon_model.dart';
+
 class CouponRepository {
 
-  // final paymentAPI = new PaymentAPI();
+  final couponAPI = new CouponAPI();
 
-  // PaymentRepository();
+  CouponRepository();
 
-  // Future<List<PaymentGatewayModel>> getGateway() async {
-  //   //Call Dio API
-  //   try {
+  Future<CouponModel> createCoupon(CouponModel couponModel) async {
+    try {
 
-  //     final rs = await paymentAPI.getGateway();
-  //     if (rs != null) {
-  //       return rs;
-  //     }
-  //     return null;
+      final rs = await couponAPI.createCoupon(couponModel);
+      if (rs != null) {
+        return rs;
+      }
+      return null;
 
-  //   } catch (e) {
-  //     return throw(e.toString());
-  //   }
+    } catch (e) {
+      return throw(e.toString());
+    }
     
-  // }
-
-  // Future<PageModel> getPaymentHistory({String apartmentId, String isCreated, int limit, int offset, int status}) async {
-  //   //Call Dio API
-  //   try {
-
-  //     final rs = await paymentAPI.getPaymentHistory(apartmentId: apartmentId, isCreated: isCreated, limit: limit, offset: offset, status: status);
-  //     if (rs != null) {
-  //       return rs;
-  //     }
-  //     return null;
-
-  //   } catch (e) {
-  //     return throw(e.toString());
-  //   }
-    
-  // }
-
-  // Future<PaymentHistoryModel> getPaymentTransactionDetail(String id) async {
-  //   //Call Dio API
-  //   try {
-
-  //     final rs = await paymentAPI.getPaymentTransactionDetail(id);
-  //     if (rs != null) {
-  //       return rs;
-  //     }
-  //     return null;
-
-  //   } catch (e) {
-  //     return throw(e.toString());
-  //   }
-    
-  // }
-
-  // Future<PaymentModel> createFeePayment(PaymentModel paymentModel) async {
-  //   //Call Dio API
-  //   try {
-
-  //     final rs = await paymentAPI.createFeePayment(paymentModel);
-  //     if (rs != null) {
-  //       return rs;
-  //     }
-  //     return null;
-
-  //   } catch (e) {
-  //     return throw(e.toString());
-  //   }
-    
-  // }
-
+  }
 }

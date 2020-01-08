@@ -9,7 +9,7 @@ import 'package:house_merchant/custom/date_range_picker/date_range_page.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:intl/intl.dart';
 
-typedef void CallBackHandler(String value);
+typedef void CallBackHandler(List<DateTime> value);
 typedef VoidFunc = void Function();
 
 class DateRangePickerWidget extends StatefulWidget {
@@ -66,6 +66,7 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
               return dateRangePage;
             }, settings: RouteSettings(name: "app://DateRangePage"), fullscreenDialog: true));
             widget.controller.sink.add(result);
+            widget.callback(result);
           },
           child: TextFieldWidget(controller: localController, defaultHintText: widget.defaultHintText, enabled: false,)
         );
