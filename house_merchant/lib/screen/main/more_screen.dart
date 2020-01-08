@@ -1,7 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
-import 'package:house_merchant/screen/base/boxes_container.dart';
 
 class MoreScreen extends StatefulWidget {
   MoreScreen({Key key}) : super(key: key);
@@ -13,48 +14,46 @@ class MoreScreen extends StatefulWidget {
 class MoreScreenState extends State<MoreScreen> {
   Widget headerWidget() {
     return Container(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(
+          20.0,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Icon(
-                  Icons.person_outline,
-                  size: 30,
-                ),
-                SizedBox(width: 15.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Lê Thị Minh Cún',
-                      style: ThemeConstant.headerTitleStyle(
-                          ThemeConstant.black_color),
-                    ),
-                    SizedBox(height: 5.0),
-                    Text('QUẢN LÝ CỬA HÀNG',
-                        style: TextStyle(
-                            fontSize: 13.0,
-                            color: ThemeConstant.violet_color,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.26))
-                  ],
-                )
-              ],
+            ListTile(
+              dense: true,
+              contentPadding: EdgeInsets.all(0.0),
+              leading: CircleAvatar(
+                  backgroundColor: ThemeConstant.alto_color,
+                  child: Text('L',
+                      style: TextStyle(
+                          fontSize: 27,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.43))),
+              title: Text(
+                'Lê Thị Minh Cún',
+                style: ThemeConstant.headerTitleBoldStyle(
+                    ThemeConstant.black_color),
+              ),
+              subtitle: Text('QUẢN LÝ CỬA HÀNG',
+                  style: TextStyle(
+                      fontSize: 13.0,
+                      color: ThemeConstant.violet_color,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.26)),
+              onTap: () {},
             ),
-            SizedBox(height: 26.0),
+            SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Expanded(
                     child: Text(
                   'HouseMap coffee',
-                  style:
-                      ThemeConstant.headerTitleStyle(ThemeConstant.black_color),
+                  style: ThemeConstant.headerTitleBoldStyle(
+                      ThemeConstant.black_color),
                 )),
                 Container(
                   child: Row(
@@ -67,116 +66,157 @@ class MoreScreenState extends State<MoreScreen> {
                       SizedBox(width: 10.0),
                       Text(
                         '4.92',
-                        style: ThemeConstant.headerTitleStyle(
+                        style: ThemeConstant.headerTitleBoldStyle(
                             ThemeConstant.start_yelow_color),
                       )
                     ],
                   ),
-                )
+                ),
               ],
             )
           ],
         ));
   }
 
-  List _buildList(List<String> titleList) {
-    List<Widget> listItems = List();
-
-    for (int i = 0; i < titleList.length; i++) {
-      listItems.add(whiteRow(titleList[i]));
-    }
-    return listItems;
-  }
-
-  Widget whiteRow(String title) {
-    return GestureDetector(
-        onTap: () {
-          print(title);
-        },
-        child: Container(
-            padding: EdgeInsets.all(20.0),
-            decoration: ThemeConstant.decorationGreyBottom(2.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 16.0,
-                      color: ThemeConstant.black_color,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.26),
-                ),
-                Icon(
-                  Icons.arrow_forward,
-                  size: 16,
-                  color: ThemeConstant.alto_color,
-                )
-              ],
-            )));
-  }
-
-  Widget greyRow(String title) {
+  Widget buildGreyRow(String title, TextStyle style) {
     return Container(
-      padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+      padding: EdgeInsets.only(left: 18.0, bottom: 5.0),
       height: 50.0,
       color: ThemeConstant.background_grey_color,
-      child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
-        Text(
-          title,
-          style: TextStyle(
-              fontSize: 18.0,
-              color: ThemeConstant.unselected_color,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.29),
-        )
-      ]),
+      child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[Text(title, style: style)]),
     );
   }
 
-  // Widget bottomSection() {
-  //   return SliverToBoxAdapter(
-  //     child: ,
-  //   );
-  // }
+  Widget _myListView(BuildContext context) {
+    return ListView(
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            headerWidget(),
+            Container(
+              decoration: ThemeConstant.decorationGreyBottom(10.0),
+            ),
+            ListTile(
+              dense: true,
+              contentPadding:
+                  EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
+              title: Text(
+                'Trạng thái cửa hàng',
+                style: ThemeConstant.titleStyle(Colors.black),
+              ),
+              subtitle: Text(
+                'Đang hoạt động',
+                style:
+                    ThemeConstant.subtitleStyle(ThemeConstant.status_approved),
+              ),
+              trailing: arrowButton(),
+              onTap: () {
+                print('Trạng thái cửa hàng');
+              },
+            ),
+            Container(
+              decoration: ThemeConstant.decorationGreyBottom(2.0),
+            ),
+            ListTile(
+              dense: true,
+              contentPadding:
+                  EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
+              title: Text(
+                'Quản lý tài khoản',
+                style: ThemeConstant.titleStyle(Colors.black),
+              ),
+              trailing: arrowButton(),
+              onTap: () {
+                print('cow');
+              },
+            ),
+            Container(
+              decoration: ThemeConstant.decorationGreyBottom(2.0),
+            ),
+            ListTile(
+              dense: true,
+              contentPadding:
+                  EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
+              title: Text(
+                'Thông tin cá nhân',
+                style: ThemeConstant.titleStyle(Colors.black),
+              ),
+              trailing: arrowButton(),
+              onTap: () {
+                print('Thông tin cá nhân');
+              },
+            ),
+            buildGreyRow(
+                'Hỗ trợ',
+                TextStyle(
+                    fontSize: 18.0,
+                    color: ThemeConstant.unselected_color,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.29)),
+            ListTile(
+              dense: true,
+              contentPadding:
+                  EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
+              title: Text(
+                'Liên hệ House Merchant',
+                style: ThemeConstant.titleStyle(Colors.black),
+              ),
+              trailing: arrowButton(),
+              onTap: () {
+                print('Liên hệ House Merchant');
+              },
+            ),
+            Container(
+              decoration: ThemeConstant.decorationGreyBottom(2.0),
+            ),
+            ListTile(
+              dense: true,
+              contentPadding:
+                  EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
+              title: Text(
+                'Quy định & Điều khoản',
+                style: ThemeConstant.titleStyle(Colors.black),
+              ),
+              trailing: arrowButton(),
+              onTap: () {
+                print('Quy định & Điều khoản');
+              },
+            ),
+            Container(
+              decoration: ThemeConstant.decorationGreyBottom(50.0),
+            ),
+          ],
+        ),
+        ListTile(
+          dense: true,
+          contentPadding:
+              EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
+          title: Text('Đăng xuất',
+              style: ThemeConstant.titleStyle(ThemeConstant.form_border_error)),
+          trailing: arrowButton(),
+          onTap: () {
+            print('Đăng xuất');
+          },
+        ),
+        buildGreyRow(
+            'House Merchant v1.0',
+            TextStyle(
+                fontSize: 13.0,
+                color: ThemeConstant.grey_color,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.26)),
+      ],
+    );
+  }
 
   Widget arrowButton() {
-    return Icon(
-      Icons.arrow_forward,
-      color: ThemeConstant.grey_color,
-      size: 16,
-    );
+    return Icon(Icons.arrow_forward, color: ThemeConstant.alto_color, size: 16);
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverToBoxAdapter(
-            child: BoxesContainer(
-              child: headerWidget(),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(_buildList([
-              'Trạng thái cửa hàng',
-              'Quản lý tài khoản',
-              'Thông tin cá nhân'
-            ])),
-          ),
-          SliverToBoxAdapter(
-            child: greyRow('Hỗ trợ'),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(_buildList([
-              'Liên hệ House Merchant',
-              'Quy định & Điều khoản',
-            ])),
-          ),
-        ],
-      ),
-    );
+    return SafeArea(child: _myListView(context));
   }
 }
