@@ -21,9 +21,6 @@ class NaviagationBottom {
 }
 
 class MainScreen extends StatefulWidget {
-  MainScreen() {
-    print('MainScreen StatefulWidget init');
-  }
 
   @override
   MainScreenState createState() => new MainScreenState();
@@ -195,23 +192,23 @@ class MainScreenState extends State<MainScreen> {
           }
 
           return new Scaffold(
-              backgroundColor: Colors.white,
-              body: Stack(
-                children: listPage,
-              ),
-              bottomNavigationBar: BottomNavigationBar(
-                  currentIndex: _currentIndex,
-                  onTap: (int index) {
-                    setState(() {
-                      HapticFeedback.heavyImpact();
-                      pageController.jumpToPage(index);
-                    });
-                  },
-                  selectedItemColor: ThemeConstant.primary_color,
-                  type: BottomNavigationBarType.fixed,
-                  items: this.navigationButtons.map((f) {
-                    return f.barItem;
-                  }).toList()));
+            backgroundColor: Colors.white,
+            body: Stack(
+              children: listPage,
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (int index) {
+                setState(() {
+                  HapticFeedback.heavyImpact();
+                  pageController.jumpToPage(index);
+                });
+              },
+              selectedItemColor: ThemeConstant.primary_color,
+              type: BottomNavigationBarType.fixed,
+              items: this.navigationButtons.map((f) {
+                return f.barItem;
+              }).toList()));
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

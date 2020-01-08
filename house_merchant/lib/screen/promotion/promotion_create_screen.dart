@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/datepick_range_widget.dart';
@@ -12,6 +13,7 @@ import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
+import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
 
 class PromotionCreateScreen extends StatefulWidget {
@@ -24,6 +26,7 @@ class PromotionCreateScreen extends StatefulWidget {
 
 class PromotionCreateScreenState extends State<PromotionCreateScreen> {
 
+  ProgressHUD progressToolkit = Progress.instanceCreate();
   Size _screenSize;
   BuildContext _context;
   double _padding;
@@ -135,19 +138,47 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
           
           SizedBox(height: 25),
           ButtonWidget(controller: sendButtonController, defaultHintText: LocalizationsUtil.of(context).translate('Tạo ưu đãi'), callback: () async {
-            final result = await couponRepository.createCoupon(CouponModel(
-              title: ftitle.Controller.text,
-              quantity: int.parse(famount.Controller.text),
-              startDate: frangeTimeResult[0].toUtc().toString(),
-              endDate: frangeTimeResult[1].toUtc().toString(),
-              description: fdesc.Controller.text
-            ));
-            print(result);
+            
+            try {
+              progressToolkit.state.show();
+
+              final result = await couponRepository.createCoupon(CouponModel(
+                title: ftitle.Controller.text,
+                quantity: int.parse(famount.Controller.text),
+                startDate: frangeTimeResult[0].toUtc().toString(),
+                endDate: frangeTimeResult[1].toUtc().toString(),
+                description: fdesc.Controller.text
+              ));
+
+              progressToolkit.state.dismiss();
+
+              //Clear all
+              this.clearForm();
+
+            } catch (e) {
+              Fluttertoast.showToast(
+                msg: e,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 5,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 14.0
+              );
+            }
+            
           })
         ],
       )
     );
     
+  }
+
+  void clearForm() {
+    ftitle.Controller.clear();
+    famount.Controller.clear();
+    frangeTimeResult=null;
+    fdesc.Controller.clear();
   }
 
   @override
@@ -157,25 +188,29 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
 
+
     return BaseScaffoldNormal(
       title: 'Tạo ưu đãi',
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
+      child: Stack(children: <Widget>[
+        CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
 
-          SliverToBoxAdapter(
-            child: BoxesContainer(child: Center(),),
-          ),
+            SliverToBoxAdapter(
+              child: BoxesContainer(child: Center(),),
+            ),
 
-          SliverToBoxAdapter(
-            child: BoxesContainer(title: 'Hình ảnh', child: Text('hello world'), padding: EdgeInsets.all(this._padding),)
-          ),
+            SliverToBoxAdapter(
+              child: BoxesContainer(title: 'Hình ảnh', child: Text('hello world'), padding: EdgeInsets.all(this._padding),)
+            ),
 
-          SliverToBoxAdapter(
-            child: BoxesContainer(title: 'Thông tin', child: this.formCreate(), padding: EdgeInsets.all(this._padding),)
-          ),
-        ]
-      ),
+            SliverToBoxAdapter(
+              child: BoxesContainer(title: 'Thông tin', child: this.formCreate(), padding: EdgeInsets.all(this._padding),)
+            ),
+          ]
+        ),
+        progressToolkit
+      ]),
     );
 
   }

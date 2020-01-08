@@ -42,6 +42,13 @@ class UserRepository {
 
   }
 
+  Future<void> deleteToken() async {
+    Storage.removeToken();
+    //feedAPI.UnRegisterDeviceToken();
+    return;
+  }
+
+
   Future<void> persistToken(TokenModel token) async {
     Storage.saveToken(token);
     return;

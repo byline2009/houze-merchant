@@ -71,6 +71,8 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
           bloc: _loginBloc.authenticationBloc,
           builder: (BuildContext context, AuthenticationState currentState) {
 
+            print("Status: ${currentState}");
+
             if (currentState is AuthenticationLoading || currentState is AuthenticationInitial) {
               return Scaffold(
                 backgroundColor: Colors.white,
