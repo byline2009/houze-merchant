@@ -27,8 +27,8 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
 
   //Form controller
   final ftitle = TextFieldWidgetController();
-  final fbeginTime = TextFieldWidgetController();
-  final fendTime = TextFieldWidgetController();
+  final famount = TextFieldWidgetController();
+  final frangeTime = new StreamController<List<DateTime>>.broadcast();
   final fdesc = TextFieldWidgetController();
   StreamController<ButtonSubmitEvent> sendButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
 
@@ -92,19 +92,19 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
 
           this.controlHeader('Số lượng',),
           SizedBox(height: 5),
-          TextFieldWidget(controller: ftitle, defaultHintText: 'Vd: 50', keyboardType: TextInputType.number, callback: (String value) {}),
+          TextFieldWidget(controller: famount, defaultHintText: 'Vd: 50', keyboardType: TextInputType.number, callback: (String value) {}),
 
           SizedBox(height: 25),
 
           this.controlHeader('Thời gian bắt đầu',),
           SizedBox(height: 5),
-          DateRangePickerWidget(controller: fbeginTime, defaultHintText: '00:00 - DD/MM/YYYY', callback: (String value) {},),
+          DateRangePickerWidget(controller: frangeTime, index: 0, defaultHintText: '00:00 - DD/MM/YYYY', callback: (String value) {},),
 
           SizedBox(height: 25),
 
           this.controlHeader('Thời gian kết thúc',),
           SizedBox(height: 5),
-          DateRangePickerWidget(controller: fendTime, defaultHintText: '00:00 - DD/MM/YYYY', callback: (String value) {},),
+          DateRangePickerWidget(controller: frangeTime, index: 1, defaultHintText: '00:00 - DD/MM/YYYY', callback: (String value) {},),
 
           SizedBox(height: 25),
           this.controlHeader('Nội dung ưu đãi',),

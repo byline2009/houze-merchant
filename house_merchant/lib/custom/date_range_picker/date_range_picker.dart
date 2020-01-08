@@ -1116,7 +1116,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
   }
 
   void _handleCancel() {
-    Navigator.pop(context);
+    Navigator.pop(context, List<DateTime>());
   }
 
   void _handleOk() {
@@ -1306,16 +1306,25 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             _selectedFirstDate != null ? 
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(intl.DateFormat('dd').format(_selectedFirstDate), style: TextStyle(
-                                    fontSize: 27,
-                                    color: Colors.blueAccent
+                                  Text('Bắt đầu', style: TextStyle(
+                                    fontSize: 17
                                   ),),
-                                  SizedBox(width: 10),
-                                  Text(intl.DateFormat('MMMM yyyy').format(_selectedFirstDate))
-                                ],
+
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(intl.DateFormat('dd').format(_selectedFirstDate), style: TextStyle(
+                                        fontSize: 27,
+                                        color: Colors.blueAccent
+                                      ),),
+                                      SizedBox(width: 10),
+                                      Text(intl.DateFormat('MMMM yyyy').format(_selectedFirstDate))
+                                    ],
+                                  )
+                                ]
                               )
                             : Center(),
                             SizedBox(height: 10),
@@ -1336,18 +1345,26 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
 
                             SizedBox(height: 40),
 
-                            _selectedLastDate != null ? 
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                            _selectedLastDate != null ?
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(intl.DateFormat('dd').format(_selectedLastDate), style: TextStyle(
-                                    fontSize: 27,
-                                    color: Colors.blueAccent
+                                  Text('Cho đến', style: TextStyle(
+                                    fontSize: 17
                                   ),),
-                                  SizedBox(width: 10),
-                                  Text(intl.DateFormat('MMMM yyyy').format(_selectedLastDate))
-                                ],
-                              )
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(intl.DateFormat('dd').format(_selectedLastDate), style: TextStyle(
+                                        fontSize: 27,
+                                        color: Colors.blueAccent
+                                      ),),
+                                      SizedBox(width: 10),
+                                      Text(intl.DateFormat('MMMM yyyy').format(_selectedLastDate))
+                                    ],
+                                  )
+                              ],)
+                              
                             : Center(),
                             SizedBox(height: 10),
                             _selectedLastDate != null ? GestureDetector(
