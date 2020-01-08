@@ -16,6 +16,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/custom/date_range_picker/bottomsheet_widget.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:intl/intl.dart' as intl;
@@ -453,10 +454,11 @@ class DayPicker extends StatelessWidget {
         labels.add(new Container());
       } else {
         final DateTime dayToBuild = new DateTime(year, month, day);
-        final bool disabled = dayToBuild.isAfter(lastDate) ||
+        final bool disabled = dayToBuild.isBefore(DateTime.now().subtract(Duration(days: 1))) || dayToBuild.isAfter(lastDate) ||
             dayToBuild.isBefore(firstDate) ||
             (selectableDayPredicate != null &&
                 !selectableDayPredicate(dayToBuild));
+
         BoxDecoration decoration;
         TextStyle itemStyle = themeData.textTheme.body1;
         final bool isSelectedFirstDay = selectedFirstDate.year == year &&
@@ -1031,6 +1033,13 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
     _selectedFirstDate = widget.initialFirstDate;
     _selectedLastDate = widget.initialLastDate;
     _mode = widget.initialDatePickerMode;
+
+    beginTime.Controller.text = intl.DateFormat('HH:mm').format(_selectedFirstDate);
+    endTime.Controller.text = intl.DateFormat('HH:mm').format(_selectedLastDate);
+    beginHourPicker = FixedExtentScrollController(initialItem: _selectedFirstDate.hour);
+    beginMinutePicker = FixedExtentScrollController(initialItem: _selectedFirstDate.minute);
+    endHourPicker = FixedExtentScrollController(initialItem: _selectedLastDate.hour);
+    endMinutePicker = FixedExtentScrollController(initialItem: _selectedLastDate.minute);
   }
 
   bool _announcedInitialDate = false;
@@ -1116,6 +1125,8 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
   }
 
   void _handleCancel() {
+    beginTime.Controller.clear();
+    endTime.Controller.clear();
     Navigator.pop(context, List<DateTime>());
   }
 
@@ -1127,7 +1138,19 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
         result.add(DateTime(_selectedLastDate.year, _selectedLastDate.month, _selectedLastDate.day, endHourPicker.initialItem, endMinutePicker.initialItem));
       }
     }
-    Navigator.pop(context, result);
+    if (result.length == 2)
+      Navigator.pop(context, result);
+    else {
+      Fluttertoast.showToast(
+        msg: "Chọn đầu đủ ngày, giờ bắt đầu và kết thúc",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 5,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0
+      );
+    }
   }
 
   Widget _buildPicker() {

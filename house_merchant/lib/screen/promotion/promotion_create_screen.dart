@@ -96,15 +96,9 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
 
           SizedBox(height: 25),
 
-          this.controlHeader('Thời gian bắt đầu',),
+          this.controlHeader('Thời gian hiệu lực',),
           SizedBox(height: 5),
-          DateRangePickerWidget(controller: frangeTime, index: 0, defaultHintText: '00:00 - DD/MM/YYYY', callback: (String value) {},),
-
-          SizedBox(height: 25),
-
-          this.controlHeader('Thời gian kết thúc',),
-          SizedBox(height: 5),
-          DateRangePickerWidget(controller: frangeTime, index: 1, defaultHintText: '00:00 - DD/MM/YYYY', callback: (String value) {},),
+          DateRangePickerWidget(controller: frangeTime, defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY', callback: (String value) {},),
 
           SizedBox(height: 25),
           this.controlHeader('Nội dung ưu đãi',),

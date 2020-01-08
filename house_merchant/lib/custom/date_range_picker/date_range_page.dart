@@ -7,8 +7,9 @@ import 'package:house_merchant/custom/date_range_picker/date_range_picker.dart' 
 class DateRangePage extends StatefulWidget {
 
   dynamic callback;
+  List<DateTime> data;
 
-  DateRangePage({this.callback, Key key}) : super(key: key);
+  DateRangePage({this.callback, this.data, Key key}) : super(key: key);
 
   @override
   DateRangePageState createState() => DateRangePageState();
@@ -19,7 +20,13 @@ class DateRangePageState extends State<DateRangePage> {
   @override
   Widget build(BuildContext context) {
 
-    final now = new DateTime.now();
+    var now = new DateTime.now();
+    var initialFirstDate = now;
+    var initialLastDate = now;
+    if (widget.data!=null && widget.data.length > 0) {
+      initialFirstDate = widget.data[0];
+      initialLastDate = widget.data[1];
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -37,10 +44,10 @@ class DateRangePageState extends State<DateRangePage> {
         },
         child: DateRagePicker.showDatePicker(
           context: context,
-          initialFirstDate: now,
-          initialLastDate: now,
-          firstDate: new DateTime(now.year),
-          lastDate: new DateTime(now.year + 1),
+          initialFirstDate: initialFirstDate,
+          initialLastDate: initialLastDate,
+          firstDate: new DateTime(initialFirstDate.year),
+          lastDate: new DateTime(initialLastDate.year + 1),
         ))
     );
   }
