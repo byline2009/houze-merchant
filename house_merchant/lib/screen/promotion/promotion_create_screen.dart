@@ -7,9 +7,12 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/datepick_range_widget.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
+import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
+import 'package:house_merchant/utils/string_util.dart';
 
 class PromotionCreateScreen extends StatefulWidget {
 
@@ -25,16 +28,30 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
   BuildContext _context;
   double _padding;
 
+  //Reposioty
+  final couponRepository = CouponRepository();
+
   //Form controller
   final ftitle = TextFieldWidgetController();
   final famount = TextFieldWidgetController();
   final frangeTime = new StreamController<List<DateTime>>.broadcast();
+  List<DateTime> frangeTimeResult;
   final fdesc = TextFieldWidgetController();
   StreamController<ButtonSubmitEvent> sendButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  bool checkValidation() {
+    var isActive = false;
+    if (!StringUtil.isEmpty(ftitle.Controller.text) && !StringUtil.isEmpty(famount.Controller.text) 
+      && frangeTimeResult!=null && !StringUtil.isEmpty(fdesc.Controller.text)) {
+      isActive = true;
+    }
+    sendButtonController.sink.add(ButtonSubmitEvent(isActive));
+    return isActive;
   }
 
   Widget controlHeader(String title) {
@@ -86,27 +103,47 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
 
           this.controlHeader('Tiêu đề ưu đãi',),
           SizedBox(height: 5),
-          TextFieldWidget(controller: ftitle, defaultHintText: 'Vd: Mua 1 tặng 1 tất cả chi nhánh', callback: (String value) {}),
+          TextFieldWidget(controller: ftitle, defaultHintText: 'Vd: Mua 1 tặng 1 tất cả chi nhánh', callback: (String value) {
+            this.checkValidation();
+          }),
 
           SizedBox(height: 25),
 
           this.controlHeader('Số lượng',),
           SizedBox(height: 5),
-          TextFieldWidget(controller: famount, defaultHintText: 'Vd: 50', keyboardType: TextInputType.number, callback: (String value) {}),
+          TextFieldWidget(controller: famount, defaultHintText: 'Vd: 50', keyboardType: TextInputType.number, callback: (String value) {
+            this.checkValidation();
+          }),
 
           SizedBox(height: 25),
 
           this.controlHeader('Thời gian hiệu lực',),
           SizedBox(height: 5),
-          DateRangePickerWidget(controller: frangeTime, defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY', callback: (String value) {},),
+          DateRangePickerWidget(controller: frangeTime, defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY', callback: (List<DateTime> values) {
+            if (values.length == 2) {
+              frangeTimeResult = values;
+              this.checkValidation();
+            }
+          },),
 
           SizedBox(height: 25),
           this.controlHeader('Nội dung ưu đãi',),
           SizedBox(height: 5),
-          TextFieldWidget(controller: fdesc, defaultHintText: 'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...', keyboardType: TextInputType.multiline, callback: (String value) {}),
+          TextFieldWidget(controller: fdesc, defaultHintText: 'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...', keyboardType: TextInputType.multiline, callback: (String value) {
+            this.checkValidation();
+          }),
           
           SizedBox(height: 25),
-          ButtonWidget(controller: sendButtonController, defaultHintText: LocalizationsUtil.of(context).translate('Tạo ưu đãi'), callback: () async {})
+          ButtonWidget(controller: sendButtonController, defaultHintText: LocalizationsUtil.of(context).translate('Tạo ưu đãi'), callback: () async {
+            final result = await couponRepository.createCoupon(CouponModel(
+              title: ftitle.Controller.text,
+              quantity: int.parse(famount.Controller.text),
+              startDate: frangeTimeResult[0].toUtc().toString(),
+              endDate: frangeTimeResult[1].toUtc().toString(),
+              description: fdesc.Controller.text
+            ));
+            print(result);
+          })
         ],
       )
     );
