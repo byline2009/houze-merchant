@@ -77,6 +77,16 @@ class ThemeConstant {
             style: BorderStyle.solid)),
   );
 
+  static BoxDecoration decorationGreyBottom(double width) {
+    return BoxDecoration(
+      border: Border(
+          bottom: BorderSide(
+              color: ThemeConstant.background_grey_color,
+              width: width,
+              style: BorderStyle.solid)),
+    );
+  }
+
   static BoxDecoration borderBottom = BoxDecoration(
     color: Colors.white,
     border: Border(

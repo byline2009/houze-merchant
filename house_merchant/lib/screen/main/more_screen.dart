@@ -79,6 +79,75 @@ class MoreScreenState extends State<MoreScreen> {
         ));
   }
 
+  List _buildList(List<String> titleList) {
+    List<Widget> listItems = List();
+
+    for (int i = 0; i < titleList.length; i++) {
+      listItems.add(whiteRow(titleList[i]));
+    }
+    return listItems;
+  }
+
+  Widget whiteRow(String title) {
+    return GestureDetector(
+        onTap: () {
+          print(title);
+        },
+        child: Container(
+            padding: EdgeInsets.all(20.0),
+            decoration: ThemeConstant.decorationGreyBottom(2.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      color: ThemeConstant.black_color,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.26),
+                ),
+                Icon(
+                  Icons.arrow_forward,
+                  size: 16,
+                  color: ThemeConstant.alto_color,
+                )
+              ],
+            )));
+  }
+
+  Widget greyRow(String title) {
+    return Container(
+      padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+      height: 50.0,
+      color: ThemeConstant.background_grey_color,
+      child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
+        Text(
+          title,
+          style: TextStyle(
+              fontSize: 18.0,
+              color: ThemeConstant.unselected_color,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.29),
+        )
+      ]),
+    );
+  }
+
+  // Widget bottomSection() {
+  //   return SliverToBoxAdapter(
+  //     child: ,
+  //   );
+  // }
+
+  Widget arrowButton() {
+    return Icon(
+      Icons.arrow_forward,
+      color: ThemeConstant.grey_color,
+      size: 16,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -89,6 +158,22 @@ class MoreScreenState extends State<MoreScreen> {
             child: BoxesContainer(
               child: headerWidget(),
             ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(_buildList([
+              'Trạng thái cửa hàng',
+              'Quản lý tài khoản',
+              'Thông tin cá nhân'
+            ])),
+          ),
+          SliverToBoxAdapter(
+            child: greyRow('Hỗ trợ'),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(_buildList([
+              'Liên hệ House Merchant',
+              'Quy định & Điều khoản',
+            ])),
           ),
         ],
       ),
