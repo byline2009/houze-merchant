@@ -60,12 +60,28 @@ class ThemeConstant {
   static const String form_font_family = 'SFProText';
   static const String form_font_family_display = 'SFProDisplay';
 
+  static TextStyle subtitleStyle(Color color) {
+    return TextStyle(
+        fontSize: form_font_smaller,
+        fontWeight: appbar_text_weight,
+        letterSpacing: 0.26,
+        color: color);
+  }
+
   //Text Style
-  static TextStyle headerTitleStyle(Color color) {
+  static TextStyle headerTitleBoldStyle(Color color) {
     return TextStyle(
         fontSize: sub_header_size,
         fontWeight: appbar_text_weight_bold,
         letterSpacing: sub_title_letter_spacing,
+        color: color);
+  }
+
+  static TextStyle titleStyle(Color color) {
+    return TextStyle(
+        fontSize: appbar_scaffold_font_title,
+        fontWeight: appbar_text_weight,
+        letterSpacing: 0.26,
         color: color);
   }
 
