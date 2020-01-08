@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_bloc.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_event.dart';
-import 'package:house_merchant/screen/base/boxes_container.dart';
 
 class MoreScreen extends StatefulWidget {
   MoreScreen({Key key}) : super(key: key);
@@ -83,20 +82,9 @@ class MoreScreenState extends State<MoreScreen> {
         ));
   }
 
-  Widget buildGreyRow(String title, TextStyle style) {
-  List _buildList(List<String> titleList) {
-    List<Widget> listItems = List();
-
-    for (int i = 0; i < titleList.length; i++) {
-      listItems.add(whiteRow(titleList[i]));
-    }
-    return listItems;
-  }
-
   Widget whiteRow(String title) {
-
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
-    
+
     return GestureDetector(
         onTap: () {
           print(title);
@@ -125,7 +113,7 @@ class MoreScreenState extends State<MoreScreen> {
             )));
   }
 
-  Widget greyRow(String title) {
+  Widget buildGreyRow(String title, TextStyle style) {
     return Container(
       padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
       height: 50.0,
