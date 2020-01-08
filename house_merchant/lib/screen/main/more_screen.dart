@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/middle/bloc/authentication/authentication_bloc.dart';
+import 'package:house_merchant/middle/bloc/authentication/authentication_event.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
 
 class MoreScreen extends StatefulWidget {
@@ -89,9 +92,13 @@ class MoreScreenState extends State<MoreScreen> {
   }
 
   Widget whiteRow(String title) {
+
+    final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    
     return GestureDetector(
         onTap: () {
           print(title);
+          _authenticationBloc.add(LoggedOut());
         },
         child: Container(
             padding: EdgeInsets.all(20.0),

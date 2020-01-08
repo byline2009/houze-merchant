@@ -4,7 +4,8 @@ class APIConstant {
 
   static const int limitDefault = 10;
 
-  static String baseMerchantUrl, baseMerchantUrlRefreshToken,
+  static String 
+    baseMerchantUrl, baseMerchantUrlRefreshToken, baseMerchantUrlLogin,
     baseMerchantUrlCoupon;
 
   static init() {
@@ -12,6 +13,8 @@ class APIConstant {
     final dotenv = DotEnv();
 
     APIConstant.baseMerchantUrl = dotenv.env['API_MERCHANT'];
+
+    APIConstant.baseMerchantUrlLogin = baseMerchantUrl + "/oauth/api-token-auth/";
     APIConstant.baseMerchantUrlRefreshToken = baseMerchantUrl + "/oauth/api-token-refresh/";
     APIConstant.baseMerchantUrlCoupon = baseMerchantUrl + "/coupon/";
     

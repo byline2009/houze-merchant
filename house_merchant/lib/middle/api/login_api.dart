@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/middle/api/base_api.dart';
 import 'package:house_merchant/middle/model/token_model.dart';
 
@@ -6,7 +7,7 @@ class LoginAPI extends BaseAPI {
 
   Dio dio;
 
-  LoginAPI() : super('');
+  LoginAPI() : super(APIConstant.baseMerchantUrlLogin);
 
   Future<TokenModel> login({username: String, password: String}) async {
     try {
