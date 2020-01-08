@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/middle/bloc/authentication/authentication_bloc.dart';
+import 'package:house_merchant/middle/bloc/authentication/authentication_state.dart';
+import 'package:house_merchant/middle/bloc/login/index.dart';
 import 'package:house_merchant/middle/model/language_model.dart';
+import 'package:house_merchant/screen/login/login_screen.dart';
 import 'package:house_merchant/screen/main/main_screen.dart';
 import 'package:house_merchant/utils/cupertino_localizations_vi.dart';
 import 'package:house_merchant/utils/localizations_delegate_util.dart';
@@ -21,6 +26,9 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final _loginBloc = LoginBloc(authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
+
     //Get default language
     final getLanguage = LanguageModel(
       flag: 'vi',
@@ -29,14 +37,16 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
     );
     locale = Locale(getLanguage.locale, getLanguage.locale.toUpperCase());
 
-    return MaterialApp(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginBloc>(
+          create: (BuildContext context) => _loginBloc,
+        ),
+      ],
+      child: MaterialApp(
         builder: (BuildContext context, Widget child) {
           final MediaQueryData data = MediaQuery.of(context);
-          return MediaQuery(
-              data: data.copyWith(
-                textScaleFactor: 1.0,
-              ),
-              child: child);
+          return MediaQuery(data: data.copyWith(textScaleFactor: 1.0,), child: child);
         },
         showPerformanceOverlay: false,
         localizationsDelegates: [
@@ -57,6 +67,33 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
           const Locale('vi', 'VI'),
         ],
         debugShowCheckedModeBanner: false,
-        home: MainScreen());
+        home: BlocBuilder(
+          bloc: _loginBloc.authenticationBloc,
+          builder: (BuildContext context, AuthenticationState currentState) {
+
+            if (currentState is AuthenticationLoading || currentState is AuthenticationInitial) {
+              return Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(child: 
+                  CupertinoActivityIndicator(),
+                )
+              );
+            }
+
+            // If Authenticated, go to main screen
+            if (currentState is AuthenticationAuthenticated) {
+              //Add handler listening notification hub
+              return MainScreen();
+            }
+
+            if (currentState is AuthenticationUnauthenticated) {
+              // Default Screen when not login yet.
+              return LoginScreen();
+            }
+
+        })
+        
+      ));
+
   }
 }
