@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:house_merchant/middle/api/oauth_api.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_event.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_state.dart';
 import 'package:house_merchant/middle/repository/user_repository.dart';
@@ -28,15 +29,14 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
     if (event is LoggedIn) {
       yield AuthenticationLoading();
-      //await userRepository.persistToken(event.token);
       yield AuthenticationAuthenticated();
     }
 
     if (event is LoggedOut) {
       yield AuthenticationLoading();
-      // OauthAPI.token = null;
-      // await userRepository.deleteToken();
-      // await Sqflite.flush();
+      OauthAPI.token = null;
+      await userRepository.deleteToken();
+      //await Sqflite.flush();
       yield AuthenticationUnauthenticated();
     }
   }

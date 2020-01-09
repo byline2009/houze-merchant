@@ -6,6 +6,7 @@ class APIConstant {
 
   static String 
     baseMerchantUrl, baseMerchantUrlRefreshToken, baseMerchantUrlLogin,
+    baseMerchantUrlShop,
     baseMerchantUrlCoupon;
 
   static init() {
@@ -17,6 +18,7 @@ class APIConstant {
     APIConstant.baseMerchantUrlLogin = baseMerchantUrl + "/oauth/api-token-auth/";
     APIConstant.baseMerchantUrlRefreshToken = baseMerchantUrl + "/oauth/api-token-refresh/";
     APIConstant.baseMerchantUrlCoupon = baseMerchantUrl + "/coupon/";
+    APIConstant.baseMerchantUrlShop = baseMerchantUrl + "/shop/";
     
   }
 }
