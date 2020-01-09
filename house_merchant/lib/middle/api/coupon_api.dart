@@ -2,6 +2,7 @@ import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/middle/api/oauth_api.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
+import 'package:house_merchant/utils/sqflite.dart';
 
 class CouponAPI extends OauthAPI {
 
@@ -9,11 +10,13 @@ class CouponAPI extends OauthAPI {
 
   Future<CouponModel> createCoupon(CouponModel couponModel) async {
 
+    String currentShop = await Sqflite.currentShop();
+
     couponModel.images = [
     ];
 
     couponModel.shops = [
-      ShopModel(id: "906e9659-61d6-40a3-86e5-a6ec779ae2fe")
+      ShopModel(id: currentShop)
     ];
 
     final response = await this.post(

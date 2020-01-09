@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:house_merchant/middle/model/token_model.dart';
 import 'package:house_merchant/utils/string_util.dart';
 import 'package:house_merchant/utils/utils.dart';
@@ -8,7 +9,10 @@ const String API_TOKEN = 'api_token';
 const String DEVICE_TOKEN = 'device_token';
 
 class Storage {
+  
   static SharedPreferences prefs;
+
+  static GlobalKey<NavigatorState> scaffoldKey = new GlobalKey<NavigatorState>();
 
   // Token
   static Future<bool> saveToken(TokenModel token) {

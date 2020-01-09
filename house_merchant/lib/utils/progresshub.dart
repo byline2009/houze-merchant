@@ -115,11 +115,10 @@ class _ProgressHUDState extends State<ProgressHUD> {
   }
 
   Widget _getCircularProgress() {
-    // return SpinKitFadingCircle(
-    //   color: Colors.white,
-    //   size: 50.0,
-    // );
-    return CupertinoActivityIndicator();
+    return SpinKitFadingCircle(
+      color: Colors.white,
+      size: 50.0,
+    );
   }
 }
 
