@@ -82,37 +82,6 @@ class MoreScreenState extends State<MoreScreen> {
         ));
   }
 
-  Widget whiteRow(String title) {
-    final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
-
-    return GestureDetector(
-        onTap: () {
-          print(title);
-          _authenticationBloc.add(LoggedOut());
-        },
-        child: Container(
-            padding: EdgeInsets.all(20.0),
-            decoration: ThemeConstant.decorationGreyBottom(2.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 16.0,
-                      color: ThemeConstant.black_color,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.26),
-                ),
-                Icon(
-                  Icons.arrow_forward,
-                  size: 16,
-                  color: ThemeConstant.alto_color,
-                )
-              ],
-            )));
-  }
-
   Widget buildGreyRow(String title, TextStyle style) {
     return Container(
       padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
@@ -125,6 +94,8 @@ class MoreScreenState extends State<MoreScreen> {
   }
 
   Widget _myListView(BuildContext context) {
+
+    final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     return ListView(
       children: <Widget>[
         Column(
@@ -244,6 +215,7 @@ class MoreScreenState extends State<MoreScreen> {
               trailing: arrowButton(),
               onTap: () {
                 print('Đăng xuất');
+                _authenticationBloc.add(LoggedOut());
               },
             )),
       ],

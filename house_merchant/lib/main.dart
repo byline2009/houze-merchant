@@ -19,7 +19,7 @@ void main() async {
   }
 
   //App init
-  await AppConfig.init('.env.prod');
+  await AppConfig.init('.env.dev');
 
   runApp(
     BlocProvider(

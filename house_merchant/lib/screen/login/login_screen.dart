@@ -159,34 +159,38 @@ class LoginScreenState extends State<LoginScreen> {
 
     final loginBloc = BlocProvider.of<LoginBloc>(context);
 
-    final introduceSection = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          Column(
+    final introduceSection = Container(
+        child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Text(
-                'House\nMerchant',
-                style: TextStyle(
-                    letterSpacing: 0.68,
-                    fontSize: 34.0,
-                    fontWeight: FontWeight.bold,
-                    color: ThemeConstant.violet_color),
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'House\nMerchant',
+                      style: TextStyle(
+                          letterSpacing: 0.68,
+                          fontSize: 34.0,
+                          fontWeight: FontWeight.bold,
+                          color: ThemeConstant.violet_color),
+                    ),
+                    SizedBox(height: 5.0),
+                    Text('Ứng dụng quản lý cửa hàng\nKết nối với cư dân toà nhà',
+                        style: TextStyle(
+                            letterSpacing: 0.26,
+                            fontSize: 16.0,
+                            color: ThemeConstant.black_color,
+                            fontWeight: ThemeConstant.appbar_text_weight))
+                  ],
+                ),
               ),
-              SizedBox(height: 5.0),
-              Text('Ứng dụng quản lý cửa hàng\nKết nối với cư dân toà nhà',
-                  style: TextStyle(
-                      letterSpacing: 0.26,
-                      fontSize: 16.0,
-                      color: ThemeConstant.black_color,
-                      fontWeight: ThemeConstant.appbar_text_weight))
-            ],
-          ),
-          SvgPicture.asset('assets/images/ic-login-store.svg',
-              width: 162.0, height: 162.0, fit: BoxFit.fill),
-        ]);
+              SvgPicture.asset('assets/images/ic-login-store.svg',
+                  width: 134.0, height: 134.0, fit: BoxFit.fill),
+            ])
+    );
 
     final forgotLabel = FlatButton(
       child: Text('Quên mật khẩu',
