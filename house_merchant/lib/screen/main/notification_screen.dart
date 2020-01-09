@@ -105,7 +105,7 @@ class NotificationScreenState extends State<NotificationScreen> {
       title: 'Thông báo',
       child: Container(
         color: ThemeConstant.background_grey_color,
-        child: makeBody, //notificationEmptyView,
+        child: notifications.length == 0 ? notificationEmptyView : makeBody,
       ),
     );
   }
