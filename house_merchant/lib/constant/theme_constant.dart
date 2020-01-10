@@ -6,11 +6,20 @@ class ThemeConstant {
   static const Color appbar_popup_color = Color(0xfff5f7f8);
   static const FontWeight appbar_text_weight = FontWeight.w500;
   static const FontWeight appbar_text_weight_bold = FontWeight.bold;
+  static const FontWeight fontWeightBold = FontWeight.bold;
+
   static const Color appbar_icon_color = Colors.black;
   static const double appbar_font_title = 27.0;
   static const double appbar_letter_spacing = 0.43;
   static const double appbar_scaffold_font_title = 16.0;
   static const double sub_title_letter_spacing = 0.29;
+
+//font
+  static const double font_size_16 = 16.0;
+  static const double font_size_24 = 24.0;
+  static const double letter_spacing_038 = 0.38;
+  static const double letter_spacing_026 = 0.26;
+  static const double letter_spacing_024 = 0.24;
 
   //background
   static const Color background_grey_color = Color(0xfff5f5f5);
@@ -182,4 +191,8 @@ class ThemeConstant {
   static const Color violet_color = Color(0xff5b00e4);
   static const Color alto_color = Color(0xffd0d0d0);
   static const Color start_yelow_color = Color(0xffffcc44);
+
+  static const Color expired_color = Color(0xffb5b5b5);
+  static const Color ready_color = Color(0xff00aa7d);
+  static const Color pending_color = Color(0xffe3a500);
 }

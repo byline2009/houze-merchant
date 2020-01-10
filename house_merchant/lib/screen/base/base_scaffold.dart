@@ -32,7 +32,8 @@ class BaseScaffold extends StatelessWidget {
               fit: BoxFit.contain,
             ),
             onPressed: () {
-              Router.pushDialogNoParams(context, Router.NOTIFICATION_PAGE);
+              //Router.pushDialogNoParams(context, Router.NOTIFICATION_PAGE);
+              Router.pushDialogNoParams(context, Router.PROMOTION_DETAIL_PAGE);
             },
           ),
         ),
