@@ -195,4 +195,8 @@ class ThemeConstant {
   static const Color expired_color = Color(0xffb5b5b5);
   static const Color ready_color = Color(0xff00aa7d);
   static const Color pending_color = Color(0xffe3a500);
+
+  static const String expired_status = 'Hết hạn';
+  static const String ready_status = 'Đang chạy';
+  static const String pending_status = 'Chờ duyệt';
 }

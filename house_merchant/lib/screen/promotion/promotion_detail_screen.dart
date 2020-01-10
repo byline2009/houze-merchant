@@ -21,6 +21,8 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
   Size _screenSize;
   BuildContext _context;
   double _padding;
+  double _heightPhoto;
+  String _status;
   StreamController<ButtonSubmitEvent> qrButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
 
@@ -34,9 +36,11 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
+    this._heightPhoto = this._screenSize.height * (300 / 812);
+    this._status = ThemeConstant.pending_status;
 
     final headerPhotoSection = Container(
-      height: 300.0,
+      height: _heightPhoto,
       child: SvgPicture.asset('assets/images/ic-comming-soon.svg',
           fit: BoxFit.none),
     );
@@ -70,7 +74,7 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
           Positioned(
             bottom: 88.0,
             left: 0.0,
-            top: 230.0,
+            top: _heightPhoto - 70,
             width: _screenSize.width,
             child: PromotionBody(),
           ),
@@ -78,7 +82,7 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
             bottom: 0,
             left: 0,
             width: _screenSize.width,
-            child: bottomButtonSection('pending'),
+            child: bottomButtonSection(_status),
           ),
         ])));
   }
