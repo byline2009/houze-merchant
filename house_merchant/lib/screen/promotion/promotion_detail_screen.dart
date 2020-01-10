@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
+import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
@@ -44,7 +45,7 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
       qrButtonController.sink.add(ButtonSubmitEvent(true));
 
       return Container(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(_padding),
         width: _screenSize.width,
         height: 88.0,
         decoration: BoxDecoration(color: Colors.white),
@@ -145,18 +146,38 @@ class PromotionBodyState extends State<PromotionBody> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               CircleAvatar(
-                backgroundColor: Colors.greenAccent,
+                backgroundColor: Colors.greenAccent[100],
                 child: Text('A'),
               ),
               CircleAvatar(
-                backgroundColor: Colors.pinkAccent,
+                backgroundColor: Colors.pinkAccent[100],
                 child: Text('C'),
               ),
             ],
           )),
-          Icon(
-            Icons.arrow_forward,
-            color: ThemeConstant.violet_color,
+          InkWell(
+            onTap: () {
+              print('Xem danh sach');
+            },
+            child: Container(
+                width: 130,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text('Xem danh sách',
+                        style: TextStyle(
+                            color: ThemeConstant.primary_color,
+                            fontSize: 13,
+                            letterSpacing: ThemeConstant.letter_spacing_026,
+                            fontWeight: FontWeight.w600)),
+                    SizedBox(width: 10.0),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: ThemeConstant.violet_color,
+                      size: 16.0,
+                    )
+                  ],
+                )),
           )
         ],
       ),
@@ -231,12 +252,12 @@ class PromotionBodyState extends State<PromotionBody> {
                     letterSpacing: 0.29),
               ),
               SizedBox(height: 10.0),
-              Text(
-                  'Thích thì dùng, không thích thì dùng.\nLorem ipsum dolor sit amet, consectetur...',
-                  style: new TextStyle(
-                      fontSize: ThemeConstant.label_font_size,
-                      color: ThemeConstant.grey_color,
-                      letterSpacing: ThemeConstant.letter_spacing_024))
+              ReadMoreText(
+                'Thích thì dùng, không thích thì dùng.\n \n Please dontsubmit pull requests directly updating this file.\n \n While were always happy to learn of new samples from the community, we need to keep this file small.\n \nThere are plenty of user-maintained indices (like Awesome Flutter) that are meant to be exhaustive, and those are great places for submitting your own work.',
+                trimLines: 2,
+                colorClickableText: ThemeConstant.primary_color,
+                trimMode: TrimMode.Line,
+              ),
             ],
           )),
     );
