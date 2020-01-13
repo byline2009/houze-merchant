@@ -41,5 +41,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Ứng dụng cần quyền truy cập địa điểm - App need to access your Location</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Ứng dụng cần quyền truy cập vào thư viện ảnh để thêm ảnh cửa hàng - App need to access your Photo Library to send image for store.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Ứng dụng cần quyền truy cập vào thư viện ảnh để thêm ảnh cửa hàng - App need to access your Photo Library to send image for store.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Ứng dụng cần quyền truy cập Camera để thêm ảnh cửa hàng - App need to access your Camera to send image for store.</string>
 </dict>
 </plist>

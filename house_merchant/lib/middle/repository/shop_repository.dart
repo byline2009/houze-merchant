@@ -10,4 +10,9 @@ class ShopRepository {
     final rs = await shopAPI.getShops(page: page);
     return rs;
   }
+
+  Future<ShopModel> getShop(String id) async {
+    final rs = await shopAPI.getShop(id);
+    return rs;
+  }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:house_merchant/screen/main/notification_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_create_screen.dart';
+import 'package:house_merchant/screen/shop/shop_update_images.dart';
 
 class Router {
   static const HOME_PAGE = 'app://';
@@ -13,6 +14,8 @@ class Router {
 
   static const NOTIFICATION_PAGE = "app://NotificationPage";
 
+  static const SHOP_IMAGES_PAGE = "app://ShopImages";
+
   Widget _getPage(String url, dynamic params) {
     switch (url) {
       case PROMOTION_CREATE:
@@ -20,6 +23,9 @@ class Router {
 
       case NOTIFICATION_PAGE:
         return NotificationScreen();
+
+      case SHOP_IMAGES_PAGE:
+        return ShopUpdateImagesScreen();
     }
 
     return null;

@@ -20,4 +20,14 @@ class ShopAPI extends OauthAPI {
     }).toList();
   }
 
+  Future<ShopModel> getShop(String id) async {
+
+    final response = await this.get(
+      "${APIConstant.baseMerchantUrlShop}${id}/",
+      queryParameters: {}
+    );
+
+    return ShopModel.fromJson(response.data);
+  }
+
 }
