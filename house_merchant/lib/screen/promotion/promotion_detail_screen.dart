@@ -25,7 +25,8 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
   String _status;
   StreamController<ButtonSubmitEvent> qrButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
-
+  StreamController<ButtonSubmitEvent> editButtonController =
+      new StreamController<ButtonSubmitEvent>.broadcast();
   @override
   void initState() {
     super.initState();
@@ -45,18 +46,58 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
           fit: BoxFit.none),
     );
 
-    Widget bottomButtonSection(String status) {
+    Widget bottomButtonSection() {
       qrButtonController.sink.add(ButtonSubmitEvent(true));
+      editButtonController.sink.add(ButtonSubmitEvent(true));
+
+      final pendingStatusButton = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            width: 160 * (_screenSize.width / 375),
+            child: Center(
+              child: Text(
+                'Quét QR',
+                style: TextStyle(
+                    color: ThemeConstant.white_color,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: ThemeConstant.alto_color,
+              borderRadius: BorderRadius.all(Radius.circular(4.0)),
+            ),
+          ),
+          Container(
+            width: 160 * (_screenSize.width / 375),
+            child: Center(
+              child: Text(
+                'Chỉnh sửa',
+                style: TextStyle(
+                    color: ThemeConstant.primary_color,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            decoration:
+                ThemeConstant.borderOutline(ThemeConstant.primary_color),
+          )
+        ],
+      );
 
       return Container(
         padding: EdgeInsets.all(_padding),
         width: _screenSize.width,
         height: 88.0,
         decoration: BoxDecoration(color: Colors.white),
-        child: ButtonWidget(
-            controller: qrButtonController,
-            defaultHintText: LocalizationsUtil.of(context).translate('Quét QR'),
-            callback: () async {}),
+        child: this._status == ThemeConstant.pending_status
+            ? pendingStatusButton
+            : ButtonWidget(
+                controller: qrButtonController,
+                defaultHintText:
+                    LocalizationsUtil.of(context).translate('Quét QR'),
+                callback: () async {}),
       );
     }
 
@@ -82,7 +123,7 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
             bottom: 0,
             left: 0,
             width: _screenSize.width,
-            child: bottomButtonSection(_status),
+            child: bottomButtonSection(),
           ),
         ])));
   }
@@ -218,7 +259,7 @@ class PromotionBodyState extends State<PromotionBody> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Ưu đãi 25% mừng Lễ Giáng Sinh 2019',
+            'Mua 1 tặng 1 dành cho menu nước Chào Xuân',
             style: TextStyle(
                 fontSize: ThemeConstant.font_size_24,
                 letterSpacing: ThemeConstant.letter_spacing_038,

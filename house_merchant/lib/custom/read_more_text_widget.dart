@@ -10,8 +10,8 @@ class ReadMoreText extends StatefulWidget {
   const ReadMoreText(
     this.data, {
     Key key,
-    this.trimExpandedText = 'Thu gọn',
-    this.trimCollapsedText = ' Hiện đầy đủ',
+    this.trimExpandedText = '\nThu gọn',
+    this.trimCollapsedText = '\nHiện đầy đủ',
     this.colorClickableText,
     this.trimLength = 240,
     this.trimLines = 2,

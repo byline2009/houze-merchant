@@ -152,6 +152,16 @@ class ThemeConstant {
       ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)));
 
+  static BoxDecoration borderOutline(Color color) {
+    return BoxDecoration(
+        border: Border.all(
+          color: color,
+          width: 1,
+          style: BorderStyle.solid,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(4.0)));
+  }
+
   static BoxDecoration borderCircleNoti = BoxDecoration(
       color: ThemeConstant.form_border_error,
       border: Border.all(
