@@ -77,6 +77,18 @@ class ThemeConstant {
         color: color);
   }
 
+  static TextStyle titleTileStyle = TextStyle(
+      fontSize: form_font_smaller,
+      fontWeight: appbar_text_weight,
+      letterSpacing: 0.24,
+      color: Colors.black);
+
+  static TextStyle subtitleTileStyle = TextStyle(
+      fontSize: form_font_small,
+      fontWeight: appbar_text_weight,
+      letterSpacing: 0.24,
+      color: grey_color);
+
   //Text Style
   static TextStyle headerTitleBoldStyle(Color color) {
     return TextStyle(
@@ -91,6 +103,14 @@ class ThemeConstant {
         fontSize: appbar_scaffold_font_title,
         fontWeight: appbar_text_weight,
         letterSpacing: 0.26,
+        color: color);
+  }
+
+  static TextStyle titleLargeStyle(Color color) {
+    return TextStyle(
+        fontSize: font_size_24,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 0.38,
         color: color);
   }
 
@@ -178,6 +198,10 @@ class ThemeConstant {
         style: BorderStyle.solid)),
   );
 
+  static Container dividerBottom = Container(
+    height: 2.0,
+    color: form_border_normal,
+  );
   static const Color listview_selected_color = Color(0xfff2e8ff);
 
   static const Color form_border_error = Color(0xffc50000);
