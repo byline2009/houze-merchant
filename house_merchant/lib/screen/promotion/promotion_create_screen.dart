@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +17,7 @@ import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
+import 'package:house_merchant/screen/promotion/promotion_picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
@@ -44,6 +47,7 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
   List<DateTime> frangeTimeResult;
   final fdesc = TextFieldWidgetController();
   StreamController<ButtonSubmitEvent> sendButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
+  final imagePicker = new PromotionPickerImage();
 
   @override
   void initState() {
@@ -225,13 +229,33 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     sendButtonController.add(ButtonSubmitEvent(false));
   }
 
+  Widget imagePick() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 5),
+        Text(LocalizationsUtil.of(context).translate('Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'), 
+          style: TextStyle(
+            fontFamily: ThemeConstant.form_font_family_display,
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.23,
+            color: ThemeConstant.grey_color,
+          )
+        ),
+        SizedBox(height: 15),
+        imagePicker,
+      ],
+    );
+   
+  }
+
   @override
   Widget build(BuildContext context) {
     
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
-
 
     return BaseScaffoldNormal(
       title: 'Tạo ưu đãi',
@@ -245,7 +269,7 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
             ),
 
             SliverToBoxAdapter(
-              child: BoxesContainer(title: 'Hình ảnh', child: Text('hello world'), padding: EdgeInsets.all(this._padding),)
+              child: BoxesContainer(title: 'Hình ảnh', child: this.imagePick(), padding: EdgeInsets.all(this._padding),)
             ),
 
             SliverToBoxAdapter(

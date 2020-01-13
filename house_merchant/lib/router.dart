@@ -17,6 +17,8 @@ class Router {
   static const NOTIFICATION_PAGE = "app://NotificationPage";
   static const PROMOTION_USER_LIST_PAGE = "app://PromotionUserListPage";
 
+  static const SHOP_IMAGES_PAGE = "app://ShopImages";
+
   Widget _getPage(String url, dynamic params) {
     switch (url) {
       case PROMOTION_CREATE:

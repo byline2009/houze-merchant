@@ -6,6 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/constant/common_constant.dart';
+import 'package:house_merchant/middle/bloc/authentication/authentication_bloc.dart';
+import 'package:house_merchant/middle/bloc/authentication/authentication_event.dart';
 import 'package:house_merchant/middle/model/token_model.dart';
 import 'package:house_merchant/utils/storage.dart';
 import 'package:synchronized/synchronized.dart' as lock;
@@ -141,7 +143,7 @@ class OauthAPI {
                     fontSize: 14.0
                   );
 
-                  //BlocProvider.of<AuthBloc>(SharedUtil.scaffoldKey.currentContext)..dispatch(LoggedOut());
+                  BlocProvider.of<AuthenticationBloc>(Storage.scaffoldKey.currentContext)..add(LoggedOut());
 
                   return e;
 
