@@ -88,10 +88,7 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
               return MainScreen();
             }
 
-            if (currentState is AuthenticationUnauthenticated) {
-              // Default Screen when not login yet.
-              return LoginScreen();
-            }
+            return LoginScreen();
 
         })
         

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:house_merchant/screen/main/notification_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_create_screen.dart';
-import 'package:house_merchant/screen/shop/shop_update_images.dart';
+import 'package:house_merchant/screen/promotion/promotion_detail_screen.dart';
+import 'package:house_merchant/screen/promotion/promotion_user_list_screen.dart';
 
 class Router {
   static const HOME_PAGE = 'app://';
@@ -11,8 +12,10 @@ class Router {
   static const ROUTER_PAGE = "app://RouterPage";
 
   static const PROMOTION_CREATE = "app://PromotionCreatePage";
+  static const PROMOTION_DETAIL_PAGE = "app://PromotionDetailPage";
 
   static const NOTIFICATION_PAGE = "app://NotificationPage";
+  static const PROMOTION_USER_LIST_PAGE = "app://PromotionUserListPage";
 
   static const SHOP_IMAGES_PAGE = "app://ShopImages";
 
@@ -24,8 +27,11 @@ class Router {
       case NOTIFICATION_PAGE:
         return NotificationScreen();
 
-      case SHOP_IMAGES_PAGE:
-        return ShopUpdateImagesScreen();
+      case PROMOTION_DETAIL_PAGE:
+        return PromotionDetailScreen();
+
+      case PROMOTION_USER_LIST_PAGE:
+        return PromotionUserListScreen();
     }
 
     return null;
