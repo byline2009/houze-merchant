@@ -14,6 +14,7 @@ import 'package:house_merchant/screen/main/more_screen.dart';
 import 'package:house_merchant/screen/main/order_screen.dart';
 import 'package:house_merchant/screen/main/promotion_screen.dart';
 import 'package:house_merchant/screen/main/store_screen.dart';
+import 'package:house_merchant/screen/promotion/promotion_user_list_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/storage.dart';
@@ -25,7 +26,6 @@ class NaviagationBottom {
 }
 
 class MainScreen extends StatefulWidget {
-
   @override
   MainScreenState createState() => new MainScreenState();
 }
@@ -157,119 +157,114 @@ class MainScreenState extends State<MainScreen> {
         ),
       ],
       child: WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
-        child: Scaffold(
-          key: Storage.scaffoldKey,
-          body: OfflineBuilder(
-            connectivityBuilder: (
-              BuildContext context,
-              ConnectivityResult connectivity,
-              Widget child,
-            ) {
-
-              return Stack(children: <Widget>[
-
-                MultiBlocListener(
-                  listeners: [
-                    BlocListener<OverlayBloc, OverlayBlocState>(
-                      bloc: overlayBloc,
-                      listener: (context, overlayState) {
-                      },
-                    )
-                  ],
-                  child: BlocBuilder<OverlayBloc, OverlayBlocState>(
-                    bloc: overlayBloc,
-                    builder: (BuildContext context, OverlayBlocState overlayState) {
-
-                      if (overlayState is ShopInitial) {
-                        overlayBloc.add(ShopPicked());
-                      }
-
-                      listPage = new List<Widget>();
-
-                      listPage.add(PageView(
-                        controller: pageController,
-                        physics: NeverScrollableScrollPhysics(),
-                        onPageChanged: (index) {
-                          setState(() {
-                            _currentIndex = index;
-                          });
-                        },
-                        children: this.navigationButtons.map((f) {
-                          return f.screen;
-                        }).toList(),
-                      ));
-
-                      final bool connected = connectivity != ConnectivityResult.none;
-
-                      listPage.add(SafeArea(
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned(
-                                left: 0.0,
-                                right: 0.0,
-                                bottom: 0,
-                                child: Container(
-                                  color: connected ? Colors.green : Color(0xFFEE4400),
-                                  padding: EdgeInsets.all(10),
-                                  child: Center(
-                                    child: Text(
-                                        "${connected ? 'Đã kết nối mạng' : 'Không có kết nối mạng'}",
-                                        style:
-                                            TextStyle(fontSize: 14, color: Colors.white)),
-                                  ),
-                                )),
+          onWillPop: () async {
+            return false;
+          },
+          child: Scaffold(
+              key: Storage.scaffoldKey,
+              body: OfflineBuilder(
+                  connectivityBuilder: (
+                    BuildContext context,
+                    ConnectivityResult connectivity,
+                    Widget child,
+                  ) {
+                    return Stack(children: <Widget>[
+                      MultiBlocListener(
+                          listeners: [
+                            BlocListener<OverlayBloc, OverlayBlocState>(
+                              bloc: overlayBloc,
+                              listener: (context, overlayState) {},
+                            )
                           ],
-                        ),
-                      ));
+                          child: BlocBuilder<OverlayBloc, OverlayBlocState>(
+                              bloc: overlayBloc,
+                              builder: (BuildContext context,
+                                  OverlayBlocState overlayState) {
+                                if (overlayState is ShopInitial) {
+                                  overlayBloc.add(ShopPicked());
+                                }
 
-                      if (connected) {
-                        listPage.removeAt(1);
-                      }
+                                listPage = new List<Widget>();
 
-                      return new Scaffold(
-                        backgroundColor: Colors.white,
-                        body: Stack(
-                          children: listPage,
-                        ),
-                        bottomNavigationBar: BottomNavigationBar(
-                          currentIndex: _currentIndex,
-                          onTap: (int index) {
-                            setState(() {
-                              HapticFeedback.heavyImpact();
-                              pageController.jumpToPage(index);
-                            });
-                          },
-                          selectedItemColor: ThemeConstant.primary_color,
-                          type: BottomNavigationBarType.fixed,
-                          items: this.navigationButtons.map((f) {
-                            return f.barItem;
-                          }).toList()));
-                      
-                    })
-                ),
-                Progress.instance,
-              ]);
+                                listPage.add(PageView(
+                                  controller: pageController,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  onPageChanged: (index) {
+                                    setState(() {
+                                      _currentIndex = index;
+                                    });
+                                  },
+                                  children: this.navigationButtons.map((f) {
+                                    return f.screen;
+                                  }).toList(),
+                                ));
 
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Text(
-                  'There are no bottons to push :)',
-                ),
-                new Text(
-                  'Just turn off your internet.',
-                ),
-              ],
-            ))
+                                final bool connected =
+                                    connectivity != ConnectivityResult.none;
 
-        )
-      ),
+                                listPage.add(SafeArea(
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Positioned(
+                                          left: 0.0,
+                                          right: 0.0,
+                                          bottom: 0,
+                                          child: Container(
+                                            color: connected
+                                                ? Colors.green
+                                                : Color(0xFFEE4400),
+                                            padding: EdgeInsets.all(10),
+                                            child: Center(
+                                              child: Text(
+                                                  "${connected ? 'Đã kết nối mạng' : 'Không có kết nối mạng'}",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white)),
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                ));
+
+                                if (connected) {
+                                  listPage.removeAt(1);
+                                }
+
+                                return new Scaffold(
+                                    backgroundColor: Colors.white,
+                                    body: Stack(
+                                      children: listPage,
+                                    ),
+                                    bottomNavigationBar: BottomNavigationBar(
+                                        currentIndex: _currentIndex,
+                                        onTap: (int index) {
+                                          setState(() {
+                                            HapticFeedback.heavyImpact();
+                                            pageController.jumpToPage(index);
+                                          });
+                                        },
+                                        selectedItemColor:
+                                            ThemeConstant.primary_color,
+                                        type: BottomNavigationBarType.fixed,
+                                        items: this.navigationButtons.map((f) {
+                                          return f.barItem;
+                                        }).toList()));
+                              })),
+                      Progress.instance,
+                    ]);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text(
+                        'There are no bottons to push :)',
+                      ),
+                      new Text(
+                        'Just turn off your internet.',
+                      ),
+                    ],
+                  )))),
     );
-
   }
 
   @override

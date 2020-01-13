@@ -7,6 +7,7 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
+import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
@@ -166,7 +167,7 @@ class PromotionBodyState extends State<PromotionBody> {
                   style: TextStyle(
                       fontSize: ThemeConstant.font_size_16,
                       letterSpacing: ThemeConstant.letter_spacing_026,
-                      color: ThemeConstant.alto_color),
+                      color: ThemeConstant.grey_color),
                 ),
               ],
             ),
@@ -202,7 +203,7 @@ class PromotionBodyState extends State<PromotionBody> {
           )),
           InkWell(
             onTap: () {
-              print('Xem danh sach');
+              Router.pushNoParams(context, Router.PROMOTION_USER_LIST_PAGE);
             },
             child: Container(
                 width: 130,
