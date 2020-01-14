@@ -13,14 +13,14 @@ import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:house_merchant/screen/promotion/promotion_picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
-class StoreEditScreen extends StatefulWidget {
-  StoreEditScreen({Key key}) : super(key: key);
+class StoreEditImageScreen extends StatefulWidget {
+  StoreEditImageScreen({Key key}) : super(key: key);
 
   @override
-  StoreEditScreenState createState() => new StoreEditScreenState();
+  StoreEditImageScreenState createState() => new StoreEditImageScreenState();
 }
 
-class StoreEditScreenState extends State<StoreEditScreen> {
+class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   Size _screenSize;
   BuildContext _context;
   double _padding;

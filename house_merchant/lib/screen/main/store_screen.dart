@@ -88,12 +88,14 @@ class StoreScreenState extends State<StoreScreen> {
                 fontWeight: ThemeConstant.appbar_text_weight)),
         SizedBox(height: 15),
         Container(
-          padding: EdgeInsets.only(top: 15, bottom: 19, left: 10, right: 10),
-          decoration: BoxDecoration(
-            color: ThemeConstant.background_grey_color,
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-          child: Text(shopModel.description.length > 0 ? shopModel.description : 'Chưa có mô tả' ))
+            padding: EdgeInsets.only(top: 15, bottom: 19, left: 10, right: 10),
+            decoration: BoxDecoration(
+              color: ThemeConstant.background_grey_color,
+              borderRadius: BorderRadius.all(Radius.circular(4.0)),
+            ),
+            child: Text(shopModel.description.length > 0
+                ? shopModel.description
+                : 'Chưa có mô tả'))
       ],
     );
   }
@@ -225,77 +227,82 @@ class StoreScreenState extends State<StoreScreen> {
     return BaseScaffold(
       title: 'Cửa hàng',
       child: BlocBuilder(
-        bloc: shopBloc,
-        builder: (BuildContext context, ShopState shopState) {
+          bloc: shopBloc,
+          builder: (BuildContext context, ShopState shopState) {
+            if (shopState is ShopInitial) {
+              shopBloc.add(ShopGetDetail(id: Sqflite.current_shop));
+            }
 
-          if (shopState is ShopInitial) {
-            shopBloc.add(ShopGetDetail(id: Sqflite.current_shop));
-          }
+            if (shopState is ShopGetDetailSuccessful) {
+              final shopModel = shopState.result;
 
-          if (shopState is ShopGetDetailSuccessful) {
+              return CustomScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                        child: BoxesContainer(
+                            child: Padding(
+                                padding: EdgeInsets.all(this._padding),
+                                child: Text(
+                                    LocalizationsUtil.of(context).translate(
+                                        'Lưu ý, các tuỳ chỉnh thông số ở dưới sẽ được hiển thị trên ứng dụng của cư dân'),
+                                    style: TextStyle(
+                                        color: ThemeConstant.grey_color,
+                                        fontFamily: ThemeConstant
+                                            .form_font_family_display,
+                                        fontSize: ThemeConstant.label_font_size,
+                                        fontWeight: ThemeConstant
+                                            .appbar_text_weight))))),
+                    SliverToBoxAdapter(
+                        child: BoxesContainer(
+                      title: 'Hình ảnh',
+                      child: introStore(),
+                      action: InkWell(
+                          onTap: () async {
+                            Router.push(context, Router.SHOP_IMAGES_PAGE, {
+                              "shop_model": shopModel,
+                              "callback": (ShopModel _shopModel) {
+                                print(_shopModel);
+                              }
+                            });
+                          },
+                          child: editButton()),
+                      padding: EdgeInsets.all(this._padding),
+                    )),
+                    SliverToBoxAdapter(
+                        child: BoxesContainer(
+                      title: 'Mô tả',
+                      child: descriptionStore(shopModel),
+                      action: InkWell(
+                          onTap: () async {
+                            Router.pushNoParams(
+                                context, Router.SHOP_DESCRIPTION_PAGE);
+                          },
+                          child: editButton()),
+                      padding: EdgeInsets.all(this._padding),
+                    )),
+                    SliverToBoxAdapter(
+                        child: BoxesContainer(
+                      title: 'Thời gian',
+                      child: timeStore(shopModel),
+                      action: InkWell(onTap: () async {}, child: editButton()),
+                      padding: EdgeInsets.all(this._padding),
+                    )),
+                  ]);
+            }
 
-            final shopModel = shopState.result;
-
-            return CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
-              SliverToBoxAdapter(
-                child: BoxesContainer(
-                    child: Padding(
-                        padding: EdgeInsets.all(this._padding),
-                        child: Text(
-                            LocalizationsUtil.of(context).translate(
-                                'Lưu ý, các tuỳ chỉnh thông số ở dưới sẽ được hiển thị trên ứng dụng của cư dân'),
-                            style: TextStyle(
-                                color: ThemeConstant.grey_color,
-                                fontFamily:
-                                    ThemeConstant.form_font_family_display,
-                                fontSize: ThemeConstant.label_font_size,
-                                fontWeight: ThemeConstant.appbar_text_weight))))),
-              SliverToBoxAdapter(
-                child: BoxesContainer(
-                title: 'Hình ảnh',
-                child: introStore(),
-                action: InkWell(onTap: () async {
-                  Router.push(context, Router.SHOP_IMAGES_PAGE, {
-                    "shop_model": shopModel,
-                    "callback": (ShopModel _shopModel) {
-                      print(_shopModel);
-                    }
-                  });
-                }, child: editButton()),
-                padding: EdgeInsets.all(this._padding),
-              )),
-              SliverToBoxAdapter(
-                child: BoxesContainer(
-                title: 'Mô tả',
-                child: descriptionStore(shopModel),
-                action: InkWell(onTap: () async {}, child: editButton()),
-                padding: EdgeInsets.all(this._padding),
-              )),
-              SliverToBoxAdapter(
-                child: BoxesContainer(
-                title: 'Thời gian',
-                child: timeStore(shopModel),
-                action: InkWell(onTap: () async {}, child: editButton()),
-                padding: EdgeInsets.all(this._padding),
-              )),
-            ]);
-
-          }
-
-          return CardListSkeleton(
-            shrinkWrap: true,
-            length: 4,
-            config: SkeletonConfig(
-              theme: SkeletonTheme.Light,
-              isShowAvatar: false,
-              isCircleAvatar: false,
-              bottomLinesCount: 4,
-              radius: 0.0,
-            ),
-          );
-
-        }),
-      
+            return CardListSkeleton(
+              shrinkWrap: true,
+              length: 4,
+              config: SkeletonConfig(
+                theme: SkeletonTheme.Light,
+                isShowAvatar: false,
+                isCircleAvatar: false,
+                bottomLinesCount: 4,
+                radius: 0.0,
+              ),
+            );
+          }),
     );
   }
 }
