@@ -11,19 +11,19 @@ import 'package:christian_picker_image/christian_picker_image.dart';
 typedef void callBackUploadHandler(File file);
 
 class PromotionPickerImage extends StatefulWidget {
-
   callBackUploadHandler callbackUpload;
   callBackUploadHandler callbackRemove;
 
-  PromotionPickerImage({Key key}) : super(key: key);
+  PromotionPickerImage({Key key, double widthItem, double heightItem})
+      : super(key: key);
 
   @override
   PromotionPickerImageState createState() => new PromotionPickerImageState();
 }
 
 class PromotionPickerImageState extends State<PromotionPickerImage> {
-
   List<File> filesPick;
+  Size _screenSize;
 
   @override
   void initState() {
@@ -32,54 +32,68 @@ class PromotionPickerImageState extends State<PromotionPickerImage> {
   }
 
   void uploadProcessing(BuildContext context) async {
-
     List<File> images = new List<File>();
     try {
-      images = await ChristianPickerImage.pickImages(maxImages: 1-this.filesPick.length);
-    } catch(e) {
-    } finally {
+      images = await ChristianPickerImage.pickImages(
+          maxImages: 1 - this.filesPick.length);
+    } catch (e) {} finally {
       Navigator.of(context).pop();
       print('Upload okkk');
     }
-
   }
 
   Future pickImage(BuildContext context) async {
     var isShow = false;
     showDialog<Null>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        if (!isShow) {
-          isShow = true;
-          uploadProcessing(context);
-        }
-        return Center();
-    });
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          if (!isShow) {
+            isShow = true;
+            uploadProcessing(context);
+          }
+          return Center();
+        });
   }
 
   @override
   Widget build(BuildContext context) {
+    this._screenSize = MediaQuery.of(context).size;
+
+    double _width = _screenSize.width * (160 / 375);
+    double _height = _screenSize.height * (140 / 812);
     return GestureDetector(
-      onTap: () {
-        this.pickImage(context);
-      }, child: DottedBorder(
-        borderType: BorderType.RRect,
-        dashPattern: [2, 2],
-        color: ThemeConstant.border_color,
-        radius: Radius.circular(5),
-        child: Container(
-          width: 120,
-          height: 110,
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SvgPicture.asset("assets/images/ic-add-picture.svg", width: 31, height: 32,),
-            ],
-          )
-        ),
-      ));
+        onTap: () {
+          this.pickImage(context);
+        },
+        child: DottedBorder(
+            borderType: BorderType.RRect,
+            dashPattern: [2, 2],
+            color: ThemeConstant.border_color,
+            radius: Radius.circular(4),
+            child: Container(
+              width: _width,
+              height: _height,
+              child: Center(
+                child: SvgPicture.asset(
+                  "assets/images/ic-add-picture.svg",
+                  width: 40,
+                  height: 40,
+                ),
+              ),
+            )
+            // child: Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: <Widget>[
+            //     SvgPicture.asset(
+            //       "assets/images/ic-add-picture.svg",
+            //       width: 40,
+            //       height: 40,
+            //     ),
+            //   ],
+            // )),
+            ));
   }
 
   @override
