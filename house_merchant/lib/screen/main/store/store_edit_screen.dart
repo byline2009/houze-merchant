@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:christian_picker_image/christian_picker_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/middle/model/promotion_model.dart';
@@ -85,28 +86,42 @@ class StoreEditScreenState extends State<StoreEditScreen> {
     double _width = _screenSize.width * (160 / 375);
     double _height = _screenSize.height * (140 / 812);
 
-    return GestureDetector(
-      onTap: () {
-        print(index);
-      },
-      child: Container(
-          decoration: ThemeConstant.borderOutline(Colors.transparent),
-          width: _width,
-          height: _height,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Flexible(
-                child: ImageWidget(
-                  imgUrl: products[index - 1].imgUrl,
+    return Stack(children: <Widget>[
+      Align(
+          alignment: Alignment.bottomLeft,
+          child: Container(
+              width: _width + 10,
+              height: _height + 10,
+              color: Colors.transparent,
+              child: Container(
+                  decoration: ThemeConstant.borderOutline(Colors.transparent),
                   width: _width,
                   height: _height,
-                ),
-              ),
-            ],
-          )),
-    );
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          print(products[index - 1].promotionTitle);
+                        },
+                        child: ImageWidget(
+                          imgUrl: products[index - 1].imgUrl,
+                          width: _width,
+                          height: _height,
+                        ),
+                      ),
+                    ],
+                  )))),
+      Align(
+        alignment: Alignment.topRight,
+        child: Container(
+          child: SvgPicture.asset('assets/images/ic-close-bgred.svg'),
+          height: 30.0,
+          width: 30.0,
+        ),
+      ),
+    ]);
   }
 
   Widget _gridList() {
