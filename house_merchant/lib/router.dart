@@ -40,7 +40,9 @@ class Router {
         return StoreEditImageScreen();
 
       case SHOP_DESCRIPTION_PAGE:
-        return StoreEditDescriptionScreen();
+        return StoreEditDescriptionScreen(
+          params: params,
+        );
     }
 
     return null;

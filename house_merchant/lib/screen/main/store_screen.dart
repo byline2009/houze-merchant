@@ -275,8 +275,12 @@ class StoreScreenState extends State<StoreScreen> {
                       child: descriptionStore(shopModel),
                       action: InkWell(
                           onTap: () async {
-                            Router.pushNoParams(
-                                context, Router.SHOP_DESCRIPTION_PAGE);
+                            Router.push(context, Router.SHOP_DESCRIPTION_PAGE, {
+                              "shop_model": shopModel,
+                              "callback": (ShopModel _shopModel) {
+                                print("[callback Mo ta:] $_shopModel");
+                              }
+                            });
                           },
                           child: editButton()),
                       padding: EdgeInsets.all(this._padding),

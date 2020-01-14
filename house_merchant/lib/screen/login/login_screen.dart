@@ -61,34 +61,8 @@ class LoginScreenState extends State<LoginScreen> {
                       cursorColor: ThemeConstant.alto_color,
                       keyboardType: TextInputType.text,
                       controller: fusername,
-                      decoration: InputDecoration(
-                          hintText: 'Vui lòng nhập tên đăng nhập',
-                          contentPadding: EdgeInsets.all(12.0),
-                          border: InputBorder.none,
-                          errorBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0)),
-                            borderSide: BorderSide(
-                                color: ThemeConstant.form_border_error),
-                          ),
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0)),
-                            borderSide: BorderSide(
-                                color: ThemeConstant.form_border_small),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0)),
-                            borderSide: BorderSide(
-                                color: ThemeConstant.form_border_small),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0)),
-                            borderSide:
-                                BorderSide(color: ThemeConstant.primary_color),
-                          )),
+                      decoration: ThemeConstant.tfInputDecoration(
+                          'Vui lòng nhập tên đăng nhập'),
                       onChanged: (String username) {
                         field.didChange(username);
                         if (fusername.text.length >= fusernameLength &&
@@ -128,26 +102,8 @@ class LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.text,
                     controller: fpassword,
                     obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'Vui lòng nhập mật khẩu',
-                      contentPadding: EdgeInsets.all(12.0),
-                      border: InputBorder.none,
-                      disabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                        borderSide:
-                            BorderSide(color: ThemeConstant.form_border_small),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                        borderSide:
-                            BorderSide(color: ThemeConstant.form_border_small),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                        borderSide:
-                            BorderSide(color: ThemeConstant.primary_color),
-                      ),
-                    ),
+                    decoration: ThemeConstant.tfInputDecoration(
+                        'Vui lòng nhập mật khẩu'),
                     onChanged: (String password) {
                       field.didChange(password);
                       if (fusername.text.length >= fusernameLength &&
