@@ -78,8 +78,7 @@ class MainScreenState extends State<MainScreen> {
   List<NaviagationBottom> listNaviagation() {
     return [
       new NaviagationBottom(
-          //OrderScreen(),
-          StoreEditScreen(),
+          OrderScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
                 SvgPicture.asset('assets/images/ic-order-highlight.svg'),

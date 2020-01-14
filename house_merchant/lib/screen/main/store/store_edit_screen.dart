@@ -165,7 +165,6 @@ class StoreEditScreenState extends State<StoreEditScreen> {
               titleInSection('Hình ảnh (3/4 tấm)',
                   'Hình ảnh đẹp sẽ để lại một ấn tượng tốt cho khách hàng'),
               SizedBox(height: 15),
-              // imagePicker,
               Expanded(
                 child: _gridList(),
               )
@@ -191,19 +190,18 @@ class StoreEditScreenState extends State<StoreEditScreen> {
               LocalizationsUtil.of(_context).translate('Lưu thay đổi'),
           callback: () async {}),
     );
+
     // TODO: implement build
     return BaseScaffoldNormal(
-      title: 'Chỉnh sửa cửa hàng',
-      child: Stack(
-        children: <Widget>[
+        title: 'Chỉnh sửa cửa hàng',
+        child: SafeArea(
+            child: Stack(children: <Widget>[
           Container(
             decoration:
                 BoxDecoration(color: ThemeConstant.background_grey_color),
           ),
           buildBody(),
           buttonBottom
-        ],
-      ),
-    );
+        ])));
   }
 }
