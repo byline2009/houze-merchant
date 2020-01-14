@@ -14,8 +14,7 @@ class PromotionPickerImage extends StatefulWidget {
   callBackUploadHandler callbackUpload;
   callBackUploadHandler callbackRemove;
 
-  PromotionPickerImage({Key key, double widthItem, double heightItem})
-      : super(key: key);
+  PromotionPickerImage({Key key}) : super(key: key);
 
   @override
   PromotionPickerImageState createState() => new PromotionPickerImageState();
