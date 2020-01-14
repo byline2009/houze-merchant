@@ -198,10 +198,31 @@ class ThemeConstant {
         style: BorderStyle.solid)),
   );
 
+  static InputDecoration tfInputDecoration(String hintText) {
+    return InputDecoration(
+      hintText: hintText,
+      contentPadding: EdgeInsets.all(12.0),
+      border: InputBorder.none,
+      disabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderSide: BorderSide(color: ThemeConstant.form_border_small),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderSide: BorderSide(color: ThemeConstant.form_border_small),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderSide: BorderSide(color: ThemeConstant.primary_color),
+      ),
+    );
+  }
+
   static Container dividerBottom = Container(
     height: 2.0,
     color: form_border_normal,
   );
+
   static const Color listview_selected_color = Color(0xfff2e8ff);
 
   static const Color form_border_error = Color(0xffc50000);

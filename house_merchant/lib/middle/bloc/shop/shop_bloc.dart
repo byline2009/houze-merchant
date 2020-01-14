@@ -4,16 +4,14 @@ import 'package:house_merchant/middle/bloc/shop/index.dart';
 import 'package:house_merchant/middle/repository/shop_repository.dart';
 
 class ShopBloc extends Bloc<ShopEvent, ShopState> {
-
   ShopRepository shopRepository = ShopRepository();
- 
+
   ShopBloc();
 
   ShopState get initialState => ShopInitial();
 
   @override
   Stream<ShopState> mapEventToState(ShopEvent event) async* {
-
     if (event is ShopGetDetail) {
       try {
         final result = await shopRepository.getShop(event.id);
@@ -23,6 +21,9 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
       }
     }
 
-
+    if (event is SaveButtonPressed) {
+      yield ShopLoading();
+      print('SaveButtonPressed');
+    }
   }
 }

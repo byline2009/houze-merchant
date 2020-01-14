@@ -62,15 +62,15 @@ class TextFieldWidget extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Container(
               padding: EdgeInsets.only(left: 0, right: 0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                  color: Colors.white,
-                  border: Border.all(
-                      color: this.controller.Controller.text != ""
-                          ? ThemeConstant.form_border_changed
-                          : ThemeConstant.form_border_normal,
-                      width: ThemeConstant.form_border_width,
-                      style: BorderStyle.solid)),
+              // decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.all(Radius.circular(4.0)),
+              //     color: Colors.white,
+              //     border: Border.all(
+              //         color: this.controller.Controller.text != ""
+              //             ? ThemeConstant.form_border_changed
+              //             : ThemeConstant.form_border_normal,
+              //         width: ThemeConstant.form_border_width,
+              //         style: BorderStyle.solid)),
               child: new TextField(
                 cursorColor: ThemeConstant.alto_color,
                 controller: this.controller.Controller,
@@ -84,22 +84,8 @@ class TextFieldWidget extends StatelessWidget {
                   fontFamily: ThemeConstant.form_font_family,
                   fontSize: ThemeConstant.form_font_normal,
                 ),
-                decoration: InputDecoration(
-                    hintText: this.defaultHintText,
-                    hintStyle: TextStyle(
-                        color: ThemeConstant.form_hint_text,
-                        fontFamily: ThemeConstant.form_font_family,
-                        fontSize: ThemeConstant.form_font_normal), //Text olor
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                      borderSide:
-                          BorderSide(color: ThemeConstant.form_border_small),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                      borderSide:
-                          BorderSide(color: ThemeConstant.primary_color),
-                    )),
+                decoration:
+                    ThemeConstant.tfInputDecoration(this.defaultHintText),
 //             onChanged: (String value) {
 // //              if (_textController.text.length != "") {
 // //                _textStreamController.sink.add(_textController.text);

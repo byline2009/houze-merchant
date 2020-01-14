@@ -6,7 +6,6 @@ abstract class ShopEvent extends Equatable {
 }
 
 class ShopGetDetail extends ShopEvent {
-
   final String id;
 
   ShopGetDetail({
@@ -14,6 +13,16 @@ class ShopGetDetail extends ShopEvent {
   }) : super();
 
   @override
-  String toString() =>
-      'ShopGetDetail { id: $id }';
+  String toString() => 'ShopGetDetail { id: $id }';
+}
+
+class SaveButtonPressed extends ShopEvent {
+  final String description;
+
+  SaveButtonPressed({
+    this.description,
+  }) : super([description]);
+
+  @override
+  String toString() => 'SaveButtonPressed { description: $description }';
 }
