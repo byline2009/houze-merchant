@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:house_merchant/screen/main/notification_screen.dart';
-import 'package:house_merchant/screen/main/store/store_edit_screen.dart';
+import 'package:house_merchant/screen/main/store/store_edit_description_screen.dart';
+import 'package:house_merchant/screen/main/store/store_edit_image_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_create_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_detail_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_user_list_screen.dart';
@@ -19,6 +20,7 @@ class Router {
   static const PROMOTION_USER_LIST_PAGE = "app://PromotionUserListPage";
 
   static const SHOP_IMAGES_PAGE = "app://ShopImages";
+  static const SHOP_DESCRIPTION_PAGE = "app://ShopDescription";
 
   Widget _getPage(String url, dynamic params) {
     switch (url) {
@@ -35,7 +37,10 @@ class Router {
         return PromotionUserListScreen();
 
       case SHOP_IMAGES_PAGE:
-        return StoreEditScreen();
+        return StoreEditImageScreen();
+
+      case SHOP_DESCRIPTION_PAGE:
+        return StoreEditDescriptionScreen();
     }
 
     return null;
