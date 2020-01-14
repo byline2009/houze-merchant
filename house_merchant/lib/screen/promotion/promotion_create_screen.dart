@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,14 +11,16 @@ import 'package:house_merchant/custom/datepick_range_widget.dart';
 import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
-import 'package:house_merchant/screen/promotion/promotion_picker_image.dart';
+import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
+import 'package:path/path.dart' as path;
 
 class PromotionCreateScreen extends StatefulWidget {
 
@@ -47,11 +47,27 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
   List<DateTime> frangeTimeResult;
   final fdesc = TextFieldWidgetController();
   StreamController<ButtonSubmitEvent> sendButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
-  final imagePicker = new PromotionPickerImage();
+  final imagePicker = new PickerImage(width: 120, height: 120, type: PickerImageType.list);
+  //Model
+  var couponModel = CouponModel();
+  Map<String, ImageUploadModel> mappingImages = new Map<String, ImageUploadModel>();
 
   @override
   void initState() {
     super.initState();
+
+    imagePicker.callbackUpload = (File file) async {
+      final rs = await couponRepository.uploadImage(file);
+      if (rs != null) {
+        var uploadModel = new ImageUploadModel(id: rs.id);
+        couponModel.images.add(uploadModel);
+        mappingImages[path.basename(file.path)] = uploadModel;
+      }
+    };
+
+    imagePicker.callbackRemove = (File file) async {
+      couponModel.images.remove(mappingImages[path.basename(file.path)]);
+    };
   }
 
   bool checkValidation() {
@@ -177,20 +193,23 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
           TextFieldWidget(controller: fdesc, defaultHintText: 'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...', keyboardType: TextInputType.multiline, callback: (String value) {
             this.checkValidation();
           }),
-          
+
           SizedBox(height: 25),
           ButtonWidget(controller: sendButtonController, defaultHintText: LocalizationsUtil.of(context).translate('Tạo ưu đãi'), callback: () async {
 
             try {
               progressToolkit.state.show();
 
-              final result = await couponRepository.createCoupon(CouponModel(
+              couponModel = CouponModel(
                 title: ftitle.Controller.text,
                 quantity: int.parse(famount.Controller.text),
                 startDate: frangeTimeResult[0].toUtc().toString(),
                 endDate: frangeTimeResult[1].toUtc().toString(),
-                description: fdesc.Controller.text
-              ));
+                description: fdesc.Controller.text,
+                images: couponModel.images,
+              );
+
+              final result = await couponRepository.createCoupon(couponModel);
 
               T7GDialog.showContentDialog(context, [
                 this.showSucessful()
