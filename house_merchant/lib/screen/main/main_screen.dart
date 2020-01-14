@@ -13,6 +13,7 @@ import 'package:house_merchant/screen/main/menu_screen.dart';
 import 'package:house_merchant/screen/main/more_screen.dart';
 import 'package:house_merchant/screen/main/order_screen.dart';
 import 'package:house_merchant/screen/main/promotion_screen.dart';
+import 'package:house_merchant/screen/main/store/store_edit_screen.dart';
 import 'package:house_merchant/screen/main/store_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_user_list_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
@@ -77,7 +78,8 @@ class MainScreenState extends State<MainScreen> {
   List<NaviagationBottom> listNaviagation() {
     return [
       new NaviagationBottom(
-          OrderScreen(),
+          //OrderScreen(),
+          StoreEditScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
                 SvgPicture.asset('assets/images/ic-order-highlight.svg'),
