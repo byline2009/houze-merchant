@@ -68,13 +68,6 @@ class TextFieldWidget extends StatelessWidget {
           return Container(
               padding: EdgeInsets.only(left: 10, right: 10),
               decoration: BoxDecoration(
-                  boxShadow: [
-                    new BoxShadow(
-                      color: Color(0xffd2d4d6),
-                      offset: new Offset(0, 2.0),
-                      blurRadius: 0.5,
-                    )
-                  ],
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   color: Colors.white,
                   border: Border.all(
