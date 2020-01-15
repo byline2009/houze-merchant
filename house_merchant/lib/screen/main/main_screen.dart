@@ -14,7 +14,6 @@ import 'package:house_merchant/screen/main/more_screen.dart';
 import 'package:house_merchant/screen/main/order_screen.dart';
 import 'package:house_merchant/screen/main/promotion_screen.dart';
 import 'package:house_merchant/screen/main/store_screen.dart';
-import 'package:house_merchant/screen/promotion/promotion_user_list_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/storage.dart';
