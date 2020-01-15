@@ -232,6 +232,22 @@ class OauthAPI {
     return response;
   }
 
+  Future<dynamic> patch(String path, {
+    data,
+    Map<String, dynamic> queryParameters,
+    Options options,
+    CancelToken cancelToken,
+    ProgressCallback onReceiveProgress,
+  }) async {
+
+    var response = dioInstance.patch(path, data: data, queryParameters: queryParameters,
+      options: options,
+      onReceiveProgress: onReceiveProgress,
+      cancelToken: cancelToken,);
+
+    return response;
+  }
+
   static getApiUrl(String path) {
     return APIConstant.baseMerchantUrl + path;
   }

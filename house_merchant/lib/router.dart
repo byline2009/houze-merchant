@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:house_merchant/screen/main/notification_screen.dart';
-import 'package:house_merchant/screen/main/store/store_edit_description_screen.dart';
-import 'package:house_merchant/screen/main/store/store_edit_image_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_create_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_detail_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_user_list_screen.dart';
+import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
+import 'package:house_merchant/screen/store/store_edit_image_screen.dart';
 
 class Router {
   static const HOME_PAGE = 'app://';
@@ -37,7 +37,7 @@ class Router {
         return PromotionUserListScreen();
 
       case SHOP_IMAGES_PAGE:
-        return StoreEditImageScreen();
+        return StoreEditImageScreen(params: params,);
 
       case SHOP_DESCRIPTION_PAGE:
         return StoreEditDescriptionScreen(

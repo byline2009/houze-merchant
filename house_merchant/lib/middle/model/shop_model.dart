@@ -1,3 +1,5 @@
+import 'package:house_merchant/middle/model/image_meta_model.dart';
+
 class ShopModel {
   String id;
   String name;
@@ -5,6 +7,7 @@ class ShopModel {
   int status;
   double lat;
   double long;
+  List<dynamic> images = List<dynamic>();
 
   ShopModel(
     {this.id,
@@ -12,7 +15,8 @@ class ShopModel {
     this.description,
     this.status,
     this.lat,
-    this.long});
+    this.long,
+    this.images});
 
   ShopModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -21,6 +25,7 @@ class ShopModel {
     status = json['status'];
     lat = json['lat'];
     long = json['long'];
+    images = json['images'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +36,7 @@ class ShopModel {
     data['status'] = this.status;
     data['lat'] = this.lat;
     data['long'] = this.long;
+    data['images'] = this.images;
     return data;
   }
 }

@@ -261,9 +261,6 @@ class StoreScreenState extends State<StoreScreen> {
                           onTap: () async {
                             Router.push(context, Router.SHOP_IMAGES_PAGE, {
                               "shop_model": shopModel,
-                              "callback": (ShopModel _shopModel) {
-                                print(_shopModel);
-                              }
                             });
                           },
                           child: editButton()),

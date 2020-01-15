@@ -6,7 +6,10 @@ class APIConstant {
 
   static String 
     baseMerchantUrl, baseMerchantUrlRefreshToken, baseMerchantUrlLogin,
+
     baseMerchantUrlShop,
+    baseMerchantUrlShopImageCreate,
+
     baseMerchantUrlCoupon,
     baseMerchantUrlCouponUpload;
 
@@ -21,6 +24,7 @@ class APIConstant {
     APIConstant.baseMerchantUrlCoupon = baseMerchantUrl + "/coupon/";
     APIConstant.baseMerchantUrlCouponUpload = baseMerchantUrl + "/coupon/upload-image/";
     APIConstant.baseMerchantUrlShop = baseMerchantUrl + "/shop/";
+    APIConstant.baseMerchantUrlShopImageCreate = baseMerchantUrl + "/shop/shop-image-create/";
     
   }
 }

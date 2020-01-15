@@ -25,7 +25,7 @@ class PickerImage extends StatefulWidget {
   int maxImage;
   double width, height;
   PickerImageType type;
-  final state = new PickerImageState();
+  PickerImageState state = new PickerImageState();
 
   PickerImage({Key key, this.maxImage=1, this.width, this.height, this.type=PickerImageType.grid}) : super(key: key);
 
@@ -39,15 +39,13 @@ class PickerImage extends StatefulWidget {
 
 class PickerImageState extends State<PickerImage> {
 
-  List<File> filesPick;
+  List<File> filesPick = new List<File>();
   File _fileSelected;
   List<Future<dynamic>> _uploadParrallel = new List<Future<dynamic>>();
 
   @override
   void initState() {
     super.initState();
-    this.filesPick = new List<File>();
-    this._fileSelected = null;
   }
 
   void clear() {
@@ -81,7 +79,7 @@ class PickerImageState extends State<PickerImage> {
         images.forEach((image) async {
           if (image != null) {
             
-            this.filesPick.add(image);
+            this.filesPick.insert(0, image);
 
             var dir = await getTemporaryDirectory();
             var targetPath = dir.absolute.path + "/" + basename(image.path);
@@ -120,27 +118,23 @@ class PickerImageState extends State<PickerImage> {
     });
   }
 
-  Widget listImage(BuildContext context) {
-
-    var listImages = [];
-
-    if (this.filesPick.length >= widget.maxImage) {
-      listImages = this.filesPick.map((f) => Container(
+  Widget photoImage(File f) {
+    return Container(
         child: Stack(
           children: <Widget>[
 
             Container(padding: EdgeInsets.only(top: 10, right: 5), child: ClipRRect(
-              borderRadius: new BorderRadius.circular(4.0),
-              child: Stack(
-                overflow: Overflow.clip,
-                children: <Widget>[
-                  Image.file(
-                    f, fit: BoxFit.cover,
-                    width: widget.width,
-                    height: widget.height,
-                  ),
-                ],
-              )
+                borderRadius: new BorderRadius.circular(4.0),
+                child: Stack(
+                  overflow: Overflow.clip,
+                  children: <Widget>[
+                    Image.file(
+                      f, fit: BoxFit.cover,
+                      width: widget.width,
+                      height: widget.height,
+                    ),
+                  ],
+                )
             )),
 
             Positioned(top: -10, right: -10, child: IconButton(icon: SvgPicture.asset(
@@ -161,12 +155,19 @@ class PickerImageState extends State<PickerImage> {
 
           ],
         )
-        
-      )).toList();
 
+    );
+  }
+
+  Widget listImage(BuildContext context) {
+
+    var listImages = [];
+
+    if (this.filesPick.length >= widget.maxImage) {
+      listImages = this.filesPick.map((f) => this.photoImage(f)).toList();
     } else {
       listImages = [
-        Container(child: GestureDetector(
+        Container(padding: EdgeInsets.only(top: 10, bottom: 35, right: 5), child: GestureDetector(
           onTap: () {
             this.pickImage(context);
           }, child: DottedBorder(
@@ -175,8 +176,8 @@ class PickerImageState extends State<PickerImage> {
             color: ThemeConstant.border_color,
             radius: Radius.circular(5),
             child: Container(
-              width: widget.width ?? double.infinity,
-              height: widget.height ?? double.infinity,
+              width: double.infinity,
+              height: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -186,10 +187,23 @@ class PickerImageState extends State<PickerImage> {
                 ],
               )
             ),
-        )), width: widget.width, height: widget.height,)
-      ] + this.filesPick.map((f) => Container(
-        child: Text('hello world')
-      )).toList();
+        )), width: widget.width, height: widget.height,)]
+        + List<Container>.from(this.filesPick.length > 0 ? this.filesPick.map((f) => this.photoImage(f)).toList() : []);
+    }
+
+    if (widget.type == PickerImageType.grid) {
+      return Container(child: GridView.builder(
+        itemCount: listImages.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: GestureDetector(
+              child: listImages[index],
+              onTap: () {},
+            ));
+        },
+      ));
     }
     
     return Container(child: ListView.builder(
@@ -203,8 +217,7 @@ class PickerImageState extends State<PickerImage> {
 
   @override
   Widget build(BuildContext context) {
-
-    return widget.type == PickerImageType.list ? listImage(context) : Center(child: Text('ok ne'));
+    return listImage(context);
   }
 
   @override
