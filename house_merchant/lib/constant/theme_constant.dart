@@ -6,11 +6,20 @@ class ThemeConstant {
   static const Color appbar_popup_color = Color(0xfff5f7f8);
   static const FontWeight appbar_text_weight = FontWeight.w500;
   static const FontWeight appbar_text_weight_bold = FontWeight.bold;
+  static const FontWeight fontWeightBold = FontWeight.bold;
+
   static const Color appbar_icon_color = Colors.black;
   static const double appbar_font_title = 27.0;
   static const double appbar_letter_spacing = 0.43;
   static const double appbar_scaffold_font_title = 16.0;
   static const double sub_title_letter_spacing = 0.29;
+
+//font
+  static const double font_size_16 = 16.0;
+  static const double font_size_24 = 24.0;
+  static const double letter_spacing_038 = 0.38;
+  static const double letter_spacing_026 = 0.26;
+  static const double letter_spacing_024 = 0.24;
 
   //background
   static const Color background_grey_color = Color(0xfff5f5f5);
@@ -60,12 +69,48 @@ class ThemeConstant {
   static const String form_font_family = 'SFProText';
   static const String form_font_family_display = 'SFProDisplay';
 
+  static TextStyle subtitleStyle(Color color) {
+    return TextStyle(
+        fontSize: form_font_smaller,
+        fontWeight: appbar_text_weight,
+        letterSpacing: 0.26,
+        color: color);
+  }
+
+  static TextStyle titleTileStyle = TextStyle(
+      fontSize: form_font_smaller,
+      fontWeight: appbar_text_weight,
+      letterSpacing: 0.24,
+      color: Colors.black);
+
+  static TextStyle subtitleTileStyle = TextStyle(
+      fontSize: form_font_small,
+      fontWeight: appbar_text_weight,
+      letterSpacing: 0.24,
+      color: grey_color);
+
   //Text Style
-  static TextStyle headerTitleStyle(Color color) {
+  static TextStyle headerTitleBoldStyle(Color color) {
     return TextStyle(
         fontSize: sub_header_size,
         fontWeight: appbar_text_weight_bold,
         letterSpacing: sub_title_letter_spacing,
+        color: color);
+  }
+
+  static TextStyle titleStyle(Color color) {
+    return TextStyle(
+        fontSize: appbar_scaffold_font_title,
+        fontWeight: appbar_text_weight,
+        letterSpacing: 0.26,
+        color: color);
+  }
+
+  static TextStyle titleLargeStyle(Color color) {
+    return TextStyle(
+        fontSize: font_size_24,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 0.38,
         color: color);
   }
 
@@ -127,6 +172,16 @@ class ThemeConstant {
       ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)));
 
+  static BoxDecoration borderOutline(Color color) {
+    return BoxDecoration(
+        border: Border.all(
+          color: color,
+          width: 1,
+          style: BorderStyle.solid,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(4.0)));
+  }
+
   static BoxDecoration borderCircleNoti = BoxDecoration(
       color: ThemeConstant.form_border_error,
       border: Border.all(
@@ -143,6 +198,10 @@ class ThemeConstant {
         style: BorderStyle.solid)),
   );
 
+  static Container dividerBottom = Container(
+    height: 2.0,
+    color: form_border_normal,
+  );
   static const Color listview_selected_color = Color(0xfff2e8ff);
 
   static const Color form_border_error = Color(0xffc50000);
@@ -166,4 +225,12 @@ class ThemeConstant {
   static const Color violet_color = Color(0xff5b00e4);
   static const Color alto_color = Color(0xffd0d0d0);
   static const Color start_yelow_color = Color(0xffffcc44);
+
+  static const Color expired_color = Color(0xffb5b5b5);
+  static const Color ready_color = Color(0xff00aa7d);
+  static const Color pending_color = Color(0xffe3a500);
+
+  static const String expired_status = 'Hết hạn';
+  static const String ready_status = 'Đang chạy';
+  static const String pending_status = 'Chờ duyệt';
 }

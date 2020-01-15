@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,13 +11,16 @@ import 'package:house_merchant/custom/datepick_range_widget.dart';
 import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
+import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
+import 'package:path/path.dart' as path;
 
 class PromotionCreateScreen extends StatefulWidget {
 
@@ -44,15 +47,34 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
   List<DateTime> frangeTimeResult;
   final fdesc = TextFieldWidgetController();
   StreamController<ButtonSubmitEvent> sendButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
+  final imagePicker = new PickerImage(width: 120, height: 120, type: PickerImageType.list, maxImage: 1,);
+  //Model
+  var couponModel = CouponModel(images: []);
+  Map<String, ImageUploadModel> mappingImages = new Map<String, ImageUploadModel>();
 
   @override
   void initState() {
     super.initState();
+
+    imagePicker.callbackUpload = (File file) async {
+      final rs = await couponRepository.uploadImage(file);
+      if (rs != null) {
+        var uploadModel = new ImageUploadModel(id: rs.id);
+        couponModel.images.add(uploadModel);
+        mappingImages[path.basename(file.path)] = uploadModel;
+      }
+      this.checkValidation();
+    };
+
+    imagePicker.callbackRemove = (File file) async {
+      couponModel.images.remove(mappingImages[path.basename(file.path)]);
+      this.checkValidation();
+    };
   }
 
   bool checkValidation() {
     var isActive = false;
-    if (!StringUtil.isEmpty(ftitle.Controller.text) && !StringUtil.isEmpty(famount.Controller.text) 
+    if (imagePicker.state.filesPick.length > 0 && !StringUtil.isEmpty(ftitle.Controller.text) && !StringUtil.isEmpty(famount.Controller.text)
       && frangeTimeResult!=null && !StringUtil.isEmpty(fdesc.Controller.text)) {
       isActive = true;
     }
@@ -91,7 +113,9 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     final width = this._screenSize.width * 90 / 100;
     return Padding(padding: EdgeInsets.all(20), child: Container(width: width, child: Column(
       children: <Widget>[
+        SizedBox(height: 20),
         SvgPicture.asset("assets/images/dialogs/graphic-voucher.svg",),
+        SizedBox(height: 20),
         Text(LocalizationsUtil.of(context).translate('Tạo ưu đãi thành công!'),
           style: TextStyle(
             fontFamily: ThemeConstant.form_font_family_display,
@@ -173,24 +197,27 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
           TextFieldWidget(controller: fdesc, defaultHintText: 'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...', keyboardType: TextInputType.multiline, callback: (String value) {
             this.checkValidation();
           }),
-          
+
           SizedBox(height: 25),
           ButtonWidget(controller: sendButtonController, defaultHintText: LocalizationsUtil.of(context).translate('Tạo ưu đãi'), callback: () async {
 
             try {
               progressToolkit.state.show();
 
-              final result = await couponRepository.createCoupon(CouponModel(
+              final _couponModel = CouponModel(
                 title: ftitle.Controller.text,
                 quantity: int.parse(famount.Controller.text),
                 startDate: frangeTimeResult[0].toUtc().toString(),
                 endDate: frangeTimeResult[1].toUtc().toString(),
-                description: fdesc.Controller.text
-              ));
+                description: fdesc.Controller.text,
+                images: couponModel.images,
+              );
+
+              final result = await couponRepository.createCoupon(_couponModel);
 
               T7GDialog.showContentDialog(context, [
                 this.showSucessful()
-              ], closeShow: false);
+              ], closeShow: false, barrierDismissible: false);
 
               //Clear all
               this.clearForm();
@@ -222,7 +249,29 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     frangeTimeResult=null;
     frangeTime.add([]);
     fdesc.Controller.clear();
+    imagePicker.clear();
     sendButtonController.add(ButtonSubmitEvent(false));
+  }
+
+  Widget imagePick() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 5),
+        Text(LocalizationsUtil.of(context).translate('Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'), 
+          style: TextStyle(
+            fontFamily: ThemeConstant.form_font_family_display,
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.23,
+            color: ThemeConstant.grey_color,
+          )
+        ),
+        SizedBox(height: 15),
+        imagePicker,
+      ],
+    );
+   
   }
 
   @override
@@ -231,7 +280,6 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
-
 
     return BaseScaffoldNormal(
       title: 'Tạo ưu đãi',
@@ -245,7 +293,7 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
             ),
 
             SliverToBoxAdapter(
-              child: BoxesContainer(title: 'Hình ảnh', child: Text('hello world'), padding: EdgeInsets.all(this._padding),)
+              child: BoxesContainer(title: 'Hình ảnh', child: this.imagePick(), padding: EdgeInsets.all(this._padding),)
             ),
 
             SliverToBoxAdapter(

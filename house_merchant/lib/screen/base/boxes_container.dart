@@ -7,14 +7,15 @@ class BoxesContainer extends StatelessWidget {
   String title;
   EdgeInsets padding;
   Widget action;
+  bool noLine = false;
 
-  BoxesContainer({@required this.child, this.title, this.action, this.padding});
+  BoxesContainer({@required this.child, this.title, this.action, this.padding, this.noLine=false});
 
   @override
   Widget build(BuildContext context) {
 
     return Container(
-      decoration: ThemeConstant.borderBottom,
+      decoration: this.noLine==false ? ThemeConstant.borderBottom : BoxDecoration(color: Colors.white,),
       padding: this.padding != null ? this.padding : EdgeInsets.all(0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

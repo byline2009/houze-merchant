@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/custom/flutter_skeleton/flutter_skeleton.dart';
 import 'package:house_merchant/custom/tags_widget.dart';
+import 'package:house_merchant/middle/bloc/shop/index.dart';
+import 'package:house_merchant/middle/model/shop_model.dart';
+import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
+import 'package:house_merchant/utils/sqflite.dart';
 
 class StoreScreen extends StatefulWidget {
   StoreScreen({Key key}) : super(key: key);
@@ -17,6 +23,8 @@ class StoreScreen extends StatefulWidget {
 class StoreScreenState extends State<StoreScreen> {
   Size _screenSize;
   double _padding;
+
+  ShopBloc shopBloc = ShopBloc();
 
   Widget introStore() {
     return Column(
@@ -64,10 +72,10 @@ class StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget descriptionStore() {
+  Widget descriptionStore(ShopModel shopModel) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         SizedBox(height: 5),
         Text(
@@ -80,18 +88,17 @@ class StoreScreenState extends State<StoreScreen> {
                 fontWeight: ThemeConstant.appbar_text_weight)),
         SizedBox(height: 15),
         Container(
-            padding: EdgeInsets.only(top: 15, bottom: 19, left: 10, right: 10),
-            decoration: BoxDecoration(
-              color: ThemeConstant.background_grey_color,
-              borderRadius: BorderRadius.all(Radius.circular(4.0)),
-            ),
-            child: Text(
-                'This is a description - Body text. Lorem ipsum do sit amet, consectetur adipiscing elito veliada.\nMy store is everything you want!'))
+          padding: EdgeInsets.only(top: 15, bottom: 19, left: 10, right: 10),
+          decoration: BoxDecoration(
+            color: ThemeConstant.background_grey_color,
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          ),
+          child: Text(shopModel.description.length > 0 ? shopModel.description : 'Chưa có mô tả' ))
       ],
     );
   }
 
-  Widget timeStore() {
+  Widget timeStore(ShopModel shopModel) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,43 +223,79 @@ class StoreScreenState extends State<StoreScreen> {
     this._padding = this._screenSize.width * 5 / 100;
 
     return BaseScaffold(
-        title: 'Cửa hàng',
-        child:
-            CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
-          SliverToBoxAdapter(
-              child: BoxesContainer(
-                  child: Padding(
-                      padding: EdgeInsets.all(this._padding),
-                      child: Text(
-                          LocalizationsUtil.of(context).translate(
-                              'Lưu ý, các tuỳ chỉnh thông số ở dưới sẽ được hiển thị trên ứng dụng của cư dân'),
-                          style: TextStyle(
-                              color: ThemeConstant.grey_color,
-                              fontFamily:
-                                  ThemeConstant.form_font_family_display,
-                              fontSize: ThemeConstant.label_font_size,
-                              fontWeight: ThemeConstant.appbar_text_weight))))),
-          SliverToBoxAdapter(
-              child: BoxesContainer(
-            title: 'Hình ảnh',
-            child: introStore(),
-            action: InkWell(onTap: () async {}, child: editButton()),
-            padding: EdgeInsets.all(this._padding),
-          )),
-          SliverToBoxAdapter(
-              child: BoxesContainer(
-            title: 'Mô tả',
-            child: descriptionStore(),
-            action: InkWell(onTap: () async {}, child: editButton()),
-            padding: EdgeInsets.all(this._padding),
-          )),
-          SliverToBoxAdapter(
-              child: BoxesContainer(
-            title: 'Thời gian',
-            child: timeStore(),
-            action: InkWell(onTap: () async {}, child: editButton()),
-            padding: EdgeInsets.all(this._padding),
-          )),
-        ]));
+      title: 'Cửa hàng',
+      child: BlocBuilder(
+        bloc: shopBloc,
+        builder: (BuildContext context, ShopState shopState) {
+
+          if (shopState is ShopInitial) {
+            shopBloc.add(ShopGetDetail(id: Sqflite.current_shop));
+          }
+
+          if (shopState is ShopGetDetailSuccessful) {
+
+            final shopModel = shopState.result;
+
+            return CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+              SliverToBoxAdapter(
+                child: BoxesContainer(
+                    child: Padding(
+                        padding: EdgeInsets.all(this._padding),
+                        child: Text(
+                            LocalizationsUtil.of(context).translate(
+                                'Lưu ý, các tuỳ chỉnh thông số ở dưới sẽ được hiển thị trên ứng dụng của cư dân'),
+                            style: TextStyle(
+                                color: ThemeConstant.grey_color,
+                                fontFamily:
+                                    ThemeConstant.form_font_family_display,
+                                fontSize: ThemeConstant.label_font_size,
+                                fontWeight: ThemeConstant.appbar_text_weight))))),
+              SliverToBoxAdapter(
+                child: BoxesContainer(
+                title: 'Hình ảnh',
+                child: introStore(),
+                action: InkWell(onTap: () async {
+                  Router.push(context, Router.SHOP_IMAGES_PAGE, {
+                    "shop_model": shopModel,
+                    "callback": (ShopModel _shopModel) {
+                      print(_shopModel);
+                    }
+                  });
+                }, child: editButton()),
+                padding: EdgeInsets.all(this._padding),
+              )),
+              SliverToBoxAdapter(
+                child: BoxesContainer(
+                title: 'Mô tả',
+                child: descriptionStore(shopModel),
+                action: InkWell(onTap: () async {}, child: editButton()),
+                padding: EdgeInsets.all(this._padding),
+              )),
+              SliverToBoxAdapter(
+                child: BoxesContainer(
+                title: 'Thời gian',
+                child: timeStore(shopModel),
+                action: InkWell(onTap: () async {}, child: editButton()),
+                padding: EdgeInsets.all(this._padding),
+              )),
+            ]);
+
+          }
+
+          return CardListSkeleton(
+            shrinkWrap: true,
+            length: 4,
+            config: SkeletonConfig(
+              theme: SkeletonTheme.Light,
+              isShowAvatar: false,
+              isCircleAvatar: false,
+              bottomLinesCount: 4,
+              radius: 0.0,
+            ),
+          );
+
+        }),
+      
+    );
   }
 }
