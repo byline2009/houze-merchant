@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
+import 'package:house_merchant/custom/dropdown_widget.dart';
 import 'package:house_merchant/custom/tags_widget.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
@@ -22,6 +23,54 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   double _padding;
   StreamController<ButtonSubmitEvent> saveButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
+  final frangeTime = new StreamController<List<DateTime>>.broadcast();
+  List<DateTime> frangeTimeResult;
+
+  final fOpeningHours = DropdownWidgetController();
+  final fCloseHours = DropdownWidgetController();
+  final dataSourceHours = [
+    "7:00",
+    "7:30",
+    "8:00",
+    "8:30",
+    "9:00",
+    "9:30",
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+    "12:00",
+    "12:30",
+    "13:00",
+    "13:30",
+    "14:00",
+    "14:30",
+    "15:00",
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00",
+    "17:30",
+    "18:00",
+    "18:30",
+    "19:00",
+    "19:30",
+    "20:00",
+    "20:30",
+    "21:00",
+    "21:30",
+    "22:00",
+    "22:30"
+  ];
+
+  bool checkValidation() {
+    var isActive = false;
+    if (frangeTimeResult != null) {
+      isActive = true;
+    }
+    saveButtonController.sink.add(ButtonSubmitEvent(isActive));
+    return isActive;
+  }
 
   Widget buildBody() {
     Widget _titleSection(String title) {
@@ -72,12 +121,35 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
       );
     }
 
-    Column timeSection(String title) {
-      return Column(
+    Widget timeSection(String title, String content) {
+      return Container(
+          child: Column(
         children: <Widget>[
           _titleSection(title),
+          SizedBox(height: 10),
+          DropdownWidget(
+              controller: fOpeningHours,
+              labelText: title,
+              defaultHintText:
+                  LocalizationsUtil.of(context).translate('Chọn giờ'),
+              dataSource: dataSourceHours,
+              centerText: true,
+              buildChild: (index) {
+                return Center(
+                    child: Text(
+                  "${dataSourceHours[index]}",
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      letterSpacing: ThemeConstant.letter_spacing_026,
+                      fontWeight: FontWeight.w500),
+                ));
+              },
+              doneEvent: (index) async {
+                print({"$title": dataSourceHours[index]});
+              })
         ],
-      );
+      ));
     }
 
     return Positioned(
@@ -100,6 +172,22 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
               SizedBox(height: 10),
               daySection(),
               SizedBox(height: 30),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: ((_screenSize.width - (_padding * 2)) / 2) - 10,
+                      child: timeSection('Giờ mở cửa', dataSourceHours.first),
+                    ),
+                    Container(
+                      width: ((_screenSize.width - (_padding * 2)) / 2) - 10,
+                      child: timeSection('Giờ đóng cửa', dataSourceHours.last),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
           padding: EdgeInsets.all(_padding),
