@@ -1,3 +1,4 @@
+import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 
 class CouponModel {
@@ -6,8 +7,8 @@ class CouponModel {
   String description;
   String startDate;
   String endDate;
-  List<Images> images;
-  List<ShopModel> shops;
+  List<ImageUploadModel> images = List<ImageUploadModel>();
+  List<ShopModel> shops = List<ShopModel>();
 
   CouponModel(
     {this.title,
@@ -25,9 +26,9 @@ class CouponModel {
     startDate = json['start_date'];
     endDate = json['end_date'];
     if (json['images'] != null) {
-      images = new List<Images>();
+      images = new List<ImageUploadModel>();
       json['images'].forEach((v) {
-        images.add(new Images.fromJson(v));
+        images.add(new ImageUploadModel.fromJson(v));
       });
     }
     if (json['shops'] != null) {
@@ -51,22 +52,6 @@ class CouponModel {
     if (this.shops != null) {
       data['shops'] = this.shops.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Images {
-  String id;
-
-  Images({this.id});
-
-  Images.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
     return data;
   }
 }

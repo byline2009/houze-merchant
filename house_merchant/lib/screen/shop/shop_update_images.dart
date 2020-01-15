@@ -4,6 +4,7 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
+import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 
@@ -23,6 +24,7 @@ class ShopUpdateImagesScreenState extends State<ShopUpdateImagesScreen> {
   Size _screenSize;
   BuildContext _context;
   double _padding;
+  final imagePicker = new PickerImage();
 
   @override
   void initState() {
@@ -44,14 +46,26 @@ class ShopUpdateImagesScreenState extends State<ShopUpdateImagesScreen> {
           BoxesContainer(
             title: 'Hình ảnh (3/4 tấm)',
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(height: 5),
                 Text(LocalizationsUtil.of(context).translate('Hình ảnh đẹp sẽ để lại một ấn tượng tốt cho khách hàng'),
                 style: TextStyle(
-                    color: ThemeConstant.grey_color,
-                    fontFamily: ThemeConstant.form_font_family_display,
-                    fontSize: ThemeConstant.form_font_smaller,
-                    fontWeight: ThemeConstant.appbar_text_weight)),
+                  color: ThemeConstant.grey_color,
+                  fontFamily: ThemeConstant.form_font_family_display,
+                  fontSize: ThemeConstant.form_font_smaller,
+                  fontWeight: FontWeight.w600)),
+                SizedBox(height: 15),
+                imagePicker,
+                // GridView.count(
+                //   shrinkWrap: true,
+                //   physics: NeverScrollableScrollPhysics(),
+                //   childAspectRatio: 1.0,
+                //   mainAxisSpacing: 30,
+                //   crossAxisSpacing: 30,
+                //   crossAxisCount: 2,
+                //   children: [imagePicker]+[imagePicker, imagePicker],
+                // )
               ],
             ),
             padding: EdgeInsets.all(this._padding),

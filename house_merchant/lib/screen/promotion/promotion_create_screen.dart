@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,16 +11,19 @@ import 'package:house_merchant/custom/datepick_range_widget.dart';
 import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
-import 'package:house_merchant/screen/promotion/promotion_picker_image.dart';
+import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
+import 'package:path/path.dart' as path;
 
 class PromotionCreateScreen extends StatefulWidget {
+
   PromotionCreateScreen({Key key}) : super(key: key);
 
   @override
@@ -30,6 +31,7 @@ class PromotionCreateScreen extends StatefulWidget {
 }
 
 class PromotionCreateScreenState extends State<PromotionCreateScreen> {
+
   ProgressHUD progressToolkit = Progress.instanceCreate();
   Size _screenSize;
   BuildContext _context;
@@ -44,21 +46,36 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
   final frangeTime = new StreamController<List<DateTime>>.broadcast();
   List<DateTime> frangeTimeResult;
   final fdesc = TextFieldWidgetController();
-  StreamController<ButtonSubmitEvent> sendButtonController =
-      new StreamController<ButtonSubmitEvent>.broadcast();
-  final imagePicker = new PromotionPickerImage();
+  StreamController<ButtonSubmitEvent> sendButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
+  final imagePicker = new PickerImage(width: 120, height: 120, type: PickerImageType.list, maxImage: 1,);
+  //Model
+  var couponModel = CouponModel(images: []);
+  Map<String, ImageUploadModel> mappingImages = new Map<String, ImageUploadModel>();
 
   @override
   void initState() {
     super.initState();
+
+    imagePicker.callbackUpload = (File file) async {
+      final rs = await couponRepository.uploadImage(file);
+      if (rs != null) {
+        var uploadModel = new ImageUploadModel(id: rs.id);
+        couponModel.images.add(uploadModel);
+        mappingImages[path.basename(file.path)] = uploadModel;
+      }
+      this.checkValidation();
+    };
+
+    imagePicker.callbackRemove = (File file) async {
+      couponModel.images.remove(mappingImages[path.basename(file.path)]);
+      this.checkValidation();
+    };
   }
 
   bool checkValidation() {
     var isActive = false;
-    if (!StringUtil.isEmpty(ftitle.Controller.text) &&
-        !StringUtil.isEmpty(famount.Controller.text) &&
-        frangeTimeResult != null &&
-        !StringUtil.isEmpty(fdesc.Controller.text)) {
+    if (imagePicker.state.filesPick.length > 0 && !StringUtil.isEmpty(ftitle.Controller.text) && !StringUtil.isEmpty(famount.Controller.text)
+      && frangeTimeResult!=null && !StringUtil.isEmpty(fdesc.Controller.text)) {
       isActive = true;
     }
     sendButtonController.sink.add(ButtonSubmitEvent(isActive));
@@ -66,186 +83,173 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
   }
 
   Widget controlHeader(String title) {
+
     return Row(
       children: <Widget>[
-        Text('*',
-            style: TextStyle(
-              fontFamily: ThemeConstant.form_font_family_display,
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: ThemeConstant.required_color,
-            )),
+
+        Text('*', style: TextStyle(
+          fontFamily: ThemeConstant.form_font_family_display,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: ThemeConstant.required_color,
+        )),
         SizedBox(width: 5),
         Text(LocalizationsUtil.of(context).translate(title),
-            style: TextStyle(
-              fontFamily: ThemeConstant.form_font_family_display,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.26,
-              color: ThemeConstant.grey_color,
-            ))
+          style: TextStyle(
+            fontFamily: ThemeConstant.form_font_family_display,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.26,
+            color: ThemeConstant.grey_color,
+          )
+        )
+
       ],
     );
+
   }
 
   Widget showSucessful() {
     final width = this._screenSize.width * 90 / 100;
-    return Padding(
-        padding: EdgeInsets.all(20),
-        child: Container(
-            width: width,
-            child: Column(
-              children: <Widget>[
-                SvgPicture.asset(
-                  "assets/images/dialogs/graphic-voucher.svg",
-                ),
-                Text(
-                    LocalizationsUtil.of(context)
-                        .translate('Tạo ưu đãi thành công!'),
-                    style: TextStyle(
-                      fontFamily: ThemeConstant.form_font_family_display,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.26,
-                      color: ThemeConstant.black_color,
-                    )),
-                SizedBox(height: 20),
-                Center(
-                    child: Text(
-                  LocalizationsUtil.of(context).translate(
-                      'Ưu đãi của bạn sẽ được duyệt bởi\nHouse Merchant trước khi đăng lên\nứng dụng cư dân'),
-                  style: TextStyle(
-                      fontFamily: ThemeConstant.form_font_family_display,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.26,
-                      color: ThemeConstant.grey_color,
-                      height: 1.5),
-                  textAlign: TextAlign.center,
-                )),
-                SizedBox(height: 20),
-                BaseWidget.buttonThemePink('Về trang chính', callback: () {
-                  Navigator.of(context).popUntil((route) {
-                    return route.isFirst;
-                  });
-                })
-              ],
-            )));
+    return Padding(padding: EdgeInsets.all(20), child: Container(width: width, child: Column(
+      children: <Widget>[
+        SizedBox(height: 20),
+        SvgPicture.asset("assets/images/dialogs/graphic-voucher.svg",),
+        SizedBox(height: 20),
+        Text(LocalizationsUtil.of(context).translate('Tạo ưu đãi thành công!'),
+          style: TextStyle(
+            fontFamily: ThemeConstant.form_font_family_display,
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.26,
+            color: ThemeConstant.black_color,
+          )
+        ),
+        SizedBox(height: 20),
+        Center(child: Text(LocalizationsUtil.of(context).translate('Ưu đãi của bạn sẽ được duyệt bởi\nHouse Merchant trước khi đăng lên\nứng dụng cư dân'),
+          style: TextStyle(
+            fontFamily: ThemeConstant.form_font_family_display,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.26,
+            color: ThemeConstant.grey_color,
+            height: 1.5
+          ),
+          textAlign: TextAlign.center,
+        )),
+        SizedBox(height: 20),
+        BaseWidget.buttonThemePink('Về trang chính', callback: () {
+          Navigator.of(context).popUntil((route) {
+            return route.isFirst;
+          });
+        })
+      ],
+    )));
   }
 
   Widget formCreate() {
     final padding = this._screenSize.width * 5 / 100;
     return Padding(
-        padding: EdgeInsets.only(top: 10, bottom: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-                LocalizationsUtil.of(context).translate(
-                    'Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'),
-                style: TextStyle(
-                  fontFamily: ThemeConstant.form_font_family_display,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.23,
-                  color: ThemeConstant.grey_color,
-                )),
-            SizedBox(height: 25),
-            this.controlHeader(
-              'Tiêu đề ưu đãi',
-            ),
-            SizedBox(height: 5),
-            TextFieldWidget(
-                controller: ftitle,
-                defaultHintText: 'Vd: Mua 1 tặng 1 tất cả chi nhánh',
-                callback: (String value) {
-                  this.checkValidation();
-                }),
-            SizedBox(height: 25),
-            this.controlHeader(
-              'Số lượng',
-            ),
-            SizedBox(height: 5),
-            TextFieldWidget(
-                controller: famount,
-                defaultHintText: 'Vd: 50',
-                keyboardType: TextInputType.number,
-                callback: (String value) {
-                  this.checkValidation();
-                }),
-            SizedBox(height: 25),
-            this.controlHeader(
-              'Thời gian hiệu lực',
-            ),
-            SizedBox(height: 5),
-            DateRangePickerWidget(
-              controller: frangeTime,
-              defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY',
-              callback: (List<DateTime> values) {
-                if (values.length == 2) {
-                  frangeTimeResult = values;
-                  this.checkValidation();
-                }
-              },
-            ),
-            SizedBox(height: 25),
-            this.controlHeader(
-              'Nội dung ưu đãi',
-            ),
-            SizedBox(height: 5),
-            TextFieldWidget(
-                controller: fdesc,
-                defaultHintText:
-                    'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...',
-                keyboardType: TextInputType.multiline,
-                callback: (String value) {
-                  this.checkValidation();
-                }),
-            SizedBox(height: 25),
-            ButtonWidget(
-                controller: sendButtonController,
-                defaultHintText:
-                    LocalizationsUtil.of(context).translate('Tạo ưu đãi'),
-                callback: () async {
-                  try {
-                    progressToolkit.state.show();
+      padding: EdgeInsets.only(top: 10, bottom: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
 
-                    final result = await couponRepository.createCoupon(
-                        CouponModel(
-                            title: ftitle.Controller.text,
-                            quantity: int.parse(famount.Controller.text),
-                            startDate: frangeTimeResult[0].toUtc().toString(),
-                            endDate: frangeTimeResult[1].toUtc().toString(),
-                            description: fdesc.Controller.text));
+          Text(LocalizationsUtil.of(context).translate('Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'), 
+            style: TextStyle(
+              fontFamily: ThemeConstant.form_font_family_display,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.23,
+              color: ThemeConstant.grey_color,
+            )
+          ),
+          SizedBox(height: 25),
 
-                    T7GDialog.showContentDialog(context, [this.showSucessful()],
-                        closeShow: false);
+          this.controlHeader('Tiêu đề ưu đãi',),
+          SizedBox(height: 5),
+          TextFieldWidget(controller: ftitle, defaultHintText: 'Vd: Mua 1 tặng 1 tất cả chi nhánh', callback: (String value) {
+            this.checkValidation();
+          }),
 
-                    //Clear allx
-                    this.clearForm();
-                  } catch (e) {
-                    Fluttertoast.showToast(
-                        msg: e,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 5,
-                        backgroundColor: Colors.black,
-                        textColor: Colors.white,
-                        fontSize: 14.0);
-                  } finally {
-                    progressToolkit.state.dismiss();
-                  }
-                })
-          ],
-        ));
+          SizedBox(height: 25),
+
+          this.controlHeader('Số lượng',),
+          SizedBox(height: 5),
+          TextFieldWidget(controller: famount, defaultHintText: 'Vd: 50', keyboardType: TextInputType.number, callback: (String value) {
+            this.checkValidation();
+          }),
+
+          SizedBox(height: 25),
+
+          this.controlHeader('Thời gian hiệu lực',),
+          SizedBox(height: 5),
+          DateRangePickerWidget(controller: frangeTime, defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY', callback: (List<DateTime> values) {
+            if (values.length == 2) {
+              frangeTimeResult = values;
+              this.checkValidation();
+            }
+          },),
+
+          SizedBox(height: 25),
+          this.controlHeader('Nội dung ưu đãi',),
+          SizedBox(height: 5),
+          TextFieldWidget(controller: fdesc, defaultHintText: 'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...', keyboardType: TextInputType.multiline, callback: (String value) {
+            this.checkValidation();
+          }),
+
+          SizedBox(height: 25),
+          ButtonWidget(controller: sendButtonController, defaultHintText: LocalizationsUtil.of(context).translate('Tạo ưu đãi'), callback: () async {
+
+            try {
+              progressToolkit.state.show();
+
+              final _couponModel = CouponModel(
+                title: ftitle.Controller.text,
+                quantity: int.parse(famount.Controller.text),
+                startDate: frangeTimeResult[0].toUtc().toString(),
+                endDate: frangeTimeResult[1].toUtc().toString(),
+                description: fdesc.Controller.text,
+                images: couponModel.images,
+              );
+
+              final result = await couponRepository.createCoupon(_couponModel);
+
+              T7GDialog.showContentDialog(context, [
+                this.showSucessful()
+              ], closeShow: false, barrierDismissible: false);
+
+              //Clear all
+              this.clearForm();
+
+            } catch (e) {
+              Fluttertoast.showToast(
+                msg: e,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 5,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 14.0
+              );
+            } finally {
+              progressToolkit.state.dismiss();
+            }
+            
+          })
+        ],
+      )
+    );
+    
   }
 
   void clearForm() {
     ftitle.Controller.clear();
     famount.Controller.clear();
-    frangeTimeResult = null;
+    frangeTimeResult=null;
     frangeTime.add([]);
     fdesc.Controller.clear();
+    imagePicker.clear();
     sendButtonController.add(ButtonSubmitEvent(false));
   }
 
@@ -254,24 +258,25 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 5),
-        Text(
-            LocalizationsUtil.of(context).translate(
-                'Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'),
-            style: TextStyle(
-              fontFamily: ThemeConstant.form_font_family_display,
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.23,
-              color: ThemeConstant.grey_color,
-            )),
+        Text(LocalizationsUtil.of(context).translate('Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'), 
+          style: TextStyle(
+            fontFamily: ThemeConstant.form_font_family_display,
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.23,
+            color: ThemeConstant.grey_color,
+          )
+        ),
         SizedBox(height: 15),
         imagePicker,
       ],
     );
+   
   }
 
   @override
   Widget build(BuildContext context) {
+    
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
@@ -279,28 +284,27 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     return BaseScaffoldNormal(
       title: 'Tạo ưu đãi',
       child: Stack(children: <Widget>[
-        CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
-          SliverToBoxAdapter(
-            child: BoxesContainer(
-              child: Center(),
+        CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+
+            SliverToBoxAdapter(
+              child: BoxesContainer(child: Center(),),
             ),
-          ),
-          SliverToBoxAdapter(
-              child: BoxesContainer(
-            title: 'Hình ảnh',
-            child: this.imagePick(),
-            padding: EdgeInsets.all(this._padding),
-          )),
-          SliverToBoxAdapter(
-              child: BoxesContainer(
-            title: 'Thông tin',
-            child: this.formCreate(),
-            padding: EdgeInsets.all(this._padding),
-          )),
-        ]),
+
+            SliverToBoxAdapter(
+              child: BoxesContainer(title: 'Hình ảnh', child: this.imagePick(), padding: EdgeInsets.all(this._padding),)
+            ),
+
+            SliverToBoxAdapter(
+              child: BoxesContainer(title: 'Thông tin', child: this.formCreate(), padding: EdgeInsets.all(this._padding),)
+            ),
+          ]
+        ),
         progressToolkit
       ]),
     );
+
   }
 
   @override
