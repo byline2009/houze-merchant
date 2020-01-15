@@ -10,7 +10,7 @@ import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/middle/model/promotion_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
-import 'package:house_merchant/screen/promotion/promotion_picker_image.dart';
+import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
 class StoreEditImageScreen extends StatefulWidget {
@@ -26,7 +26,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   double _padding;
   StreamController<ButtonSubmitEvent> saveButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
-  final imagePicker = new PromotionPickerImage();
+  final imagePicker = new PickerImage();
 
   List<File> filesPick;
 
