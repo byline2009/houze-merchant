@@ -6,6 +6,7 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/dropdown_widget.dart';
 import 'package:house_merchant/custom/tags_widget.dart';
+import 'package:house_merchant/middle/model/keyvalue_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
@@ -28,7 +29,12 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
 
   final fOpeningHours = DropdownWidgetController();
   final fCloseHours = DropdownWidgetController();
-  final dataSourceHours = [
+  final dataSourceHours = [];
+  int _initOpeningHourIndex = 0;
+  int _initCloseHourIndex = 0;
+
+  dynamic params;
+  var times = [
     "7:00",
     "7:30",
     "8:00",
@@ -62,6 +68,17 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
     "22:00",
     "22:30"
   ];
+  @override
+  void initState() {
+    super.initState();
+    //Init dataSourceYear
+    for (var i = 0; i < times.length; i++) {
+      dataSourceHours.add(KeyValueModel(key: i, value: times[i]));
+    }
+    print(dataSourceHours.length);
+    _initOpeningHourIndex = dataSourceHours.first.key;
+    _initCloseHourIndex = dataSourceHours.last.key;
+  }
 
   bool checkValidation() {
     var isActive = false;
@@ -137,7 +154,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
               buildChild: (index) {
                 return Center(
                     child: Text(
-                  "${dataSourceHours[index]}",
+                  "${dataSourceHours[index].value}",
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,
@@ -145,8 +162,9 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                       fontWeight: FontWeight.w500),
                 ));
               },
+              initIndex: _initOpeningHourIndex,
               doneEvent: (index) async {
-                print({"$title": dataSourceHours[index]});
+                print({"$title": dataSourceHours[index].key});
               })
         ],
       ));
@@ -179,11 +197,69 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   children: <Widget>[
                     Container(
                       width: ((_screenSize.width - (_padding * 2)) / 2) - 10,
-                      child: timeSection('Giờ mở cửa', dataSourceHours.first),
+                      child: Container(
+                          child: Column(
+                        children: <Widget>[
+                          _titleSection("Giờ mở cửa"),
+                          SizedBox(height: 10),
+                          DropdownWidget(
+                              controller: fOpeningHours,
+                              defaultHintText: LocalizationsUtil.of(context)
+                                  .translate('Chọn giờ'),
+                              dataSource: dataSourceHours,
+                              centerText: true,
+                              buildChild: (index) {
+                                return Center(
+                                    child: Text(
+                                  "${dataSourceHours[index].value}",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      letterSpacing:
+                                          ThemeConstant.letter_spacing_026,
+                                      fontWeight: FontWeight.w500),
+                                ));
+                              },
+                              initIndex: _initOpeningHourIndex,
+                              doneEvent: (index) async {
+                                _initOpeningHourIndex = index;
+                                print(dataSourceHours[index].key);
+                              })
+                        ],
+                      )),
                     ),
                     Container(
                       width: ((_screenSize.width - (_padding * 2)) / 2) - 10,
-                      child: timeSection('Giờ đóng cửa', dataSourceHours.last),
+                      child: Container(
+                          child: Column(
+                        children: <Widget>[
+                          _titleSection("Giờ đóng cửa"),
+                          SizedBox(height: 10),
+                          DropdownWidget(
+                              controller: fCloseHours,
+                              defaultHintText: LocalizationsUtil.of(context)
+                                  .translate('Chọn giờ'),
+                              dataSource: dataSourceHours,
+                              centerText: true,
+                              buildChild: (index) {
+                                return Center(
+                                    child: Text(
+                                  "${dataSourceHours[index].value}",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      letterSpacing:
+                                          ThemeConstant.letter_spacing_026,
+                                      fontWeight: FontWeight.w500),
+                                ));
+                              },
+                              initIndex: _initCloseHourIndex,
+                              doneEvent: (index) async {
+                                _initCloseHourIndex = index;
+                                print(dataSourceHours[index].value);
+                              })
+                        ],
+                      )),
                     ),
                   ],
                 ),
