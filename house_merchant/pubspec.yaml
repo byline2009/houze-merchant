@@ -31,7 +31,7 @@ dependencies:
   jose: ^0.1.2
   flutter_staggered_animations: ^0.1.2
   flutter_bloc: ^3.0.0
-  shared_preferences: ^0.5.6
+  shared_preferences: 0.5.0
   fluttertoast: ^3.1.3
   synchronized: ^2.1.0+1
   badges: ^1.1.0
@@ -39,7 +39,7 @@ dependencies:
   flutter_form_builder: 3.6.0
   flutter_spinkit: "^2.1.0"
   flutter_image_compress: 0.6.3
-  christian_picker_image: ^0.1.4
+  christian_picker_image: ^0.1.5
 
   #panting
   dotted_border: ^1.0.2

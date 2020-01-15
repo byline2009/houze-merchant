@@ -47,9 +47,9 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
   List<DateTime> frangeTimeResult;
   final fdesc = TextFieldWidgetController();
   StreamController<ButtonSubmitEvent> sendButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
-  final imagePicker = new PickerImage(width: 120, height: 120, type: PickerImageType.list);
+  final imagePicker = new PickerImage(width: 120, height: 120, type: PickerImageType.list, maxImage: 1,);
   //Model
-  var couponModel = CouponModel();
+  var couponModel = CouponModel(images: []);
   Map<String, ImageUploadModel> mappingImages = new Map<String, ImageUploadModel>();
 
   @override
@@ -63,16 +63,18 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
         couponModel.images.add(uploadModel);
         mappingImages[path.basename(file.path)] = uploadModel;
       }
+      this.checkValidation();
     };
 
     imagePicker.callbackRemove = (File file) async {
       couponModel.images.remove(mappingImages[path.basename(file.path)]);
+      this.checkValidation();
     };
   }
 
   bool checkValidation() {
     var isActive = false;
-    if (!StringUtil.isEmpty(ftitle.Controller.text) && !StringUtil.isEmpty(famount.Controller.text) 
+    if (imagePicker.state.filesPick.length > 0 && !StringUtil.isEmpty(ftitle.Controller.text) && !StringUtil.isEmpty(famount.Controller.text)
       && frangeTimeResult!=null && !StringUtil.isEmpty(fdesc.Controller.text)) {
       isActive = true;
     }
@@ -111,7 +113,9 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     final width = this._screenSize.width * 90 / 100;
     return Padding(padding: EdgeInsets.all(20), child: Container(width: width, child: Column(
       children: <Widget>[
+        SizedBox(height: 20),
         SvgPicture.asset("assets/images/dialogs/graphic-voucher.svg",),
+        SizedBox(height: 20),
         Text(LocalizationsUtil.of(context).translate('Tạo ưu đãi thành công!'),
           style: TextStyle(
             fontFamily: ThemeConstant.form_font_family_display,
@@ -200,7 +204,7 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
             try {
               progressToolkit.state.show();
 
-              couponModel = CouponModel(
+              final _couponModel = CouponModel(
                 title: ftitle.Controller.text,
                 quantity: int.parse(famount.Controller.text),
                 startDate: frangeTimeResult[0].toUtc().toString(),
@@ -209,11 +213,11 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
                 images: couponModel.images,
               );
 
-              final result = await couponRepository.createCoupon(couponModel);
+              final result = await couponRepository.createCoupon(_couponModel);
 
               T7GDialog.showContentDialog(context, [
                 this.showSucessful()
-              ], closeShow: false);
+              ], closeShow: false, barrierDismissible: false);
 
               //Clear all
               this.clearForm();
@@ -245,6 +249,7 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     frangeTimeResult=null;
     frangeTime.add([]);
     fdesc.Controller.clear();
+    imagePicker.clear();
     sendButtonController.add(ButtonSubmitEvent(false));
   }
 

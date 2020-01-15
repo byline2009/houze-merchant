@@ -16,9 +16,6 @@ class CouponAPI extends OauthAPI {
 
     String currentShop = await Sqflite.currentShop();
 
-    couponModel.images = [
-    ];
-
     couponModel.shops = [
       ShopModel(id: currentShop)
     ];
@@ -43,7 +40,7 @@ class CouponAPI extends OauthAPI {
         data: formData,
       );
 
-      final rs = ImageMetaModel.fromJson(response.data);
+      final rs = ImageModel.fromJson(response.data);
       return rs;
     } on DioError catch (e) {
       print(e);

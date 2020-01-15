@@ -25,11 +25,16 @@ class PickerImage extends StatefulWidget {
   int maxImage;
   double width, height;
   PickerImageType type;
+  final state = new PickerImageState();
 
   PickerImage({Key key, this.maxImage=1, this.width, this.height, this.type=PickerImageType.grid}) : super(key: key);
 
+  void clear() {
+    state.clear();
+  }
+
   @override
-  PickerImageState createState() => new PickerImageState();
+  PickerImageState createState() => state;
 }
 
 class PickerImageState extends State<PickerImage> {
@@ -43,6 +48,13 @@ class PickerImageState extends State<PickerImage> {
     super.initState();
     this.filesPick = new List<File>();
     this._fileSelected = null;
+  }
+
+  void clear() {
+    this.filesPick = new List<File>();
+    this._fileSelected = null;
+    setState(() {
+    });
   }
 
   Future<void> uploadImage(File file) async {
@@ -193,28 +205,6 @@ class PickerImageState extends State<PickerImage> {
   Widget build(BuildContext context) {
 
     return widget.type == PickerImageType.list ? listImage(context) : Center(child: Text('ok ne'));
-
-    return GestureDetector(
-      onTap: () {
-        this.pickImage(context);
-      }, child: DottedBorder(
-        borderType: BorderType.RRect,
-        dashPattern: [2, 2],
-        color: ThemeConstant.border_color,
-        radius: Radius.circular(5),
-        child: Container(
-          width: widget.width ?? double.infinity,
-          height: widget.height ?? double.infinity,
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SvgPicture.asset("assets/images/ic-add-picture.svg", width: 31, height: 32,),
-            ],
-          )
-        ),
-      ));
   }
 
   @override

@@ -7,8 +7,8 @@ class CouponModel {
   String description;
   String startDate;
   String endDate;
-  List<ImageUploadModel> images;
-  List<ShopModel> shops;
+  List<ImageUploadModel> images = List<ImageUploadModel>();
+  List<ShopModel> shops = List<ShopModel>();
 
   CouponModel(
     {this.title,
