@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 
 abstract class OverlayBlocState extends Equatable {
@@ -12,7 +13,6 @@ class ShopInitial extends OverlayBlocState {
 }
 
 class ShopSuccessful extends OverlayBlocState {
-
   final List<ShopModel> result;
   final ShopModel shop;
 
@@ -39,4 +39,40 @@ class ShopFailure extends OverlayBlocState {
 
   @override
   String toString() => 'ShopFailure { error: $error }';
+}
+
+//MARK: Coupon
+class CouponInitial extends OverlayBlocState {
+  @override
+  String toString() => 'CouponInitial';
+}
+
+class CouponSuccessful extends OverlayBlocState {
+  final List<CouponModel> result;
+  final CouponModel coupon;
+
+  CouponSuccessful({@required this.result, this.coupon});
+
+  @override
+  String toString() =>
+      'CouponSuccessful { result: $result, coupon_select: $coupon }';
+}
+
+class CouponLoading extends OverlayBlocState {
+  @override
+  String toString() => 'CouponLoading';
+}
+
+class CouponChanged extends OverlayBlocState {
+  @override
+  String toString() => 'CouponChanged';
+}
+
+class CouponFailure extends OverlayBlocState {
+  final String error;
+
+  CouponFailure({@required this.error}) : super([error]);
+
+  @override
+  String toString() => 'CouponFailure { error: $error }';
 }
