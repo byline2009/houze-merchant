@@ -5,10 +5,11 @@ import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/dropdown_widget.dart';
-import 'package:house_merchant/custom/tags_widget.dart';
+import 'package:house_merchant/custom/multi_select_chip_widget.dart';
 import 'package:house_merchant/middle/model/keyvalue_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
+import 'package:house_merchant/utils/progresshub.dart';
 
 class StoreEditTimeScreen extends StatefulWidget {
   dynamic params;
@@ -24,60 +25,68 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   double _padding;
   StreamController<ButtonSubmitEvent> saveButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
-  final frangeTime = new StreamController<List<DateTime>>.broadcast();
-  List<DateTime> frangeTimeResult;
+  ProgressHUD _progressToolkit = Progress.instanceCreate();
 
-  final fOpeningHours = DropdownWidgetController();
-  final fCloseHours = DropdownWidgetController();
-  final dataSourceHours = [];
+  final _fOpeningHours = DropdownWidgetController();
+  final _fCloseHours = DropdownWidgetController();
+  final _dataSourceHours = [];
+  final _dataSourceWorkingDay = [];
+  List _selectedWorkingDayList = List();
+
   int _initOpeningHourIndex = 0;
   int _initCloseHourIndex = 0;
 
   dynamic params;
-  var times = [
-    "7:00",
-    "7:30",
-    "8:00",
-    "8:30",
-    "9:00",
-    "9:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "12:00",
-    "12:30",
-    "13:00",
-    "13:30",
-    "14:00",
-    "14:30",
-    "15:00",
-    "15:30",
-    "16:00",
-    "16:30",
-    "17:00",
-    "17:30",
-    "18:00",
-    "18:30",
-    "19:00",
-    "19:30",
-    "20:00",
-    "20:30",
-    "21:00",
-    "21:30",
-    "22:00",
-    "22:30"
-  ];
+
   @override
   void initState() {
     super.initState();
     //Init dataSourceYear
+    var times = [
+      "7:00",
+      "7:30",
+      "8:00",
+      "8:30",
+      "9:00",
+      "9:30",
+      "10:00",
+      "10:30",
+      "11:00",
+      "11:30",
+      "12:00",
+      "12:30",
+      "13:00",
+      "13:30",
+      "14:00",
+      "14:30",
+      "15:00",
+      "15:30",
+      "16:00",
+      "16:30",
+      "17:00",
+      "17:30",
+      "18:00",
+      "18:30",
+      "19:00",
+      "19:30",
+      "20:00",
+      "20:30",
+      "21:00",
+      "21:30",
+      "22:00",
+      "22:30"
+    ];
     for (var i = 0; i < times.length; i++) {
-      dataSourceHours.add(KeyValueModel(key: i, value: times[i]));
+      _dataSourceHours.add(KeyValueModel(key: i, value: times[i]));
     }
-    print(dataSourceHours.length);
-    _initOpeningHourIndex = dataSourceHours.first.key;
-    _initCloseHourIndex = dataSourceHours.last.key;
+    print(_dataSourceHours.length);
+    _initOpeningHourIndex = _dataSourceHours.first.key;
+    _initCloseHourIndex = _dataSourceHours.last.key;
+
+    var workingDays = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
+    for (var i = 0; i < workingDays.length; i++) {
+      _dataSourceWorkingDay.add(KeyValueModel(key: i, value: workingDays[i]));
+    }
   }
 
   bool checkValidation() {
@@ -113,27 +122,20 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
       );
     }
 
-    Widget daySection() {
+    Widget workingDaySection() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TagsWidget(text: 'T2'),
-          SizedBox(width: 10),
-          TagsWidget(text: 'T3'),
-          SizedBox(width: 10),
-          TagsWidget(text: 'T4'),
-          SizedBox(width: 10),
-          TagsWidget(text: 'T5'),
-          SizedBox(width: 10),
-          TagsWidget(text: 'T6'),
-          SizedBox(width: 10),
-          TagsWidget(
-            text: 'T7',
-            isDisable: true,
+          ChoiceChipsWidget(
+            _dataSourceWorkingDay,
+            onSelectionChanged: (selectedList) {
+              setState(() {
+                _selectedWorkingDayList = selectedList;
+                print(_selectedWorkingDayList);
+              });
+            },
           ),
-          SizedBox(width: 10),
-          TagsWidget(text: 'CN', isDisable: true),
         ],
       );
     }
@@ -145,16 +147,16 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
           _titleSection(title),
           SizedBox(height: 10),
           DropdownWidget(
-              controller: fOpeningHours,
+              controller: _fOpeningHours,
               labelText: title,
               defaultHintText:
                   LocalizationsUtil.of(context).translate('Chọn giờ'),
-              dataSource: dataSourceHours,
+              dataSource: _dataSourceHours,
               centerText: true,
               buildChild: (index) {
                 return Center(
                     child: Text(
-                  "${dataSourceHours[index].value}",
+                  "${_dataSourceHours[index].value}",
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,
@@ -164,7 +166,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
               },
               initIndex: _initOpeningHourIndex,
               doneEvent: (index) async {
-                print({"$title": dataSourceHours[index].key});
+                print({"$title": _dataSourceHours[index].key});
               })
         ],
       ));
@@ -188,7 +190,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
               SizedBox(height: 30),
               _titleSection('Chọn ngày làm việc'),
               SizedBox(height: 10),
-              daySection(),
+              workingDaySection(),
               SizedBox(height: 30),
               Container(
                 child: Row(
@@ -203,15 +205,15 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                           _titleSection("Giờ mở cửa"),
                           SizedBox(height: 10),
                           DropdownWidget(
-                              controller: fOpeningHours,
+                              controller: _fOpeningHours,
                               defaultHintText: LocalizationsUtil.of(context)
                                   .translate('Chọn giờ'),
-                              dataSource: dataSourceHours,
+                              dataSource: _dataSourceHours,
                               centerText: true,
                               buildChild: (index) {
                                 return Center(
                                     child: Text(
-                                  "${dataSourceHours[index].value}",
+                                  "${_dataSourceHours[index].value}",
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: Colors.black,
@@ -224,7 +226,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                               doneEvent: (index) async {
                                 _initOpeningHourIndex = index;
                                 this.checkValidation();
-                                print(dataSourceHours[index].key);
+                                print(_dataSourceHours[index].key);
                               })
                         ],
                       )),
@@ -237,15 +239,15 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                             _titleSection("Giờ đóng cửa"),
                             SizedBox(height: 10),
                             DropdownWidget(
-                                controller: fCloseHours,
+                                controller: _fCloseHours,
                                 defaultHintText: LocalizationsUtil.of(context)
                                     .translate('Chọn giờ'),
-                                dataSource: dataSourceHours,
+                                dataSource: _dataSourceHours,
                                 centerText: true,
                                 buildChild: (index) {
                                   return Center(
                                       child: Text(
-                                    "${dataSourceHours[index].value}",
+                                    "${_dataSourceHours[index].value}",
                                     style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.black,
@@ -258,7 +260,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                                 doneEvent: (index) async {
                                   _initCloseHourIndex = index;
                                   this.checkValidation();
-                                  print(dataSourceHours[index].value);
+                                  print(_dataSourceHours[index].value);
                                 })
                           ],
                         ),
@@ -302,5 +304,34 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
           buildBody(),
           saveChangeButton
         ])));
+  }
+}
+
+class MyThreeOptions extends StatefulWidget {
+  @override
+  _MyThreeOptionsState createState() => _MyThreeOptionsState();
+}
+
+class _MyThreeOptionsState extends State<MyThreeOptions> {
+  int _value = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: List<Widget>.generate(
+        3,
+        (int index) {
+          return ChoiceChip(
+            label: Text('Item $index'),
+            selected: _value == index,
+            onSelected: (bool selected) {
+              setState(() {
+                _value = selected ? index : null;
+              });
+            },
+          );
+        },
+      ).toList(),
+    );
   }
 }
