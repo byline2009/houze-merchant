@@ -21,6 +21,7 @@ class Router {
 
   static const SHOP_IMAGES_PAGE = "app://ShopImages";
   static const SHOP_DESCRIPTION_PAGE = "app://ShopDescription";
+  static const SHOP_TIME_PAGE = "app://ShopTime";
 
   Widget _getPage(String url, dynamic params) {
     switch (url) {
@@ -41,6 +42,11 @@ class Router {
 
       case SHOP_DESCRIPTION_PAGE:
         return StoreEditDescriptionScreen(
+          params: params,
+        );
+
+      case SHOP_TIME_PAGE:
+        return StoreEditTimeScreen(
           params: params,
         );
     }

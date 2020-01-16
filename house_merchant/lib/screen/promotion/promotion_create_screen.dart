@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +24,6 @@ import 'package:house_merchant/utils/string_util.dart';
 import 'package:path/path.dart' as path;
 
 class PromotionCreateScreen extends StatefulWidget {
-
   PromotionCreateScreen({Key key}) : super(key: key);
 
   @override
@@ -31,7 +31,6 @@ class PromotionCreateScreen extends StatefulWidget {
 }
 
 class PromotionCreateScreenState extends State<PromotionCreateScreen> {
-
   ProgressHUD progressToolkit = Progress.instanceCreate();
   Size _screenSize;
   BuildContext _context;
@@ -46,105 +45,101 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
   final frangeTime = new StreamController<List<DateTime>>.broadcast();
   List<DateTime> frangeTimeResult;
   final fdesc = TextFieldWidgetController();
-  StreamController<ButtonSubmitEvent> sendButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
-  final imagePicker = new PickerImage(width: 120, height: 120, type: PickerImageType.list, maxImage: 1,);
+  StreamController<ButtonSubmitEvent> sendButtonController =
+      new StreamController<ButtonSubmitEvent>.broadcast();
+  final imagePicker = new PickerImage(
+    width: 120,
+    height: 120,
+    type: PickerImageType.list,
+    maxImage: 1,
+  );
   //Model
   var couponModel = CouponModel(images: []);
-  Map<String, ImageUploadModel> mappingImages = new Map<String, ImageUploadModel>();
+  Map<String, ImageUploadModel> mappingImages =
+      new Map<String, ImageUploadModel>();
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    this._screenSize = MediaQuery.of(context).size;
+    this._context = context;
+    this._padding = this._screenSize.width * 5 / 100;
 
-    imagePicker.callbackUpload = (File file) async {
-      final rs = await couponRepository.uploadImage(file);
-      if (rs != null) {
-        var uploadModel = new ImageUploadModel(id: rs.id);
-        couponModel.images.add(uploadModel);
-        mappingImages[path.basename(file.path)] = uploadModel;
-      }
-      this.checkValidation();
-    };
-
-    imagePicker.callbackRemove = (File file) async {
-      couponModel.images.remove(mappingImages[path.basename(file.path)]);
-      this.checkValidation();
-    };
+    return BaseScaffoldNormal(
+      title: 'Tạo ưu đãi',
+      child: Stack(children: <Widget>[
+        CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+          SliverToBoxAdapter(
+            child: BoxesContainer(
+              child: Center(),
+            ),
+          ),
+          SliverToBoxAdapter(
+              child: BoxesContainer(
+            title: 'Hình ảnh',
+            child: this.imagePick(),
+            padding: EdgeInsets.all(this._padding),
+          )),
+          SliverToBoxAdapter(
+              child: BoxesContainer(
+            title: 'Thông tin',
+            child: this.formCreate(),
+            padding: EdgeInsets.all(this._padding),
+          )),
+        ]),
+        progressToolkit
+      ]),
+    );
   }
 
   bool checkValidation() {
     var isActive = false;
-    if (imagePicker.state.filesPick.length > 0 && !StringUtil.isEmpty(ftitle.Controller.text) && !StringUtil.isEmpty(famount.Controller.text)
-      && frangeTimeResult!=null && !StringUtil.isEmpty(fdesc.Controller.text)) {
+    if (imagePicker.state.filesPick.length > 0 &&
+        !StringUtil.isEmpty(ftitle.Controller.text) &&
+        !StringUtil.isEmpty(famount.Controller.text) &&
+        frangeTimeResult != null &&
+        !StringUtil.isEmpty(fdesc.Controller.text)) {
       isActive = true;
     }
     sendButtonController.sink.add(ButtonSubmitEvent(isActive));
     return isActive;
   }
 
-  Widget controlHeader(String title) {
-
-    return Row(
-      children: <Widget>[
-
-        Text('*', style: TextStyle(
-          fontFamily: ThemeConstant.form_font_family_display,
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-          color: ThemeConstant.required_color,
-        )),
-        SizedBox(width: 5),
-        Text(LocalizationsUtil.of(context).translate(title),
-          style: TextStyle(
-            fontFamily: ThemeConstant.form_font_family_display,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 0.26,
-            color: ThemeConstant.grey_color,
-          )
-        )
-
-      ],
-    );
-
+  void clearForm() {
+    ftitle.Controller.clear();
+    famount.Controller.clear();
+    frangeTimeResult = null;
+    frangeTime.add([]);
+    fdesc.Controller.clear();
+    imagePicker.clear();
+    sendButtonController.add(ButtonSubmitEvent(false));
   }
 
-  Widget showSucessful() {
-    final width = this._screenSize.width * 90 / 100;
-    return Padding(padding: EdgeInsets.all(20), child: Container(width: width, child: Column(
+  Widget controlHeader(String title) {
+    return Row(
       children: <Widget>[
-        SizedBox(height: 20),
-        SvgPicture.asset("assets/images/dialogs/graphic-voucher.svg",),
-        SizedBox(height: 20),
-        Text(LocalizationsUtil.of(context).translate('Tạo ưu đãi thành công!'),
-          style: TextStyle(
-            fontFamily: ThemeConstant.form_font_family_display,
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 0.26,
-            color: ThemeConstant.black_color,
-          )
-        ),
-        SizedBox(height: 20),
-        Center(child: Text(LocalizationsUtil.of(context).translate('Ưu đãi của bạn sẽ được duyệt bởi\nHouse Merchant trước khi đăng lên\nứng dụng cư dân'),
-          style: TextStyle(
-            fontFamily: ThemeConstant.form_font_family_display,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.26,
-            color: ThemeConstant.grey_color,
-            height: 1.5
-          ),
-          textAlign: TextAlign.center,
-        )),
-        SizedBox(height: 20),
-        BaseWidget.buttonThemePink('Về trang chính', callback: () {
-          Navigator.of(context).popUntil((route) {
-            return route.isFirst;
-          });
-        })
+        Text('*',
+            style: TextStyle(
+              fontFamily: ThemeConstant.form_font_family_display,
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: ThemeConstant.required_color,
+            )),
+        SizedBox(width: 5),
+        Text(LocalizationsUtil.of(context).translate(title),
+            style: TextStyle(
+              fontFamily: ThemeConstant.form_font_family_display,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.26,
+              color: ThemeConstant.grey_color,
+            ))
       ],
-    )));
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Widget formCreate() {
@@ -258,57 +253,86 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 5),
-        Text(LocalizationsUtil.of(context).translate('Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'), 
-          style: TextStyle(
-            fontFamily: ThemeConstant.form_font_family_display,
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 1.23,
-            color: ThemeConstant.grey_color,
-          )
-        ),
+        Text(
+            LocalizationsUtil.of(context).translate(
+                'Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'),
+            style: TextStyle(
+              fontFamily: ThemeConstant.form_font_family_display,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.23,
+              color: ThemeConstant.grey_color,
+            )),
         SizedBox(height: 15),
         imagePicker,
       ],
     );
-   
   }
 
   @override
-  Widget build(BuildContext context) {
-    
-    this._screenSize = MediaQuery.of(context).size;
-    this._context = context;
-    this._padding = this._screenSize.width * 5 / 100;
+  void initState() {
+    super.initState();
 
-    return BaseScaffoldNormal(
-      title: 'Tạo ưu đãi',
-      child: Stack(children: <Widget>[
-        CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
+    imagePicker.callbackUpload = (File file) async {
+      final rs = await couponRepository.uploadImage(file);
+      if (rs != null) {
+        var uploadModel = new ImageUploadModel(id: rs.id);
+        couponModel.images.add(uploadModel);
+        mappingImages[path.basename(file.path)] = uploadModel;
+      }
+      this.checkValidation();
+    };
 
-            SliverToBoxAdapter(
-              child: BoxesContainer(child: Center(),),
-            ),
-
-            SliverToBoxAdapter(
-              child: BoxesContainer(title: 'Hình ảnh', child: this.imagePick(), padding: EdgeInsets.all(this._padding),)
-            ),
-
-            SliverToBoxAdapter(
-              child: BoxesContainer(title: 'Thông tin', child: this.formCreate(), padding: EdgeInsets.all(this._padding),)
-            ),
-          ]
-        ),
-        progressToolkit
-      ]),
-    );
-
+    imagePicker.callbackRemove = (File file) async {
+      couponModel.images.remove(mappingImages[path.basename(file.path)]);
+      this.checkValidation();
+    };
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  Widget showSucessful() {
+    final width = this._screenSize.width * 90 / 100;
+    return Padding(
+        padding: EdgeInsets.all(20),
+        child: Container(
+            width: width,
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 20),
+                SvgPicture.asset(
+                  "assets/images/dialogs/graphic-voucher.svg",
+                ),
+                SizedBox(height: 20),
+                Text(
+                    LocalizationsUtil.of(context)
+                        .translate('Tạo ưu đãi thành công!'),
+                    style: TextStyle(
+                      fontFamily: ThemeConstant.form_font_family_display,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.26,
+                      color: ThemeConstant.black_color,
+                    )),
+                SizedBox(height: 20),
+                Center(
+                    child: Text(
+                  LocalizationsUtil.of(context).translate(
+                      'Ưu đãi của bạn sẽ được duyệt bởi\nHouse Merchant trước khi đăng lên\nứng dụng cư dân'),
+                  style: TextStyle(
+                      fontFamily: ThemeConstant.form_font_family_display,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.26,
+                      color: ThemeConstant.grey_color,
+                      height: 1.5),
+                  textAlign: TextAlign.center,
+                )),
+                SizedBox(height: 20),
+                BaseWidget.buttonThemePink('Về trang chính', callback: () {
+                  Navigator.of(context).popUntil((route) {
+                    return route.isFirst;
+                  });
+                })
+              ],
+            )));
   }
 }

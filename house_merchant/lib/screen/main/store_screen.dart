@@ -286,7 +286,16 @@ class StoreScreenState extends State<StoreScreen> {
                         child: BoxesContainer(
                       title: 'Thời gian',
                       child: timeStore(shopModel),
-                      action: InkWell(onTap: () async {}, child: editButton()),
+                      action: InkWell(
+                          onTap: () async {
+                            Router.push(context, Router.SHOP_TIME_PAGE, {
+                              "shop_model": shopModel,
+                              "callback": (ShopModel _shopModel) {
+                                print(_shopModel);
+                              }
+                            });
+                          },
+                          child: editButton()),
                       padding: EdgeInsets.all(this._padding),
                     )),
                   ]);
