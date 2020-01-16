@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:house_merchant/constant/api_constant.dart';
+import 'package:house_merchant/middle/api/base_api.dart';
 import 'package:house_merchant/middle/api/oauth_api.dart';
 import 'package:house_merchant/middle/model/base_model.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
@@ -13,9 +14,17 @@ class CouponAPI extends OauthAPI {
   CouponAPI() : super();
 
   //MARK: Get coupons
-  Future<List<CouponModel>> getCoupons({int page = 0}) async {
+  Future<List<CouponModel>> getCoupons(int page, {int limit = 10}) async {
     final response =
-        await this.get(APIConstant.baseMerchantUrlCoupon, queryParameters: {});
+        await this.get(APIConstant.baseMerchantUrlCoupon, queryParameters: {
+      "offset": (page - 1) * limit,
+      "limit": limit,
+    });
+
+    print({
+      "offset": (page - 1) * limit,
+      "limit": limit,
+    });
 
     return (PageModel.map(response.data).results as List).map((i) {
       return CouponModel.fromJson(i);

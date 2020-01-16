@@ -7,10 +7,9 @@ import 'package:house_merchant/config/app_config.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_bloc.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_event.dart';
 import 'package:house_merchant/screen/base/bootstrap_widget.dart';
-import 'package:worker_manager/worker_manager.dart';
+import 'package:worker_manager/executor.dart';
 
 void main() async {
-
   // add this, and it should be the first line in main method
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isAndroid) {

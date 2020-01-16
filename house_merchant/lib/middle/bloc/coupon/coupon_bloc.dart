@@ -10,8 +10,16 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
   CouponState get initialState => CouponInitial();
 
   @override
-  Stream<CouponState> mapEventToState(CouponEvent event) {
-    // TODO: implement mapEventToState
-    return null;
+  Stream<CouponState> mapEventToState(CouponEvent event) async* {
+    if (event is CouponLoadList) {
+      yield CouponLoading();
+
+      try {
+        final result = await couponRepository.getCoupons();
+        yield CouponGetListSuccessful(result: result);
+      } catch (error) {
+        yield CouponFailure(error: error.toString());
+      }
+    }
   }
 }

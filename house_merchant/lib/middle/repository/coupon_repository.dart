@@ -10,7 +10,7 @@ class CouponRepository {
   CouponRepository();
 
   Future<List<CouponModel>> getCoupons({int page = 1}) async {
-    final rs = await couponAPI.getCoupons(page: page);
+    final rs = await couponAPI.getCoupons(page);
     return rs;
   }
 
