@@ -40,6 +40,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   StreamController<ButtonSubmitEvent> saveButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
   PickerImage imagePicker;
   int maxImage = 4;
+  int initImageCount = 0;
   final StreamController<String> statusPickedText = new StreamController<String>();
   ShopRepository shopRepository = ShopRepository();
   var shopModel = ShopModel(images: []);
@@ -78,21 +79,29 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
   @override
   void initState() {
+    ShopModel shopModel = widget.params['shop_model'];
+
+    print("EDIT IMAGE INIT STATE");
+
+    final initImages = shopModel.images.map((f) => FilePick(url: f.image),).toList();
+    initImageCount = initImages.length;
+
+    imagePicker = new PickerImage(width: 160, height: 140, type: PickerImageType.grid,
+        maxImage: maxImage, imagesInit: initImages );
+
+    imagePicker.callbackUpload = (FilePick f) async {
+      statusPickedText.add(imagePicker.state.filesPick.length.toString());
+      this.filesCompressedPick.add(f.file);
+      this.checkValidation();
+    };
+
+    imagePicker.callbackRemove = (FilePick f) async {
+      statusPickedText.add(imagePicker.state.filesPick.length.toString());
+      this.filesCompressedPick.remove(f.file);
+      this.checkValidation();
+    };
+
     super.initState();
-
-    imagePicker = new PickerImage(width: 160, height: 140, type: PickerImageType.grid, maxImage: maxImage,);
-
-    imagePicker.callbackUpload = (File file) async {
-      statusPickedText.add(imagePicker.state.filesPick.length.toString());
-      this.filesCompressedPick.add(file);
-      this.checkValidation();
-    };
-
-    imagePicker.callbackRemove = (File file) async {
-      statusPickedText.add(imagePicker.state.filesPick.length.toString());
-      this.filesCompressedPick.remove(file);
-      this.checkValidation();
-    };
   }
 
   Widget titleInSection(String title, String subtitle) {
@@ -125,7 +134,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            titleInSection(imagePicker.state.filesPick.length.toString(),
+            titleInSection(initImageCount.toString(),
                 'Hình ảnh đẹp sẽ để lại một ấn tượng tốt cho khách hàng'),
             SizedBox(height: 15),
             Expanded(
@@ -192,6 +201,8 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
         }
 
       });
+
+    print("IMAGE BUILD BODY");
 
     // TODO: implement build
     return BaseScaffoldNormal(

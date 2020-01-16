@@ -11,9 +11,15 @@ import 'package:christian_picker_image/christian_picker_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
-typedef void callBackUploadHandler(File file);
+typedef void callBackUploadHandler(FilePick file);
 
 enum PickerImageType { grid, list }
+
+class FilePick {
+  String url;
+  File file;
+  FilePick({this.file, this.url});
+}
 
 class PickerImage extends StatefulWidget {
   callBackUploadHandler callbackUpload;
@@ -23,12 +29,14 @@ class PickerImage extends StatefulWidget {
   double width, height;
   PickerImageType type;
   PickerImageState state = new PickerImageState();
+  List<FilePick> imagesInit = new List<FilePick>();
 
   PickerImage(
       {Key key,
       this.maxImage = 1,
       this.width,
       this.height,
+      this.imagesInit,
       this.type = PickerImageType.grid})
       : super(key: key);
 
@@ -41,22 +49,27 @@ class PickerImage extends StatefulWidget {
 }
 
 class PickerImageState extends State<PickerImage> {
-  List<File> filesPick = new List<File>();
+  List<FilePick> filesPick = new List<FilePick>();
   File _fileSelected;
   List<Future<dynamic>> _uploadParrallel = new List<Future<dynamic>>();
 
   @override
   void initState() {
     super.initState();
+    this.fillWithInitImages();
   }
 
   void clear() {
-    this.filesPick = new List<File>();
+    this.filesPick = new List<FilePick>();
     this._fileSelected = null;
     setState(() {});
   }
 
-  Future<void> uploadImage(File file) async {
+  void fillWithInitImages() {
+    this.filesPick = this.filesPick + widget.imagesInit;
+  }
+
+  Future<void> uploadImage(FilePick file) async {
     widget.callbackUpload(file);
   }
 
@@ -75,7 +88,7 @@ class PickerImageState extends State<PickerImage> {
 
         images.forEach((image) async {
           if (image != null) {
-            this.filesPick.insert(0, image);
+            this.filesPick.insert(0, FilePick(file: image));
 
             var dir = await getTemporaryDirectory();
             var targetPath = dir.absolute.path + "/" + basename(image.path);
@@ -85,7 +98,7 @@ class PickerImageState extends State<PickerImage> {
                 minHeight: 1280, minWidth: 1280, quality: 60, keepExif: false);
 
             image.deleteSync();
-            _uploadParrallel.add(uploadImage(compressImage));
+            _uploadParrallel.add(uploadImage(FilePick(file: compressImage)));
           }
         });
       });
@@ -106,7 +119,7 @@ class PickerImageState extends State<PickerImage> {
         });
   }
 
-  Widget photoImage(File f) {
+  Widget photoImage(FilePick f) {
     return Container(
         child: Stack(
       children: <Widget>[
@@ -117,12 +130,15 @@ class PickerImageState extends State<PickerImage> {
                 child: Stack(
                   overflow: Overflow.clip,
                   children: <Widget>[
-                    Image.file(
-                      f,
+                    f.file != null ? Image.file(
+                      f.file,
                       fit: BoxFit.cover,
                       width: widget.width,
                       height: widget.height,
-                    ),
+                    ) : Image.network(f.url,
+                      fit: BoxFit.cover,
+                      width: widget.width,
+                      height: widget.height,),
                   ],
                 )),),
         Positioned(

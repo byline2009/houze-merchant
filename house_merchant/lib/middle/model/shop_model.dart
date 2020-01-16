@@ -7,7 +7,7 @@ class ShopModel {
   int status;
   double lat;
   double long;
-  List<dynamic> images = List<dynamic>();
+  List<ImageModel> images = List<ImageModel>();
 
   ShopModel(
     {this.id,
@@ -25,7 +25,12 @@ class ShopModel {
     status = json['status'];
     lat = json['lat'];
     long = json['long'];
-    images = json['images'];
+    if (json['images'] != null) {
+      images = new List<ImageModel>();
+      json['images'].forEach((v) {
+        images.add(new ImageModel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -36,7 +41,9 @@ class ShopModel {
     data['status'] = this.status;
     data['lat'] = this.lat;
     data['long'] = this.long;
-    data['images'] = this.images;
+    if (this.images != null) {
+      data['images'] = this.images.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

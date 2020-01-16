@@ -26,7 +26,7 @@ class StoreScreenState extends State<StoreScreen> {
 
   ShopBloc shopBloc = ShopBloc();
 
-  Widget introStore() {
+  Widget introStore(ShopModel shopModel) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,31 +43,18 @@ class StoreScreenState extends State<StoreScreen> {
         SizedBox(height: 15),
         Container(
           height: 120,
-          child: ListView(
+          child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              ImageWidget(
+            itemCount: shopModel.images.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(child: ImageWidget(
                 width: 120,
                 height: 120,
-                imgUrl:
-                    "https://anhdaostorage.blob.core.windows.net/qa-media/facility/20191114014531987127/bbq-pmh.jpg",
-              ),
-              SizedBox(width: 15),
-              ImageWidget(
-                width: 120,
-                height: 120,
-                imgUrl:
-                    "https://anhdaostorage.blob.core.windows.net/qa-media/facility/20191114014630397045/meeting-room.jpg",
-              ),
-              SizedBox(width: 15),
-              ImageWidget(
-                width: 120,
-                height: 120,
-                imgUrl: "",
-              ),
-            ],
-          ),
-        )
+                imgUrl: shopModel.images[index].image_thumb,
+              ), padding: EdgeInsets.only(right: 15),);
+            },
+            //separatorBuilder: (BuildContext context, int index) => SizedBox(width: 15),)
+        ))
       ],
     );
   }
@@ -256,7 +243,7 @@ class StoreScreenState extends State<StoreScreen> {
                     SliverToBoxAdapter(
                         child: BoxesContainer(
                       title: 'Hình ảnh',
-                      child: introStore(),
+                      child: introStore(shopModel),
                       action: InkWell(
                           onTap: () async {
                             Router.push(context, Router.SHOP_IMAGES_PAGE, {

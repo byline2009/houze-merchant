@@ -238,16 +238,6 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     
   }
 
-  void clearForm() {
-    ftitle.Controller.clear();
-    famount.Controller.clear();
-    frangeTimeResult=null;
-    frangeTime.add([]);
-    fdesc.Controller.clear();
-    imagePicker.clear();
-    sendButtonController.add(ButtonSubmitEvent(false));
-  }
-
   Widget imagePick() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,18 +263,18 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
   void initState() {
     super.initState();
 
-    imagePicker.callbackUpload = (File file) async {
-      final rs = await couponRepository.uploadImage(file);
+    imagePicker.callbackUpload = (FilePick f) async {
+      final rs = await couponRepository.uploadImage(f.file);
       if (rs != null) {
         var uploadModel = new ImageUploadModel(id: rs.id);
         couponModel.images.add(uploadModel);
-        mappingImages[path.basename(file.path)] = uploadModel;
+        mappingImages[path.basename(f.file.path)] = uploadModel;
       }
       this.checkValidation();
     };
 
-    imagePicker.callbackRemove = (File file) async {
-      couponModel.images.remove(mappingImages[path.basename(file.path)]);
+    imagePicker.callbackRemove = (FilePick f) async {
+      couponModel.images.remove(mappingImages[path.basename(f.file.path)]);
       this.checkValidation();
     };
   }
