@@ -82,7 +82,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
 
   bool checkValidation() {
     var isActive = false;
-    if (frangeTimeResult != null) {
+    if (_initOpeningHourIndex < _initCloseHourIndex) {
       isActive = true;
     }
     saveButtonController.sink.add(ButtonSubmitEvent(isActive));
@@ -223,6 +223,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                               initIndex: _initOpeningHourIndex,
                               doneEvent: (index) async {
                                 _initOpeningHourIndex = index;
+                                this.checkValidation();
                                 print(dataSourceHours[index].key);
                               })
                         ],
@@ -231,35 +232,37 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                     Container(
                       width: ((_screenSize.width - (_padding * 2)) / 2) - 10,
                       child: Container(
-                          child: Column(
-                        children: <Widget>[
-                          _titleSection("Giờ đóng cửa"),
-                          SizedBox(height: 10),
-                          DropdownWidget(
-                              controller: fCloseHours,
-                              defaultHintText: LocalizationsUtil.of(context)
-                                  .translate('Chọn giờ'),
-                              dataSource: dataSourceHours,
-                              centerText: true,
-                              buildChild: (index) {
-                                return Center(
-                                    child: Text(
-                                  "${dataSourceHours[index].value}",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      letterSpacing:
-                                          ThemeConstant.letter_spacing_026,
-                                      fontWeight: FontWeight.w500),
-                                ));
-                              },
-                              initIndex: _initCloseHourIndex,
-                              doneEvent: (index) async {
-                                _initCloseHourIndex = index;
-                                print(dataSourceHours[index].value);
-                              })
-                        ],
-                      )),
+                        child: Column(
+                          children: <Widget>[
+                            _titleSection("Giờ đóng cửa"),
+                            SizedBox(height: 10),
+                            DropdownWidget(
+                                controller: fCloseHours,
+                                defaultHintText: LocalizationsUtil.of(context)
+                                    .translate('Chọn giờ'),
+                                dataSource: dataSourceHours,
+                                centerText: true,
+                                buildChild: (index) {
+                                  return Center(
+                                      child: Text(
+                                    "${dataSourceHours[index].value}",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                        letterSpacing:
+                                            ThemeConstant.letter_spacing_026,
+                                        fontWeight: FontWeight.w500),
+                                  ));
+                                },
+                                initIndex: _initCloseHourIndex,
+                                doneEvent: (index) async {
+                                  _initCloseHourIndex = index;
+                                  this.checkValidation();
+                                  print(dataSourceHours[index].value);
+                                })
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
