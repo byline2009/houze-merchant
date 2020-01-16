@@ -224,7 +224,7 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
 
             } catch (e) {
               Fluttertoast.showToast(
-                msg: e,
+                msg: e.toString(),
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
                 timeInSecForIos: 5,

@@ -218,6 +218,10 @@ class PickerImageState extends State<PickerImage> {
     );
   }
 
+  List<Future<dynamic>> getUploadParrallel() {
+    return this._uploadParrallel;
+  }
+
   @override
   Widget build(BuildContext context) {
     return listImage(context);

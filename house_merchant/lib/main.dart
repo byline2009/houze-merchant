@@ -7,11 +7,12 @@ import 'package:house_merchant/config/app_config.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_bloc.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_event.dart';
 import 'package:house_merchant/screen/base/bootstrap_widget.dart';
+import 'package:worker_manager/worker_manager.dart';
 
 void main() async {
 
   // add this, and it should be the first line in main method
-  WidgetsFlutterBinding.ensureInitialized(); 
+  WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle =
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);
@@ -19,7 +20,9 @@ void main() async {
   }
 
   //App init
-  await AppConfig.init('.env.dev');
+  await AppConfig.init();
+
+  await Executor().warmUp();
 
   runApp(
     BlocProvider(

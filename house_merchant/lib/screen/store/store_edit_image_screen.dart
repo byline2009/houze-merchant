@@ -1,17 +1,25 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
+import 'package:house_merchant/middle/api/oauth_api.dart';
+import 'package:house_merchant/middle/api/shop_api.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
+import 'package:house_merchant/utils/sqflite.dart';
+import 'package:house_merchant/utils/storage.dart';
+import 'package:house_merchant/worker/upload_worker.dart';
+import 'package:worker_manager/executor.dart';
 
 class StoreEditImageScreen extends StatefulWidget {
 
@@ -35,6 +43,38 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   final StreamController<String> statusPickedText = new StreamController<String>();
   ShopRepository shopRepository = ShopRepository();
   var shopModel = ShopModel(images: []);
+  List<File> filesCompressedPick = new List<File>();
+
+  Future<dynamic> runTaskUpload(File f) async {
+    var completer = new Completer();
+
+    String currentShop = await Sqflite.currentShop();
+
+    final task = Task(function: uploadShopImageWorker, arg: ArgUpload(
+        url: APIConstant.baseMerchantUrlShopImageCreate,
+        token: OauthAPI.token,
+        shopId: currentShop,
+        storageShared: Storage.prefs,
+        file: f)
+    );
+
+    Executor().addTask(task: task,).listen((result) async {
+      completer.complete(result);
+    }).onError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
+
+  Future sendData() async {
+    //Fetch all picked lasted
+    Future.wait(this.filesCompressedPick.map((file) {
+      return runTaskUpload(file);
+    }).toList()).then((List responses) async {
+      print('Upload successful');
+    });
+  }
 
   @override
   void initState() {
@@ -44,11 +84,13 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
     imagePicker.callbackUpload = (File file) async {
       statusPickedText.add(imagePicker.state.filesPick.length.toString());
+      this.filesCompressedPick.add(file);
       this.checkValidation();
     };
 
     imagePicker.callbackRemove = (File file) async {
       statusPickedText.add(imagePicker.state.filesPick.length.toString());
+      this.filesCompressedPick.remove(file);
       this.checkValidation();
     };
   }
@@ -103,6 +145,10 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
     return isActive;
   }
 
+  void clearForm() {
+    this.imagePicker.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
@@ -118,9 +164,22 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
         try {
           progressToolkit.state.show();
+          await sendData();
+          //Clear all
+          this.clearForm();
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(
+            msg: 'Cập nhật hình ảnh thành công',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 5,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 14.0
+          );
         } catch (e) {
           Fluttertoast.showToast(
-            msg: e,
+            msg: e.toString(),
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIos: 5,

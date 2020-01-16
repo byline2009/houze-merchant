@@ -46,24 +46,4 @@ class ShopAPI extends OauthAPI {
     return ShopModel.fromJson(response.data);
   }
 
-  Future<dynamic> createImage(String shopId, File image) async {
-    try {
-      FormData formData =
-      new FormData.from({"image": new UploadFileInfo(image, "image.jpg")});
-
-      final String url = APIConstant.baseMerchantUrlShopImageCreate;
-
-      final response = await this.post(
-        "${url}${shopId}/",
-        data: formData,
-      );
-
-      final rs = ImageModel.fromJson(response.data);
-      return rs;
-    } on DioError catch (e) {
-      print(e);
-      return throw e;
-    }
-  }
-
 }

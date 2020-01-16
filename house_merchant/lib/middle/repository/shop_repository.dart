@@ -24,14 +24,4 @@ class ShopRepository {
     final rs = await shopAPI.updateImages(id, images);
     return rs;
   }
-
-  Future<ImageModel> createImage(File file) async {
-    String currentShop = await Sqflite.currentShop();
-    //Call Dio API
-    final rs = await shopAPI.createImage(currentShop, file);
-    if (rs != null) {
-      return rs;
-    }
-    return null;
-  }
 }
