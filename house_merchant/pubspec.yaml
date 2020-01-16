@@ -40,6 +40,7 @@ dependencies:
   flutter_spinkit: "^2.1.0"
   flutter_image_compress: ^0.6.5+1
   christian_picker_image: ^0.1.5
+  worker_manager: ^2.2.3
 
   #panting
   dotted_border: ^1.0.2

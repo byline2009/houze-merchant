@@ -25,18 +25,21 @@ class ImageMetaModel extends Equatable {
 class ImageModel {
   String id;
   String image;
+  String image_thumb;
 
-  ImageModel({this.id, this.image});
+  ImageModel({this.id, this.image, this.image_thumb});
 
   ImageModel.map(dynamic obj) {
     this.id = obj['id'];
     this.image = obj['image'];
+    this.image_thumb = obj['image_thumb'];
   }
 
   factory ImageModel.fromJson(Map<String, dynamic> json) {
     return ImageModel(
       id: json['id'],
-      image: json['image']
+      image: json['image'],
+      image_thumb: json['image_thumb'],
     );
   }
 

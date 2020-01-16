@@ -22,7 +22,7 @@ class PickerImage extends StatefulWidget {
   int maxImage;
   double width, height;
   PickerImageType type;
-  final state = new PickerImageState();
+  PickerImageState state = new PickerImageState();
 
   PickerImage(
       {Key key,
@@ -41,15 +41,13 @@ class PickerImage extends StatefulWidget {
 }
 
 class PickerImageState extends State<PickerImage> {
-  List<File> filesPick;
+  List<File> filesPick = new List<File>();
   File _fileSelected;
   List<Future<dynamic>> _uploadParrallel = new List<Future<dynamic>>();
 
   @override
   void initState() {
     super.initState();
-    this.filesPick = new List<File>();
-    this._fileSelected = null;
   }
 
   void clear() {
@@ -77,7 +75,7 @@ class PickerImageState extends State<PickerImage> {
 
         images.forEach((image) async {
           if (image != null) {
-            this.filesPick.add(image);
+            this.filesPick.insert(0, image);
 
             var dir = await getTemporaryDirectory();
             var targetPath = dir.absolute.path + "/" + basename(image.path);
@@ -108,92 +106,104 @@ class PickerImageState extends State<PickerImage> {
         });
   }
 
+  Widget photoImage(File f) {
+    return Container(
+        child: Stack(
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.only(top: 10, right: 5),
+            child: ClipRRect(
+                borderRadius: new BorderRadius.circular(4.0),
+                child: Stack(
+                  overflow: Overflow.clip,
+                  children: <Widget>[
+                    Image.file(
+                      f,
+                      fit: BoxFit.cover,
+                      width: widget.width,
+                      height: widget.height,
+                    ),
+                  ],
+                )),),
+        Positioned(
+            top: -10,
+            right: -10,
+            child: IconButton(
+              icon: SvgPicture.asset(
+                'assets/icons/ic-close-bgred.svg',
+                width: 30.0,
+                height: 30.0,
+              ),
+              iconSize: 35,
+              color: Colors.red[700],
+              onPressed: () {
+                setState(() {
+                  this.filesPick.remove(f);
+                  // Clear main picture
+                  if (this.filesPick.length == 0) {
+                    this._fileSelected = null;
+                  }
+                  widget.callbackRemove(f);
+                });
+              },
+            ))
+      ],
+    ));
+  }
+
   Widget listImage(BuildContext context) {
     var listImages = [];
 
     if (this.filesPick.length >= widget.maxImage) {
-      listImages = this
-          .filesPick
-          .map((f) => Container(
-                  child: Stack(
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.only(top: 10, right: 5),
-                      child: ClipRRect(
-                          borderRadius: new BorderRadius.circular(4.0),
-                          child: Stack(
-                            overflow: Overflow.clip,
-                            children: <Widget>[
-                              Image.file(
-                                f,
-                                fit: BoxFit.cover,
-                                width: widget.width,
-                                height: widget.height,
-                              ),
-                            ],
-                          ))),
-                  Positioned(
-                      top: -10,
-                      right: -10,
-                      child: IconButton(
-                        icon: SvgPicture.asset(
-                          'assets/icons/ic-close-bgred.svg',
-                          width: 30.0,
-                          height: 30.0,
-                        ),
-                        iconSize: 35,
-                        color: Colors.red[700],
-                        onPressed: () {
-                          setState(() {
-                            this.filesPick.remove(f);
-                            // Clear main picture
-                            if (this.filesPick.length == 0) {
-                              this._fileSelected = null;
-                            }
-                            widget.callbackRemove(f);
-                          });
-                        },
-                      ))
-                ],
-              )))
-          .toList();
+      listImages = this.filesPick.map((f) => this.photoImage(f)).toList();
     } else {
       listImages = [
             Container(
-              child: GestureDetector(
-                  onTap: () {
-                    this.pickImage(context);
-                  },
-                  child: DottedBorder(
-                    borderType: BorderType.RRect,
-                    dashPattern: [2, 2],
-                    color: ThemeConstant.border_color,
-                    radius: Radius.circular(5),
-                    child: Container(
-                        width: widget.width ?? double.infinity,
-                        height: widget.height ?? double.infinity,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SvgPicture.asset(
-                              "assets/images/ic-add-picture.svg",
-                              width: 31,
-                              height: 32,
-                            ),
-                          ],
-                        )),
-                  )),
-              width: widget.width,
-              height: widget.height,
-            )
+                padding: EdgeInsets.only(top: 10, right: 5),
+                child: Stack(children: <Widget>[
+                  GestureDetector(
+                      onTap: () {
+                        this.pickImage(context);
+                      },
+                      child: DottedBorder(
+                          borderType: BorderType.RRect,
+                          dashPattern: [2, 2],
+                          color: ThemeConstant.border_color,
+                          radius: Radius.circular(5),
+                          child: Container(
+                              width: widget.width ?? double.infinity,
+                              height: widget.height ?? double.infinity,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  SvgPicture.asset(
+                                    "assets/images/ic-add-picture.svg",
+                                    width: 31,
+                                    height: 32,
+                                  ),
+                                ],
+                              ))))
+                ],))
           ] +
-          this
-              .filesPick
-              .map((f) => Container(child: Text('hello world')))
-              .toList();
+          List<Container>.from(this.filesPick.length > 0
+              ? this.filesPick.map((f) => this.photoImage(f)).toList()
+              : []);
+    }
+
+    if (widget.type == PickerImageType.grid) {
+      return Container(
+          child: GridView.builder(
+        itemCount: listImages.length,
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: listImages[index],
+          );
+        },
+      ));
     }
 
     return Container(
@@ -208,11 +218,13 @@ class PickerImageState extends State<PickerImage> {
     );
   }
 
+  List<Future<dynamic>> getUploadParrallel() {
+    return this._uploadParrallel;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return widget.type == PickerImageType.list
-        ? listImage(context)
-        : Center(child: Text('ok ne'));
+    return listImage(context);
   }
 
   @override
