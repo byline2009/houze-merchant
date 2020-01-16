@@ -32,6 +32,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   final _dataSourceHours = [];
   final _dataSourceWorkingDay = [];
   List _selectedWorkingDayList = List();
+  var messageError = "";
 
   int _initOpeningHourIndex = 0;
   int _initCloseHourIndex = 0;
@@ -90,12 +91,35 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   }
 
   bool checkValidation() {
+    showMessage();
     var isActive = false;
-    if (_initOpeningHourIndex < _initCloseHourIndex) {
+    if (_initOpeningHourIndex < _initCloseHourIndex &&
+        _selectedWorkingDayList.length > 0) {
       isActive = true;
     }
     saveButtonController.sink.add(ButtonSubmitEvent(isActive));
     return isActive;
+  }
+
+  void showMessage() {
+    String str = '';
+
+    if ((_initOpeningHourIndex < _initCloseHourIndex) == false &&
+        _selectedWorkingDayList.length <= 0) {
+      str = '';
+    }
+
+    if ((_initOpeningHourIndex < _initCloseHourIndex) == false) {
+      str = 'Giờ đóng cửa phải lớn hơn giờ mở cửa!';
+    }
+
+    if (_selectedWorkingDayList.length == 0) {
+      str = 'Bạn chưa chọn ngày làm việc!';
+    }
+
+    setState(() {
+      messageError = str;
+    });
   }
 
   Widget buildBody() {
@@ -132,6 +156,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
             onSelectionChanged: (selectedList) {
               setState(() {
                 _selectedWorkingDayList = selectedList;
+                checkValidation();
                 print(_selectedWorkingDayList);
               });
             },
@@ -269,6 +294,12 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   ],
                 ),
               ),
+              SizedBox(height: 30),
+              Text(
+                messageError,
+                style:
+                    ThemeConstant.subtitleStyle(ThemeConstant.required_color),
+              ),
             ],
           ),
           padding: EdgeInsets.all(_padding),
@@ -304,34 +335,5 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
           buildBody(),
           saveChangeButton
         ])));
-  }
-}
-
-class MyThreeOptions extends StatefulWidget {
-  @override
-  _MyThreeOptionsState createState() => _MyThreeOptionsState();
-}
-
-class _MyThreeOptionsState extends State<MyThreeOptions> {
-  int _value = 1;
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      children: List<Widget>.generate(
-        3,
-        (int index) {
-          return ChoiceChip(
-            label: Text('Item $index'),
-            selected: _value == index,
-            onSelected: (bool selected) {
-              setState(() {
-                _value = selected ? index : null;
-              });
-            },
-          );
-        },
-      ).toList(),
-    );
   }
 }
