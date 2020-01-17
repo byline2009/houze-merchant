@@ -12,14 +12,14 @@ class UserModel {
   UserModel({this.avatar, this.name, this.date});
 }
 
-class PromotionUserListScreen extends StatefulWidget {
-  PromotionUserListScreen({Key key}) : super(key: key);
+class CouponUserListScreen extends StatefulWidget {
+  CouponUserListScreen({Key key}) : super(key: key);
 
   @override
   PromotionUsersScreenState createState() => new PromotionUsersScreenState();
 }
 
-class PromotionUsersScreenState extends State<PromotionUserListScreen> {
+class PromotionUsersScreenState extends State<CouponUserListScreen> {
   Size _screenSize;
   BuildContext _context;
   double _padding;

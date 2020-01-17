@@ -23,14 +23,14 @@ import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
 import 'package:path/path.dart' as path;
 
-class PromotionCreateScreen extends StatefulWidget {
-  PromotionCreateScreen({Key key}) : super(key: key);
+class CouponCreateScreen extends StatefulWidget {
+  CouponCreateScreen({Key key}) : super(key: key);
 
   @override
-  PromotionCreateScreenState createState() => new PromotionCreateScreenState();
+  CouponCreateScreenState createState() => new CouponCreateScreenState();
 }
 
-class PromotionCreateScreenState extends State<PromotionCreateScreen> {
+class CouponCreateScreenState extends State<CouponCreateScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
   Size _screenSize;
   BuildContext _context;

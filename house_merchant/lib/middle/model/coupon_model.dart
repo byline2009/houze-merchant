@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
@@ -74,6 +75,18 @@ class CouponModel {
     }
     if (this.status == 2) {
       return ThemeConstant.expired_status;
+    }
+  }
+
+  Color getStatusColor() {
+    if (this.status == 0) {
+      return ThemeConstant.pending_color;
+    }
+    if (this.status == 1) {
+      return ThemeConstant.ready_color;
+    }
+    if (this.status == 2) {
+      return ThemeConstant.expired_color;
     }
   }
 }

@@ -7,27 +7,34 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
+import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
+import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
+import 'package:intl/intl.dart';
 
-class PromotionDetailScreen extends StatefulWidget {
-  PromotionDetailScreen({Key key}) : super(key: key);
+class CouponDetailScreen extends StatefulWidget {
+  dynamic params;
+
+  CouponDetailScreen({this.params, Key key}) : super(key: key);
 
   @override
-  PromotionDetailScreenState createState() => new PromotionDetailScreenState();
+  CouponDetailScreenState createState() => new CouponDetailScreenState();
 }
 
-class PromotionDetailScreenState extends State<PromotionDetailScreen> {
+class CouponDetailScreenState extends State<CouponDetailScreen> {
   Size _screenSize;
   BuildContext _context;
   double _padding;
   double _heightPhoto;
-  String _status;
+  String _statusName;
+  CouponModel _couponModel;
   StreamController<ButtonSubmitEvent> qrButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
   StreamController<ButtonSubmitEvent> editButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
+
   @override
   void initState() {
     super.initState();
@@ -35,17 +42,23 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    this._couponModel = widget.params['coupon_model'];
+
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
     this._heightPhoto = this._screenSize.height * (300 / 812);
-    this._status = ThemeConstant.pending_status;
+    this._statusName = _couponModel.getStatusName();
 
     final headerPhotoSection = Container(
-      height: _heightPhoto,
-      child: SvgPicture.asset('assets/images/ic-comming-soon.svg',
-          fit: BoxFit.none),
-    );
+        height: _heightPhoto,
+        child: _couponModel.images.length > 0
+            ? ImageWidget(
+                width: _screenSize.width,
+                height: _heightPhoto,
+                imgUrl: _couponModel.images.first.image)
+            : SvgPicture.asset('assets/image/ic-comming-soon.svg',
+                fit: BoxFit.contain));
 
     Widget bottomButtonSection() {
       qrButtonController.sink.add(ButtonSubmitEvent(true));
@@ -92,7 +105,7 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
         width: _screenSize.width,
         height: 88.0,
         decoration: BoxDecoration(color: Colors.white),
-        child: this._status == ThemeConstant.pending_status
+        child: this._statusName == ThemeConstant.pending_status
             ? pendingStatusButton
             : ButtonWidget(
                 controller: qrButtonController,
@@ -108,7 +121,7 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
         child: SafeArea(
             child: Stack(children: <Widget>[
           Positioned(
-            top: 0,
+            top: -5,
             left: 0,
             width: _screenSize.width,
             child: headerPhotoSection,
@@ -118,7 +131,7 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
             left: 0.0,
             top: _heightPhoto - 70,
             width: _screenSize.width,
-            child: PromotionBody(),
+            child: promotionBody(_couponModel),
           ),
           Positioned(
             bottom: 0,
@@ -128,17 +141,7 @@ class PromotionDetailScreenState extends State<PromotionDetailScreen> {
           ),
         ])));
   }
-}
 
-class PromotionBody extends StatefulWidget {
-  @override
-  PromotionBodyState createState() {
-    // TODO: implement createState
-    return PromotionBodyState();
-  }
-}
-
-class PromotionBodyState extends State<PromotionBody> {
   Widget statusWidget(String status) {
     return Container(
       padding: EdgeInsets.all(20.0),
@@ -155,7 +158,7 @@ class PromotionBodyState extends State<PromotionBody> {
           Container(
             child: Row(
               children: <Widget>[
-                Text('21/50',
+                Text('0/${_couponModel.quantity}',
                     style: TextStyle(
                         fontSize: ThemeConstant.boxes_font_title,
                         color: ThemeConstant.white_color,
@@ -167,43 +170,33 @@ class PromotionBodyState extends State<PromotionBody> {
                   style: TextStyle(
                       fontSize: ThemeConstant.font_size_16,
                       letterSpacing: ThemeConstant.letter_spacing_026,
-                      color: ThemeConstant.grey_color),
+                      color: ThemeConstant.alto_color),
                 ),
               ],
             ),
           ),
           RectangleLabelWidget(
-            text: 'Đang chạy',
-            color: ThemeConstant.ready_color,
+            text: _couponModel.getStatusName(),
+            color: _couponModel.getStatusColor(),
           )
         ],
       ),
     );
   }
 
-  Widget buildListView() {
+  Widget buildUserListWidget() {
+    // final _userListSection = _couponModel.status == 0
+    //     ? Center()
+    //     : Container(
     final _userListSection = Container(
       padding: EdgeInsets.symmetric(vertical: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Container(
-              child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              CircleAvatar(
-                backgroundColor: Colors.greenAccent[100],
-                child: Text('A'),
-              ),
-              CircleAvatar(
-                backgroundColor: Colors.pinkAccent[100],
-                child: Text('C'),
-              ),
-            ],
-          )),
+          Container(),
           InkWell(
             onTap: () {
-              Router.pushNoParams(context, Router.PROMOTION_USER_LIST_PAGE);
+              Router.pushNoParams(_context, Router.COUPON_USER_LIST_PAGE);
             },
             child: Container(
                 width: 130,
@@ -260,7 +253,7 @@ class PromotionBodyState extends State<PromotionBody> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Mua 1 tặng 1 dành cho menu nước Chào Xuân',
+            _couponModel.title,
             style: TextStyle(
                 fontSize: ThemeConstant.font_size_24,
                 letterSpacing: ThemeConstant.letter_spacing_038,
@@ -268,9 +261,15 @@ class PromotionBodyState extends State<PromotionBody> {
                 fontWeight: ThemeConstant.fontWeightBold),
           ),
           SizedBox(height: 20.0),
-          timeRow('Thời gian bắt đầu:', '06:00 - 20/12/2019'),
+          timeRow(
+              'Thời gian bắt đầu:',
+              DateFormat('HH:mm - dd/MM/yyyy')
+                  .format(DateTime.parse(_couponModel.startDate))),
           SizedBox(height: 12.0),
-          timeRow('Thời gian kết thúc:', '23:59 - 26/12/2019'),
+          timeRow(
+              'Thời gian kết thúc:',
+              DateFormat('HH:mm - dd/MM/yyyy')
+                  .format(DateTime.parse(_couponModel.endDate))),
           SizedBox(height: 20.0),
           Container(
             height: 2.0,
@@ -299,7 +298,11 @@ class PromotionBodyState extends State<PromotionBody> {
               ),
               SizedBox(height: 10.0),
               ReadMoreText(
-                'Thích thì dùng, không thích thì dùng.\n \n Please dontsubmit pull requests directly updating this file.\n \n While were always happy to learn of new samples from the community, we need to keep this file small.\n \nThere are plenty of user-maintained indices (like Awesome Flutter) that are meant to be exhaustive, and those are great places for submitting your own work.',
+                _couponModel.description,
+                style: TextStyle(
+                    fontSize: 15,
+                    color: ThemeConstant.grey_color,
+                    letterSpacing: 0.24),
                 trimLines: 2,
                 colorClickableText: ThemeConstant.primary_color,
                 trimMode: TrimMode.Line,
@@ -309,16 +312,15 @@ class PromotionBodyState extends State<PromotionBody> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget promotionBody(CouponModel data) {
     // TODO: implement build
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          statusWidget('pending'),
+          statusWidget(_couponModel.getStatusName()),
           SizedBox(height: 10.0),
-          buildListView(),
+          buildUserListWidget(),
         ]);
   }
 }
