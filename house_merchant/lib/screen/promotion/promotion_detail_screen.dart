@@ -196,7 +196,8 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
           Container(),
           InkWell(
             onTap: () {
-              Router.pushNoParams(_context, Router.COUPON_USER_LIST_PAGE);
+              Router.push(_context, Router.COUPON_USER_LIST_PAGE,
+                  {"coupon_model": _couponModel});
             },
             child: Container(
                 width: 130,

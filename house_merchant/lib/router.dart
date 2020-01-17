@@ -38,7 +38,9 @@ class Router {
         );
 
       case COUPON_USER_LIST_PAGE:
-        return CouponUserListScreen();
+        return CouponUserListScreen(
+          params: params,
+        );
 
       case SHOP_IMAGES_PAGE:
         return StoreEditImageScreen(
