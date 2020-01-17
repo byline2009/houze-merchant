@@ -17,13 +17,13 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 import 'package:house_merchant/utils/storage.dart';
-import 'package:house_merchant/worker/upload_worker.dart';
+import 'package:house_merchant/worker/shop_worker.dart';
 import 'package:worker_manager/executor.dart';
 
 class StoreEditImageScreen extends StatefulWidget {
   dynamic params;
 
-  StoreEditImageScreen({this.params, Key key}) : super(key: key);
+  StoreEditImageScreen({Key key, this.params}) : super(key: key);
 
   @override
   StoreEditImageScreenState createState() => new StoreEditImageScreenState();
@@ -38,31 +38,55 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
       new StreamController<ButtonSubmitEvent>.broadcast();
   PickerImage imagePicker;
   int maxImage = 4;
-  final StreamController<String> statusPickedText =
-      new StreamController<String>();
+  int initImageCount = 0;
+  final StreamController<String> statusPickedText = new StreamController<String>();
   ShopRepository shopRepository = ShopRepository();
   var shopModel = ShopModel(images: []);
-  List<File> filesCompressedPick = new List<File>();
 
+  //Action Event List data
+  List<File> filesCompressedPick = new List<File>();
+  List<String> filesIdDeletedPick = new List<String>();
+
+  //Task processing
   Future<dynamic> runTaskUpload(File f) async {
     var completer = new Completer();
 
     String currentShop = await Sqflite.currentShop();
 
-    final task = Task(
-        function: uploadShopImageWorker,
-        arg: ArgUpload(
-            url: APIConstant.baseMerchantUrlShopImageCreate,
-            token: OauthAPI.token,
-            shopId: currentShop,
-            storageShared: Storage.prefs,
-            file: f));
+    final task = Task(function: uploadShopImageWorker, arg: ArgUpload(
+        url: APIConstant.baseMerchantUrlShopImageCreate,
+        token: OauthAPI.token,
+        shopId: currentShop,
+        storageShared: Storage.prefs,
+        file: f)
+    );
 
-    Executor()
-        .addTask(
-      task: task,
-    )
-        .listen((result) async {
+    Executor().addTask(task: task,).listen((result) async {
+      if (result != null && result.id != "") {
+        this.imagePicker.state.validationFilesPick.insert(0, FilePick(id: result.id, url: result.image, urlThumb: result.image_thumb));
+      }
+      completer.complete(result);
+    }).onError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
+
+  Future<dynamic> runTaskRemove(List<String> ids) async {
+    var completer = new Completer();
+
+    String currentShop = await Sqflite.currentShop();
+
+    final task = Task(function: removeShopImageWorker, arg: ArgUpload(
+        url: APIConstant.baseMerchantUrlShopImageDelete,
+        token: OauthAPI.token,
+        shopId: currentShop,
+        storageShared: Storage.prefs,
+        imageId: ids)
+    );
+
+    Executor().addTask(task: task,).listen((result) async {
       completer.complete(result);
     }).onError((error) {
       completer.completeError(error);
@@ -73,36 +97,39 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
   Future sendData() async {
     //Fetch all picked lasted
-    Future.wait(this.filesCompressedPick.map((file) {
+    await Future.wait(this.filesCompressedPick.map((file) {
       return runTaskUpload(file);
-    }).toList())
-        .then((List responses) async {
-      print('Upload successful');
+    }).toList()).then((List responses) async {
+      print('Upload ${this.filesCompressedPick.length} successful');
     });
+
+    await runTaskRemove(this.filesIdDeletedPick);
   }
 
   @override
   void initState() {
+    ShopModel shopModel = widget.params['shop_model'];
+
+    final initImages = shopModel.images.map((f) => FilePick(id: f.id, url: f.image, urlThumb: f.image_thumb),).toList();
+    initImageCount = initImages.length;
+
+    imagePicker = new PickerImage(width: 160, height: 140, type: PickerImageType.grid,
+        maxImage: maxImage, imagesInit: initImages );
+
+    imagePicker.callbackUpload = (FilePick f) async {
+      statusPickedText.add(imagePicker.state.filesPick.length.toString());
+      this.filesCompressedPick.add(f.file);
+      this.checkValidation();
+    };
+
+    imagePicker.callbackRemove = (FilePick f) async {
+      statusPickedText.add(imagePicker.state.filesPick.length.toString());
+      this.filesCompressedPick.remove(f.file);
+      this.filesIdDeletedPick.add(f.id);
+      this.checkValidation();
+    };
+
     super.initState();
-
-    imagePicker = new PickerImage(
-      width: 160,
-      height: 140,
-      type: PickerImageType.grid,
-      maxImage: maxImage,
-    );
-
-    imagePicker.callbackUpload = (File file) async {
-      statusPickedText.add(imagePicker.state.filesPick.length.toString());
-      this.filesCompressedPick.add(file);
-      this.checkValidation();
-    };
-
-    imagePicker.callbackRemove = (File file) async {
-      statusPickedText.add(imagePicker.state.filesPick.length.toString());
-      this.filesCompressedPick.remove(file);
-      this.checkValidation();
-    };
   }
 
   Widget titleInSection(String title, String subtitle) {
@@ -129,20 +156,20 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
   Widget buildBody() {
     return Container(
-      decoration: BoxDecoration(color: ThemeConstant.white_color),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          titleInSection(imagePicker.state.filesPick.length.toString(),
-              'Hình ảnh đẹp sẽ để lại một ấn tượng tốt cho khách hàng'),
-          SizedBox(height: 15),
-          Expanded(
-            child: imagePicker,
-          )
-        ],
-      ),
-    );
+        decoration: BoxDecoration(color: ThemeConstant.white_color),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            titleInSection(initImageCount.toString(),
+                'Hình ảnh đẹp sẽ để lại một ấn tượng tốt cho khách hàng'),
+            SizedBox(height: 15),
+            Expanded(
+              child: imagePicker,
+            )
+          ],
+        ),
+      );
   }
 
   bool checkValidation() {
@@ -165,39 +192,44 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
     this._padding = this._screenSize.width * 5 / 100;
 
     final buttonBottom = ButtonWidget(
-        controller: saveButtonController,
-        defaultHintText:
-            LocalizationsUtil.of(_context).translate('Lưu thay đổi'),
-        callback: () async {
-          ShopModel shopModel = widget.params['shop_model'];
+      controller: saveButtonController,
+      defaultHintText:
+      LocalizationsUtil.of(_context).translate('Lưu thay đổi'),
+      callback: () async {
 
-          try {
-            progressToolkit.state.show();
-            await sendData();
-            //Clear all
-            this.clearForm();
-            Navigator.of(context).pop();
-            Fluttertoast.showToast(
-                msg: 'Cập nhật hình ảnh thành công',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIos: 5,
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-                fontSize: 14.0);
-          } catch (e) {
-            Fluttertoast.showToast(
-                msg: e.toString(),
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIos: 5,
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-                fontSize: 14.0);
-          } finally {
-            progressToolkit.state.dismiss();
+        try {
+          progressToolkit.state.show();
+          await sendData();
+          if ( widget.params['callback']!=null ) {
+            widget.params['callback'](this.imagePicker.state.validationFilesPick);
           }
-        });
+          //Clear all
+          this.clearForm();
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(
+            msg: 'Cập nhật hình ảnh thành công',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 5,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 14.0
+          );
+        } catch (e) {
+          Fluttertoast.showToast(
+            msg: e.toString(),
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 5,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 14.0
+          );
+        } finally {
+          progressToolkit.state.dismiss();
+        }
+
+      });
 
     // TODO: implement build
     return BaseScaffoldNormal(

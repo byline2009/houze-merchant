@@ -144,112 +144,97 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
   Widget formCreate() {
     final padding = this._screenSize.width * 5 / 100;
     return Padding(
-        padding: EdgeInsets.only(top: 10, bottom: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-                LocalizationsUtil.of(context).translate(
-                    'Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'),
-                style: TextStyle(
-                  fontFamily: ThemeConstant.form_font_family_display,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.23,
-                  color: ThemeConstant.grey_color,
-                )),
-            SizedBox(height: 25),
-            this.controlHeader(
-              'Tiêu đề ưu đãi',
-            ),
-            SizedBox(height: 5),
-            TextFieldWidget(
-                controller: ftitle,
-                defaultHintText: 'Vd: Mua 1 tặng 1 tất cả chi nhánh',
-                callback: (String value) {
-                  this.checkValidation();
-                }),
-            SizedBox(height: 25),
-            this.controlHeader(
-              'Số lượng',
-            ),
-            SizedBox(height: 5),
-            TextFieldWidget(
-                controller: famount,
-                defaultHintText: 'Vd: 50',
-                keyboardType: TextInputType.number,
-                callback: (String value) {
-                  this.checkValidation();
-                }),
-            SizedBox(height: 25),
-            this.controlHeader(
-              'Thời gian hiệu lực',
-            ),
-            SizedBox(height: 5),
-            DateRangePickerWidget(
-              controller: frangeTime,
-              defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY',
-              callback: (List<DateTime> values) {
-                if (values.length == 2) {
-                  frangeTimeResult = values;
-                  this.checkValidation();
-                }
-              },
-            ),
-            SizedBox(height: 25),
-            this.controlHeader(
-              'Nội dung ưu đãi',
-            ),
-            SizedBox(height: 5),
-            TextFieldWidget(
-                controller: fdesc,
-                defaultHintText:
-                    'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...',
-                keyboardType: TextInputType.multiline,
-                callback: (String value) {
-                  this.checkValidation();
-                }),
-            SizedBox(height: 25),
-            ButtonWidget(
-                controller: sendButtonController,
-                defaultHintText:
-                    LocalizationsUtil.of(context).translate('Tạo ưu đãi'),
-                callback: () async {
-                  try {
-                    progressToolkit.state.show();
+      padding: EdgeInsets.only(top: 10, bottom: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
 
-                    final _couponModel = CouponModel(
-                      title: ftitle.Controller.text,
-                      quantity: int.parse(famount.Controller.text),
-                      startDate: frangeTimeResult[0].toUtc().toString(),
-                      endDate: frangeTimeResult[1].toUtc().toString(),
-                      description: fdesc.Controller.text,
-                      images: couponModel.images,
-                    );
+          Text(LocalizationsUtil.of(context).translate('Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'), 
+            style: TextStyle(
+              fontFamily: ThemeConstant.form_font_family_display,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.23,
+              color: ThemeConstant.grey_color,
+            )
+          ),
+          SizedBox(height: 25),
 
-                    final result =
-                        await couponRepository.createCoupon(_couponModel);
+          this.controlHeader('Tiêu đề ưu đãi',),
+          SizedBox(height: 5),
+          TextFieldWidget(controller: ftitle, defaultHintText: 'Vd: Mua 1 tặng 1 tất cả chi nhánh', callback: (String value) {
+            this.checkValidation();
+          }),
 
-                    T7GDialog.showContentDialog(context, [this.showSucessful()],
-                        closeShow: false, barrierDismissible: false);
+          SizedBox(height: 25),
 
-                    //Clear all
-                    this.clearForm();
-                  } catch (e) {
-                    Fluttertoast.showToast(
-                        msg: e.toString(),
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 5,
-                        backgroundColor: Colors.black,
-                        textColor: Colors.white,
-                        fontSize: 14.0);
-                  } finally {
-                    progressToolkit.state.dismiss();
-                  }
-                })
-          ],
-        ));
+          this.controlHeader('Số lượng',),
+          SizedBox(height: 5),
+          TextFieldWidget(controller: famount, defaultHintText: 'Vd: 50', keyboardType: TextInputType.number, callback: (String value) {
+            this.checkValidation();
+          }),
+
+          SizedBox(height: 25),
+
+          this.controlHeader('Thời gian hiệu lực',),
+          SizedBox(height: 5),
+          DateRangePickerWidget(controller: frangeTime, defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY', callback: (List<DateTime> values) {
+            if (values.length == 2) {
+              frangeTimeResult = values;
+              this.checkValidation();
+            }
+          },),
+
+          SizedBox(height: 25),
+          this.controlHeader('Nội dung ưu đãi',),
+          SizedBox(height: 5),
+          TextFieldWidget(controller: fdesc, defaultHintText: 'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...', keyboardType: TextInputType.multiline, callback: (String value) {
+            this.checkValidation();
+          }),
+
+          SizedBox(height: 25),
+          ButtonWidget(controller: sendButtonController, defaultHintText: LocalizationsUtil.of(context).translate('Tạo ưu đãi'), callback: () async {
+
+            try {
+              progressToolkit.state.show();
+
+              final _couponModel = CouponModel(
+                title: ftitle.Controller.text,
+                quantity: int.parse(famount.Controller.text),
+                startDate: frangeTimeResult[0].toUtc().toString(),
+                endDate: frangeTimeResult[1].toUtc().toString(),
+                description: fdesc.Controller.text,
+                images: couponModel.images,
+              );
+
+              final result = await couponRepository.createCoupon(_couponModel);
+
+              T7GDialog.showContentDialog(context, [
+                this.showSucessful()
+              ], closeShow: false, barrierDismissible: false);
+
+              //Clear all
+              this.clearForm();
+
+            } catch (e) {
+              Fluttertoast.showToast(
+                msg: e.toString(),
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 5,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 14.0
+              );
+            } finally {
+              progressToolkit.state.dismiss();
+            }
+            
+          })
+        ],
+      )
+    );
+    
   }
 
   Widget imagePick() {
@@ -277,18 +262,18 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
   void initState() {
     super.initState();
 
-    imagePicker.callbackUpload = (File file) async {
-      final rs = await couponRepository.uploadImage(file);
+    imagePicker.callbackUpload = (FilePick f) async {
+      final rs = await couponRepository.uploadImage(f.file);
       if (rs != null) {
         var uploadModel = new ImageModel(id: rs.id);
         couponModel.images.add(uploadModel);
-        mappingImages[path.basename(file.path)] = uploadModel;
+        mappingImages[path.basename(f.file.path)] = uploadModel;
       }
       this.checkValidation();
     };
 
-    imagePicker.callbackRemove = (File file) async {
-      couponModel.images.remove(mappingImages[path.basename(file.path)]);
+    imagePicker.callbackRemove = (FilePick f) async {
+      couponModel.images.remove(mappingImages[path.basename(f.file.path)]);
       this.checkValidation();
     };
   }
