@@ -98,16 +98,15 @@ class MoreScreenState extends State<MoreScreen> {
                     )
                   ],
                 ));
-            return Center();
           }
           return CardListSkeleton(
             shrinkWrap: true,
-            length: 1,
+            length: 4,
             config: SkeletonConfig(
               theme: SkeletonTheme.Light,
-              isShowAvatar: true,
-              isCircleAvatar: true,
-              bottomLinesCount: 0,
+              isShowAvatar: false,
+              isCircleAvatar: false,
+              bottomLinesCount: 4,
               radius: 0.0,
             ),
           );
@@ -155,6 +154,17 @@ class MoreScreenState extends State<MoreScreen> {
                     final shopModel = shopState.result;
                     return _buildBody(_profileBloc, shopModel);
                   }
+                  return CardListSkeleton(
+                    shrinkWrap: true,
+                    length: 4,
+                    config: SkeletonConfig(
+                      theme: SkeletonTheme.Light,
+                      isShowAvatar: false,
+                      isCircleAvatar: false,
+                      bottomLinesCount: 4,
+                      radius: 0.0,
+                    ),
+                  );
                 }),
             // ),
             Container(
