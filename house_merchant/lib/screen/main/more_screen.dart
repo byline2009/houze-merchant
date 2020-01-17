@@ -94,7 +94,6 @@ class MoreScreenState extends State<MoreScreen> {
   }
 
   Widget _myListView(BuildContext context) {
-
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     return ListView(
       children: <Widget>[

@@ -16,14 +16,14 @@ import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 
-class PromotionScreen extends StatefulWidget {
-  PromotionScreen({Key key}) : super(key: key);
+class CouponScreen extends StatefulWidget {
+  CouponScreen({Key key}) : super(key: key);
 
   @override
-  PromotionScreenState createState() => PromotionScreenState();
+  CouponScreenState createState() => CouponScreenState();
 }
 
-class PromotionScreenState extends State<PromotionScreen> {
+class CouponScreenState extends State<CouponScreen> {
   Size _screenSize;
   double _padding;
   CouponBloc couponBloc = CouponBloc();
@@ -181,7 +181,7 @@ class PromotionScreenState extends State<PromotionScreen> {
           child: ButtonCreateWidget(
             title: "Tạo mới",
             callback: () {
-              Router.pushNoParams(context, Router.PROMOTION_CREATE);
+              Router.pushNoParams(context, Router.COUPON_CREATE);
             },
             icon: Icon(
               Icons.add,
@@ -210,8 +210,10 @@ class PromotionScreenState extends State<PromotionScreen> {
                           itemBuilder: (c, index) {
                             return GestureDetector(
                                 onTap: () {
-                                  Router.pushNoParams(
-                                      context, Router.PROMOTION_DETAIL_PAGE);
+                                  Router.push(
+                                      context, Router.COUPON_DETAIL_PAGE, {
+                                    "coupon_model": couponModel[index],
+                                  });
                                 },
                                 child: Padding(
                                   child: this.itemCard(couponModel[index]),
@@ -250,7 +252,7 @@ class PromotionScreenState extends State<PromotionScreen> {
             child: ButtonCreateWidget(
               title: "Tạo mới",
               callback: () {
-                Router.pushNoParams(context, Router.PROMOTION_CREATE);
+                Router.pushNoParams(context, Router.COUPON_CREATE);
               },
               icon: Icon(
                 Icons.add,
@@ -270,7 +272,7 @@ class PromotionScreenState extends State<PromotionScreen> {
                       return GestureDetector(
                           onTap: () {
                             Router.pushNoParams(
-                                context, Router.PROMOTION_DETAIL_PAGE);
+                                context, Router.COUPON_DETAIL_PAGE);
                           },
                           child: Padding(
                             child: this.itemCard(products[index]),

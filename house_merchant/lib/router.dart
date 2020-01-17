@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:house_merchant/screen/main/notification_screen.dart';
-import 'package:house_merchant/screen/main/store/store_edit_time_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_create_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_detail_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_user_list_screen.dart';
 import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
 import 'package:house_merchant/screen/store/store_edit_image_screen.dart';
+import 'package:house_merchant/screen/store/store_edit_time_screen.dart';
 
 class Router {
   static const HOME_PAGE = 'app://';
@@ -14,11 +14,11 @@ class Router {
   static const BOOTSTRAP_PAGE = "app://BootStrapPage";
   static const ROUTER_PAGE = "app://RouterPage";
 
-  static const PROMOTION_CREATE = "app://PromotionCreatePage";
-  static const PROMOTION_DETAIL_PAGE = "app://PromotionDetailPage";
+  static const COUPON_CREATE = "app://CouponCreatePage";
+  static const COUPON_DETAIL_PAGE = "app://CouponDetailPage";
 
   static const NOTIFICATION_PAGE = "app://NotificationPage";
-  static const PROMOTION_USER_LIST_PAGE = "app://PromotionUserListPage";
+  static const COUPON_USER_LIST_PAGE = "app://CouponUserListPage";
 
   static const SHOP_IMAGES_PAGE = "app://ShopImages";
   static const SHOP_DESCRIPTION_PAGE = "app://ShopDescription";
@@ -26,17 +26,21 @@ class Router {
 
   Widget _getPage(String url, dynamic params) {
     switch (url) {
-      case PROMOTION_CREATE:
-        return PromotionCreateScreen();
+      case COUPON_CREATE:
+        return CouponCreateScreen();
 
       case NOTIFICATION_PAGE:
         return NotificationScreen();
 
-      case PROMOTION_DETAIL_PAGE:
-        return PromotionDetailScreen();
+      case COUPON_DETAIL_PAGE:
+        return CouponDetailScreen(
+          params: params,
+        );
 
-      case PROMOTION_USER_LIST_PAGE:
-        return PromotionUserListScreen();
+      case COUPON_USER_LIST_PAGE:
+        return CouponUserListScreen(
+          params: params,
+        );
 
       case SHOP_IMAGES_PAGE:
         return StoreEditImageScreen(

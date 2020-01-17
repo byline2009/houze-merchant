@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
+import 'package:house_merchant/custom/textfield_style1_widget.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:house_merchant/middle/bloc/shop/index.dart';
 import 'package:house_merchant/middle/bloc/shop/shop_bloc.dart';
@@ -89,7 +90,7 @@ class StoreEditDescriptionScreenState
                         ThemeConstant.primary_color),
                   ),
                   SizedBox(height: 5),
-                  TextFieldWidget(
+                  TextFieldStyle1Widget(
                       controller: fdesc,
                       defaultHintText:
                           'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...',

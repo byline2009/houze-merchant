@@ -102,7 +102,7 @@ class MainScreenState extends State<MainScreen> {
             ),
           )),
       new NaviagationBottom(
-          PromotionScreen(),
+          CouponScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
                 SvgPicture.asset("assets/images/ic-promotion-highlight.svg"),
