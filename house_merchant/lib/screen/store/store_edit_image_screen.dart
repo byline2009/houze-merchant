@@ -21,7 +21,6 @@ import 'package:house_merchant/worker/shop_worker.dart';
 import 'package:worker_manager/executor.dart';
 
 class StoreEditImageScreen extends StatefulWidget {
-
   dynamic params;
 
   StoreEditImageScreen({Key key, this.params}) : super(key: key);
@@ -31,12 +30,12 @@ class StoreEditImageScreen extends StatefulWidget {
 }
 
 class StoreEditImageScreenState extends State<StoreEditImageScreen> {
-
   ProgressHUD progressToolkit = Progress.instanceCreate();
   Size _screenSize;
   BuildContext _context;
   double _padding;
-  StreamController<ButtonSubmitEvent> saveButtonController = new StreamController<ButtonSubmitEvent>.broadcast();
+  StreamController<ButtonSubmitEvent> saveButtonController =
+      new StreamController<ButtonSubmitEvent>.broadcast();
   PickerImage imagePicker;
   int maxImage = 4;
   int initImageCount = 0;
@@ -138,15 +137,14 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         StreamBuilder(
-          stream: statusPickedText.stream,
+            stream: statusPickedText.stream,
             initialData: title,
-            builder: (BuildContext context, AsyncSnapshot snapshot)
-          {
-            return Text(
-              'Hình ảnh (${snapshot.data}/${this.maxImage} tấm)',
-              style: ThemeConstant.titleLargeStyle(Colors.black),
-            );
-        }),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              return Text(
+                'Hình ảnh (${snapshot.data}/${this.maxImage} tấm)',
+                style: ThemeConstant.titleLargeStyle(Colors.black),
+              );
+            }),
         SizedBox(height: 5),
         Text(
           subtitle,
@@ -237,19 +235,17 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
     return BaseScaffoldNormal(
         title: 'Chỉnh sửa cửa hàng',
         child: SafeArea(
-          child: Stack(children: <Widget>[
-            Container(padding: EdgeInsets.all(this._padding), child: Column(
+            child: Stack(children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(this._padding),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: buildBody()
-                ),
-                buttonBottom
-              ],
-            ), color: ThemeConstant.background_white_color,),
-            progressToolkit
-        ])
-    ));
+              children: <Widget>[Expanded(child: buildBody()), buttonBottom],
+            ),
+            color: ThemeConstant.background_white_color,
+          ),
+          progressToolkit
+        ])));
   }
 }

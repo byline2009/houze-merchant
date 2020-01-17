@@ -23,14 +23,14 @@ import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
 import 'package:path/path.dart' as path;
 
-class PromotionCreateScreen extends StatefulWidget {
-  PromotionCreateScreen({Key key}) : super(key: key);
+class CouponCreateScreen extends StatefulWidget {
+  CouponCreateScreen({Key key}) : super(key: key);
 
   @override
-  PromotionCreateScreenState createState() => new PromotionCreateScreenState();
+  CouponCreateScreenState createState() => new CouponCreateScreenState();
 }
 
-class PromotionCreateScreenState extends State<PromotionCreateScreen> {
+class CouponCreateScreenState extends State<CouponCreateScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
   Size _screenSize;
   BuildContext _context;
@@ -55,8 +55,7 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
   );
   //Model
   var couponModel = CouponModel(images: []);
-  Map<String, ImageUploadModel> mappingImages =
-      new Map<String, ImageUploadModel>();
+  Map<String, ImageModel> mappingImages = new Map<String, ImageModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -266,7 +265,7 @@ class PromotionCreateScreenState extends State<PromotionCreateScreen> {
     imagePicker.callbackUpload = (FilePick f) async {
       final rs = await couponRepository.uploadImage(f.file);
       if (rs != null) {
-        var uploadModel = new ImageUploadModel(id: rs.id);
+        var uploadModel = new ImageModel(id: rs.id);
         couponModel.images.add(uploadModel);
         mappingImages[path.basename(f.file.path)] = uploadModel;
       }

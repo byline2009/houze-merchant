@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 
 class UserModel {
@@ -12,18 +13,20 @@ class UserModel {
   UserModel({this.avatar, this.name, this.date});
 }
 
-class PromotionUserListScreen extends StatefulWidget {
-  PromotionUserListScreen({Key key}) : super(key: key);
+class CouponUserListScreen extends StatefulWidget {
+  dynamic params;
+  CouponUserListScreen({this.params, key}) : super(key: key);
 
   @override
   PromotionUsersScreenState createState() => new PromotionUsersScreenState();
 }
 
-class PromotionUsersScreenState extends State<PromotionUserListScreen> {
+class PromotionUsersScreenState extends State<CouponUserListScreen> {
   Size _screenSize;
   BuildContext _context;
   double _padding;
   List users;
+  CouponModel _couponModel;
 
   @override
   void initState() {
@@ -35,6 +38,7 @@ class PromotionUsersScreenState extends State<PromotionUserListScreen> {
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
+    this._couponModel = widget.params['coupon_model'];
 
     Widget headerWidget = Container(
       color: Colors.white,
@@ -44,7 +48,7 @@ class PromotionUsersScreenState extends State<PromotionUserListScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Ưu đãi 25% mừng Lễ Giáng Sinh 2019',
+          Text(_couponModel.title,
               style: ThemeConstant.titleLargeStyle(ThemeConstant.black_color)),
           SizedBox(height: 12),
           ThemeConstant.dividerBottom,
@@ -53,7 +57,7 @@ class PromotionUsersScreenState extends State<PromotionUserListScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Text(
-                '21/50',
+                '0/${_couponModel.quantity}',
                 style:
                     ThemeConstant.titleLargeStyle(ThemeConstant.primary_color),
               ),
@@ -79,8 +83,12 @@ class PromotionUsersScreenState extends State<PromotionUserListScreen> {
             leading: Container(
               width: 50,
               height: 50,
-              child:
-                  SvgPicture.asset("assets/images/ic-promotion-highlight.svg"),
+              child: CircleAvatar(
+                  backgroundColor: ThemeConstant.alto_color,
+                  child: Text(
+                    user.name[0],
+                    style: ThemeConstant.titleLargeStyle(Colors.white),
+                  )),
             ),
             title: Text(
               user.name,
@@ -125,7 +133,7 @@ List getUserList() {
   return [
     UserModel(
       avatar: '',
-      name: "1. Minh Ngoc Nguyen",
+      name: "Minh Ngoc Nguyen",
       date: "Ngày sử dụng: 19:31 - 26/12/2020",
     ),
     UserModel(

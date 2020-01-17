@@ -10,43 +10,45 @@ class ImageMetaModel extends Equatable {
   });
 
   factory ImageMetaModel.fromJson(Map<String, dynamic> json) => json != null
-    ? new ImageMetaModel(
-        id: json["id"],
-        url: json["url"] ?? json["image"],
-      )
-    : null;
+      ? new ImageMetaModel(
+          id: json['id'],
+          url: json['url'] ?? json['image'],
+        )
+      : null;
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "url": url,
-  };
+        'id': id,
+        'url': url,
+      };
 }
 
 class ImageModel {
   String id;
   String image;
-  String image_thumb;
+  String imageThumb;
 
-  ImageModel({this.id, this.image, this.image_thumb});
+  ImageModel({
+    this.id,
+    this.image,
+    this.imageThumb,
+  });
 
   ImageModel.map(dynamic obj) {
     this.id = obj['id'];
     this.image = obj['image'];
-    this.image_thumb = obj['image_thumb'];
+    this.imageThumb = obj['image_thumb'];
   }
 
   factory ImageModel.fromJson(Map<String, dynamic> json) {
     return ImageModel(
-      id: json['id'],
-      image: json['image'],
-      image_thumb: json['image_thumb'],
-    );
+        id: json['id'], image: json['image'], imageThumb: json['image_thumb']);
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'image': image
-  };
+        'id': id,
+        'image': image,
+        'image_thumb': imageThumb,
+      };
 }
 
 class ImageUploadModel {
