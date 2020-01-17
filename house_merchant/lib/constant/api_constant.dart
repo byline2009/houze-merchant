@@ -9,6 +9,7 @@ class APIConstant {
 
     baseMerchantUrlShop,
     baseMerchantUrlShopImageCreate,
+    baseMerchantUrlShopImageDelete,
 
     baseMerchantUrlCoupon,
     baseMerchantUrlCouponUpload;
@@ -25,6 +26,7 @@ class APIConstant {
     APIConstant.baseMerchantUrlCouponUpload = baseMerchantUrl + "/coupon/upload-image/";
     APIConstant.baseMerchantUrlShop = baseMerchantUrl + "/shop/";
     APIConstant.baseMerchantUrlShopImageCreate = baseMerchantUrl + "/shop/shop-image-create/";
+    APIConstant.baseMerchantUrlShopImageDelete = baseMerchantUrl + "/shop/shop-image-delete/";
     
   }
 }

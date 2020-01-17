@@ -9,7 +9,6 @@ import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/middle/api/oauth_api.dart';
-import 'package:house_merchant/middle/api/shop_api.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
@@ -18,14 +17,14 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 import 'package:house_merchant/utils/storage.dart';
-import 'package:house_merchant/worker/upload_worker.dart';
+import 'package:house_merchant/worker/shop_worker.dart';
 import 'package:worker_manager/executor.dart';
 
 class StoreEditImageScreen extends StatefulWidget {
 
   dynamic params;
 
-  StoreEditImageScreen({this.params, Key key}) : super(key: key);
+  StoreEditImageScreen({Key key, this.params}) : super(key: key);
 
   @override
   StoreEditImageScreenState createState() => new StoreEditImageScreenState();
@@ -44,8 +43,12 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   final StreamController<String> statusPickedText = new StreamController<String>();
   ShopRepository shopRepository = ShopRepository();
   var shopModel = ShopModel(images: []);
-  List<File> filesCompressedPick = new List<File>();
 
+  //Action Event List data
+  List<File> filesCompressedPick = new List<File>();
+  List<String> filesIdDeletedPick = new List<String>();
+
+  //Task processing
   Future<dynamic> runTaskUpload(File f) async {
     var completer = new Completer();
 
@@ -60,6 +63,31 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
     );
 
     Executor().addTask(task: task,).listen((result) async {
+      if (result != null && result.id != "") {
+        this.imagePicker.state.validationFilesPick.insert(0, FilePick(id: result.id, url: result.image, urlThumb: result.image_thumb));
+      }
+      completer.complete(result);
+    }).onError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
+
+  Future<dynamic> runTaskRemove(List<String> ids) async {
+    var completer = new Completer();
+
+    String currentShop = await Sqflite.currentShop();
+
+    final task = Task(function: removeShopImageWorker, arg: ArgUpload(
+        url: APIConstant.baseMerchantUrlShopImageDelete,
+        token: OauthAPI.token,
+        shopId: currentShop,
+        storageShared: Storage.prefs,
+        imageId: ids)
+    );
+
+    Executor().addTask(task: task,).listen((result) async {
       completer.complete(result);
     }).onError((error) {
       completer.completeError(error);
@@ -70,20 +98,20 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
   Future sendData() async {
     //Fetch all picked lasted
-    Future.wait(this.filesCompressedPick.map((file) {
+    await Future.wait(this.filesCompressedPick.map((file) {
       return runTaskUpload(file);
     }).toList()).then((List responses) async {
-      print('Upload successful');
+      print('Upload ${this.filesCompressedPick.length} successful');
     });
+
+    await runTaskRemove(this.filesIdDeletedPick);
   }
 
   @override
   void initState() {
     ShopModel shopModel = widget.params['shop_model'];
 
-    print("EDIT IMAGE INIT STATE");
-
-    final initImages = shopModel.images.map((f) => FilePick(url: f.image),).toList();
+    final initImages = shopModel.images.map((f) => FilePick(id: f.id, url: f.image, urlThumb: f.image_thumb),).toList();
     initImageCount = initImages.length;
 
     imagePicker = new PickerImage(width: 160, height: 140, type: PickerImageType.grid,
@@ -98,6 +126,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
     imagePicker.callbackRemove = (FilePick f) async {
       statusPickedText.add(imagePicker.state.filesPick.length.toString());
       this.filesCompressedPick.remove(f.file);
+      this.filesIdDeletedPick.add(f.id);
       this.checkValidation();
     };
 
@@ -169,11 +198,13 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
       defaultHintText:
       LocalizationsUtil.of(_context).translate('Lưu thay đổi'),
       callback: () async {
-        ShopModel shopModel = widget.params['shop_model'];
 
         try {
           progressToolkit.state.show();
           await sendData();
+          if ( widget.params['callback']!=null ) {
+            widget.params['callback'](this.imagePicker.state.validationFilesPick);
+          }
           //Clear all
           this.clearForm();
           Navigator.of(context).pop();
@@ -201,8 +232,6 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
         }
 
       });
-
-    print("IMAGE BUILD BODY");
 
     // TODO: implement build
     return BaseScaffoldNormal(

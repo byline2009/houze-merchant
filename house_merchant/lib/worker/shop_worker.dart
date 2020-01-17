@@ -6,6 +6,7 @@ import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/middle/api/base_api.dart';
 import 'package:house_merchant/middle/api/oauth_api.dart';
 import 'package:house_merchant/middle/model/image_meta_model.dart';
+import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/utils/storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,9 +14,10 @@ class ArgUpload {
   String url;
   String token;
   String shopId;
+  List<String> imageId;
   SharedPreferences storageShared;
   File file;
-  ArgUpload({this.shopId, this.file, this.url, this.token, this.storageShared});
+  ArgUpload({this.shopId, this.file, this.url, this.token, this.storageShared, this.imageId});
 }
 
 class ShopRequest extends OauthAPI {
@@ -26,7 +28,7 @@ class ShopRequest extends OauthAPI {
     OauthAPI.init();
   }
 
-  Future<dynamic> createImage(String url, String token, String shopId, File image) async {
+  Future<ImageModel> createImage(String url, String token, String shopId, File image) async {
     try {
       FormData formData =
       new FormData.from({"image": new UploadFileInfo(image, "image.jpg")});
@@ -42,12 +44,40 @@ class ShopRequest extends OauthAPI {
       return throw e;
     }
   }
+
+  Future<bool> removeImage(String url, String token, String shopId, List<String> ids) async {
+    if (ids.length == 0) {
+      return true;
+    }
+
+    try {
+
+      final response = await this.post(
+        "${url}${shopId}",
+        data: ImageDeleteRequest(
+          listId: ids
+        )
+      );
+
+      return true;
+    } on DioError catch (e) {
+      return throw e;
+    }
+  }
 }
 
 //Top level function
-Future<bool> uploadShopImageWorker(ArgUpload arg) async {
+Future<ImageModel> uploadShopImageWorker(ArgUpload arg) async {
   //Update shop image
-  final shopReuest = ShopRequest(arg.url, arg.storageShared);
-  final result = await shopReuest.createImage(arg.url, arg.token, arg.shopId, arg.file);
-  return result!=null;
+  final shopRequest = ShopRequest(arg.url, arg.storageShared);
+  final result = await shopRequest.createImage(arg.url, arg.token, arg.shopId, arg.file);
+  return result;
+}
+
+//Top level function
+Future<bool> removeShopImageWorker(ArgUpload arg) async {
+  //Update shop image
+  final shopRequest = ShopRequest(arg.url, arg.storageShared);
+  final result = await shopRequest.removeImage(arg.url, arg.token, arg.shopId, arg.imageId);
+  return result;
 }

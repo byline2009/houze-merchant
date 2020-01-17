@@ -5,11 +5,13 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/flutter_skeleton/flutter_skeleton.dart';
 import 'package:house_merchant/custom/tags_widget.dart';
 import 'package:house_merchant/middle/bloc/shop/index.dart';
+import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
+import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 
@@ -248,6 +250,11 @@ class StoreScreenState extends State<StoreScreen> {
                           onTap: () async {
                             Router.push(context, Router.SHOP_IMAGES_PAGE, {
                               "shop_model": shopModel,
+                              "callback": (List<FilePick> validationPicks) {
+                                shopModel.images = validationPicks.map((f) {
+                                  return ImageModel(id: f.id, image: f.url, image_thumb: f.urlThumb);
+                                }).toList();
+                              }
                             });
                           },
                           child: editButton()),
@@ -274,12 +281,9 @@ class StoreScreenState extends State<StoreScreen> {
                       title: 'Thời gian',
                       child: timeStore(shopModel),
                       action: InkWell(
-                          onTap: () async {
+                          onTap: () {
                             Router.push(context, Router.SHOP_TIME_PAGE, {
-                              "shop_model": shopModel,
-                              "callback": (ShopModel _shopModel) {
-                                print(_shopModel);
-                              }
+                              "shop_model": shopModel
                             });
                           },
                           child: editButton()),

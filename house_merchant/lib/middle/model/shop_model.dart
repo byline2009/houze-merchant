@@ -47,3 +47,19 @@ class ShopModel {
     return data;
   }
 }
+
+class ImageDeleteRequest {
+  List<String> listId;
+
+  ImageDeleteRequest({this.listId});
+
+  ImageDeleteRequest.fromJson(Map<String, dynamic> json) {
+    listId = json['list_id'].cast<String>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['list_id'] = this.listId;
+    return data;
+  }
+}

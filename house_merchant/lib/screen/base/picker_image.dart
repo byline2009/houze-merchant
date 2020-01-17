@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,11 @@ typedef void callBackUploadHandler(FilePick file);
 enum PickerImageType { grid, list }
 
 class FilePick {
+  String id;
   String url;
+  String urlThumb;
   File file;
-  FilePick({this.file, this.url});
+  FilePick({this.id, this.file, this.url, this.urlThumb});
 }
 
 class PickerImage extends StatefulWidget {
@@ -38,7 +41,11 @@ class PickerImage extends StatefulWidget {
       this.height,
       this.imagesInit,
       this.type = PickerImageType.grid})
-      : super(key: key);
+      : super(key: key) {
+    if (this.imagesInit == null) {
+      this.imagesInit = new List<FilePick>();
+    }
+  }
 
   void clear() {
     state.clear();
@@ -50,6 +57,8 @@ class PickerImage extends StatefulWidget {
 
 class PickerImageState extends State<PickerImage> {
   List<FilePick> filesPick = new List<FilePick>();
+  //Final pick
+  List<FilePick> validationFilesPick = new List<FilePick>();
   File _fileSelected;
   List<Future<dynamic>> _uploadParrallel = new List<Future<dynamic>>();
 
@@ -67,6 +76,7 @@ class PickerImageState extends State<PickerImage> {
 
   void fillWithInitImages() {
     this.filesPick = this.filesPick + widget.imagesInit;
+    this.validationFilesPick = this.validationFilesPick + widget.imagesInit;
   }
 
   Future<void> uploadImage(FilePick file) async {
@@ -135,10 +145,16 @@ class PickerImageState extends State<PickerImage> {
                       fit: BoxFit.cover,
                       width: widget.width,
                       height: widget.height,
-                    ) : Image.network(f.url,
-                      fit: BoxFit.cover,
+                    ) : CachedNetworkImage(
+                      imageUrl: f.url,
+                      placeholder: (context, url) =>
+                          Center(child: CupertinoActivityIndicator()),
+                      errorWidget: (context, url, error) =>
+                          Center(child: Icon(Icons.error)),
                       width: widget.width,
-                      height: widget.height,),
+                      height: widget.height,
+                      fit: BoxFit.cover,
+                    ),
                   ],
                 )),),
         Positioned(
@@ -155,6 +171,7 @@ class PickerImageState extends State<PickerImage> {
               onPressed: () {
                 setState(() {
                   this.filesPick.remove(f);
+                  this.validationFilesPick.remove(f);
                   // Clear main picture
                   if (this.filesPick.length == 0) {
                     this._fileSelected = null;

@@ -248,6 +248,20 @@ class OauthAPI {
     return response;
   }
 
+  Future<dynamic> delete(String path, {
+    data,
+    Map<String, dynamic> queryParameters,
+    Options options,
+    CancelToken cancelToken,
+  }) async {
+
+    var response = dioInstance.delete(path, data: data, queryParameters: queryParameters,
+      options: options,
+      cancelToken: cancelToken,);
+
+    return response;
+  }
+
   static getApiUrl(String path) {
     return APIConstant.baseMerchantUrl + path;
   }
