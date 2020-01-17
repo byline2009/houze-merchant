@@ -63,7 +63,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
     Executor().addTask(task: task,).listen((result) async {
       if (result != null && result.id != "") {
-        this.imagePicker.state.validationFilesPick.insert(0, FilePick(id: result.id, url: result.image, urlThumb: result.image_thumb));
+        this.imagePicker.state.validationFilesPick.insert(0, FilePick(id: result.id, url: result.image, urlThumb: result.imageThumb));
       }
       completer.complete(result);
     }).onError((error) {
@@ -110,7 +110,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   void initState() {
     ShopModel shopModel = widget.params['shop_model'];
 
-    final initImages = shopModel.images.map((f) => FilePick(id: f.id, url: f.image, urlThumb: f.image_thumb),).toList();
+    final initImages = shopModel.images.map((f) => FilePick(id: f.id, url: f.image, urlThumb: f.imageThumb),).toList();
     initImageCount = initImages.length;
 
     imagePicker = new PickerImage(width: 160, height: 140, type: PickerImageType.grid,

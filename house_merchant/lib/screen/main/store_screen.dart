@@ -52,7 +52,7 @@ class StoreScreenState extends State<StoreScreen> {
               return Container(child: ImageWidget(
                 width: 120,
                 height: 120,
-                imgUrl: shopModel.images[index].image_thumb,
+                imgUrl: shopModel.images[index].imageThumb,
               ), padding: EdgeInsets.only(right: 15),);
             },
             //separatorBuilder: (BuildContext context, int index) => SizedBox(width: 15),)
@@ -252,7 +252,7 @@ class StoreScreenState extends State<StoreScreen> {
                               "shop_model": shopModel,
                               "callback": (List<FilePick> validationPicks) {
                                 shopModel.images = validationPicks.map((f) {
-                                  return ImageModel(id: f.id, image: f.url, image_thumb: f.urlThumb);
+                                  return ImageModel(id: f.id, image: f.url, imageThumb: f.urlThumb);
                                 }).toList();
                               }
                             });

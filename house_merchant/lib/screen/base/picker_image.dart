@@ -132,55 +132,68 @@ class PickerImageState extends State<PickerImage> {
   Widget photoImage(FilePick f) {
     return Container(
         child: Stack(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.only(top: 10, right: 5),
-            child: ClipRRect(
-                borderRadius: new BorderRadius.circular(4.0),
-                child: Stack(
-                  overflow: Overflow.clip,
-                  children: <Widget>[
-                    f.file != null ? Image.file(
-                      f.file,
-                      fit: BoxFit.cover,
-                      width: widget.width,
-                      height: widget.height,
-                    ) : CachedNetworkImage(
-                      imageUrl: f.url,
-                      placeholder: (context, url) =>
-                          Center(child: CupertinoActivityIndicator()),
-                      errorWidget: (context, url, error) =>
-                          Center(child: Icon(Icons.error)),
-                      width: widget.width,
-                      height: widget.height,
-                      fit: BoxFit.cover,
-                    ),
-                  ],
-                )),),
-        Positioned(
-            top: -10,
-            right: -10,
-            child: IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/ic-close-bgred.svg',
-                width: 30.0,
-                height: 30.0,
-              ),
-              iconSize: 35,
-              color: Colors.red[700],
-              onPressed: () {
-                setState(() {
-                  this.filesPick.remove(f);
-                  this.validationFilesPick.remove(f);
-                  // Clear main picture
-                  if (this.filesPick.length == 0) {
-                    this._fileSelected = null;
-                  }
-                  widget.callbackRemove(f);
-                });
-              },
-            ))
-      ],
+          children: <Widget>[
+            Container(
+                padding: EdgeInsets.only(top: 10, right: 5),
+                child: ClipRRect(
+                    borderRadius: new BorderRadius.circular(4.0),
+                    child: Stack(
+                      overflow: Overflow.clip,
+                      children: <Widget>[
+                        f.file != null ? Image.file(
+                          f.file,
+                          fit: BoxFit.cover,
+                          width: widget.width,
+                          height: widget.height,
+                        ) : Container(
+                          child: CachedNetworkImage(
+                            imageUrl: f.url,
+                            placeholder: (context, url) => Center(child: CupertinoActivityIndicator()),
+                            errorWidget: (context, url, error) => Center(child: Icon(Icons.error)),
+                            width: widget.width,
+                            height: widget.height,
+                            fit: BoxFit.cover,
+                          ),
+                          width: widget.width,
+                          height: widget.height,
+                        )
+                      ],
+                    )
+
+                ),),
+
+//                CachedNetworkImage(
+//                  imageUrl: f.url + "?session=" + DateTime.now().toIso8601String(),
+//                  placeholder: (context, url) => Center(child: CupertinoActivityIndicator()),
+//                  errorWidget: (context, url, error) => Center(child: Icon(Icons.error)),
+//                  width: widget.width,
+//                  height: widget.height,
+//                  fit: BoxFit.cover,
+//                ),
+            Positioned(
+                top: -10,
+                right: -10,
+                child: IconButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/ic-close-bgred.svg',
+                    width: 30.0,
+                    height: 30.0,
+                  ),
+                  iconSize: 35,
+                  color: Colors.red[700],
+                  onPressed: () {
+                    setState(() {
+                      this.filesPick.remove(f);
+                      this.validationFilesPick.remove(f);
+                      // Clear main picture
+                      if (this.filesPick.length == 0) {
+                        this._fileSelected = null;
+                      }
+                      widget.callbackRemove(f);
+                    });
+                  },
+                ))
+          ],
     ));
   }
 
@@ -227,16 +240,16 @@ class PickerImageState extends State<PickerImage> {
     if (widget.type == PickerImageType.grid) {
       return Container(
           child: GridView.builder(
-        itemCount: listImages.length,
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: listImages[index],
-          );
-        },
-      ));
+            itemCount: listImages.length,
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: listImages[index],
+              );
+            },
+          ),);
     }
 
     return Container(
