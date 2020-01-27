@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/textfield_style1_widget.dart';
@@ -10,6 +12,7 @@ import 'package:house_merchant/middle/bloc/shop/index.dart';
 import 'package:house_merchant/middle/bloc/shop/shop_bloc.dart';
 import 'package:house_merchant/middle/bloc/shop/shop_event.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
+import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
@@ -29,6 +32,7 @@ class StoreEditDescriptionScreenState
   Size _screenSize;
   double _padding;
 
+  ShopRepository shopRepository = new ShopRepository();
   final fdesc = TextFieldWidgetController();
 
   StreamController<ButtonSubmitEvent> saveButtonController =
@@ -107,7 +111,7 @@ class StoreEditDescriptionScreenState
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
 
-    var shopModel = widget.params['shop_model'];
+    var shopModel = widget.params['shop_model'] as ShopModel;
 
     Widget saveDataButton(ShopBloc shopBloc) {
       return Positioned(
@@ -120,7 +124,7 @@ class StoreEditDescriptionScreenState
                   LocalizationsUtil.of(context).translate('Lưu thay đổi'),
               callback: () async {
                 shopBloc
-                    .add(SaveButtonPressed(description: fdesc.Controller.text));
+                    .add(SaveButtonPressed(name: shopModel.name, description: fdesc.Controller.text));
               }));
     }
 
@@ -128,13 +132,52 @@ class StoreEditDescriptionScreenState
     return BaseScaffoldNormal(
         title: 'Chỉnh sửa cửa hàng',
         child: SafeArea(
-            child: Stack(children: <Widget>[
-          Container(
-            decoration:
-                BoxDecoration(color: ThemeConstant.background_grey_color),
-          ),
-          buildBody(),
-          saveDataButton(shopBloc)
-        ])));
+          child: BlocListener(
+            bloc: shopBloc,
+            listener: (context, state) async {
+              if (state is ShopSuccessful) {
+                progressToolkit.state.show();
+                if ( widget.params['callback']!=null ) {
+                  var shopModel = widget.params['shop_model'] as ShopModel;
+                  shopModel.description = fdesc.Controller.text;
+                  widget.params['callback'](shopModel);
+                }
+                Navigator.of(context).pop();
+              }
+
+              if (state is ShopFailure) {
+                Fluttertoast.showToast(
+                  msg: state.error.toString(),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIos: 5,
+                  backgroundColor: Colors.black,
+                  textColor: Colors.white,
+                  fontSize: 14.0
+                );
+                progressToolkit.state.dismiss();
+              }
+            },
+            child: BlocBuilder<ShopBloc, ShopState>(
+              bloc: shopBloc,
+              builder: (
+                BuildContext context,
+                ShopState state,
+            ) {
+
+              if (state is ShopLoading) {
+                progressToolkit.state.show();
+              }
+
+              return Stack(children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(color: ThemeConstant.background_grey_color),
+                ),
+                buildBody(),
+                saveDataButton(shopBloc),
+                progressToolkit
+              ]);
+            }))
+    ));
   }
 }

@@ -17,12 +17,14 @@ class ShopGetDetail extends ShopEvent {
 }
 
 class SaveButtonPressed extends ShopEvent {
+  final String name;
   final String description;
 
   SaveButtonPressed({
+    this.name,
     this.description,
-  }) : super([description]);
+  }) : super([name, description]);
 
   @override
-  String toString() => 'SaveButtonPressed { description: $description }';
+  String toString() => 'SaveButtonPressed { name: $name, description: $description }';
 }

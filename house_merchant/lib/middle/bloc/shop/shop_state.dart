@@ -26,6 +26,11 @@ class ShopLoading extends ShopState {
   String toString() => 'ShopLoading';
 }
 
+class ShopSuccessful extends ShopState {
+  @override
+  String toString() => 'ShopSuccessful';
+}
+
 class ShopFailure extends ShopState {
   final String error;
 
