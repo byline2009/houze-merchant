@@ -87,17 +87,17 @@ class StoreEditDescriptionScreenState
                   Text(
                     'Nội dung mô tả',
                     style: ThemeConstant.subtitleStyle(
-                        ThemeConstant.primary_color),
+                        ThemeConstant.grey_color),
                   ),
                   SizedBox(height: 5),
-                  TextFieldStyle1Widget(
-                      controller: fdesc,
-                      defaultHintText:
-                          'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...',
-                      keyboardType: TextInputType.multiline,
-                      callback: (String value) {
-                        checkValidation();
-                      })
+                  TextFieldWidget(
+                    controller: fdesc,
+                    defaultHintText:
+                        'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...',
+                    keyboardType: TextInputType.multiline,
+                    callback: (String value) {
+                      checkValidation();
+                    })
                 ])));
   }
 
