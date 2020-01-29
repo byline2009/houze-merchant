@@ -39,10 +39,12 @@ class StoreEditDescriptionScreenState
       new StreamController<ButtonSubmitEvent>.broadcast();
   ProgressHUD progressToolkit = Progress.instanceCreate();
 
+  ShopModel _shopModel;
+
   @override
   void initState() {
-    ShopModel data = widget.params['shop_model'];
-    fdesc.Controller.text = data.description;
+    _shopModel = widget.params['shop_model'];
+    fdesc.Controller.text = _shopModel.description;
     super.initState();
   }
 
@@ -111,8 +113,6 @@ class StoreEditDescriptionScreenState
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
 
-    var shopModel = widget.params['shop_model'] as ShopModel;
-
     Widget saveDataButton(ShopBloc shopBloc) {
       return Positioned(
           bottom: 20.0,
@@ -123,8 +123,9 @@ class StoreEditDescriptionScreenState
               defaultHintText:
                   LocalizationsUtil.of(context).translate('Lưu thay đổi'),
               callback: () async {
+                this._shopModel.description = fdesc.Controller.text;
                 shopBloc
-                    .add(SaveButtonPressed(name: shopModel.name, description: fdesc.Controller.text));
+                    .add(SaveButtonPressed(shopModel: this._shopModel));
               }));
     }
 
@@ -143,6 +144,15 @@ class StoreEditDescriptionScreenState
                   widget.params['callback'](shopModel);
                 }
                 Navigator.of(context).pop();
+                Fluttertoast.showToast(
+                    msg: 'Cập nhật mô tả thành công',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIos: 5,
+                    backgroundColor: Colors.black,
+                    textColor: Colors.white,
+                    fontSize: 14.0
+                );
               }
 
               if (state is ShopFailure) {

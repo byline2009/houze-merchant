@@ -24,9 +24,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     if (event is SaveButtonPressed) {
       try {
         yield ShopLoading();
-        final result = await shopRepository.updateDescription(
-          event.name,
-          event.description);
+        final result = await shopRepository.updateInfo(event.shopModel);
         yield ShopSuccessful();
       } catch (error) {
         yield ShopFailure(error: error.toString());

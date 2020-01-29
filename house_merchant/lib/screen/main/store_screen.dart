@@ -82,7 +82,7 @@ class StoreScreenState extends State<StoreScreen> {
               color: ThemeConstant.background_grey_color,
               borderRadius: BorderRadius.all(Radius.circular(4.0)),
             ),
-            child: Text(shopModel.description.length > 0
+            child: Text(shopModel.description != null && shopModel.description.length > 0
                 ? shopModel.description
                 : 'Chưa có mô tả'))
       ],
@@ -90,6 +90,24 @@ class StoreScreenState extends State<StoreScreen> {
   }
 
   Widget timeStore(ShopModel shopModel) {
+    if (shopModel.hours.length == 0) {
+      return Padding(child: Center(child: Text('Chưa có giờ làm việc')), padding: EdgeInsets.only(top:15),);
+    }
+
+    final Map<int, bool> disableWeekday = <int,bool>{
+      0: true,
+      1: true,
+      2: true,
+      3: true,
+      4: true,
+      5: true,
+      6: true,
+    };
+
+    shopModel.hours.forEach((f) {
+      disableWeekday[f.weekday] = false;
+    });
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,22 +117,40 @@ class StoreScreenState extends State<StoreScreen> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
-                TagsWidget(text: 'T2'),
+                TagsWidget(
+                  text: 'T2',
+                  isDisable: disableWeekday[0] ?? false,
+                ),
                 SizedBox(width: 10),
-                TagsWidget(text: 'T3'),
+                TagsWidget(
+                  text: 'T3',
+                  isDisable: disableWeekday[1]?? false,
+                ),
                 SizedBox(width: 10),
-                TagsWidget(text: 'T4'),
+                TagsWidget(
+                  text: 'T4',
+                  isDisable: disableWeekday[2]?? false,
+                ),
                 SizedBox(width: 10),
-                TagsWidget(text: 'T5'),
+                TagsWidget(
+                  text: 'T5',
+                  isDisable: disableWeekday[3]?? false,
+                ),
                 SizedBox(width: 10),
-                TagsWidget(text: 'T6'),
+                TagsWidget(
+                  text: 'T6',
+                  isDisable: disableWeekday[4]?? false,
+                ),
                 SizedBox(width: 10),
                 TagsWidget(
                   text: 'T7',
-                  isDisable: true,
+                  isDisable: disableWeekday[5]?? false,
                 ),
                 SizedBox(width: 10),
-                TagsWidget(text: 'CN', isDisable: true),
+                TagsWidget(
+                  text: 'CN',
+                  isDisable: disableWeekday[6]?? false,
+                ),
               ],
             ),
             height: 40),
@@ -142,7 +178,7 @@ class StoreScreenState extends State<StoreScreen> {
                                 fontSize: ThemeConstant.form_font_small,
                                 fontWeight: FontWeight.w600)),
                         SizedBox(height: 5),
-                        Text('08:00',
+                        Text(shopModel.hours[0].startTime,
                             style: TextStyle(
                                 color: ThemeConstant.black_color,
                                 fontFamily:
@@ -173,7 +209,7 @@ class StoreScreenState extends State<StoreScreen> {
                                 fontSize: ThemeConstant.form_font_small,
                                 fontWeight: FontWeight.w600)),
                         SizedBox(height: 5),
-                        Text('08:00',
+                        Text(shopModel.hours[0].endTime,
                             style: TextStyle(
                                 color: ThemeConstant.black_color,
                                 fontFamily:
@@ -261,7 +297,7 @@ class StoreScreenState extends State<StoreScreen> {
                       padding: EdgeInsets.all(this._padding),
                     )),
                     SliverToBoxAdapter(
-                        child: BoxesContainer(
+                      child: BoxesContainer(
                       title: 'Mô tả',
                       child: descriptionStore(shopModel),
                       action: InkWell(
@@ -269,7 +305,6 @@ class StoreScreenState extends State<StoreScreen> {
                             Router.push(context, Router.SHOP_DESCRIPTION_PAGE, {
                               "shop_model": shopModel,
                               "callback": (ShopModel _shopModel) {
-                                print("[callback Mo ta:] $_shopModel");
                                 shopModel.description = _shopModel.description;
                               }
                             });
@@ -279,17 +314,17 @@ class StoreScreenState extends State<StoreScreen> {
                     )),
                     SliverToBoxAdapter(
                         child: BoxesContainer(
-                      title: 'Thời gian',
-                      child: timeStore(shopModel),
-                      action: InkWell(
-                          onTap: () {
-                            Router.push(context, Router.SHOP_TIME_PAGE, {
-                              "shop_model": shopModel
-                            });
-                          },
-                          child: editButton()),
-                      padding: EdgeInsets.all(this._padding),
-                    )),
+                        title: 'Thời gian',
+                        child: timeStore(shopModel),
+                        action: InkWell(
+                            onTap: () {
+                              Router.push(context, Router.SHOP_TIME_PAGE, {
+                                "shop_model": shopModel
+                              });
+                            },
+                            child: editButton()),
+                        padding: EdgeInsets.all(this._padding),
+                      )),
                   ]);
             }
 
