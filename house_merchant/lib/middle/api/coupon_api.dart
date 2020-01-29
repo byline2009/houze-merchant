@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:house_merchant/constant/api_constant.dart';
-import 'package:house_merchant/middle/api/base_api.dart';
 import 'package:house_merchant/middle/api/oauth_api.dart';
 import 'package:house_merchant/middle/model/base_model.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';

@@ -32,8 +32,11 @@ class ShopModel {
   List<ImageModel> images = List<ImageModel>();
   List<Hours> hours = List<Hours>();
 
-  ShopModel(
-    {this.id,
+  List<dynamic> images = List<dynamic>();
+  List<dynamic> hours = List<dynamic>();
+
+  ShopModel({
+    this.id,
     this.name,
     this.description,
     this.status,
@@ -49,6 +52,7 @@ class ShopModel {
     status = json['status'];
     lat = json['lat'];
     long = json['long'];
+
     if (json['images'] != null) {
       images = new List<ImageModel>();
       json['images'].forEach((v) {
@@ -79,6 +83,10 @@ class ShopModel {
     }
     return data;
   }
+
+  String getStatusName() {
+    return status == 0 ? 'Đang hoạt động' : 'Chưa hoạt động';
+  }
 }
 
 class ImageDeleteRequest {
@@ -93,6 +101,7 @@ class ImageDeleteRequest {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['list_id'] = this.listId;
+
     return data;
   }
 }

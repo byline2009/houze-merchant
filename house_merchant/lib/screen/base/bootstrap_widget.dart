@@ -26,8 +26,8 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    final _loginBloc = LoginBloc(authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
+    final _loginBloc = LoginBloc(
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
 
     //Get default language
     final getLanguage = LanguageModel(
@@ -38,61 +38,61 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
     locale = Locale(getLanguage.locale, getLanguage.locale.toUpperCase());
 
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<LoginBloc>(
-          create: (BuildContext context) => _loginBloc,
-        ),
-      ],
-      child: MaterialApp(
-        builder: (BuildContext context, Widget child) {
-          final MediaQueryData data = MediaQuery.of(context);
-          return MediaQuery(data: data.copyWith(textScaleFactor: 1.0,), child: child);
-        },
-        showPerformanceOverlay: false,
-        localizationsDelegates: [
-          LocalizationsDelegateUtil(),
-          CupertinoLocalizationsVi.delegate,
-          DefaultCupertinoLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
+        providers: [
+          BlocProvider<LoginBloc>(
+            create: (BuildContext context) => _loginBloc,
+          ),
         ],
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          bottomAppBarColor: ThemeConstant.primary_color,
-          primaryColorBrightness: Brightness.light,
-        ),
-        locale: locale,
-        supportedLocales: [
-          const Locale('en', 'EN'),
-          const Locale('vi', 'VI'),
-        ],
-        debugShowCheckedModeBanner: false,
-        home: BlocBuilder(
-          bloc: _loginBloc.authenticationBloc,
-          builder: (BuildContext context, AuthenticationState currentState) {
+        child: MaterialApp(
+            builder: (BuildContext context, Widget child) {
+              final MediaQueryData data = MediaQuery.of(context);
+              return MediaQuery(
+                  data: data.copyWith(
+                    textScaleFactor: 1.0,
+                  ),
+                  child: child);
+            },
+            showPerformanceOverlay: false,
+            localizationsDelegates: [
+              LocalizationsDelegateUtil(),
+              CupertinoLocalizationsVi.delegate,
+              DefaultCupertinoLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              bottomAppBarColor: ThemeConstant.primary_color,
+              primaryColorBrightness: Brightness.light,
+            ),
+            locale: locale,
+            supportedLocales: [
+              const Locale('en', 'EN'),
+              const Locale('vi', 'VI'),
+            ],
+            debugShowCheckedModeBanner: false,
+            home: BlocBuilder(
+                bloc: _loginBloc.authenticationBloc,
+                builder:
+                    (BuildContext context, AuthenticationState currentState) {
+                  print("Status: ${currentState}");
 
-            print("Status: ${currentState}");
+                  if (currentState is AuthenticationLoading ||
+                      currentState is AuthenticationInitial) {
+                    return Scaffold(
+                        backgroundColor: Colors.white,
+                        body: Center(
+                          child: CupertinoActivityIndicator(),
+                        ));
+                  }
 
-            if (currentState is AuthenticationLoading || currentState is AuthenticationInitial) {
-              return Scaffold(
-                backgroundColor: Colors.white,
-                body: Center(child: 
-                  CupertinoActivityIndicator(),
-                )
-              );
-            }
+                  // If Authenticated, go to main screen
+                  if (currentState is AuthenticationAuthenticated) {
+                    //Add handler listening notification hub
+                    return MainScreen();
+                  }
 
-            // If Authenticated, go to main screen
-            if (currentState is AuthenticationAuthenticated) {
-              //Add handler listening notification hub
-              return MainScreen();
-            }
-
-            return LoginScreen();
-
-        })
-        
-      ));
-
+                  return LoginScreen();
+                })));
   }
 }

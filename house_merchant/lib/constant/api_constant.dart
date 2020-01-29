@@ -1,32 +1,36 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class APIConstant {
-
   static const int limitDefault = 10;
 
-  static String 
-    baseMerchantUrl, baseMerchantUrlRefreshToken, baseMerchantUrlLogin,
-
-    baseMerchantUrlShop,
-    baseMerchantUrlShopImageCreate,
-    baseMerchantUrlShopImageDelete,
-
-    baseMerchantUrlCoupon,
-    baseMerchantUrlCouponUpload;
+  static String baseMerchantUrl,
+      baseMerchantUrlRefreshToken,
+      baseMerchantUrlLogin,
+      baseMerchantUrlProfile,
+      baseMerchantUrlShop,
+      baseMerchantUrlShopImageCreate,
+      baseMerchantUrlShopImageDelete,
+      baseMerchantUrlCoupon,
+      baseMerchantUrlCouponUpload;
 
   static init() {
-
     final dotenv = DotEnv();
 
     APIConstant.baseMerchantUrl = dotenv.env['API_MERCHANT'];
 
-    APIConstant.baseMerchantUrlLogin = baseMerchantUrl + "/oauth/api-token-auth/";
-    APIConstant.baseMerchantUrlRefreshToken = baseMerchantUrl + "/oauth/api-token-refresh/";
+    APIConstant.baseMerchantUrlLogin =
+        baseMerchantUrl + "/oauth/api-token-auth/";
+    APIConstant.baseMerchantUrlProfile = baseMerchantUrl + "/oauth/profile/";
+    APIConstant.baseMerchantUrlRefreshToken =
+        baseMerchantUrl + "/oauth/api-token-refresh/";
     APIConstant.baseMerchantUrlCoupon = baseMerchantUrl + "/coupon/";
-    APIConstant.baseMerchantUrlCouponUpload = baseMerchantUrl + "/coupon/upload-image/";
+    APIConstant.baseMerchantUrlCouponUpload =
+        baseMerchantUrl + "/coupon/upload-image/";
     APIConstant.baseMerchantUrlShop = baseMerchantUrl + "/shop/";
-    APIConstant.baseMerchantUrlShopImageCreate = baseMerchantUrl + "/shop/shop-image-create/";
-    APIConstant.baseMerchantUrlShopImageDelete = baseMerchantUrl + "/shop/shop-image-delete/";
-    
+
+    APIConstant.baseMerchantUrlShopImageCreate =
+        baseMerchantUrl + "/shop/shop-image-create/";
+    APIConstant.baseMerchantUrlShopImageDelete =
+        baseMerchantUrl + "/shop/shop-image-delete/";
   }
 }
