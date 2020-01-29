@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/date_range_picker/date_range_page.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:intl/intl.dart';
@@ -35,6 +36,7 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     return StreamBuilder(
         stream: widget.controller.stream,
         builder:
@@ -63,14 +65,14 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
                         },
                         settings: RouteSettings(name: "app://DateRangePage"),
                         fullscreenDialog: true));
-                widget.controller.sink.add(result);
-                widget.callback(result);
+                widget.controller.sink.add(result ?? []);
+                widget.callback(result ?? []);
               },
-              child: TextFieldWidget(
+              child: Container(color: ThemeConstant.white_color, child: TextFieldWidget(
                 controller: localController,
                 defaultHintText: widget.defaultHintText,
                 enabled: false,
-              ));
+              )));
         });
   }
 }

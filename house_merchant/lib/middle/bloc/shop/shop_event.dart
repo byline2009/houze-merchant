@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:meta/meta.dart';
 
 abstract class ShopEvent extends Equatable {
@@ -17,12 +18,12 @@ class ShopGetDetail extends ShopEvent {
 }
 
 class SaveButtonPressed extends ShopEvent {
-  final String description;
+  final ShopModel shopModel;
 
   SaveButtonPressed({
-    this.description,
-  }) : super([description]);
+    this.shopModel,
+  }) : super([shopModel]);
 
   @override
-  String toString() => 'SaveButtonPressed { description: $description }';
+  String toString() => 'SaveButtonPressed { shopModel: $shopModel }';
 }

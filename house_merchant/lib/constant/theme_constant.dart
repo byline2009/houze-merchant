@@ -201,7 +201,7 @@ class ThemeConstant {
   static InputDecoration tfInputDecoration(String hintText) {
     return InputDecoration(
       hintText: hintText,
-      contentPadding: EdgeInsets.all(12.0),
+      contentPadding: EdgeInsets.only(left: 10, right: 10),
       border: InputBorder.none,
       disabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(4.0)),

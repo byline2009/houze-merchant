@@ -1363,7 +1363,9 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                                   beginTime.Controller.text = "${hour<10?'0':''}${hour}:${minute<10?'0':''}${minute}";
                                 }, beginHourPicker, beginMinutePicker);
                               },
-                              child: TextFieldWidget(controller: beginTime, defaultHintText: '00:00 AM', enabled: false,)
+                              child: Container(color: Colors.transparent, child:
+                                TextFieldWidget(controller: beginTime, defaultHintText: '00:00 AM', enabled: false,)
+                              )
                             ),
 
                             SizedBox(height: 40),
@@ -1402,7 +1404,9 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                                   endTime.Controller.text = "${hour<10?'0':''}${hour}:${minute<10?'0':''}${minute}";
                                 }, endHourPicker, endMinutePicker);
                               },
-                              child: TextFieldWidget(controller: endTime, defaultHintText: '00:00 AM', enabled: false,)
+                              child: Container(color: Colors.transparent, child:
+                                TextFieldWidget(controller: endTime, defaultHintText: '00:00 AM', enabled: false,)
+                              )
                             ) : Center(),
 
                           ],

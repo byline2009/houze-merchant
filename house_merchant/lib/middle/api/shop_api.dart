@@ -46,4 +46,14 @@ class ShopAPI extends OauthAPI {
     return ShopModel.fromJson(response.data);
   }
 
+  Future<ShopModel> updateInfo(String id, ShopModel shopModel) async {
+
+    final response = await this.put(
+      "${APIConstant.baseMerchantUrlShop}${id}/",
+      data: shopModel
+    );
+
+    return ShopModel.fromJson(response.data);
+  }
+
 }

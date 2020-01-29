@@ -22,8 +22,13 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     }
 
     if (event is SaveButtonPressed) {
-      yield ShopLoading();
-      print('SaveButtonPressed');
+      try {
+        yield ShopLoading();
+        final result = await shopRepository.updateInfo(event.shopModel);
+        yield ShopSuccessful();
+      } catch (error) {
+        yield ShopFailure(error: error.toString());
+      }
     }
   }
 }

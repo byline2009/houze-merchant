@@ -1,5 +1,27 @@
 import 'package:house_merchant/middle/model/image_meta_model.dart';
 
+class Hours {
+  String startTime;
+  String endTime;
+  int weekday;
+
+  Hours({this.startTime, this.endTime, this.weekday});
+
+  Hours.fromJson(Map<String, dynamic> json) {
+    startTime = json['start_time'];
+    endTime = json['end_time'];
+    weekday = json['weekday'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['start_time'] = this.startTime;
+    data['end_time'] = this.endTime;
+    data['weekday'] = this.weekday;
+    return data;
+  }
+}
+
 class ShopModel {
   String id;
   String name;
@@ -7,6 +29,8 @@ class ShopModel {
   int status;
   double lat;
   double long;
+  List<ImageModel> images = List<ImageModel>();
+  List<Hours> hours = List<Hours>();
 
   List<dynamic> images = List<dynamic>();
   List<dynamic> hours = List<dynamic>();
@@ -19,8 +43,7 @@ class ShopModel {
     this.lat,
     this.long,
     this.images,
-    this.hours,
-  });
+    this.hours});
 
   ShopModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -36,7 +59,12 @@ class ShopModel {
         images.add(new ImageModel.fromJson(v));
       });
     }
-    hours = json['hours'];
+    if (json['hours'] != null) {
+      hours = new List<Hours>();
+      json['hours'].forEach((v) {
+        hours.add(new Hours.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -49,6 +77,9 @@ class ShopModel {
     data['long'] = this.long;
     if (this.images != null) {
       data['images'] = this.images.map((v) => v.toJson()).toList();
+    }
+    if (this.hours != null) {
+      data['hours'] = this.hours.map((v) => v.toJson()).toList();
     }
     return data;
   }
