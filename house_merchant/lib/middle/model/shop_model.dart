@@ -32,9 +32,6 @@ class ShopModel {
   List<ImageModel> images = List<ImageModel>();
   List<Hours> hours = List<Hours>();
 
-  List<dynamic> images = List<dynamic>();
-  List<dynamic> hours = List<dynamic>();
-
   ShopModel({
     this.id,
     this.name,

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:house_merchant/middle/api/shop_api.dart';
 import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
+import 'package:house_merchant/utils/sqflite.dart';
 
 class ShopRepository {
   final shopAPI = new ShopAPI();
