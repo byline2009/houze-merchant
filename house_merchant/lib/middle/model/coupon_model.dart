@@ -90,3 +90,32 @@ class CouponModel {
     }
   }
 }
+
+
+//** COUPON LIST **//
+class CouponList {
+
+  int response;
+  List<CouponModel> data;
+
+  CouponList({this.response, this.data});
+
+  CouponList.fromJson(Map<String, dynamic> json) {
+    response = json['response'];
+    if (json['data'] != null) {
+      data = new List<CouponModel>();
+      json['data'].forEach((v) {
+        data.add(new CouponModel.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['response'] = this.response;
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/middle/api/coupon_api.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/middle/model/image_meta_model.dart';
@@ -9,8 +10,8 @@ class CouponRepository {
 
   CouponRepository();
 
-  Future<List<CouponModel>> getCoupons({int page = 1}) async {
-    final rs = await couponAPI.getCoupons(page);
+  Future<List<CouponModel>> getCoupons({int offset = 1, int limit=APIConstant.limitDefault}) async {
+    final rs = await couponAPI.getCoupons(offset, limit: limit);
     return rs;
   }
 

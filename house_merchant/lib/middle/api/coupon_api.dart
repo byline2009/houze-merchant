@@ -13,15 +13,10 @@ class CouponAPI extends OauthAPI {
   CouponAPI() : super();
 
   //MARK: Get coupons
-  Future<List<CouponModel>> getCoupons(int page, {int limit = 10}) async {
+  Future<List<CouponModel>> getCoupons(int offset, {int limit = 10}) async {
     final response =
         await this.get(APIConstant.baseMerchantUrlCoupon, queryParameters: {
-      "offset": (page - 1) * limit,
-      "limit": limit,
-    });
-
-    print({
-      "offset": (page - 1) * limit,
+      "offset": offset,
       "limit": limit,
     });
 
