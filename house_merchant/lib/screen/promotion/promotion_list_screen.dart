@@ -31,9 +31,7 @@ class CouponListScreenState extends State<CouponListScreen> {
   double _padding;
 
   CouponListBloc couponListBloc = CouponListBloc();
-
   RefreshController _refreshController = RefreshController(initialRefresh: true);
-  ScrollController listScrollController = new ScrollController();
 
   @override
   void initState() {
@@ -189,95 +187,92 @@ class CouponListScreenState extends State<CouponListScreen> {
     this._padding = this._screenSize.width * 5 / 100;
 
     return Column(
-          children: <Widget>[
-            this.tags(),
-            Expanded(
-              child: Container(
-                color: ThemeConstant.background_grey_color,
-                child: BlocBuilder(
-                  bloc: couponListBloc,
-                  builder: (BuildContext context, CouponList couponList) {
+      children: <Widget>[
+        this.tags(),
+        Expanded(
+          child: Container(
+            color: ThemeConstant.background_grey_color,
+            child: BlocBuilder(
+              bloc: couponListBloc,
+              builder: (BuildContext context, CouponList couponList) {
 
-                    print('couponList');
-                    print(couponList.data);
+                if (couponList == null) {
+                  return Center(child: Text(LocalizationsUtil.of(context).translate("Mất kết nối"), style: TextStyle(
+                    color: Colors.white
+                  ),));
+                }
 
-                    if (couponList == null) {
-                      return Center(child: Text(LocalizationsUtil.of(context).translate("Mất kết nối")));
-                    }
+                if (!couponListBloc.isNext && couponList != null && couponList.data.length == 0) {
+                  return Center(child: Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Text(LocalizationsUtil.of(context).translate("Chưa có lịch sử đăng ký"))
+                  ));
+                }
 
-                    if (!this.couponListBloc.isNext && couponList != null && couponList.data.length == 0) {
-                      return Center(child: Padding(
-                          padding: EdgeInsets.only(bottom: 20),
-                          child: Text(LocalizationsUtil.of(context).translate("Chưa có lịch sử đăng ký"))
-                      ));
-                    }
+                _refreshController.loadComplete();
+                _refreshController.refreshCompleted();
 
-                    _refreshController.loadComplete();
-                    _refreshController.refreshCompleted();
+                return Scrollbar(child: SmartRefresher(
+                    controller: _refreshController,
+                    enablePullDown: true,
+                    enablePullUp: true,
+                    header: MaterialClassicHeader(),
+                    footer: CustomFooter(
+                      builder: (BuildContext context, LoadStatus mode) {
+                        Widget body = Center();
 
-                    return Scrollbar(child: SmartRefresher(
-                        controller: _refreshController,
-                        enablePullDown: true,
-                        enablePullUp: true,
-                        header: MaterialClassicHeader(),
-                        footer: CustomFooter(
-                            builder: (BuildContext context, LoadStatus mode) {
-                              Widget body = Center();
+                        if (couponListBloc.isNext == false) {
+                          mode = LoadStatus.noMore;
+                        }
 
-                              if (this.couponListBloc.isNext == false) {
-                                mode = LoadStatus.noMore;
-                              }
+                        if (mode==LoadStatus.loading) {
+                          body = CupertinoActivityIndicator();
+                        }
 
-                              if (mode==LoadStatus.loading) {
-                                body = CupertinoActivityIndicator();
-                              }
+                        if (mode == LoadStatus.noMore) {
+                          body = Text('- Không còn dữ liệu để hiển thị -');
+                        }
 
-                              if (mode == LoadStatus.noMore) {
-                                body = Text('- Không còn dữ liệu để hiển thị -');
-                              }
-
-                              return Container(
-                                height: 50,
-                                child: Center(child: body),
-                              );
-                            }
-                        ),
-                        onRefresh: () {
-                          this.couponListBloc.add(CouponLoadList(page: 1));
-                        },
-                        onLoading: () {
-                          if (mounted) {
-                            this.couponListBloc.add(
-                              CouponLoadList(),
-                            );
-                          }
-                        },
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemBuilder: (c, index) {
-                            return GestureDetector(
-                                onTap: () {
-                                  Router.push(
-                                      context, Router.COUPON_DETAIL_PAGE, {
-                                    "coupon_model": couponList.data[index],
-                                  });
-                                },
-                                child: Padding(
-                                  child: this.itemCard(couponList.data[index]),
-                                  padding: EdgeInsets.only(
-                                      left: this._padding,
-                                      right: this._padding,
-                                      top: 10,
-                                      bottom: 10),
-                                ));
-                          },
-                          itemCount: couponList.data.length,
-                        )
-                    ));
-                  })
-            ))
-          ],
-        );
+                        return Container(
+                          height: 50,
+                          child: Center(child: body),
+                        );
+                      }
+                    ),
+                    onRefresh: () {
+                      couponListBloc.add(CouponLoadList(page: -1));
+                    },
+                    onLoading: () {
+                      if (mounted) {
+                        couponListBloc.add(CouponLoadList(),);
+                      }
+                    },
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemBuilder: (c, index) {
+                        return GestureDetector(
+                            onTap: () {
+                              Router.push(
+                                  context, Router.COUPON_DETAIL_PAGE, {
+                                "coupon_model": couponList.data[index],
+                              });
+                            },
+                            child: Padding(
+                              child: this.itemCard(couponList.data[index]),
+                              padding: EdgeInsets.only(
+                                  left: this._padding,
+                                  right: this._padding,
+                                  top: 10,
+                                  bottom: 10),
+                            ));
+                      },
+                      itemCount: couponList.data.length,
+                    )
+                ));
+              })
+        ))
+      ],
+    );
   }
 
 }

@@ -14,7 +14,7 @@ class CouponListBloc extends Bloc<CouponEvent, CouponList> {
   CouponRepository couponRepository = CouponRepository();
 
   @override
-  CouponList get initialState => CouponList(data: result, response: 0,);
+  CouponList get initialState => CouponList(data: result, response: 1,);
 
   @override
   Stream<CouponList> mapEventToState(CouponEvent event) async* {
@@ -38,8 +38,10 @@ class CouponListBloc extends Bloc<CouponEvent, CouponList> {
         currentOffset = result.length;
       }
 
-      if (event.page == 0) {
-        currentOffset = offset = 0;
+      //for refresh drag
+      if (event.page == -1) {
+        currentOffset = offset = this.page = 0;
+        this.result = [];
       }
 
       var _results = await couponRepository.getCoupons(offset: currentOffset, limit: APIConstant.limitDefault );
@@ -55,7 +57,7 @@ class CouponListBloc extends Bloc<CouponEvent, CouponList> {
         this.page++;
       }
 
-      _results.insertAll(0, result);
+      _results.insertAll(0, this.result);
       result = _results;
 
       yield CouponList(
