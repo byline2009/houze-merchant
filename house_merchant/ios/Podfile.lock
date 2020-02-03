@@ -10,7 +10,6 @@ PODS:
   - flutter_image_compress (0.0.1):
     - Flutter
     - Mantle
-    - SDWebImageWebPCoder
   - flutter_keyboard_visibility (0.7.0):
     - Flutter
   - fluttertoast (0.0.2):
@@ -20,15 +19,6 @@ PODS:
   - FMDB/standard (2.7.5)
   - Imaginary (4.2.0):
     - Cache (~> 5.0)
-  - libwebp (1.1.0):
-    - libwebp/demux (= 1.1.0)
-    - libwebp/mux (= 1.1.0)
-    - libwebp/webp (= 1.1.0)
-  - libwebp/demux (1.1.0):
-    - libwebp/webp
-  - libwebp/mux (1.1.0):
-    - libwebp/demux
-  - libwebp/webp (1.1.0)
   - Lightbox (2.3.0):
     - Imaginary (~> 4.0)
   - Mantle (2.1.0):
@@ -37,10 +27,6 @@ PODS:
   - path_provider (0.0.1):
     - Flutter
   - Reachability (3.2)
-  - SDWebImage/Core (5.4.2)
-  - SDWebImageWebPCoder (0.3.1):
-    - libwebp (~> 1.0)
-    - SDWebImage/Core (~> 5.0)
   - shared_preferences (0.0.1):
     - Flutter
   - sqflite (0.0.1):
@@ -63,12 +49,9 @@ SPEC REPOS:
     - Cache
     - FMDB
     - Imaginary
-    - libwebp
     - Lightbox
     - Mantle
     - Reachability
-    - SDWebImage
-    - SDWebImageWebPCoder
 
 EXTERNAL SOURCES:
   christian_picker_image:
@@ -95,18 +78,15 @@ SPEC CHECKSUMS:
   christian_picker_image: ffc0219d6636341af236a8cb629ca3784a28c437
   connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_image_compress: 082f8daaf6c1b0c9fe798251c750ef0ecd98d7ae
+  flutter_image_compress: f69d0e0e078ce52b4810695593bc861ee319ae7d
   flutter_keyboard_visibility: 6195387fb6d8f46e5cd6dda4a4154e41f800f545
   fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   Imaginary: dae33d06dbc2ada22f98afef5eb45cc061311a2c
-  libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   Lightbox: d317750e4132bfb871a5307cfe0a2c7d6a583c65
   Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SDWebImage: 4ca2dc4eefae4224bea8f504251cda485a363745
-  SDWebImageWebPCoder: ce58a29621c2806dd5c36695ed192cf67163ff9d
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
 

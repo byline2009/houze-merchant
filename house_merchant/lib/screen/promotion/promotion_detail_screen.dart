@@ -27,8 +27,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
   Size _screenSize;
   BuildContext _context;
   double _padding;
-  double _heightPhoto;
-  String _statusName;
   CouponModel _couponModel;
   StreamController<ButtonSubmitEvent> qrButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
@@ -43,28 +41,58 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
   @override
   Widget build(BuildContext context) {
     this._couponModel = widget.params['coupon_model'];
-
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
-    this._heightPhoto = this._screenSize.height * (300 / 812);
-    this._statusName = _couponModel.getStatusName();
 
-    final headerPhotoSection = Container(
-        height: _heightPhoto,
-        child: _couponModel.images.length > 0
-            ? ImageWidget(
-                width: _screenSize.width,
-                height: _heightPhoto,
-                imgUrl: _couponModel.images.first.image)
-            : SvgPicture.asset('assets/image/ic-comming-soon.svg',
-                fit: BoxFit.contain));
+    var _heightPhoto = this._screenSize.height * 0.37;
+    var _statusName = _couponModel.getStatusName();
+
+    final _statusWidget = Container(
+      padding: EdgeInsets.all(this._padding),
+      height: 70.0,
+      decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(30.0),
+              topRight: const Radius.circular(30.0))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: Row(
+              children: <Widget>[
+                Text('0/${_couponModel.quantity}',
+                    style: TextStyle(
+                        fontSize: ThemeConstant.boxes_font_title,
+                        color: ThemeConstant.white_color,
+                        fontWeight: ThemeConstant.fontWeightBold,
+                        letterSpacing: 0.38)),
+                SizedBox(width: 5.0),
+                Text(
+                  'Lượt sử dụng',
+                  style: TextStyle(
+                      fontSize: ThemeConstant.font_size_16,
+                      letterSpacing: ThemeConstant.letter_spacing_026,
+                      color: ThemeConstant.alto_color),
+                ),
+              ],
+            ),
+          ),
+          RectangleLabelWidget(
+            text: _couponModel.getStatusName(),
+            color: _couponModel.getStatusColor(),
+          )
+        ],
+      ),
+    );
 
     Widget bottomButtonSection() {
       qrButtonController.sink.add(ButtonSubmitEvent(true));
       editButtonController.sink.add(ButtonSubmitEvent(true));
 
-      final pendingStatusButton = Row(
+      final _pendingStatusButton = Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
@@ -105,8 +133,8 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         width: _screenSize.width,
         height: 88.0,
         decoration: BoxDecoration(color: Colors.white),
-        child: this._statusName == ThemeConstant.pending_status
-            ? pendingStatusButton
+        child: _statusName == ThemeConstant.pending_status
+            ? _pendingStatusButton
             : ButtonWidget(
                 controller: qrButtonController,
                 defaultHintText:
@@ -115,116 +143,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       );
     }
 
-    // TODO: implement build
-    return BaseScaffoldNormal(
-        title: 'Chi tiết ưu đãi',
-        child: SafeArea(
-            child: Stack(children: <Widget>[
-          Positioned(
-            top: -5,
-            left: 0,
-            width: _screenSize.width,
-            child: headerPhotoSection,
-          ),
-          Positioned(
-            bottom: 88.0,
-            left: 0.0,
-            top: _heightPhoto - 70,
-            width: _screenSize.width,
-            child: promotionBody(_couponModel),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            width: _screenSize.width,
-            child: bottomButtonSection(),
-          ),
-        ])));
-  }
-
-  Widget statusWidget(String status) {
-    return Container(
-      padding: EdgeInsets.all(20.0),
-      height: 70.0,
-      decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: new BorderRadius.only(
-              topLeft: const Radius.circular(30.0),
-              topRight: const Radius.circular(30.0))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            child: Row(
-              children: <Widget>[
-                Text('0/${_couponModel.quantity}',
-                    style: TextStyle(
-                        fontSize: ThemeConstant.boxes_font_title,
-                        color: ThemeConstant.white_color,
-                        fontWeight: ThemeConstant.fontWeightBold,
-                        letterSpacing: 0.38)),
-                SizedBox(width: 5.0),
-                Text(
-                  'Lượt sử dụng',
-                  style: TextStyle(
-                      fontSize: ThemeConstant.font_size_16,
-                      letterSpacing: ThemeConstant.letter_spacing_026,
-                      color: ThemeConstant.alto_color),
-                ),
-              ],
-            ),
-          ),
-          RectangleLabelWidget(
-            text: _couponModel.getStatusName(),
-            color: _couponModel.getStatusColor(),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget buildUserListWidget() {
-    // final _userListSection = _couponModel.status == 0
-    //     ? Center()
-    //     : Container(
-    final _userListSection = Container(
-      padding: EdgeInsets.symmetric(vertical: 15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(),
-          InkWell(
-            onTap: () {
-              Router.push(_context, Router.COUPON_USER_LIST_PAGE,
-                  {"coupon_model": _couponModel});
-            },
-            child: Container(
-                width: 130,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text('Xem danh sách',
-                        style: TextStyle(
-                            color: ThemeConstant.primary_color,
-                            fontSize: 13,
-                            letterSpacing: ThemeConstant.letter_spacing_026,
-                            fontWeight: FontWeight.w600)),
-                    SizedBox(width: 10.0),
-                    Icon(
-                      Icons.arrow_forward,
-                      color: ThemeConstant.violet_color,
-                      size: 16.0,
-                    )
-                  ],
-                )),
-          )
-        ],
-      ),
-    );
-
-//TODO: time section
-    Widget timeRow(String title, String content) {
+    Widget _timeRowFormat(String title, String content) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -247,81 +166,177 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       );
     }
 
-    final _timeSection = Padding(
-      padding: EdgeInsets.only(bottom: 20.0, top: 15.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            _couponModel.title,
-            style: TextStyle(
-                fontSize: ThemeConstant.font_size_24,
-                letterSpacing: ThemeConstant.letter_spacing_038,
-                color: ThemeConstant.black_color,
-                fontWeight: ThemeConstant.fontWeightBold),
+    return BaseScaffoldNormal(
+      title: 'Chi tiết ưu đãi',
+      child: SafeArea(
+        child: Container(
+          color: ThemeConstant.white_color,
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          child: Stack(
+            children: <Widget>[
+//TODO: HEADER
+              _couponModel.images.length > 0
+                  ? ImageWidget(
+                      width: _screenSize.width,
+                      height: _heightPhoto,
+                      imgUrl: _couponModel.images.first.image)
+                  : SvgPicture.asset('assets/image/ic-comming-soon.svg',
+                      fit: BoxFit.cover),
+
+//TODO: BODY
+              DraggableScrollableSheet(
+                builder: (context, scrollController) {
+                  return Container(
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(8.0),
+                            topRight: Radius.circular(8.0))),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _statusWidget,
+                          Container(
+                            height: 10.0,
+                            decoration: BoxDecoration(
+                                color: ThemeConstant.background_grey_color),
+                          ),
+                          Container(
+                            color: Colors.white,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.symmetric(vertical: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(),
+                                      InkWell(
+                                        onTap: () {
+                                          Router.push(
+                                              _context,
+                                              Router.COUPON_USER_LIST_PAGE,
+                                              {"coupon_model": _couponModel});
+                                        },
+                                        child: Container(
+                                            width: 130,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Text('Xem danh sách',
+                                                    style: TextStyle(
+                                                        color: ThemeConstant
+                                                            .primary_color,
+                                                        fontSize: 13,
+                                                        letterSpacing: ThemeConstant
+                                                            .letter_spacing_026,
+                                                        fontWeight:
+                                                            FontWeight.w600)),
+                                                SizedBox(width: 10.0),
+                                                Icon(
+                                                  Icons.arrow_forward,
+                                                  color: ThemeConstant
+                                                      .violet_color,
+                                                  size: 16.0,
+                                                )
+                                              ],
+                                            )),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      _couponModel.title,
+                                      style: TextStyle(
+                                          fontSize: ThemeConstant.font_size_24,
+                                          letterSpacing:
+                                              ThemeConstant.letter_spacing_038,
+                                          color: ThemeConstant.black_color,
+                                          fontWeight:
+                                              ThemeConstant.fontWeightBold),
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    _timeRowFormat(
+                                        'Thời gian bắt đầu:',
+                                        DateFormat('HH:mm - dd/MM/yyyy').format(
+                                            DateTime.parse(
+                                                _couponModel.startDate))),
+                                    SizedBox(height: 12.0),
+                                    _timeRowFormat(
+                                        'Thời gian kết thúc:',
+                                        DateFormat('HH:mm - dd/MM/yyyy').format(
+                                            DateTime.parse(
+                                                _couponModel.endDate))),
+                                    SizedBox(height: 20.0),
+                                    Container(
+                                      height: 2.0,
+                                      decoration: BoxDecoration(
+                                          color: ThemeConstant
+                                              .background_grey_color),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text(
+                                      'Nội dung ưu đãi',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight:
+                                              ThemeConstant.fontWeightBold,
+                                          color: ThemeConstant.black_color,
+                                          letterSpacing: 0.29),
+                                    ),
+                                    SizedBox(height: 10.0),
+                                    ReadMoreText(
+                                      _couponModel.description,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: ThemeConstant.grey_color,
+                                          letterSpacing: 0.24),
+                                      trimLines: 2,
+                                      colorClickableText:
+                                          ThemeConstant.primary_color,
+                                      trimMode: TrimMode.Line,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      controller: scrollController,
+                    ),
+                  );
+                },
+                initialChildSize: 0.65,
+                minChildSize: 0.65,
+                maxChildSize: 1,
+              ),
+//TODO: BUTTON
+              Positioned(
+                bottom: 0,
+                left: 0,
+                width: _screenSize.width,
+                child: bottomButtonSection(),
+              )
+            ],
           ),
-          SizedBox(height: 20.0),
-          timeRow(
-              'Thời gian bắt đầu:',
-              DateFormat('HH:mm - dd/MM/yyyy')
-                  .format(DateTime.parse(_couponModel.startDate))),
-          SizedBox(height: 12.0),
-          timeRow(
-              'Thời gian kết thúc:',
-              DateFormat('HH:mm - dd/MM/yyyy')
-                  .format(DateTime.parse(_couponModel.endDate))),
-          SizedBox(height: 20.0),
-          Container(
-            height: 2.0,
-            decoration:
-                BoxDecoration(color: ThemeConstant.background_grey_color),
-          )
-        ],
+        ),
       ),
     );
-
-    return Expanded(
-      child: Container(
-          color: Colors.white,
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            children: <Widget>[
-              _userListSection,
-              _timeSection,
-              Text(
-                'Nội dung ưu đãi',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: ThemeConstant.fontWeightBold,
-                    color: ThemeConstant.black_color,
-                    letterSpacing: 0.29),
-              ),
-              SizedBox(height: 10.0),
-              ReadMoreText(
-                _couponModel.description,
-                style: TextStyle(
-                    fontSize: 15,
-                    color: ThemeConstant.grey_color,
-                    letterSpacing: 0.24),
-                trimLines: 2,
-                colorClickableText: ThemeConstant.primary_color,
-                trimMode: TrimMode.Line,
-              ),
-            ],
-          )),
-    );
-  }
-
-  Widget promotionBody(CouponModel data) {
-    // TODO: implement build
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          statusWidget(_couponModel.getStatusName()),
-          SizedBox(height: 10.0),
-          buildUserListWidget(),
-        ]);
   }
 }
