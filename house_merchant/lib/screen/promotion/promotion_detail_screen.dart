@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_outline_widget.dart';
 import 'package:house_merchant/custom/button_widget.dart';
+import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
@@ -34,6 +37,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       new StreamController<ButtonSubmitEvent>.broadcast();
   StreamController<ButtonSubmitEvent> editButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
+  String _scanBarcode = 'Unknown';
 
   @override
   void initState() {
@@ -148,11 +152,34 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       ],
     );
 
+    Future scanQR() async {
+      String barcodeScanRes;
+      // Platform messages may fail, so we use a try/catch PlatformException.
+      try {
+        barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+            "#ff6666", "Cancel", true, ScanMode.QR);
+        print(barcodeScanRes);
+      } on PlatformException {
+        barcodeScanRes = 'Failed to get platform version.';
+      }
+
+      // If the widget was removed from the tree while the asynchronous platform
+      // message was in flight, we want to discard the reply rather than calling
+      // setState to update our non-existent appearance.
+      if (!mounted) return;
+
+      setState(() {
+        _scanBarcode = barcodeScanRes;
+      });
+      T7GDialog.showAlertDialog(context, '', _scanBarcode);
+    }
+
     final _scannerQRButton = ButtonWidget(
         controller: qrButtonController,
         isActive: _status == Promotion.approveStatus,
         defaultHintText: LocalizationsUtil.of(context).translate('Quét QR'),
         callback: () async {
+          scanQR();
           print('QR code clicked');
         });
 

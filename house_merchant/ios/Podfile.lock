@@ -7,6 +7,8 @@ PODS:
     - Flutter
     - Reachability
   - Flutter (1.0.0)
+  - flutter_barcode_scanner (0.1.7):
+    - Flutter
   - flutter_image_compress (0.0.1):
     - Flutter
     - Mantle
@@ -37,6 +39,7 @@ DEPENDENCIES:
   - christian_picker_image (from `.symlinks/plugins/christian_picker_image/ios`)
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - Flutter (from `Flutter`)
+  - flutter_barcode_scanner (from `.symlinks/plugins/flutter_barcode_scanner/ios`)
   - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
@@ -60,6 +63,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/connectivity/ios"
   Flutter:
     :path: Flutter
+  flutter_barcode_scanner:
+    :path: ".symlinks/plugins/flutter_barcode_scanner/ios"
   flutter_image_compress:
     :path: ".symlinks/plugins/flutter_image_compress/ios"
   flutter_keyboard_visibility:
@@ -78,6 +83,7 @@ SPEC CHECKSUMS:
   christian_picker_image: ffc0219d6636341af236a8cb629ca3784a28c437
   connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_barcode_scanner: c7d23c65b4866f5eaaa1cce1da8d2d1669b57800
   flutter_image_compress: f69d0e0e078ce52b4810695593bc861ee319ae7d
   flutter_keyboard_visibility: 6195387fb6d8f46e5cd6dda4a4154e41f800f545
   fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
@@ -90,6 +96,6 @@ SPEC CHECKSUMS:
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
 
-PODFILE CHECKSUM: e45c292f618eeca3034958d33b444b6e1249b55f
+PODFILE CHECKSUM: 0ba44ad07df4ab62269dc769727cf0f12b1e453d
 
 COCOAPODS: 1.8.4
