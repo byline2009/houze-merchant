@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/custom/button_outline_widget.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
@@ -40,13 +42,20 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    this._couponModel = widget.params['coupon_model'];
+    this._couponModel = widget.params['coupon_model'] as CouponModel;
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
 
-    var _heightPhoto = this._screenSize.height * 0.37;
-    var _statusName = _couponModel.getStatusName();
+    var _heightPhoto = this._screenSize.height * (300 / 818);
+
+    int _status = _couponModel.status;
+    print(
+        '======> ${_couponModel.getStatusName()} ${_status == Promotion.approveStatus}');
+
+    if (_status == Promotion.approveStatus) {
+      qrButtonController.sink.add(ButtonSubmitEvent(true));
+    }
 
     final _statusWidget = Container(
       padding: EdgeInsets.all(this._padding),
@@ -88,61 +97,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       ),
     );
 
-    Widget bottomButtonSection() {
-      qrButtonController.sink.add(ButtonSubmitEvent(true));
-      editButtonController.sink.add(ButtonSubmitEvent(true));
-
-      final _pendingStatusButton = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            width: 160 * (_screenSize.width / 375),
-            child: Center(
-              child: Text(
-                'Quét QR',
-                style: TextStyle(
-                    color: ThemeConstant.white_color,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            decoration: BoxDecoration(
-              color: ThemeConstant.alto_color,
-              borderRadius: BorderRadius.all(Radius.circular(4.0)),
-            ),
-          ),
-          Container(
-            width: 160 * (_screenSize.width / 375),
-            child: Center(
-              child: Text(
-                'Chỉnh sửa',
-                style: TextStyle(
-                    color: ThemeConstant.primary_color,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            decoration:
-                ThemeConstant.borderOutline(ThemeConstant.primary_color),
-          )
-        ],
-      );
-
-      return Container(
-        padding: EdgeInsets.all(_padding),
-        width: _screenSize.width,
-        height: 88.0,
-        decoration: BoxDecoration(color: Colors.white),
-        child: _statusName == ThemeConstant.pending_status
-            ? _pendingStatusButton
-            : ButtonWidget(
-                controller: qrButtonController,
-                defaultHintText:
-                    LocalizationsUtil.of(context).translate('Quét QR'),
-                callback: () async {}),
-      );
-    }
-
     Widget _timeRowFormat(String title, String content) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,6 +119,42 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         ],
       );
     }
+
+    final _pendingStatusButton = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Container(
+          width: 160 * (_screenSize.width / 375),
+          child: ButtonWidget(
+              controller: qrButtonController,
+              isActive: _status == Promotion.approveStatus,
+              defaultHintText:
+                  LocalizationsUtil.of(context).translate('Quét QR'),
+              callback: () async {
+                print('QR code clicked');
+              }),
+        ),
+        Container(
+          width: 160 * (_screenSize.width / 375),
+          child: ButtonOutlineWidget(
+              controller: editButtonController,
+              isActive: _status == Promotion.pendingStatus,
+              defaultHintText:
+                  LocalizationsUtil.of(context).translate('Chỉnh sửa'),
+              callback: () async {
+                print('Edit clicked');
+              }),
+        )
+      ],
+    );
+
+    final _scannerQRButton = ButtonWidget(
+        controller: qrButtonController,
+        isActive: _status == Promotion.approveStatus,
+        defaultHintText: LocalizationsUtil.of(context).translate('Quét QR'),
+        callback: () async {
+          print('QR code clicked');
+        });
 
     return BaseScaffoldNormal(
       title: 'Chi tiết ưu đãi',
@@ -331,7 +321,16 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                 bottom: 0,
                 left: 0,
                 width: _screenSize.width,
-                child: bottomButtonSection(),
+                child: Container(
+                    padding: EdgeInsets.all(_padding),
+                    width: _screenSize.width,
+                    height: _status < Promotion.expireStatus ? 88.0 : 0,
+                    decoration: BoxDecoration(color: Colors.white),
+                    child: _status == Promotion.pendingStatus
+                        ? _pendingStatusButton
+                        : (_status == Promotion.approveStatus
+                            ? _scannerQRButton
+                            : Center())),
               )
             ],
           ),

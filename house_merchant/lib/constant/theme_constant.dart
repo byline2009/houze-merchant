@@ -174,6 +174,7 @@ class ThemeConstant {
 
   static BoxDecoration borderOutline(Color color) {
     return BoxDecoration(
+        color: Colors.white,
         border: Border.all(
           color: color,
           width: 1,
