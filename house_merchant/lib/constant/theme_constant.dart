@@ -38,6 +38,7 @@ class ThemeConstant {
   static const Color promotion_status_pending = Color(0xffd68100);
   static const Color promotion_status_running = Color(0xff00aa7d);
   static const Color promotion_status_expired = Color(0xffb5b5b5);
+  static const Color promotion_status_cancel = Color(0xffc50000);
 
   //Form Theme
   static const double form_border_width = 0.7;

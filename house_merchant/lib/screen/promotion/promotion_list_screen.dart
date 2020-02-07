@@ -45,17 +45,26 @@ class CouponListScreenState extends State<CouponListScreen> {
           id: -1,
           title: "Tất cả",
         ),
-        GroupRadioTags(id: 0, title: "Đang chạy"),
-        GroupRadioTags(id: 1, title: "Chờ duyệt"),
-        GroupRadioTags(id: 2, title: "Hết hạn"),
+        GroupRadioTags(id: 1, title: "Đang chạy"),
+        GroupRadioTags(id: 0, title: "Chờ duyệt"),
+        GroupRadioTags(id: -2, title: "Hết hạn"),
       ],
-      callback: (dynamic index) {},
+      callback: (dynamic index) {
+        couponListBloc.add(CouponLoadList(page: -1, status: index));
+      },
       defaultIndex: 0,
     );
   }
 
   Widget statusProduct(int status) {
     switch (status) {
+      case -1:
+        return Text('HẾT HẠN',
+            style: TextStyle(
+                color: ThemeConstant.promotion_status_expired,
+                fontFamily: ThemeConstant.form_font_family_display,
+                fontSize: ThemeConstant.form_font_smaller,
+                fontWeight: ThemeConstant.appbar_text_weight_bold));
       case 0:
         return Text('CHỜ DUYỆT',
             style: TextStyle(
@@ -71,9 +80,16 @@ class CouponListScreenState extends State<CouponListScreen> {
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
       case 2:
-        return Text('HẾT HẠN',
+        return Text('ĐÃ HUỶ',
             style: TextStyle(
                 color: ThemeConstant.promotion_status_expired,
+                fontFamily: ThemeConstant.form_font_family_display,
+                fontSize: ThemeConstant.form_font_smaller,
+                fontWeight: ThemeConstant.appbar_text_weight_bold));
+      case 3:
+        return Text('BỊ TỪ CHỐI',
+            style: TextStyle(
+                color: ThemeConstant.promotion_status_cancel,
                 fontFamily: ThemeConstant.form_font_family_display,
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
@@ -128,7 +144,7 @@ class CouponListScreenState extends State<CouponListScreen> {
                       ],
                     ),
                     SizedBox(height: 5),
-                    statusProduct(couponModel.status),
+                    statusProduct(couponModel.isExpired == true ? -1 : couponModel.status),
                   ],
                 ),
               ))

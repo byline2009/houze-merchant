@@ -13,6 +13,7 @@ class CouponModel {
   int status;
   List<ImageModel> images = List<ImageModel>();
   List<ShopModel> shops = List<ShopModel>();
+  bool isExpired;
 
   CouponModel({
     this.id,
@@ -24,6 +25,7 @@ class CouponModel {
     this.status,
     this.images,
     this.shops,
+    this.isExpired
   });
 
   CouponModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class CouponModel {
         shops.add(new ShopModel.fromJson(v));
       });
     }
+    isExpired = json['is_expired'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,6 +66,7 @@ class CouponModel {
     if (this.shops != null) {
       data['shops'] = this.shops.map((v) => v.toJson()).toList();
     }
+    data['is_expired'] = this.isExpired;
     return data;
   }
 
