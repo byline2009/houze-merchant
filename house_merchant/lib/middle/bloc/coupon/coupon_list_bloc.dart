@@ -44,7 +44,7 @@ class CouponListBloc extends Bloc<CouponEvent, CouponList> {
         this.result = [];
       }
 
-      var _results = await couponRepository.getCoupons(offset: currentOffset, limit: APIConstant.limitDefault );
+      var _results = await couponRepository.getCoupons(offset: currentOffset, limit: APIConstant.limitDefault, status: event.status );
 
       //If empty
       if (_results.length == 0) {

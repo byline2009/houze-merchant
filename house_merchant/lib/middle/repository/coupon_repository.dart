@@ -10,8 +10,8 @@ class CouponRepository {
 
   CouponRepository();
 
-  Future<List<CouponModel>> getCoupons({int offset = 1, int limit=APIConstant.limitDefault}) async {
-    final rs = await couponAPI.getCoupons(offset, limit: limit);
+  Future<List<CouponModel>> getCoupons({int offset = 1, int limit=APIConstant.limitDefault, int status=-1}) async {
+    final rs = await couponAPI.getCoupons(offset, limit: limit, status: status);
     return rs;
   }
 

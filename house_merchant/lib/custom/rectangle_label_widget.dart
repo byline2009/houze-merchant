@@ -21,7 +21,7 @@ class RectangleLabelWidgetState extends State<RectangleLabelWidget> {
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ),
       child: Center(
-          child: Text(widget.text.toUpperCase(),
+          child: Text(widget.text != null ? widget.text.toUpperCase() : '',
               style: TextStyle(
                   letterSpacing: ThemeConstant.letter_spacing_026,
                   color: ThemeConstant.white_color,

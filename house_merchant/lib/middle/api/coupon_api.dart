@@ -13,12 +13,22 @@ class CouponAPI extends OauthAPI {
   CouponAPI() : super();
 
   //MARK: Get coupons
-  Future<List<CouponModel>> getCoupons(int offset, {int limit = 10}) async {
-    final response =
-        await this.get(APIConstant.baseMerchantUrlCoupon, queryParameters: {
+  Future<List<CouponModel>> getCoupons(int offset, {int limit = 10, int status=-1}) async {
+    final Map<String, dynamic> params = {
       "offset": offset,
       "limit": limit,
-    });
+      'is_expired': 'false'
+    };
+
+    if (status > -1) {
+      params['status'] = status;
+    }
+
+    if (status == -2) {
+      params['is_expired'] = 'true';
+    }
+
+    final response = await this.get(APIConstant.baseMerchantUrlCoupon, queryParameters: params);
 
     return (PageModel.map(response.data).results as List).map((i) {
       return CouponModel.fromJson(i);
