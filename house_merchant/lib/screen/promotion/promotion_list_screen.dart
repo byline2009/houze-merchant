@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -144,7 +142,9 @@ class CouponListScreenState extends State<CouponListScreen> {
                       ],
                     ),
                     SizedBox(height: 5),
-                    statusProduct(couponModel.isExpired == true ? -1 : couponModel.status),
+                    statusProduct(couponModel.isExpired == true
+                        ? -1
+                        : couponModel.status),
                   ],
                 ),
               ))
