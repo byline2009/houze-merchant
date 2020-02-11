@@ -6,12 +6,11 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
   CouponRepository couponRepository = CouponRepository();
 
   CouponBloc();
-
   CouponState get initialState => CouponInitial();
 
   @override
   Stream<CouponState> mapEventToState(CouponEvent event) async* {
-    if (event is CouponScanQRCodeEvent) {
+    if (event is ScanQRButtonPressed) {
       yield CouponLoading();
       try {
         final result = await couponRepository.scanQRCode(event.id, event.code);

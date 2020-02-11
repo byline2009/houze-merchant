@@ -19,8 +19,8 @@ class QrCodeModel {
   QrCodeModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     code = json["code"];
-    coupon = json["coupon"];
-    customer = json["customer"];
+    coupon = CouponModel.fromJson(json['coupon']); //json["coupon"];
+    customer = ProfileModel.fromJson(json["customer"]);
     isUsed = json["is_used"];
   }
 
@@ -30,7 +30,7 @@ class QrCodeModel {
     data['code'] = this.code;
     data['coupon'] = this.coupon;
     data['customer'] = this.customer;
-    data['isUsed'] = this.isUsed;
+    data['is_used'] = this.isUsed;
 
     return data;
   }

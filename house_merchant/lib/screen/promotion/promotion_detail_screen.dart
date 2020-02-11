@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
@@ -15,7 +14,7 @@ import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
 import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
-import 'package:house_merchant/middle/model/qrcode_model.dart';
+import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
@@ -154,37 +153,38 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       ],
     );
 
-    Widget showResultScan() {
-      _couponBloc.add(CouponScanQRCodeEvent(
-          id: '4ba9f6ec-d92c-4d45-80c5-a2fa0b9f14a8',
-          code:
-              'ohf3U2QA6fuzEsc4ZjOLV5gcOs0wiudSKbcKYqI1wncbQjdx9npw1E3XiFXbs9jV'));
+    /*Widget showResultScan() {
+      // if (_scanBarCode.length > 0) {
+      return Container(
+          child: BlocBuilder(
+              bloc: _couponBloc,
+              builder: (BuildContext context, CouponState couponState) {
+                print('===========================> $couponState');
 
-      if (_scanBarCode.length > 0) {
-        print(_scanBarCode.length);
-        BlocBuilder(
-          bloc: _couponBloc,
-          builder: (BuildContext context, CouponState couponState) {
-            print('===========================> $couponState');
+                if (couponState is CouponInitial) {
+                  _couponBloc.add(ScanQRButtonPressed(id: id, code: code));
+                }
 
-            if (couponState is CouponScanQRCodeSuccessful) {
-              final data = couponState.result as QrCodeModel;
-              print('==========> $data');
-              return Center(child: Text(data.customer.fullname));
-            }
-            if (couponState is CouponFailure) {
-              final error = couponState.error;
-              return Center(child: Text(error));
-            }
-            return Center();
-          },
-        );
-      }
-      return Center(child: Text('Quét thất bại'));
+                if (couponState is CouponScanQRCodeSuccessful) {
+                  final data = couponState.result;
+                  print('==========> $data');
+                  return Center(child: Text(data.customer.fullname));
+                }
+                if (couponState is CouponFailure) {
+                  final error = couponState.error;
+                  return Center(child: Text(error));
+                }
+                return Center();
+              })
+          // return Center(child: Text('Quét thất bại'));
+          );
+      // }
     }
-
+*/
     Future scanQR() async {
       String resultQRCode;
+      var couponRepository = CouponRepository();
+
       try {
         resultQRCode = await FlutterBarcodeScanner.scanBarcode(
             "#7a1dff", "Cancel", true, ScanMode.QR);
@@ -196,11 +196,19 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       // If the widget was removed from the tree while the asynchronous platform
       // message was in flight, we want to discard the reply rather than calling
       // setState to update our non-existent appearance.
-      if (!mounted) return;
+      if (!mounted) return Center();
       setState(() {
         _scanBarCode = resultQRCode;
       });
-      showResultScan();
+      if (_scanBarCode.length > 0) {
+        var id = '4ba9f6ec-d92c-4d45-80c5-a2fa0b9f14a8';
+        var code =
+            'ohf3U2QA6fuzEsc4ZjOLV5gcOs0wiudSKbcKYqI1wncbQjdx9npw1E3XiFXbs9jV';
+        final result = await couponRepository.scanQRCode(id, code);
+        // print(result.customer.fullname.toUpperCase());
+        T7GDialog.showAlertDialog(
+            context, 'Quét thành công', result.coupon.title);
+      }
     }
 
     Widget _scannerQRButton() {

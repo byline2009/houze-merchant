@@ -50,12 +50,22 @@ class CouponAPI extends OauthAPI {
     return CouponModel.fromJson(response.data);
   }
 
+  Dio dio;
+
   //MARK: Check QR
-  Future<QrCodeModel> scanQR(String id, String code) async {
-    final response =
-        await this.post("${APIConstant.baseMerchantUrlCoupon}check-qr/");
+  Future<QrCodeModel> scanQR({id: String, code: String}) async {
+    final response = await this.post(
+      '${APIConstant.baseMerchantUrlCoupon}check-qr/',
+      data: {"id": id, "code": code},
+    );
     return QrCodeModel.fromJson(response.data);
   }
+
+  // Future<QrCodeModel> scanQR(String id, String code) async {
+  //   final response =
+  //       await this.post("${APIConstant.baseMerchantUrlCoupon}check-qr/");
+  //   return QrCodeModel.fromJson(response.data);
+  // }
 
   //MARK: Upload image
   Future<dynamic> uploadImage(File image) async {

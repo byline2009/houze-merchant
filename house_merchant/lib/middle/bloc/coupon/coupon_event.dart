@@ -15,11 +15,11 @@ class CouponLoadList extends CouponEvent {
   String toString() => 'CouponLoadList { page: $page, status: $status }';
 }
 
-class CouponScanQRCodeEvent extends CouponEvent {
+class ScanQRButtonPressed extends CouponEvent {
   final String id;
   final String code;
 
-  CouponScanQRCodeEvent({
+  ScanQRButtonPressed({
     @required this.id,
     @required this.code,
   }) : super([id, code]);
