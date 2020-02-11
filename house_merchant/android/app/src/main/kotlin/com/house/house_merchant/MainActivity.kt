@@ -1,4 +1,4 @@
-package com.example.house_merchant
+package com.house.house_merchant
 
 import android.os.Bundle
 
