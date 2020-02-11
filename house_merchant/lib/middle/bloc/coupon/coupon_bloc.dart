@@ -11,6 +11,16 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
 
   @override
   Stream<CouponState> mapEventToState(CouponEvent event) async* {
+    if (event is CouponScanQRCodeEvent) {
+      yield CouponLoading();
+      try {
+        final result = await couponRepository.scanQRCode(event.id, event.code);
+        yield CouponScanQRCodeSuccessful(result: result);
+      } catch (error) {
+        yield CouponFailure(error: error.toString());
+      }
+    }
+
     if (event is CouponLoadList) {
       yield CouponLoading();
 

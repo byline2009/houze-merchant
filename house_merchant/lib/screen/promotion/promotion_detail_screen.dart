@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
@@ -12,7 +13,9 @@ import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
+import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/model/qrcode_model.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
@@ -37,7 +40,8 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       new StreamController<ButtonSubmitEvent>.broadcast();
   StreamController<ButtonSubmitEvent> editButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
-  String _scanBarcode = 'Unknown';
+  String _scanBarCode = '';
+  var _couponBloc = CouponBloc();
 
   @override
   void initState() {
@@ -54,8 +58,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
     var _heightPhoto = this._screenSize.height * (300 / 818);
 
     int _status = _couponModel.status;
-    print(
-        '======> ${_couponModel.getStatusName()} ${_status == Promotion.approveStatus}');
 
     if (_status == Promotion.approveStatus) {
       qrButtonController.sink.add(ButtonSubmitEvent(true));
@@ -152,36 +154,64 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       ],
     );
 
+    Widget showResultScan() {
+      _couponBloc.add(CouponScanQRCodeEvent(
+          id: '4ba9f6ec-d92c-4d45-80c5-a2fa0b9f14a8',
+          code:
+              'ohf3U2QA6fuzEsc4ZjOLV5gcOs0wiudSKbcKYqI1wncbQjdx9npw1E3XiFXbs9jV'));
+
+      if (_scanBarCode.length > 0) {
+        print(_scanBarCode.length);
+        BlocBuilder(
+          bloc: _couponBloc,
+          builder: (BuildContext context, CouponState couponState) {
+            print('===========================> $couponState');
+
+            if (couponState is CouponScanQRCodeSuccessful) {
+              final data = couponState.result as QrCodeModel;
+              print('==========> $data');
+              return Center(child: Text(data.customer.fullname));
+            }
+            if (couponState is CouponFailure) {
+              final error = couponState.error;
+              return Center(child: Text(error));
+            }
+            return Center();
+          },
+        );
+      }
+      return Center(child: Text('Quét thất bại'));
+    }
+
     Future scanQR() async {
-      String barcodeScanRes;
-      // Platform messages may fail, so we use a try/catch PlatformException.
+      String resultQRCode;
       try {
-        barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-            "#ff6666", "Cancel", true, ScanMode.QR);
-        print(barcodeScanRes);
+        resultQRCode = await FlutterBarcodeScanner.scanBarcode(
+            "#7a1dff", "Cancel", true, ScanMode.QR);
       } on PlatformException {
-        barcodeScanRes = 'Failed to get platform version.';
+        resultQRCode = 'Failed to get platform version.';
+        T7GDialog.showAlertDialog(context, '', resultQRCode);
       }
 
       // If the widget was removed from the tree while the asynchronous platform
       // message was in flight, we want to discard the reply rather than calling
       // setState to update our non-existent appearance.
       if (!mounted) return;
-
       setState(() {
-        _scanBarcode = barcodeScanRes;
+        _scanBarCode = resultQRCode;
       });
-      T7GDialog.showAlertDialog(context, '', _scanBarcode);
+      showResultScan();
     }
 
-    final _scannerQRButton = ButtonWidget(
-        controller: qrButtonController,
-        isActive: _status == Promotion.approveStatus,
-        defaultHintText: LocalizationsUtil.of(context).translate('Quét QR'),
-        callback: () async {
-          scanQR();
-          print('QR code clicked');
-        });
+    Widget _scannerQRButton() {
+      return ButtonWidget(
+          controller: qrButtonController,
+          isActive: _status == Promotion.approveStatus,
+          defaultHintText: LocalizationsUtil.of(context).translate('Quét QR'),
+          callback: () async {
+            scanQR();
+          });
+    }
 
     return BaseScaffoldNormal(
       title: 'Chi tiết ưu đãi',
@@ -356,7 +386,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                     child: _status == Promotion.pendingStatus
                         ? _pendingStatusButton
                         : (_status == Promotion.approveStatus
-                            ? _scannerQRButton
+                            ? _scannerQRButton()
                             : Center())),
               )
             ],
