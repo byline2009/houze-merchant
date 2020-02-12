@@ -14,9 +14,11 @@ import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
 import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/model/qrcode_model.dart';
 import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
+import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:intl/intl.dart';
@@ -40,7 +42,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
   StreamController<ButtonSubmitEvent> editButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
   String _scanBarCode = '';
-  var _couponBloc = CouponBloc();
 
   @override
   void initState() {
@@ -153,41 +154,71 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       ],
     );
 
-    /*Widget showResultScan() {
-      // if (_scanBarCode.length > 0) {
-      return Container(
-          child: BlocBuilder(
-              bloc: _couponBloc,
-              builder: (BuildContext context, CouponState couponState) {
-                print('===========================> $couponState');
-
-                if (couponState is CouponInitial) {
-                  _couponBloc.add(ScanQRButtonPressed(id: id, code: code));
-                }
-
-                if (couponState is CouponScanQRCodeSuccessful) {
-                  final data = couponState.result;
-                  print('==========> $data');
-                  return Center(child: Text(data.customer.fullname));
-                }
-                if (couponState is CouponFailure) {
-                  final error = couponState.error;
-                  return Center(child: Text(error));
-                }
-                return Center();
-              })
-          // return Center(child: Text('Quét thất bại'));
-          );
-      // }
+    Widget showErrorPopup() {
+      final width = this._screenSize.width * 90 / 100;
+      return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Container(
+              width: width,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20),
+                  SvgPicture.asset(
+                    "assets/images/dialogs/ic-scan-failed.svg",
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                      LocalizationsUtil.of(context).translate('Quét thất bại!'),
+                      style: TextStyle(
+                        fontFamily: ThemeConstant.form_font_family_display,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.38,
+                        color: ThemeConstant.black_color,
+                      )),
+                  SizedBox(height: 20),
+                  Center(
+                      child: Text(
+                    LocalizationsUtil.of(context).translate(
+                        'Mã QR không hợp lệ\nhoặc không tồn tại trong ưu đãi này.\nVui lòng kiểm tra lại thông tin'),
+                    style: TextStyle(
+                        fontFamily: ThemeConstant.form_font_family_display,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.26,
+                        color: ThemeConstant.grey_color),
+                    textAlign: TextAlign.center,
+                  )),
+                  SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        height: 48.0,
+                        width: (width - 55) / 2,
+                        child: BaseWidget.buttonThemePink('Thử lại',
+                            callback: () {}),
+                      ),
+                      Container(
+                        height: 48.0,
+                        width: (width - 55) / 2,
+                        child: BaseWidget.buttonOutline('Thoát', callback: () {
+                          Navigator.of(context).pop();
+                        }),
+                      ),
+                    ],
+                  )
+                ],
+              )));
     }
-*/
+
     Future scanQR() async {
       String resultQRCode;
       var couponRepository = CouponRepository();
 
       try {
         resultQRCode = await FlutterBarcodeScanner.scanBarcode(
-            "#7a1dff", "Cancel", true, ScanMode.QR);
+            "#7a1dff", "Hủy", true, ScanMode.QR);
       } on PlatformException {
         resultQRCode = 'Failed to get platform version.';
         T7GDialog.showAlertDialog(context, '', resultQRCode);
@@ -196,7 +227,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       // If the widget was removed from the tree while the asynchronous platform
       // message was in flight, we want to discard the reply rather than calling
       // setState to update our non-existent appearance.
-      if (!mounted) return Center();
+      if (!mounted) return null;
       setState(() {
         _scanBarCode = resultQRCode;
       });
@@ -204,10 +235,14 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         var id = '4ba9f6ec-d92c-4d45-80c5-a2fa0b9f14a8';
         var code =
             'ohf3U2QA6fuzEsc4ZjOLV5gcOs0wiudSKbcKYqI1wncbQjdx9npw1E3XiFXbs9jV';
-        final result = await couponRepository.scanQRCode(id, code);
-        // print(result.customer.fullname.toUpperCase());
-        T7GDialog.showAlertDialog(
-            context, 'Quét thành công', result.coupon.title);
+        var rs = await couponRepository.scanQRCode(id, code);
+        if (rs != null) {
+          T7GDialog.showAlertDialog(
+              context, 'Quét thành công', rs.customer.fullname);
+        } else {
+          T7GDialog.showContentDialog(context, [showErrorPopup()],
+              closeShow: false, barrierDismissible: false);
+        }
       }
     }
 
@@ -217,7 +252,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
           isActive: _status == Promotion.approveStatus,
           defaultHintText: LocalizationsUtil.of(context).translate('Quét QR'),
           callback: () async {
-            scanQR();
+            var data = scanQR();
           });
     }
 
@@ -237,7 +272,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                       height: _heightPhoto,
                       imgUrl: _couponModel.images.first.image)
                   : SvgPicture.asset('assets/image/ic-comming-soon.svg',
-                      fit: BoxFit.cover),
+                      fit: BoxFit.contain),
 
 //TODO: BODY
               DraggableScrollableSheet(
