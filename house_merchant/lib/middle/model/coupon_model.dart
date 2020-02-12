@@ -7,10 +7,12 @@ class CouponModel {
   String id;
   String title;
   int quantity;
+  int count;
   String description;
   String startDate;
   String endDate;
   int status;
+  int usedCount;
   List<ImageModel> images = List<ImageModel>();
   List<ShopModel> shops = List<ShopModel>();
   bool isExpired;
@@ -20,18 +22,22 @@ class CouponModel {
     this.title,
     this.quantity,
     this.description,
+    this.count,
     this.startDate,
     this.endDate,
     this.status,
     this.images,
     this.shops,
-    this.isExpired
+    this.isExpired,
+    this.usedCount,
   });
 
   CouponModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     title = json['title'];
     quantity = json['quantity'];
+    count = json["count"];
+    usedCount = json["used_count"];
     description = json['description'];
     startDate = json['start_date'];
     endDate = json['end_date'];
@@ -60,6 +66,8 @@ class CouponModel {
     data['start_date'] = this.startDate;
     data['end_date'] = this.endDate;
     data['status'] = this.status;
+    data['count'] = this.count;
+    data['used_count'] = this.usedCount;
     if (this.images != null) {
       data['images'] = this.images.map((v) => v.toJson()).toList();
     }
@@ -95,10 +103,8 @@ class CouponModel {
   }
 }
 
-
 //** COUPON LIST **//
 class CouponList {
-
   int response;
   List<CouponModel> data;
 

@@ -4,15 +4,33 @@ import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/middle/api/coupon_api.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/middle/model/image_meta_model.dart';
+import 'package:house_merchant/middle/model/qrcode_model.dart';
 
 class CouponRepository {
   final couponAPI = new CouponAPI();
 
   CouponRepository();
 
-  Future<List<CouponModel>> getCoupons({int offset = 1, int limit=APIConstant.limitDefault, int status=-1}) async {
+  Future<List<CouponModel>> getCoupons(
+      {int offset = 1,
+      int limit = APIConstant.limitDefault,
+      int status = -1}) async {
     final rs = await couponAPI.getCoupons(offset, limit: limit, status: status);
+    print('[getCoupons] status = $status, result = $rs');
     return rs;
+  }
+
+  Future<QrCodeModel> scanQRCode(String id, String code) async {
+    try {
+      final rs = await couponAPI.scanQR(id: id, code: code);
+      print(rs);
+      if (rs != null) {
+        return rs;
+      }
+      return null;
+    } catch (e) {
+      return throw (e.toString());
+    }
   }
 
   Future<CouponModel> createCoupon(CouponModel couponModel) async {

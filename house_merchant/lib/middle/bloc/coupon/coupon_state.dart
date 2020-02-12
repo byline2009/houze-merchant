@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/model/qrcode_model.dart';
 import 'package:meta/meta.dart';
 
 abstract class CouponState extends Equatable {
@@ -13,6 +14,15 @@ class CouponGetListSuccessful extends CouponState {
 
   @override
   String toString() => 'ShopGetDetailSuccessful { result: $result }';
+}
+
+class CouponScanQRCodeSuccessful extends CouponState {
+  final QrCodeModel result;
+
+  CouponScanQRCodeSuccessful({@required this.result});
+
+  @override
+  String toString() => 'CouponScanQRCodeSuccessful { result: $result }';
 }
 
 class CouponInitial extends CouponState {
