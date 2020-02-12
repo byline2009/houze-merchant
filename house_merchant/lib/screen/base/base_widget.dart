@@ -27,7 +27,7 @@ class BaseWidget {
         },
         child: Container(
           width: double.infinity,
-          padding: new EdgeInsets.all(15.0),
+          padding: new EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
             color: color == null ? Color(0xfff2e8ff) : color,
             borderRadius: new BorderRadius.all(Radius.circular(4.0)),
@@ -40,6 +40,33 @@ class BaseWidget {
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: ThemeConstant.primary_color,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ));
+  }
+
+  static Widget buttonOutline(String text,
+      {Color color, CallBackHandler callback}) {
+    return GestureDetector(
+        onTap: () {
+          if (callback != null) {
+            callback();
+          }
+        },
+        child: Container(
+          width: double.infinity,
+          padding: new EdgeInsets.all(12.0),
+          decoration:
+              ThemeConstant.borderOutline(ThemeConstant.form_border_error),
+          child: Text(
+            text,
+            style: TextStyle(
+              letterSpacing: 0.29,
+              fontFamily: ThemeConstant.form_font_family_display,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: ThemeConstant.form_border_error,
             ),
             textAlign: TextAlign.center,
           ),
