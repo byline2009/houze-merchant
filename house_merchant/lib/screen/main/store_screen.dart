@@ -44,19 +44,22 @@ class StoreScreenState extends State<StoreScreen> {
                 fontWeight: ThemeConstant.appbar_text_weight)),
         SizedBox(height: 15),
         Container(
-          height: 120,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: shopModel.images.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(child: ImageWidget(
-                width: 120,
-                height: 120,
-                imgUrl: shopModel.images[index].imageThumb,
-              ), padding: EdgeInsets.only(right: 15),);
-            },
-            //separatorBuilder: (BuildContext context, int index) => SizedBox(width: 15),)
-        ))
+            height: 120,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: shopModel.images.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  child: ImageWidget(
+                    width: 120,
+                    height: 120,
+                    imgUrl: shopModel.images[index].imageThumb,
+                  ),
+                  padding: EdgeInsets.only(right: 15),
+                );
+              },
+              //separatorBuilder: (BuildContext context, int index) => SizedBox(width: 15),)
+            ))
       ],
     );
   }
@@ -82,7 +85,8 @@ class StoreScreenState extends State<StoreScreen> {
               color: ThemeConstant.background_grey_color,
               borderRadius: BorderRadius.all(Radius.circular(4.0)),
             ),
-            child: Text(shopModel.description != null && shopModel.description.length > 0
+            child: Text(shopModel.description != null &&
+                    shopModel.description.length > 0
                 ? shopModel.description
                 : 'Chưa có mô tả'))
       ],
@@ -91,10 +95,13 @@ class StoreScreenState extends State<StoreScreen> {
 
   Widget timeStore(ShopModel shopModel) {
     if (shopModel.hours.length == 0) {
-      return Padding(child: Center(child: Text('Chưa có giờ làm việc')), padding: EdgeInsets.only(top:15),);
+      return Padding(
+        child: Center(child: Text('Chưa có giờ làm việc')),
+        padding: EdgeInsets.only(top: 15),
+      );
     }
 
-    final Map<int, bool> disableWeekday = <int,bool>{
+    final Map<int, bool> disableWeekday = <int, bool>{
       0: true,
       1: true,
       2: true,
@@ -124,32 +131,32 @@ class StoreScreenState extends State<StoreScreen> {
                 SizedBox(width: 10),
                 TagsWidget(
                   text: 'T3',
-                  isDisable: disableWeekday[1]?? false,
+                  isDisable: disableWeekday[1] ?? false,
                 ),
                 SizedBox(width: 10),
                 TagsWidget(
                   text: 'T4',
-                  isDisable: disableWeekday[2]?? false,
+                  isDisable: disableWeekday[2] ?? false,
                 ),
                 SizedBox(width: 10),
                 TagsWidget(
                   text: 'T5',
-                  isDisable: disableWeekday[3]?? false,
+                  isDisable: disableWeekday[3] ?? false,
                 ),
                 SizedBox(width: 10),
                 TagsWidget(
                   text: 'T6',
-                  isDisable: disableWeekday[4]?? false,
+                  isDisable: disableWeekday[4] ?? false,
                 ),
                 SizedBox(width: 10),
                 TagsWidget(
                   text: 'T7',
-                  isDisable: disableWeekday[5]?? false,
+                  isDisable: disableWeekday[5] ?? false,
                 ),
                 SizedBox(width: 10),
                 TagsWidget(
                   text: 'CN',
-                  isDisable: disableWeekday[6]?? false,
+                  isDisable: disableWeekday[6] ?? false,
                 ),
               ],
             ),
@@ -288,7 +295,10 @@ class StoreScreenState extends State<StoreScreen> {
                               "shop_model": shopModel,
                               "callback": (List<FilePick> validationPicks) {
                                 shopModel.images = validationPicks.map((f) {
-                                  return ImageModel(id: f.id, image: f.url, imageThumb: f.urlThumb);
+                                  return ImageModel(
+                                      id: f.id,
+                                      image: f.url,
+                                      imageThumb: f.urlThumb);
                                 }).toList();
                               }
                             });
@@ -297,7 +307,7 @@ class StoreScreenState extends State<StoreScreen> {
                       padding: EdgeInsets.all(this._padding),
                     )),
                     SliverToBoxAdapter(
-                      child: BoxesContainer(
+                        child: BoxesContainer(
                       title: 'Mô tả',
                       child: descriptionStore(shopModel),
                       action: InkWell(
@@ -314,17 +324,16 @@ class StoreScreenState extends State<StoreScreen> {
                     )),
                     SliverToBoxAdapter(
                         child: BoxesContainer(
-                        title: 'Thời gian',
-                        child: timeStore(shopModel),
-                        action: InkWell(
-                            onTap: () {
-                              Router.push(context, Router.SHOP_TIME_PAGE, {
-                                "shop_model": shopModel
-                              });
-                            },
-                            child: editButton()),
-                        padding: EdgeInsets.all(this._padding),
-                      )),
+                      title: 'Thời gian',
+                      child: timeStore(shopModel),
+                      action: InkWell(
+                          onTap: () {
+                            Router.push(context, Router.SHOP_TIME_PAGE,
+                                {"shop_model": shopModel});
+                          },
+                          child: editButton()),
+                      padding: EdgeInsets.all(this._padding),
+                    )),
                   ]);
             }
 

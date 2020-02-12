@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:house_merchant/screen/main/notification_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_create_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_detail_screen.dart';
+import 'package:house_merchant/screen/promotion/promotion_scan_success_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_user_list_screen.dart';
 import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
 import 'package:house_merchant/screen/store/store_edit_image_screen.dart';
@@ -19,6 +20,7 @@ class Router {
 
   static const NOTIFICATION_PAGE = "app://NotificationPage";
   static const COUPON_USER_LIST_PAGE = "app://CouponUserListPage";
+  static const COUPON_SCAN_QR_SUCCESS_PAGE = "app://CouponQRScanSuccessPage";
 
   static const SHOP_IMAGES_PAGE = "app://ShopImages";
   static const SHOP_DESCRIPTION_PAGE = "app://ShopDescription";
@@ -39,6 +41,11 @@ class Router {
 
       case COUPON_USER_LIST_PAGE:
         return CouponUserListScreen(
+          params: params,
+        );
+
+      case COUPON_SCAN_QR_SUCCESS_PAGE:
+        return PromotionScanSuccessScreen(
           params: params,
         );
 

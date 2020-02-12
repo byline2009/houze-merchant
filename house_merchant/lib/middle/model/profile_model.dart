@@ -7,17 +7,18 @@ class ProfileModel {
   String birthday;
   String identityCard;
   String passport;
+  String avatar;
 
-  ProfileModel({
-    this.id,
-    this.fullname,
-    this.phoneNumber,
-    this.intlCode,
-    this.gender,
-    this.birthday,
-    this.identityCard,
-    this.passport,
-  });
+  ProfileModel(
+      {this.id,
+      this.fullname,
+      this.phoneNumber,
+      this.intlCode,
+      this.gender,
+      this.birthday,
+      this.identityCard,
+      this.passport,
+      this.avatar});
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -28,6 +29,7 @@ class ProfileModel {
     birthday = json['birthday'];
     identityCard = json['identity_card'];
     passport = json['passport'];
+    avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,6 +42,7 @@ class ProfileModel {
     data['birthday'] = this.birthday;
     data['identity_card'] = this.identityCard;
     data['passport'] = this.passport;
+    data['avatar'] = this.avatar;
     return data;
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
+import 'package:house_merchant/screen/base/base_widget.dart';
 
 class UserModel {
   String avatar;
@@ -51,7 +51,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
           Text(_couponModel.title,
               style: ThemeConstant.titleLargeStyle(ThemeConstant.black_color)),
           SizedBox(height: 12),
-          ThemeConstant.dividerBottom,
+          BaseWidget.dividerBottom,
           SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
