@@ -237,8 +237,8 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
             'ohf3U2QA6fuzEsc4ZjOLV5gcOs0wiudSKbcKYqI1wncbQjdx9npw1E3XiFXbs9jV';
         var rs = await couponRepository.scanQRCode(id, code);
         if (rs != null) {
-          T7GDialog.showAlertDialog(
-              context, 'Quét thành công', rs.customer.fullname);
+          Router.push(_context, Router.COUPON_SCAN_QR_SUCCESS_PAGE,
+              {"qrCodeModel": rs});
         } else {
           T7GDialog.showContentDialog(context, [showErrorPopup()],
               closeShow: false, barrierDismissible: false);
@@ -252,7 +252,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
           isActive: _status == Promotion.approveStatus,
           defaultHintText: LocalizationsUtil.of(context).translate('Quét QR'),
           callback: () async {
-            var data = scanQR();
+            scanQR();
           });
     }
 

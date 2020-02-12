@@ -48,7 +48,8 @@ class ButtonWidgetState extends State<ButtonWidget> {
                 color: ThemeConstant.button_disable_color,
                 borderRadius: ThemeConstant.button_radius,
               ),
-        child: Padding(
+        child: Container(
+            width: double.infinity,
             padding: const EdgeInsets.only(right: 5.0, left: 5.0),
             child: FlatButton(
                 shape: ThemeConstant.formButtonBorder,

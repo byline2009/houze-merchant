@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 const double horizontalPadding = 20.0;
 typedef void CallBackHandler();
@@ -16,6 +19,11 @@ class BaseWidget {
       child: text,
     );
   }
+
+  static Container dividerBottom = Container(
+    height: 2.0,
+    color: ThemeConstant.form_border_normal,
+  );
 
   static Widget buttonThemePink(String text,
       {Color color, CallBackHandler callback}) {
@@ -70,6 +78,51 @@ class BaseWidget {
             ),
             textAlign: TextAlign.center,
           ),
+        ));
+  }
+
+  static Widget avatar(String url, String gender, double height) {
+    return Container(
+        height: height,
+        width: height,
+        decoration: BoxDecoration(
+            borderRadius: new BorderRadius.circular(height / 2),
+            border: Border.all(
+                color: Colors.white, width: 3, style: BorderStyle.solid)),
+        child: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            RawMaterialButton(
+              child: ClipRRect(
+                  borderRadius: new BorderRadius.circular(height / 2),
+                  child: Stack(overflow: Overflow.clip, children: <Widget>[
+                    Container(
+                        color: Colors.white,
+                        child: TransitionToImage(
+                          image: AdvancedNetworkImage(
+                            url,
+                            useDiskCache: true,
+                            cacheRule:
+                                CacheRule(maxAge: const Duration(days: 7)),
+                            timeoutDuration: Duration(seconds: 2),
+                            retryLimit: 0,
+                          ),
+                          placeholder: Center(
+                              child: SvgPicture.asset(
+                                  "assets/images/gender/avt-${gender}.svg")),
+                          fit: BoxFit.cover,
+                          printError: true,
+                          height: height,
+                          width: height,
+                        ))
+                  ])),
+              onPressed: () {
+                print("select avatar");
+              },
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+          ],
         ));
   }
 }

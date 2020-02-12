@@ -220,11 +220,6 @@ class ThemeConstant {
     );
   }
 
-  static Container dividerBottom = Container(
-    height: 2.0,
-    color: form_border_normal,
-  );
-
   static const Color listview_selected_color = Color(0xfff2e8ff);
 
   static const Color form_border_error = Color(0xffc50000);
