@@ -33,6 +33,19 @@ class CouponRepository {
     }
   }
 
+  Future<QrCodeModel> confirmCode(String id, String code) async {
+    try {
+      final rs = await couponAPI.confirmQR(id: id, code: code);
+      print(rs);
+      if (rs != null) {
+        return rs;
+      }
+      return null;
+    } catch (e) {
+      return throw (e.toString());
+    }
+  }
+
   Future<CouponModel> createCoupon(CouponModel couponModel) async {
     try {
       final rs = await couponAPI.createCoupon(couponModel);

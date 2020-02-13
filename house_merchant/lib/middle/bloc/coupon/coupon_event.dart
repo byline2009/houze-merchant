@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:house_merchant/middle/model/qrcode_model.dart';
 import 'package:meta/meta.dart';
 
 abstract class CouponEvent extends Equatable {
@@ -26,4 +27,16 @@ class ScanQRButtonPressed extends CouponEvent {
 
   @override
   String toString() => 'CouponScanQRCodeEvent { id: $id, code: $code}';
+}
+
+class ConfirmQRCodeButtonPressed extends CouponEvent {
+  final QrCodeModel qrCodeModel;
+
+  ConfirmQRCodeButtonPressed({
+    this.qrCodeModel,
+  }) : super([qrCodeModel]);
+
+  @override
+  String toString() =>
+      'ConfirmQRCodeButtonPressed { qrCodeModel: $qrCodeModel }';
 }
