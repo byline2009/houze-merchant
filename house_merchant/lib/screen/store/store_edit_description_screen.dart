@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
-import 'package:house_merchant/custom/textfield_style1_widget.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:house_merchant/middle/bloc/shop/index.dart';
 import 'package:house_merchant/middle/bloc/shop/shop_bloc.dart';
@@ -92,18 +91,18 @@ class StoreEditDescriptionScreenState
                   SizedBox(height: 30),
                   Text(
                     'Nội dung mô tả',
-                    style: ThemeConstant.subtitleStyle(
-                        ThemeConstant.grey_color),
+                    style:
+                        ThemeConstant.subtitleStyle(ThemeConstant.grey_color),
                   ),
                   SizedBox(height: 5),
                   TextFieldWidget(
-                    controller: fdesc,
-                    defaultHintText:
-                        'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...',
-                    keyboardType: TextInputType.multiline,
-                    callback: (String value) {
-                      checkValidation();
-                    })
+                      controller: fdesc,
+                      defaultHintText:
+                          'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...',
+                      keyboardType: TextInputType.multiline,
+                      callback: (String value) {
+                        checkValidation();
+                      })
                 ])));
   }
 
@@ -124,8 +123,7 @@ class StoreEditDescriptionScreenState
                   LocalizationsUtil.of(context).translate('Lưu thay đổi'),
               callback: () async {
                 this._shopModel.description = fdesc.Controller.text;
-                shopBloc
-                    .add(SaveButtonPressed(shopModel: this._shopModel));
+                shopBloc.add(SaveButtonPressed(shopModel: this._shopModel));
               }));
     }
 
@@ -133,61 +131,58 @@ class StoreEditDescriptionScreenState
     return BaseScaffoldNormal(
         title: 'Chỉnh sửa cửa hàng',
         child: SafeArea(
-          child: BlocListener(
-            bloc: shopBloc,
-            listener: (context, state) async {
-              if (state is ShopSuccessful) {
-                progressToolkit.state.show();
-                if ( widget.params['callback']!=null ) {
-                  var shopModel = widget.params['shop_model'] as ShopModel;
-                  shopModel.description = fdesc.Controller.text;
-                  widget.params['callback'](shopModel);
-                }
-                Navigator.of(context).pop();
-                Fluttertoast.showToast(
-                    msg: 'Cập nhật mô tả thành công',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIos: 5,
-                    backgroundColor: Colors.black,
-                    textColor: Colors.white,
-                    fontSize: 14.0
-                );
-              }
+            child: BlocListener(
+                bloc: shopBloc,
+                listener: (context, state) async {
+                  if (state is ShopSuccessful) {
+                    progressToolkit.state.show();
+                    if (widget.params['callback'] != null) {
+                      var shopModel = widget.params['shop_model'] as ShopModel;
+                      shopModel.description = fdesc.Controller.text;
+                      widget.params['callback'](shopModel);
+                    }
+                    Navigator.of(context).pop();
+                    Fluttertoast.showToast(
+                        msg: 'Cập nhật mô tả thành công',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIos: 5,
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        fontSize: 14.0);
+                  }
 
-              if (state is ShopFailure) {
-                Fluttertoast.showToast(
-                  msg: state.error.toString(),
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.CENTER,
-                  timeInSecForIos: 5,
-                  backgroundColor: Colors.black,
-                  textColor: Colors.white,
-                  fontSize: 14.0
-                );
-                progressToolkit.state.dismiss();
-              }
-            },
-            child: BlocBuilder<ShopBloc, ShopState>(
-              bloc: shopBloc,
-              builder: (
-                BuildContext context,
-                ShopState state,
-            ) {
+                  if (state is ShopFailure) {
+                    Fluttertoast.showToast(
+                        msg: state.error.toString(),
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIos: 5,
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        fontSize: 14.0);
+                    progressToolkit.state.dismiss();
+                  }
+                },
+                child: BlocBuilder<ShopBloc, ShopState>(
+                    bloc: shopBloc,
+                    builder: (
+                      BuildContext context,
+                      ShopState state,
+                    ) {
+                      if (state is ShopLoading) {
+                        progressToolkit.state.show();
+                      }
 
-              if (state is ShopLoading) {
-                progressToolkit.state.show();
-              }
-
-              return Stack(children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(color: ThemeConstant.background_grey_color),
-                ),
-                buildBody(),
-                saveDataButton(shopBloc),
-                progressToolkit
-              ]);
-            }))
-    ));
+                      return Stack(children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                              color: ThemeConstant.background_grey_color),
+                        ),
+                        buildBody(),
+                        saveDataButton(shopBloc),
+                        progressToolkit
+                      ]);
+                    }))));
   }
 }

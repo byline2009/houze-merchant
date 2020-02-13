@@ -98,23 +98,26 @@ class BaseWidget {
                   child: Stack(overflow: Overflow.clip, children: <Widget>[
                     Container(
                         color: Colors.white,
-                        child: TransitionToImage(
-                          image: AdvancedNetworkImage(
-                            url,
-                            useDiskCache: true,
-                            cacheRule:
-                                CacheRule(maxAge: const Duration(days: 7)),
-                            timeoutDuration: Duration(seconds: 2),
-                            retryLimit: 0,
-                          ),
-                          placeholder: Center(
-                              child: SvgPicture.asset(
-                                  "assets/images/gender/avt-${gender}.svg")),
-                          fit: BoxFit.cover,
-                          printError: true,
-                          height: height,
-                          width: height,
-                        ))
+                        child: url != null
+                            ? TransitionToImage(
+                                image: AdvancedNetworkImage(
+                                  url,
+                                  useDiskCache: true,
+                                  cacheRule: CacheRule(
+                                      maxAge: const Duration(days: 7)),
+                                  timeoutDuration: Duration(seconds: 2),
+                                  retryLimit: 0,
+                                ),
+                                placeholder: Center(
+                                    child: SvgPicture.asset(
+                                        "assets/images/gender/avt-O.svg")),
+                                fit: BoxFit.cover,
+                                printError: true,
+                                height: height,
+                                width: height,
+                              )
+                            : SvgPicture.asset(
+                                "assets/images/gender/avt-O.svg"))
                   ])),
               onPressed: () {
                 print("select avatar");

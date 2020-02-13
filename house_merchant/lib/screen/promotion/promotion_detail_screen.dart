@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_outline_widget.dart';
@@ -12,7 +13,6 @@ import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
-import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/middle/model/qrcode_model.dart';
 import 'package:house_merchant/middle/repository/coupon_repository.dart';
@@ -193,19 +193,21 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        height: 48.0,
-                        width: (width - 55) / 2,
-                        child: BaseWidget.buttonThemePink('Thử lại',
-                            callback: () {}),
+                      Expanded(
+                        child: Container(
+                          height: 48.0,
+                          child: BaseWidget.buttonThemePink('Thử lại',
+                              callback: () {}),
+                        ),
                       ),
-                      Container(
+                      SizedBox(width: 15),
+                      Expanded(
+                          child: Container(
                         height: 48.0,
-                        width: (width - 55) / 2,
                         child: BaseWidget.buttonOutline('Thoát', callback: () {
                           Navigator.of(context).pop();
                         }),
-                      ),
+                      )),
                     ],
                   )
                 ],
@@ -232,13 +234,22 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         _scanBarCode = resultQRCode;
       });
       if (_scanBarCode.length > 0) {
-        var id = '4ba9f6ec-d92c-4d45-80c5-a2fa0b9f14a8';
+        var id = '48185b17-60e3-4b52-b746-1cdf0ec92aeb';
         var code =
-            'ohf3U2QA6fuzEsc4ZjOLV5gcOs0wiudSKbcKYqI1wncbQjdx9npw1E3XiFXbs9jV';
+            'EgPk3bGzNmSWQeURavTjcJWb0aiMZRijrslnzWD829lID7XaqedCxvW3c96qsw1Q';
         var rs = await couponRepository.scanQRCode(id, code);
         if (rs != null) {
-          Router.push(_context, Router.COUPON_SCAN_QR_SUCCESS_PAGE,
-              {"qrCodeModel": rs});
+          if (rs.isUsed == true) {
+            T7GDialog.showAlertDialog(context, '', 'Mã này đã sử dụng!');
+          } else {
+            Router.push(_context, Router.COUPON_SCAN_QR_SUCCESS_PAGE, {
+              "qr_code_model": rs,
+              "callback": (QrCodeModel qrCodeModel) {
+                //call api get user list
+                print('===============> $qrCodeModel');
+              }
+            });
+          }
         } else {
           T7GDialog.showContentDialog(context, [showErrorPopup()],
               closeShow: false, barrierDismissible: false);
@@ -252,6 +263,8 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
           isActive: _status == Promotion.approveStatus,
           defaultHintText: LocalizationsUtil.of(context).translate('Quét QR'),
           callback: () async {
+            // T7GDialog.showContentDialog(context, [showErrorPopup()],
+            //     closeShow: false, barrierDismissible: false);
             scanQR();
           });
     }
