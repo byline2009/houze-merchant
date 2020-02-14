@@ -225,18 +225,15 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         T7GDialog.showAlertDialog(context, '', resultQRCode);
       }
 
-      // If the widget was removed from the tree while the asynchronous platform
-      // message was in flight, we want to discard the reply rather than calling
-      // setState to update our non-existent appearance.
       if (!mounted) return null;
       setState(() {
         _scanBarCode = resultQRCode;
       });
-      if (_scanBarCode.length > 0) {
-        var id = '48185b17-60e3-4b52-b746-1cdf0ec92aeb';
-        var code =
-            'EgPk3bGzNmSWQeURavTjcJWb0aiMZRijrslnzWD829lID7XaqedCxvW3c96qsw1Q';
-        var rs = await couponRepository.scanQRCode(id, code);
+      String _id = _scanBarCode.split(',').first;
+      String _code = _scanBarCode.split(',').last;
+
+      if (_scanBarCode.length > 0 && _id != null && _code != null) {
+        var rs = await couponRepository.scanQRCode(_id, _code);
         if (rs != null) {
           if (rs.isUsed == true) {
             T7GDialog.showAlertDialog(context, '', 'Mã này đã sử dụng!');
