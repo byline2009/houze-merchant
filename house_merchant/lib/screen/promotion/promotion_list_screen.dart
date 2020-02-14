@@ -8,7 +8,6 @@ import 'package:house_merchant/custom/text_limit_widget.dart';
 import 'package:house_merchant/middle/bloc/coupon/coupon_list_bloc.dart';
 import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
-import 'package:house_merchant/middle/model/qrcode_model.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
@@ -155,7 +154,7 @@ class CouponListScreenState extends State<CouponListScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('0/${couponModel.quantity}',
+              Text(couponModel.getUsedCound(),
                   style: new TextStyle(
                     fontSize: ThemeConstant.label_font_size,
                     fontFamily: ThemeConstant.form_font_family_display,

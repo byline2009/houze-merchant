@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/model/coupon_user_model.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/base_widget.dart';
-
-class UserModel {
-  String avatar;
-  String name;
-  String date;
-
-  UserModel({this.avatar, this.name, this.date});
-}
+import 'package:house_merchant/screen/base/boxes_container.dart';
+import 'package:intl/intl.dart';
 
 class CouponUserListScreen extends StatefulWidget {
   dynamic params;
@@ -25,12 +22,15 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
   Size _screenSize;
   BuildContext _context;
   double _padding;
-  List users;
+  List<CouponUserModel> users;
   CouponModel _couponModel;
+  final _couponBloc = CouponBloc();
 
   @override
   void initState() {
-    users = getUserList();
+    this._couponModel = widget.params['coupon_model'];
+    _couponBloc.add(CouponUserLoadList(id: _couponModel.id));
+    print(_couponModel.id);
     super.initState();
   }
 
@@ -38,7 +38,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
-    this._couponModel = widget.params['coupon_model'];
+    this._context = context;
 
     Widget headerWidget = Container(
       color: Colors.white,
@@ -57,7 +57,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Text(
-                '0/${_couponModel.quantity}',
+                _couponModel.getUsedCound(),
                 style:
                     ThemeConstant.titleLargeStyle(ThemeConstant.primary_color),
               ),
@@ -75,7 +75,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
       ),
     );
 
-    Widget userItem(UserModel user) {
+    Widget userItem(CouponUserModel user) {
       return Container(
           height: 80.0,
           decoration: BoxDecoration(color: ThemeConstant.white_color),
@@ -85,121 +85,67 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
               height: 50,
               child: CircleAvatar(
                   backgroundColor: ThemeConstant.alto_color,
-                  child: Text(
-                    user.name[0],
-                    style: ThemeConstant.titleLargeStyle(Colors.white),
-                  )),
+                  child: user.customer.avatar == null
+                      ? BaseWidget.avatar(user.customer.avatar, 'O', 50)
+                      : Text(
+                          user.customer.fullname[0],
+                          style: ThemeConstant.titleLargeStyle(Colors.white),
+                        )),
             ),
             title: Text(
-              user.name,
+              user.customer.fullname,
               style: ThemeConstant.titleTileStyle,
             ),
-            subtitle: Text(user.date, style: ThemeConstant.subtitleTileStyle),
+            subtitle: Text(
+                'Ngày sử dụng: ' +
+                    DateFormat('HH:mm - dd/MM/yyyy')
+                        .format(DateTime.parse(user.created)),
+                style: ThemeConstant.subtitleTileStyle),
           ));
     }
 
-    final userListWidget = Container(
-      child: ListView.separated(
+    Widget userListWidget(List<CouponUserModel> rs) {
+      return Container(
+          child: ListView.separated(
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
-        itemCount: users.length,
+        itemCount: rs.length,
         itemBuilder: (BuildContext context, int index) {
-          return userItem(users[index]);
+          return userItem(rs[index]);
         },
         separatorBuilder: (BuildContext context, int index) =>
             Divider(height: 2, color: ThemeConstant.background_grey_color),
-      ),
-    );
+      ));
+    }
 
-    // TODO: implement build
     return BaseScaffoldNormal(
         title: 'Danh sách sử dụng',
         child: SafeArea(
-          child: Container(
-              color: ThemeConstant.background_grey_color,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  headerWidget,
-                  SizedBox(height: 10.0),
-                  Expanded(child: userListWidget, flex: 1),
-                ],
-              )),
-        ));
-  }
-}
+            child: BlocBuilder(
+                bloc: _couponBloc,
+                builder: (BuildContext context, CouponState currentState) {
+                  print("Status: $currentState");
 
-List getUserList() {
-  return [
-    UserModel(
-      avatar: '',
-      name: "Minh Ngoc Nguyen",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Phan Minh Trí",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Nguyễn Thị Diệu An",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Nguyễn Cảnh Gia",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Phạm Minh Phương",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Ưu đãi đã kết thúc thời hạn",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Nguyễn Thị Diệu An",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Minh Ngoc Nguyen",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Phan Minh Trí",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Nguyễn Thị Diệu An",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Nguyễn Cảnh Gia",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Phạm Minh Phương",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "Ưu đãi đã kết thúc thời hạn",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-    UserModel(
-      avatar: '',
-      name: "14.Nguyễn Thị Diệu An",
-      date: "Ngày sử dụng: 19:31 - 26/12/2020",
-    ),
-  ];
+                  if (currentState is CouponGetUserListSuccessful) {
+                    List<CouponUserModel> rs = currentState.result;
+                    print("List<CouponUserModel>: ${rs.length}");
+
+                    this.users = rs;
+                    return CustomScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        slivers: [
+                          SliverToBoxAdapter(
+                              child: BoxesContainer(child: Center())),
+                          SliverToBoxAdapter(
+                              child: BoxesContainer(child: headerWidget)),
+                          SliverToBoxAdapter(
+                            child: BoxesContainer(
+                              child: userListWidget(rs),
+                            ),
+                          ),
+                        ]);
+                  }
+                  return Center();
+                })));
+  }
 }

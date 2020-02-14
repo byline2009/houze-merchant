@@ -1,10 +1,20 @@
 import 'package:equatable/equatable.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/model/coupon_user_model.dart';
 import 'package:house_merchant/middle/model/qrcode_model.dart';
 import 'package:meta/meta.dart';
 
 abstract class CouponState extends Equatable {
   CouponState([List props = const []]) : super(props);
+}
+
+class CouponGetUserListSuccessful extends CouponState {
+  final List<CouponUserModel> result;
+
+  CouponGetUserListSuccessful({@required this.result});
+
+  @override
+  String toString() => 'CouponGetUserListSuccessful { result: $result }';
 }
 
 class CouponGetListSuccessful extends CouponState {

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/middle/api/coupon_api.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/model/coupon_user_model.dart';
 import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/model/qrcode_model.dart';
 
@@ -65,5 +66,12 @@ class CouponRepository {
       return rs;
     }
     return null;
+  }
+
+  Future<List<CouponUserModel>> getCouponUserList(
+      {String id, int offset = 0, int limit = APIConstant.limitDefault}) async {
+    final rs = await couponAPI.getCouponUsers(id, limit: limit, offset: offset);
+    print('[getCouponUserList] ID = $id, result = $rs');
+    return rs;
   }
 }
