@@ -101,6 +101,10 @@ class CouponModel {
       return ThemeConstant.expired_color;
     }
   }
+
+  String getUsedCound() {
+    return '$usedCount/$quantity';
+  }
 }
 
 //** COUPON LIST **//

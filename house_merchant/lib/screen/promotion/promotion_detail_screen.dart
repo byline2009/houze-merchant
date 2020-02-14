@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_outline_widget.dart';
@@ -78,7 +77,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
           Container(
             child: Row(
               children: <Widget>[
-                Text('0/${_couponModel.quantity}',
+                Text(_couponModel.getUsedCound(),
                     style: TextStyle(
                         fontSize: ThemeConstant.boxes_font_title,
                         color: ThemeConstant.white_color,
@@ -269,6 +268,43 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
           });
     }
 
+    Widget displayViewUserList() {
+      return (this._couponModel.usedCount > 0)
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(),
+                InkWell(
+                  onTap: () {
+                    Router.push(_context, Router.COUPON_USER_LIST_PAGE,
+                        {"coupon_model": _couponModel});
+                  },
+                  child: Container(
+                      width: 130,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text('Xem danh sách',
+                              style: TextStyle(
+                                  color: ThemeConstant.primary_color,
+                                  fontSize: 13,
+                                  letterSpacing:
+                                      ThemeConstant.letter_spacing_026,
+                                  fontWeight: FontWeight.w600)),
+                          SizedBox(width: 10.0),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: ThemeConstant.violet_color,
+                            size: 16.0,
+                          )
+                        ],
+                      )),
+                )
+              ],
+            )
+          : Center();
+    }
+
     return BaseScaffoldNormal(
       title: 'Chi tiết ưu đãi',
       child: SafeArea(
@@ -292,10 +328,10 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                 builder: (context, scrollController) {
                   return Container(
                     decoration: BoxDecoration(
-                        color: Colors.transparent,
+                        color: Colors.white,
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8.0),
-                            topRight: Radius.circular(8.0))),
+                            topLeft: Radius.circular(30.0),
+                            topRight: Radius.circular(30.0))),
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,55 +343,14 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                                 color: ThemeConstant.background_grey_color),
                           ),
                           Container(
-                            color: Colors.white,
                             padding: EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 20),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  margin: EdgeInsets.symmetric(vertical: 20),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(),
-                                      InkWell(
-                                        onTap: () {
-                                          Router.push(
-                                              _context,
-                                              Router.COUPON_USER_LIST_PAGE,
-                                              {"coupon_model": _couponModel});
-                                        },
-                                        child: Container(
-                                            width: 130,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                Text('Xem danh sách',
-                                                    style: TextStyle(
-                                                        color: ThemeConstant
-                                                            .primary_color,
-                                                        fontSize: 13,
-                                                        letterSpacing: ThemeConstant
-                                                            .letter_spacing_026,
-                                                        fontWeight:
-                                                            FontWeight.w600)),
-                                                SizedBox(width: 10.0),
-                                                Icon(
-                                                  Icons.arrow_forward,
-                                                  color: ThemeConstant
-                                                      .violet_color,
-                                                  size: 16.0,
-                                                )
-                                              ],
-                                            )),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    child: displayViewUserList()),
                                 Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,

@@ -110,7 +110,7 @@ class BaseWidget {
                                 ),
                                 placeholder: Center(
                                     child: SvgPicture.asset(
-                                        "assets/images/gender/avt-O.svg")),
+                                        "assets/images/gender/avt-$gender.svg")),
                                 fit: BoxFit.cover,
                                 printError: true,
                                 height: height,
