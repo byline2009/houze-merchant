@@ -15,7 +15,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   if (Platform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+        SystemUiOverlayStyle(statusBarColor: Colors.blue);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 
