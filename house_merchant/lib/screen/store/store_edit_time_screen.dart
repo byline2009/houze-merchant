@@ -12,6 +12,7 @@ import 'package:house_merchant/middle/model/keyvalue_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
+import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 
@@ -209,40 +210,8 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
           ]));
     }
 
-    //TODO
-//    Widget timeSection(String title, String content) {
-//      return Container(
-//          child: Column(
-//        children: <Widget>[
-//          _titleSection(title),
-//          SizedBox(height: 10),
-//          DropdownWidget(
-//              controller: _fOpeningHours,
-//              labelText: title,
-//              defaultHintText:
-//                  LocalizationsUtil.of(context).translate('Chọn giờ'),
-//              dataSource: _dataSourceHours,
-//              centerText: true,
-//              buildChild: (index) {
-//                return Center(
-//                    child: Text(
-//                  "${_dataSourceHours[index].value}",
-//                  style: TextStyle(
-//                      fontSize: 20,
-//                      color: Colors.black,
-//                      letterSpacing: ThemeConstant.letter_spacing_026,
-//                      fontWeight: FontWeight.w500),
-//                ));
-//              },
-//              initIndex: _initOpeningHourIndex,
-//              doneEvent: (index) async {
-//                print({"$title": _dataSourceHours[index].key});
-//              })
-//        ],
-//      ));
-//    }
-
     return Container(
+        padding: EdgeInsets.all(this._padding),
         decoration: BoxDecoration(color: ThemeConstant.white_color),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -262,40 +231,38 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                    Container(
-                        width: ((_screenSize.width - (_padding * 2)) / 2) - 10,
+                    Expanded(
                         child: Container(
                             child: Column(children: <Widget>[
-                          _titleSection("Giờ mở cửa"),
-                          SizedBox(height: 10),
-                          DropdownWidget(
-                              controller: _fOpeningHours,
-                              defaultHintText: LocalizationsUtil.of(context)
-                                  .translate('Chọn giờ'),
-                              dataSource: _dataSourceHours,
-                              centerText: true,
-                              buildChild: (index) {
-                                return Center(
-                                    child: Text(
-                                  "${_dataSourceHours[index].value}",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      letterSpacing:
-                                          ThemeConstant.letter_spacing_026,
-                                      fontWeight: FontWeight.w500),
-                                ));
-                              },
-                              initIndex: _initOpeningHourIndex,
-                              doneEvent: (index) async {
-                                _initOpeningHourIndex = index;
-                                this.checkValidation();
-                                //print(_dataSourceHours[index].key);
-                                openTime = _dataSourceHours[index].value;
-                              })
-                        ]))),
-                    Container(
-                      width: ((_screenSize.width - (_padding * 2)) / 2) - 10,
+                      _titleSection("Giờ mở cửa"),
+                      SizedBox(height: 10),
+                      DropdownWidget(
+                          controller: _fOpeningHours,
+                          defaultHintText: LocalizationsUtil.of(context)
+                              .translate('Chọn giờ'),
+                          dataSource: _dataSourceHours,
+                          buildChild: (index) {
+                            return Center(
+                                child: Text(
+                              "${_dataSourceHours[index].value}",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  letterSpacing:
+                                      ThemeConstant.letter_spacing_026,
+                                  fontWeight: FontWeight.w500),
+                            ));
+                          },
+                          initIndex: _initOpeningHourIndex,
+                          doneEvent: (index) async {
+                            _initOpeningHourIndex = index;
+                            this.checkValidation();
+                            //print(_dataSourceHours[index].key);
+                            openTime = _dataSourceHours[index].value;
+                          })
+                    ]))),
+                    SizedBox(width: 15),
+                    Expanded(
                       child: Container(
                         child: Column(
                           children: <Widget>[
@@ -306,7 +273,6 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                                 defaultHintText: LocalizationsUtil.of(context)
                                     .translate('Chọn giờ'),
                                 dataSource: _dataSourceHours,
-                                centerText: true,
                                 buildChild: (index) {
                                   return Center(
                                       child: Text(
@@ -395,20 +361,19 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
     return BaseScaffoldNormal(
         title: 'Chỉnh sửa cửa hàng',
         child: SafeArea(
-            child: Stack(children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(this._padding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(child: buildBody()),
-                saveChangeButton()
-              ],
-            ),
-            color: ThemeConstant.background_white_color,
-          ),
-          _progressToolkit
-        ])));
+            child: Container(
+                color: ThemeConstant.background_white_color,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    BoxesContainer(child: Center()),
+                    Expanded(child: buildBody()),
+                    Padding(
+                      child: saveChangeButton(),
+                      padding: EdgeInsets.all(_padding),
+                    ),
+                    _progressToolkit
+                  ],
+                ))));
   }
 }
