@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/group_radio_tags_widget.dart';
 import 'package:house_merchant/custom/text_limit_widget.dart';
@@ -119,7 +120,9 @@ class CouponListScreenState extends State<CouponListScreen> {
                   child: ImageWidget(
                       imgUrl: couponModel.images.length > 0
                           ? couponModel.images.first.imageThumb
-                          : "https://anhdaostorage.blob.core.windows.net/qa-media/facility/20191114014630397045/meeting-room.jpg",
+                          : SvgPicture.asset(
+                              'assets/image/ic-promotion-default.svg',
+                              fit: BoxFit.contain),
                       width: 80,
                       height: 80),
                   color: ThemeConstant.white_color),
