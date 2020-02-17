@@ -221,7 +221,7 @@ class ThemeConstant {
   }
 
   static const Color listview_selected_color = Color(0xfff2e8ff);
-
+  static const Color scan_button_color = Color(0xffd11aff);
   static const Color form_border_error = Color(0xffc50000);
   static const BorderRadius button_radius =
       BorderRadius.all(Radius.circular(5.0));
@@ -230,6 +230,8 @@ class ThemeConstant {
   static const Color button_disable_color = Color(0xffbdbdbd);
   static const Color button_gradient_color_right = ThemeConstant.primary_color;
   static const Color button_gradient_color_left = ThemeConstant.primary_color;
+  static const Color sacn_button_gradient_color_top =
+      ThemeConstant.scan_button_color;
 
   //Colors
   static const Color link_color = ThemeConstant.primary_color;
