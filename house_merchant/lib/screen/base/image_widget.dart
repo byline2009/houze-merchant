@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:house_merchant/constant/theme_constant.dart';
 
 class ImageWidget extends StatelessWidget {
   Widget child;
@@ -15,7 +14,7 @@ class ImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ClipRRect(
-          borderRadius: new BorderRadius.all(Radius.circular(10.0)),
+          borderRadius: new BorderRadius.all(Radius.circular(4.0)),
           child: Stack(overflow: Overflow.clip, children: <Widget>[
             CachedNetworkImage(
               imageUrl: this.imgUrl,
@@ -30,7 +29,7 @@ class ImageWidget extends StatelessWidget {
           ])),
       width: this.width,
       height: this.height,
-      color: ThemeConstant.background_grey_color,
+      // color: ThemeConstant.background_grey_color,
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:house_merchant/middle/bloc/coupon/coupon_list_bloc.dart';
 import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/router.dart';
+import 'package:house_merchant/screen/base/coming_soon_widget.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +27,7 @@ class CouponListScreen extends StatefulWidget {
 class CouponListScreenState extends State<CouponListScreen> {
   Size _screenSize;
   double _padding;
+  int tagIndexCurrent = -1;
 
   CouponListBloc couponListBloc = CouponListBloc();
   RefreshController _refreshController =
@@ -48,6 +50,9 @@ class CouponListScreenState extends State<CouponListScreen> {
         GroupRadioTags(id: -2, title: "Hết hạn"),
       ],
       callback: (dynamic index) {
+        setState(() {
+          this.tagIndexCurrent = index;
+        });
         couponListBloc.add(CouponLoadList(page: -1, status: index));
       },
       defaultIndex: 0,
@@ -117,9 +122,7 @@ class CouponListScreenState extends State<CouponListScreen> {
                           : "https://anhdaostorage.blob.core.windows.net/qa-media/facility/20191114014630397045/meeting-room.jpg",
                       width: 80,
                       height: 80),
-                  width: 80,
-                  height: 80,
-                  color: ThemeConstant.background_grey_color),
+                  color: ThemeConstant.white_color),
               SizedBox(width: 12),
               Expanded(
                   child: Container(
@@ -221,12 +224,21 @@ class CouponListScreenState extends State<CouponListScreen> {
 
                       if (!couponListBloc.isNext &&
                           couponList != null &&
-                          couponList.data.length == 0) {
-                        return Center(
-                            child: Padding(
-                                padding: EdgeInsets.only(bottom: 20),
-                                child: Text(LocalizationsUtil.of(context)
-                                    .translate("Chưa có lịch sử đăng ký"))));
+                          couponList.data.length > 0) {
+                        if (this.tagIndexCurrent > 0) {
+                          return Center(
+                              child: Padding(
+                                  padding: EdgeInsets.only(bottom: 20),
+                                  child: Text(LocalizationsUtil.of(context)
+                                      .translate("Chưa có lịch sử đăng ký"))));
+                        }
+                        return Container(
+                            color: Colors.white,
+                            child: ComingSoonWidget(
+                                description:
+                                    'Ưu đãi hiện đang trống\nNhanh tay bấm nút “Tạo mới” nào!',
+                                assetImgPath:
+                                    'assets/images/ic-promotion-default.svg'));
                       }
 
                       _refreshController.loadComplete();
