@@ -28,7 +28,7 @@ class CouponListScreen extends StatefulWidget {
 class CouponListScreenState extends State<CouponListScreen> {
   Size _screenSize;
   double _padding;
-  int tagIndexCurrent = -1;
+  int _currentIndex = -1;
 
   CouponListBloc couponListBloc = CouponListBloc();
   RefreshController _refreshController =
@@ -42,17 +42,14 @@ class CouponListScreenState extends State<CouponListScreen> {
   Widget tags() {
     return GroupRadioTagsWidget(
       tags: <GroupRadioTags>[
-        GroupRadioTags(
-          id: -1,
-          title: "Tất cả",
-        ),
+        GroupRadioTags(id: -1, title: "Tất cả"),
         GroupRadioTags(id: 1, title: "Đang chạy"),
         GroupRadioTags(id: 0, title: "Chờ duyệt"),
         GroupRadioTags(id: -2, title: "Hết hạn"),
       ],
       callback: (dynamic index) {
         setState(() {
-          this.tagIndexCurrent = index;
+          this._currentIndex = index;
         });
         couponListBloc.add(CouponLoadList(page: -1, status: index));
       },
@@ -109,32 +106,31 @@ class CouponListScreenState extends State<CouponListScreen> {
         .format(DateTime.parse(couponModel.endDate));
 
     return Container(
-      padding: EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                  width: 80,
-                  height: 80,
-                  child: couponModel.images.length > 0
-                      ? ImageWidget(
-                          imgUrl: couponModel.images.first.imageThumb,
-                          width: 80,
-                          height: 80)
-                      : SvgPicture.asset(
-                          'assets/images/ic-promotion-default.svg')),
-              SizedBox(width: 12),
-              Expanded(
-                  child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
+        padding: EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    width: 80,
+                    height: 80,
+                    child: couponModel.images.length > 0
+                        ? ImageWidget(
+                            imgUrl: couponModel.images.first.imageThumb,
+                            width: 80,
+                            height: 80)
+                        : SvgPicture.asset(
+                            'assets/images/ic-promotion-default.svg')),
+                SizedBox(width: 12),
+                Expanded(
+                    child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Row(children: <Widget>[
                         TextLimitWidget(couponModel.title,
                             maxLines: 2,
                             style: new TextStyle(
@@ -144,62 +140,59 @@ class CouponListScreenState extends State<CouponListScreen> {
                               fontFamily:
                                   ThemeConstant.form_font_family_display,
                               color: ThemeConstant.black_color,
-                            )),
-                      ],
-                    ),
-                    SizedBox(height: 5),
-                    statusProduct(couponModel.isExpired == true
-                        ? -1
-                        : couponModel.status),
-                  ],
-                ),
-              ))
-            ],
-          ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(couponModel.getUsedCound(),
-                  style: new TextStyle(
-                    fontSize: ThemeConstant.label_font_size,
-                    fontFamily: ThemeConstant.form_font_family_display,
-                    color: ThemeConstant.black_color,
-                  )),
-              Text('Từ $startDate',
-                  style: new TextStyle(
-                    fontSize: ThemeConstant.form_font_small,
-                    fontFamily: ThemeConstant.form_font_family_display,
-                    color: ThemeConstant.grey_color,
-                  )),
-            ],
-          ),
-          SizedBox(height: 1),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text('Lượt sử dụng',
-                  style: new TextStyle(
-                    fontSize: ThemeConstant.form_font_small,
-                    fontFamily: ThemeConstant.form_font_family_display,
-                    color: ThemeConstant.grey_color,
-                  )),
-              Text('Đến $endDate',
-                  style: new TextStyle(
-                    fontSize: ThemeConstant.form_font_small,
-                    fontFamily: ThemeConstant.form_font_family_display,
-                    color: ThemeConstant.grey_color,
-                  )),
-            ],
-          )
-        ],
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
-      ),
-      height: 155,
-    );
+                            ))
+                      ]),
+                      SizedBox(height: 5),
+                      statusProduct(couponModel.isExpired == true
+                          ? -1
+                          : couponModel.status),
+                    ],
+                  ),
+                ))
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(couponModel.getUsedCound(),
+                    style: new TextStyle(
+                      fontSize: ThemeConstant.label_font_size,
+                      fontFamily: ThemeConstant.form_font_family_display,
+                      color: ThemeConstant.black_color,
+                    )),
+                Text('Từ $startDate',
+                    style: new TextStyle(
+                      fontSize: ThemeConstant.form_font_small,
+                      fontFamily: ThemeConstant.form_font_family_display,
+                      color: ThemeConstant.grey_color,
+                    )),
+              ],
+            ),
+            SizedBox(height: 1),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('Lượt sử dụng',
+                    style: new TextStyle(
+                      fontSize: ThemeConstant.form_font_small,
+                      fontFamily: ThemeConstant.form_font_family_display,
+                      color: ThemeConstant.grey_color,
+                    )),
+                Text('Đến $endDate',
+                    style: new TextStyle(
+                      fontSize: ThemeConstant.form_font_small,
+                      fontFamily: ThemeConstant.form_font_family_display,
+                      color: ThemeConstant.grey_color,
+                    )),
+              ],
+            )
+          ],
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        ));
   }
 
   @override
@@ -228,20 +221,21 @@ class CouponListScreenState extends State<CouponListScreen> {
                       if (!couponListBloc.isNext &&
                           couponList != null &&
                           couponList.data.length > 0) {
-                        if (this.tagIndexCurrent > 0) {
-                          return Center(
-                              child: Padding(
-                                  padding: EdgeInsets.only(bottom: 20),
-                                  child: Text(LocalizationsUtil.of(context)
-                                      .translate("Chưa có lịch sử đăng ký"))));
-                        }
-                        return Container(
-                            color: Colors.white,
-                            child: ComingSoonWidget(
-                                description:
-                                    'Ưu đãi hiện đang trống\nNhanh tay bấm nút “Tạo mới” nào!',
-                                assetImgPath:
-                                    'assets/images/ic-promotion-default.svg'));
+                        // if (this. > 0) {
+                        return Center(
+                            child: Padding(
+                                padding: EdgeInsets.only(bottom: 20),
+                                child: Text(LocalizationsUtil.of(context)
+                                    .translate("Chưa có lịch sử đăng ký"))));
+                        // }
+
+                        // return Container(
+                        //     color: Colors.white,
+                        //     child: ComingSoonWidget(
+                        //         description:
+                        //             'Ưu đãi hiện đang trống\nNhanh tay bấm nút “Tạo mới” nào!',
+                        //         assetImgPath:
+                        //             'assets/images/ic-promotion-default.svg'));
                       }
 
                       _refreshController.loadComplete();
