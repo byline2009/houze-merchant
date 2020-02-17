@@ -117,15 +117,15 @@ class CouponListScreenState extends State<CouponListScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                  child: ImageWidget(
-                      imgUrl: couponModel.images.length > 0
-                          ? couponModel.images.first.imageThumb
-                          : SvgPicture.asset(
-                              'assets/image/ic-promotion-default.svg',
-                              fit: BoxFit.contain),
-                      width: 80,
-                      height: 80),
-                  color: ThemeConstant.white_color),
+                  width: 80,
+                  height: 80,
+                  child: couponModel.images.length > 0
+                      ? ImageWidget(
+                          imgUrl: couponModel.images.first.imageThumb,
+                          width: 80,
+                          height: 80)
+                      : SvgPicture.asset(
+                          'assets/images/ic-promotion-default.svg')),
               SizedBox(width: 12),
               Expanded(
                   child: Container(
