@@ -12,6 +12,7 @@ import 'package:worker_manager/executor.dart';
 void main() async {
   // add this, and it should be the first line in main method
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   if (Platform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle =
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);

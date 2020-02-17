@@ -13,6 +13,8 @@ class MainActivity: FlutterActivity() {
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
+    data?.let{
+      super.onActivityResult(requestCode, resultCode, data)
+    }
   }
 }
