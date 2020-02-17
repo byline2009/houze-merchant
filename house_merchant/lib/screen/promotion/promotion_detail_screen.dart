@@ -105,7 +105,9 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
     Widget _timeRowFormat(String title, String content) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          // Expanded(
           Text(
             title,
             style: TextStyle(
@@ -113,14 +115,16 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                 color: ThemeConstant.grey_color,
                 letterSpacing: 0.24),
           ),
-          Text(
+          Expanded(
+              child: Text(
             content,
+            textAlign: TextAlign.end,
             style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.24,
                 color: Colors.black),
-          )
+          ))
         ],
       );
     }
@@ -259,8 +263,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
           isActive: _status == Promotion.approveStatus,
           defaultHintText: LocalizationsUtil.of(context).translate('Quét QR'),
           callback: () async {
-            // T7GDialog.showContentDialog(context, [showErrorPopup()],
-            //     closeShow: false, barrierDismissible: false);
             scanQR();
           });
     }
@@ -317,13 +319,14 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                       width: _screenSize.width,
                       height: _heightPhoto,
                       imgUrl: _couponModel.images.first.image)
-                  : SvgPicture.asset('assets/image/ic-comming-soon.svg',
+                  : SvgPicture.asset('assets/image/ic-promotion-default.svg',
                       fit: BoxFit.contain),
 
 //TODO: BODY
               DraggableScrollableSheet(
                 builder: (context, scrollController) {
                   return Container(
+                    padding: EdgeInsets.only(bottom: 50),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
@@ -366,13 +369,13 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                                     SizedBox(height: 20.0),
                                     _timeRowFormat(
                                         'Thời gian bắt đầu:',
-                                        DateFormat('HH:mm - dd/MM/yyyy').format(
+                                        DateFormat('HH:mm-dd/MM/yyyy').format(
                                             DateTime.parse(
                                                 _couponModel.startDate))),
                                     SizedBox(height: 12.0),
                                     _timeRowFormat(
                                         'Thời gian kết thúc:',
-                                        DateFormat('HH:mm - dd/MM/yyyy').format(
+                                        DateFormat('HH:mm-dd/MM/yyyy').format(
                                             DateTime.parse(
                                                 _couponModel.endDate))),
                                     SizedBox(height: 20.0),

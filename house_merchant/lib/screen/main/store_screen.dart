@@ -53,12 +53,13 @@ class StoreScreenState extends State<StoreScreen> {
                   child: ImageWidget(
                     width: 120,
                     height: 120,
-                    imgUrl: shopModel.images[index].imageThumb,
+                    imgUrl: shopModel.images[index].imageThumb.length > 0
+                        ? shopModel.images[index].imageThumb
+                        : "https://anhdaostorage.blob.core.windows.net/qa-media/facility/20191114014630397045/meeting-room.jpg",
                   ),
                   padding: EdgeInsets.only(right: 15),
                 );
               },
-              //separatorBuilder: (BuildContext context, int index) => SizedBox(width: 15),)
             ))
       ],
     );
