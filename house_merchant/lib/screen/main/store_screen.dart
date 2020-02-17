@@ -60,7 +60,6 @@ class StoreScreenState extends State<StoreScreen> {
                   padding: EdgeInsets.only(right: 15),
                 );
               },
-              //separatorBuilder: (BuildContext context, int index) => SizedBox(width: 15),)
             ))
       ],
     );

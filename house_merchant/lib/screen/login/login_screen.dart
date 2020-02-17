@@ -17,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
+  Size _screenSize;
 
   StreamController<ButtonSubmitEvent> loginButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
@@ -131,19 +132,27 @@ class LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'House\nMerchant',
-                  style: TextStyle(
-                      letterSpacing: 0.68,
-                      fontSize: 34.0,
-                      fontWeight: FontWeight.bold,
-                      color: ThemeConstant.violet_color),
-                ),
+          Expanded(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: 150,
+                      maxWidth: 300.0,
+                      minHeight: 40.0,
+                      maxHeight: 100.0,
+                    ),
+                    child: FittedBox(
+                        child: Text(
+                      'House\nMerchant',
+                      style: TextStyle(
+                          letterSpacing: 0.68,
+                          fontSize: 34.0,
+                          fontWeight: FontWeight.bold,
+                          color: ThemeConstant.violet_color),
+                    ))),
                 SizedBox(height: 5.0),
                 Text('Ứng dụng quản lý cửa hàng\nKết nối với cư dân toà nhà',
                     style: TextStyle(
@@ -151,11 +160,9 @@ class LoginScreenState extends State<LoginScreen> {
                         fontSize: 16.0,
                         color: ThemeConstant.black_color,
                         fontWeight: ThemeConstant.appbar_text_weight))
-              ],
-            ),
-          ),
+              ])),
           SvgPicture.asset('assets/images/ic-login-store.svg',
-              width: 134.0, height: 134.0, fit: BoxFit.fill),
+              width: 134.0, height: 162.0, fit: BoxFit.fitHeight),
         ]));
 
     final forgotLabel = FlatButton(
@@ -167,6 +174,9 @@ class LoginScreenState extends State<LoginScreen> {
       onPressed: () {},
     );
 
+    this._screenSize = MediaQuery.of(context).size;
+    final _padding = this._screenSize.width * 5 / 100;
+
     return Scaffold(
         body: GestureDetector(
             onTap: () {
@@ -175,13 +185,13 @@ class LoginScreenState extends State<LoginScreen> {
             child: Stack(children: <Widget>[
               Center(
                 child: Container(
-                  padding: EdgeInsets.only(left: 20.0, top: 40.9),
+                  padding: EdgeInsets.only(left: _padding, top: 40),
                   child: ListView(
                     children: <Widget>[
                       introduceSection,
                       SizedBox(height: 50.0),
                       Padding(
-                        padding: EdgeInsets.only(right: 20.0),
+                        padding: EdgeInsets.only(right: _padding),
                         child: FormBuilder(
                           key: fbKey,
                           child: BlocListener(
