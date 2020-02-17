@@ -210,32 +210,29 @@ class CouponListScreenState extends State<CouponListScreen> {
                     bloc: couponListBloc,
                     builder: (BuildContext context, CouponList couponList) {
                       if (couponList == null) {
-                        return Center(
-                            child: Text(
-                          LocalizationsUtil.of(context)
-                              .translate("Mất kết nối"),
-                          style: TextStyle(color: Colors.white),
-                        ));
+                        return Container(
+                            color: Colors.white,
+                            child: ComingSoonWidget(
+                                description:
+                                    'Ưu đãi hiện đang trống\nNhanh tay bấm nút “Tạo mới” nào!',
+                                assetImgPath:
+                                    'assets/images/ic-promotion-default.svg'));
+                        // return Center(
+                        //     child: Text(
+                        //   LocalizationsUtil.of(context)
+                        //       .translate("Mất kết nối"),
+                        //   style: TextStyle(color: Colors.white),
+                        // ));
                       }
 
                       if (!couponListBloc.isNext &&
                           couponList != null &&
                           couponList.data.length > 0) {
-                        // if (this. > 0) {
                         return Center(
                             child: Padding(
                                 padding: EdgeInsets.only(bottom: 20),
                                 child: Text(LocalizationsUtil.of(context)
                                     .translate("Chưa có lịch sử đăng ký"))));
-                        // }
-
-                        // return Container(
-                        //     color: Colors.white,
-                        //     child: ComingSoonWidget(
-                        //         description:
-                        //             'Ưu đãi hiện đang trống\nNhanh tay bấm nút “Tạo mới” nào!',
-                        //         assetImgPath:
-                        //             'assets/images/ic-promotion-default.svg'));
                       }
 
                       _refreshController.loadComplete();
