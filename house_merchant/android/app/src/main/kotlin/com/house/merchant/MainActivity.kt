@@ -2,8 +2,13 @@ package com.house.merchant
 
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager.getDefaultSharedPreferences
+import androidx.annotation.NonNull
 
 import io.flutter.app.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 
 class MainActivity: FlutterActivity() {
@@ -21,10 +26,8 @@ class MainActivity: FlutterActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     GeneratedPluginRegistrant.registerWith(this)
-  }
 
-  override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
-    MethodChannel(flutterEngine.dartExecutor, CHANNEL).setMethodCallHandler { call, result ->
+    MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
       if (call.method == TOKEN()) {
 
         val token = getDefaultSharedPreferences(baseContext).getString(TOKEN(), "")
@@ -35,8 +38,8 @@ class MainActivity: FlutterActivity() {
       }
     }
 
-    EventChannel(flutterEngine.dartExecutor, RECEIVE_NOTIFICATION).setStreamHandler(object : EventChannel.StreamHandler {
-      override fun onListen(o: Any?, eventSink: EventSink?) {
+    EventChannel(flutterView, RECEIVE_NOTIFICATION).setStreamHandler(object : EventChannel.StreamHandler {
+      override fun onListen(o: Any?, eventSink: EventChannel.EventSink?) {
         openEventSink = eventSink
       }
 
