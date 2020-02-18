@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "637233726588",
+    "firebase_url": "https://real-estate-27ee9.firebaseio.com",
+    "project_id": "real-estate-27ee9",
+    "storage_bucket": "real-estate-27ee9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637233726588:android:f1ca2e61a9ad67e68db5f9",
+        "android_client_info": {
+          "package_name": "com.house.houseapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637233726588-vd7s75qbvavdaq690rgosuhqim1b4sk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUW13PyzVFO-kLOjYcbWZlWJhyK1YMDNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "637233726588-vd7s75qbvavdaq690rgosuhqim1b4sk6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "637233726588-nc8nuubvu7gba176kf8lbud5lu69kpm5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.house.citizen"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637233726588:android:5b79ff465f4f9c988db5f9",
+        "android_client_info": {
+          "package_name": "com.house.merchant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637233726588-vd7s75qbvavdaq690rgosuhqim1b4sk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUW13PyzVFO-kLOjYcbWZlWJhyK1YMDNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "637233726588-vd7s75qbvavdaq690rgosuhqim1b4sk6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "637233726588-nc8nuubvu7gba176kf8lbud5lu69kpm5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.house.citizen"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637233726588:android:b40171e505c496d58db5f9",
+        "android_client_info": {
+          "package_name": "com.t7g.staff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637233726588-vd7s75qbvavdaq690rgosuhqim1b4sk6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUW13PyzVFO-kLOjYcbWZlWJhyK1YMDNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "637233726588-vd7s75qbvavdaq690rgosuhqim1b4sk6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "637233726588-nc8nuubvu7gba176kf8lbud5lu69kpm5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.house.citizen"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
