@@ -107,7 +107,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // Expanded(
           Text(
             title,
             style: TextStyle(
@@ -156,6 +155,52 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         )
       ],
     );
+
+    Widget showExitQRCodePopup() {
+      final width = this._screenSize.width * 90 / 100;
+      return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Container(
+              width: width,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20),
+                  SvgPicture.asset(
+                    "assets/images/dialogs/ic-scan-failed.svg",
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                      LocalizationsUtil.of(context).translate('Quét thất bại!'),
+                      style: TextStyle(
+                        fontFamily: ThemeConstant.form_font_family_display,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.38,
+                        color: ThemeConstant.black_color,
+                      )),
+                  SizedBox(height: 20),
+                  Center(
+                      child: Text(
+                    LocalizationsUtil.of(context)
+                        .translate('Mã này đã sử dụng!'),
+                    style: TextStyle(
+                        fontFamily: ThemeConstant.form_font_family_display,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.26,
+                        color: ThemeConstant.grey_color),
+                    textAlign: TextAlign.center,
+                  )),
+                  SizedBox(height: 30),
+                  Expanded(
+                      child: Container(
+                          height: 48.0,
+                          child: BaseWidget.buttonThemePink('OK', callback: () {
+                            Navigator.of(context).pop();
+                          }))),
+                ],
+              )));
+    }
 
     Widget showErrorPopup() {
       final width = this._screenSize.width * 90 / 100;
@@ -207,7 +252,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                       Expanded(
                           child: Container(
                         height: 48.0,
-                        child: BaseWidget.buttonOutline('Thoát', callback: () {
+                        child: BaseWidget.buttonOutline('Tho��t', callback: () {
                           Navigator.of(context).pop();
                         }),
                       )),
@@ -233,6 +278,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       setState(() {
         _scanBarCode = resultQRCode;
       });
+
       String _id = _scanBarCode.split(',').first;
       String _code = _scanBarCode.split(',').last;
 
@@ -240,7 +286,8 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         var rs = await couponRepository.scanQRCode(_id, _code);
         if (rs != null) {
           if (rs.isUsed == true) {
-            T7GDialog.showAlertDialog(context, '', 'Mã này đã sử dụng!');
+            T7GDialog.showContentDialog(context, [showExitQRCodePopup()],
+                closeShow: false, barrierDismissible: false);
           } else {
             Router.push(_context, Router.COUPON_SCAN_QR_SUCCESS_PAGE, {
               "qr_code_model": rs,
