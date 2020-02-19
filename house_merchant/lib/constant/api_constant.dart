@@ -7,6 +7,7 @@ class APIConstant {
       baseMerchantUrlRefreshToken,
       baseMerchantUrlLogin,
       baseMerchantUrlProfile,
+      baseMerchantUrlChangepass,
       baseMerchantUrlShop,
       baseMerchantUrlShopImageCreate,
       baseMerchantUrlShopImageDelete,
@@ -21,6 +22,7 @@ class APIConstant {
     APIConstant.baseMerchantUrlLogin =
         baseMerchantUrl + "/oauth/api-token-auth/";
     APIConstant.baseMerchantUrlProfile = baseMerchantUrl + "/oauth/profile/";
+    APIConstant.baseMerchantUrlChangepass = baseMerchantUrl + "/oauth/change-password/";
     APIConstant.baseMerchantUrlRefreshToken =
         baseMerchantUrl + "/oauth/api-token-refresh/";
     APIConstant.baseMerchantUrlCoupon = baseMerchantUrl + "/coupon/";

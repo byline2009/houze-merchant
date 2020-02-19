@@ -3,7 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/custom/button_widget.dart';
+import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/flutter_skeleton/src/skeleton/card_list_skeleton.dart';
 import 'package:house_merchant/custom/flutter_skeleton/src/skeleton_config.dart';
 import 'package:house_merchant/custom/flutter_skeleton/src/skeleton_theme.dart';
@@ -12,6 +15,8 @@ import 'package:house_merchant/middle/bloc/authentication/authentication_event.d
 import 'package:house_merchant/middle/bloc/profile/index.dart';
 import 'package:house_merchant/middle/bloc/shop/index.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
+import 'package:house_merchant/router.dart';
+import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 import 'package:house_merchant/middle/bloc/shop/index.dart';
 
@@ -128,7 +133,6 @@ class MoreScreenState extends State<MoreScreen> {
   }
 
   Widget _myListView(BuildContext context) {
-    final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     ShopBloc _shopBloc = ShopBloc();
     var _profileBloc = ProfileBloc();
 
@@ -177,11 +181,63 @@ class MoreScreenState extends State<MoreScreen> {
                   trailing: arrowButton(),
                   onTap: () {
                     print('Đăng xuất');
-                    _authenticationBloc.add(LoggedOut());
+                    this.showLogoutDialog(context);
                   },
                 )),
           ],
         ));
+  }
+
+  void showLogoutDialog(BuildContext context) {
+
+    final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    final _screenSize = MediaQuery.of(context).size;
+    final padding = _screenSize.width * 5 / 100;
+    final paddingButton = EdgeInsets.all(padding);
+    T7GDialog.showContentDialog(context, <Widget>[
+      Container(
+          width: _screenSize.width * 80 / 100,
+          height: _screenSize.height * 55 / 100,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _screenSize.width < 350 ? SvgPicture.asset('assets/images/dialogs/graphic-logout.svg', width: 100, height: 100) : SvgPicture.asset('assets/images/dialogs/graphic-logout.svg'),
+              SizedBox(height: 20),
+              Text(LocalizationsUtil.of(context).translate("Xác nhận"),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: ThemeConstant.form_font_family,
+                    fontSize: _screenSize.width < 350 ? 16 : 24,
+                    color: ThemeConstant.black_color,
+                    fontWeight: ThemeConstant.appbar_text_weight_bold,)
+              ),
+              SizedBox(height: 20),
+              Text(LocalizationsUtil.of(context).translate("Bạn muốn đăng xuất khỏi\nứng dụng House Merchant?"),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: ThemeConstant.form_font_family,
+                    fontSize: 16,
+                    color: ThemeConstant.form_text_normal,
+                    fontWeight: ThemeConstant.appbar_text_weight,)
+              ),
+              Flexible(child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+
+                      Padding(padding: paddingButton, child: ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng xuất'), callback: () async {
+                        Navigator.of(context).pop();
+                        _authenticationBloc.add(LoggedOut());
+                      }, isActive: true,)),
+
+                  ]
+              )
+                ,)
+            ],
+          )
+      )
+    ]);
   }
 
   Widget arrowButton() {
@@ -248,6 +304,7 @@ class MoreScreenState extends State<MoreScreen> {
               ),
               trailing: arrowButton(),
               onTap: () {
+//                Router.pushDialogNoParams(context, Router.PROFILE_PAGE);
                 print('Thông tin cá nhân');
               },
             )),
@@ -271,6 +328,7 @@ class MoreScreenState extends State<MoreScreen> {
               trailing: arrowButton(),
               onTap: () {
                 print('Liên hệ House Merchant');
+                Router.pushDialogNoParams(context, Router.CONTACT_PAGE);
               },
             )),
         Container(

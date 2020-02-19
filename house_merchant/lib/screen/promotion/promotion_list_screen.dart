@@ -29,6 +29,7 @@ class CouponListScreen extends StatefulWidget {
 class CouponListScreenState extends State<CouponListScreen> {
   Size _screenSize;
   double _padding;
+  var indexFilter = -1;
 
   CouponListBloc couponListBloc = CouponListBloc();
   RefreshController _refreshController =
@@ -48,6 +49,7 @@ class CouponListScreenState extends State<CouponListScreen> {
         GroupRadioTags(id: -2, title: "Hết hạn"),
       ],
       callback: (dynamic index) {
+        this.indexFilter = index;
         couponListBloc.add(CouponLoadList(page: -1, status: index));
       },
       defaultIndex: 0,
@@ -270,12 +272,12 @@ class CouponListScreenState extends State<CouponListScreen> {
                                         }),
                                         onRefresh: () {
                                           couponListBloc
-                                              .add(CouponLoadList(page: -1));
+                                              .add(CouponLoadList(page: -1, status: this.indexFilter));
                                         },
                                         onLoading: () {
                                           if (mounted) {
                                             couponListBloc.add(
-                                              CouponLoadList(),
+                                              CouponLoadList(status: this.indexFilter),
                                             );
                                           }
                                         },
