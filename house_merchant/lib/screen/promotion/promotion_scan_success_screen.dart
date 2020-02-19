@@ -5,6 +5,7 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/middle/model/qrcode_model.dart';
 import 'package:house_merchant/middle/repository/coupon_repository.dart';
+import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
@@ -41,19 +42,8 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
         var rs = await couponRepository.confirmCode(
             this._qrCodeModel.id, this._qrCodeModel.code);
         if (rs != null) {
-          if (widget.params['callback'] != null) {
-            var model = widget.params['qr_code_model'] as QrCodeModel;
-            widget.params['callback'](model);
-          }
-          Navigator.of(context).pop();
-          Fluttertoast.showToast(
-              msg: 'Xác nhận sử dụng mã thành công!',
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIos: 5,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-              fontSize: 14.0);
+          Router.push(
+              context, Router.COUPON_DETAIL_PAGE, {"coupon_model": rs.coupon});
         }
       } catch (e) {
         Fluttertoast.showToast(
@@ -78,9 +68,26 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
         });
 
     // TODO: implement build
-    return BaseScaffoldNormal(
-        title: 'Quét thành công',
-        child: SafeArea(
+    return Scaffold(
+        appBar: AppBar(
+            title: Text(
+                LocalizationsUtil.of(context).translate('Quét thành công'),
+                style: TextStyle(
+                    fontSize: ThemeConstant.appbar_scaffold_font_title,
+                    color: ThemeConstant.appbar_text_color,
+                    fontWeight: ThemeConstant.appbar_text_weight)),
+            backgroundColor: ThemeConstant.appbar_background_color,
+            elevation: 0.0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.close,
+                color: ThemeConstant.appbar_icon_color,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )),
+        body: SafeArea(
             child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
@@ -112,7 +119,6 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  
                                   BaseWidget.avatar(
                                       _user.avatar, _user.gender, 100.0),
                                   SizedBox(height: 15),
