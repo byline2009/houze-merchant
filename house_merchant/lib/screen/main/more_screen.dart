@@ -15,6 +15,7 @@ import 'package:house_merchant/middle/bloc/authentication/authentication_event.d
 import 'package:house_merchant/middle/bloc/profile/index.dart';
 import 'package:house_merchant/middle/bloc/shop/index.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
+import 'package:house_merchant/router.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 import 'package:house_merchant/middle/bloc/shop/index.dart';
@@ -201,14 +202,13 @@ class MoreScreenState extends State<MoreScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              SizedBox(height: 50),
               _screenSize.width < 350 ? SvgPicture.asset('assets/images/dialogs/graphic-logout.svg', width: 100, height: 100) : SvgPicture.asset('assets/images/dialogs/graphic-logout.svg'),
               SizedBox(height: 20),
               Text(LocalizationsUtil.of(context).translate("Xác nhận"),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: ThemeConstant.form_font_family,
-                    fontSize: _screenSize.width < 350 ? 16 : 16,
+                    fontSize: _screenSize.width < 350 ? 16 : 24,
                     color: ThemeConstant.black_color,
                     fontWeight: ThemeConstant.appbar_text_weight_bold,)
               ),
@@ -327,6 +327,7 @@ class MoreScreenState extends State<MoreScreen> {
               trailing: arrowButton(),
               onTap: () {
                 print('Liên hệ House Merchant');
+                Router.pushDialogNoParams(context, Router.CONTACT_PAGE);
               },
             )),
         Container(

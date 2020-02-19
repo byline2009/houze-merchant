@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:house_merchant/screen/main/notification_screen.dart';
+import 'package:house_merchant/screen/profile/contact_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_create_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_detail_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_scan_success_screen.dart';
@@ -25,6 +26,8 @@ class Router {
   static const SHOP_IMAGES_PAGE = "app://ShopImages";
   static const SHOP_DESCRIPTION_PAGE = "app://ShopDescription";
   static const SHOP_TIME_PAGE = "app://ShopTime";
+
+  static const CONTACT_PAGE = "app://ContactPage";
 
   Widget _getPage(String url, dynamic params) {
     switch (url) {
@@ -63,6 +66,9 @@ class Router {
         return StoreEditTimeScreen(
           params: params,
         );
+
+      case CONTACT_PAGE:
+        return ContactScreenWidget();
     }
 
     return null;
