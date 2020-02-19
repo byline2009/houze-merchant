@@ -225,18 +225,12 @@ class MoreScreenState extends State<MoreScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Row(children: <Widget>[
 
                       Padding(padding: paddingButton, child: ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng xuất'), callback: () async {
                         Navigator.of(context).pop();
                         _authenticationBloc.add(LoggedOut());
                       }, isActive: true,)),
 
-//                      Padding(padding: paddingButton, child: ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng xuất'), callback: () async {
-//                        Navigator.of(context).pop();
-//                        _authenticationBloc.add(LoggedOut());
-//                      }, isActive: true,))
-                    ],)
                   ]
               )
                 ,)
