@@ -135,7 +135,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
           width: 160 * (_screenSize.width / 375),
           child: ButtonWidget(
               controller: qrButtonController,
-              isActive: _status == Promotion.approveStatus,
+              isActive: false,
               defaultHintText:
                   LocalizationsUtil.of(context).translate('Quét QR'),
               callback: () async {
@@ -155,164 +155,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         )
       ],
     );
-
-    Widget showExitQRCodePopup() {
-      final width = this._screenSize.width * 90 / 100;
-      return Padding(
-          padding: const EdgeInsets.all(20),
-          child: Container(
-              width: width,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20),
-                  SvgPicture.asset(
-                    "assets/images/dialogs/ic-scan-failed.svg",
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                      LocalizationsUtil.of(context).translate('Quét thất bại!'),
-                      style: TextStyle(
-                        fontFamily: ThemeConstant.form_font_family_display,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.38,
-                        color: ThemeConstant.black_color,
-                      )),
-                  SizedBox(height: 20),
-                  Center(
-                      child: Text(
-                    LocalizationsUtil.of(context)
-                        .translate('Mã này đã sử dụng!'),
-                    style: TextStyle(
-                        fontFamily: ThemeConstant.form_font_family_display,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.26,
-                        color: ThemeConstant.grey_color),
-                    textAlign: TextAlign.center,
-                  )),
-                  SizedBox(height: 30),
-                  Expanded(
-                      child: Container(
-                          height: 48.0,
-                          child: BaseWidget.buttonThemePink('OK', callback: () {
-                            Navigator.of(context).pop();
-                          }))),
-                ],
-              )));
-    }
-
-    Widget showErrorPopup() {
-      final width = this._screenSize.width * 90 / 100;
-      return Padding(
-          padding: const EdgeInsets.all(20),
-          child: Container(
-              width: width,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20),
-                  SvgPicture.asset(
-                    "assets/images/dialogs/ic-scan-failed.svg",
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                      LocalizationsUtil.of(context).translate('Quét thất bại!'),
-                      style: TextStyle(
-                        fontFamily: ThemeConstant.form_font_family_display,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.38,
-                        color: ThemeConstant.black_color,
-                      )),
-                  SizedBox(height: 20),
-                  Center(
-                      child: Text(
-                    LocalizationsUtil.of(context).translate(
-                        'Mã QR không hợp lệ\nhoặc không tồn tại trong ưu đãi này.\nVui lòng kiểm tra lại thông tin'),
-                    style: TextStyle(
-                        fontFamily: ThemeConstant.form_font_family_display,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.26,
-                        color: ThemeConstant.grey_color),
-                    textAlign: TextAlign.center,
-                  )),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          height: 48.0,
-                          child: BaseWidget.buttonThemePink('Thử lại',
-                              callback: () {}),
-                        ),
-                      ),
-                      SizedBox(width: 15),
-                      Expanded(
-                          child: Container(
-                        height: 48.0,
-                        child: BaseWidget.buttonOutline('Tho��t', callback: () {
-                          Navigator.of(context).pop();
-                        }),
-                      )),
-                    ],
-                  )
-                ],
-              )));
-    }
-
-    Future scanQR() async {
-      String resultQRCode;
-      var couponRepository = CouponRepository();
-
-      try {
-        resultQRCode = await FlutterBarcodeScanner.scanBarcode(
-            "#7a1dff", "Hủy", true, ScanMode.QR);
-      } on PlatformException {
-        resultQRCode = 'Failed to get platform version.';
-        T7GDialog.showAlertDialog(context, '', resultQRCode);
-      }
-
-      if (!mounted) return null;
-      setState(() {
-        _scanBarCode = resultQRCode;
-      });
-
-      String _id = _scanBarCode.split(',').first;
-      String _code = _scanBarCode.split(',').last;
-
-      if (_scanBarCode.length > 0 && _id != null && _code != null) {
-        var rs = await couponRepository.scanQRCode(_id, _code);
-        if (rs != null) {
-          if (rs.isUsed == true) {
-            T7GDialog.showContentDialog(context, [showExitQRCodePopup()],
-                closeShow: false, barrierDismissible: false);
-          } else {
-            Router.push(_context, Router.COUPON_SCAN_QR_SUCCESS_PAGE, {
-              "qr_code_model": rs,
-              "callback": (QrCodeModel qrCodeModel) {
-                //call api get user list
-                print('===============> $qrCodeModel');
-              }
-            });
-          }
-        } else {
-          T7GDialog.showContentDialog(context, [showErrorPopup()],
-              closeShow: false, barrierDismissible: false);
-        }
-      }
-    }
-
-    Widget _scannerQRButton() {
-      return ButtonWidget(
-          controller: qrButtonController,
-          isActive: _status == Promotion.approveStatus,
-          defaultHintText: LocalizationsUtil.of(context).translate('Quét QR'),
-          callback: () async {
-            scanQR();
-          });
-    }
 
     Widget displayViewUserList() {
       return (this._couponModel.usedCount > 0)
@@ -353,6 +195,11 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
 
     return BaseScaffoldNormal(
       title: 'Chi tiết ưu đãi',
+      callback: () {
+        Navigator.of(context).popUntil((route) {
+          return route.isFirst;
+        });
+      },
       child: SafeArea(
         child: Container(
           color: ThemeConstant.white_color,
@@ -476,16 +323,14 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                 bottom: 0,
                 left: 0,
                 width: _screenSize.width,
-                child: Container(
-                    padding: EdgeInsets.all(_padding),
-                    width: _screenSize.width,
-                    height: _status < Promotion.expireStatus ? 88.0 : 0,
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: _status == Promotion.pendingStatus
-                        ? _pendingStatusButton
-                        : (_status == Promotion.approveStatus
-                            ? _scannerQRButton()
-                            : Center())),
+                height: _status == Promotion.pendingStatus ? 88.0 : 0,
+                child: _status == Promotion.pendingStatus
+                    ? Container(
+                        padding: EdgeInsets.all(_padding),
+                        width: _screenSize.width,
+                        decoration: BoxDecoration(color: Colors.white),
+                        child: _pendingStatusButton)
+                    : Center(),
               )
             ],
           ),

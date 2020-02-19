@@ -54,7 +54,7 @@ class CouponAPI extends OauthAPI {
   Dio dio;
 
   //MARK: Check QR
-  Future<QrCodeModel> scanQR({id: String, code: String}) async {
+  Future<QrCodeModel> checkQR({id: String, code: String}) async {
     final response = await this.post(
       '${APIConstant.baseMerchantUrlCoupon}check-qr/',
       data: {"id": id, "code": code},

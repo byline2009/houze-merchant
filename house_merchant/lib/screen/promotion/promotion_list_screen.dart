@@ -1,18 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_scan_widget.dart';
+import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/group_radio_tags_widget.dart';
 import 'package:house_merchant/custom/text_limit_widget.dart';
 import 'package:house_merchant/middle/bloc/coupon/coupon_list_bloc.dart';
 import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
+import 'package:house_merchant/middle/model/qrcode_model.dart';
+import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/router.dart';
+import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/coming_soon_widget.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
+import 'package:house_merchant/screen/promotion/promotion_scan_success_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -226,7 +234,7 @@ class CouponListScreenState extends State<CouponListScreen> {
 
                                 if (!couponListBloc.isNext &&
                                     couponList != null &&
-                                    couponList.data.length > 0) {
+                                    couponList.data.length == 0) {
                                   return Center(
                                       child: Padding(
                                           padding: EdgeInsets.only(bottom: 20),
@@ -299,8 +307,8 @@ class CouponListScreenState extends State<CouponListScreen> {
                                                   padding: EdgeInsets.only(
                                                       left: this._padding,
                                                       right: this._padding,
-                                                      top: 10,
-                                                      bottom: 10),
+                                                      top: 5,
+                                                      bottom: 5),
                                                 ));
                                           },
                                           itemCount: couponList.data.length,
@@ -311,20 +319,148 @@ class CouponListScreenState extends State<CouponListScreen> {
               color: Colors.white,
             ),
           ),
-          Positioned(
-            child: scanMeButton(),
-          )
+          Positioned(child: scanQRButton())
         ],
       ),
     ));
   }
 
-  Widget scanMeButton() {
+  bool isValidate(String scanQR) {
+    return (scanQR.length > 0 && scanQR.contains(','));
+  }
+
+  Future openScanQRScreen() async {
+    String resultQRCode;
+
+    try {
+      resultQRCode = await FlutterBarcodeScanner.scanBarcode(
+          "#7a1dff", "Hủy", true, ScanMode.QR);
+    } on PlatformException {
+      resultQRCode = 'Failed to get platform version.';
+      T7GDialog.showAlertDialog(context, '', resultQRCode);
+    }
+    print('===========> $resultQRCode');
+
+    if (!mounted) return null;
+    if (this.isValidate(resultQRCode)) {
+      String _id = resultQRCode.split(',').first;
+      String _code = resultQRCode.split(',').last;
+      print('===========> ID: $_id');
+      print('===========> CODE: $_code');
+
+      if (_id != null && _code != null) {
+        var rs;
+        try {
+          var couponRepository = CouponRepository();
+          rs = await couponRepository.checkQR(_id, _code);
+        } catch (e) {
+          T7GDialog.showContentDialog(context, [showErrorPopup()],
+              closeShow: false, barrierDismissible: false);
+        }
+        print(
+            '===========> scanQRCode ${rs.coupon.title.toUpperCase()} user: ${rs.customer.fullname}');
+
+        if (rs != null) {
+          if (rs.isUsed == true) {
+            Fluttertoast.showToast(
+                msg: "Mã này đã sử dụng!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 5,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 16.0);
+            return;
+          } else {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) {
+                      return PromotionScanSuccessScreen(
+                        params: {"qr_code_model": rs},
+                      );
+                    },
+                    settings:
+                        RouteSettings(name: Router.COUPON_SCAN_QR_SUCCESS_PAGE),
+                    fullscreenDialog: true));
+            return;
+          }
+        }
+        return;
+      }
+    }
+    T7GDialog.showContentDialog(context, [showErrorPopup()],
+        closeShow: false, barrierDismissible: false);
+  }
+
+  Widget showErrorPopup() {
+    final width = this._screenSize.width * 90 / 100;
+    return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Container(
+            width: width,
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 20),
+                SvgPicture.asset(
+                  "assets/images/dialogs/ic-scan-failed.svg",
+                ),
+                SizedBox(height: 20),
+                Text(LocalizationsUtil.of(context).translate('Quét thất bại!'),
+                    style: TextStyle(
+                      fontFamily: ThemeConstant.form_font_family_display,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.38,
+                      color: ThemeConstant.black_color,
+                    )),
+                SizedBox(height: 20),
+                Center(
+                    child: Text(
+                  LocalizationsUtil.of(context).translate(
+                      'Mã QR không hợp lệ\nhoặc không tồn tại trong ưu đãi này.\nVui lòng kiểm tra lại thông tin'),
+                  style: TextStyle(
+                      fontFamily: ThemeConstant.form_font_family_display,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.26,
+                      color: ThemeConstant.grey_color),
+                  textAlign: TextAlign.center,
+                )),
+                SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        height: 48.0,
+                        child:
+                            BaseWidget.buttonThemePink('Thử lại', callback: () {
+                          Navigator.of(context).pop();
+                          this.openScanQRScreen();
+                        }),
+                      ),
+                    ),
+                    SizedBox(width: 15),
+                    Expanded(
+                        child: Container(
+                      height: 48.0,
+                      child: BaseWidget.buttonOutline('Thoát', callback: () {
+                        Navigator.of(context).pop();
+                      }),
+                    )),
+                  ],
+                )
+              ],
+            )));
+  }
+
+  Widget scanQRButton() {
     return Align(
       alignment: Alignment.bottomCenter,
       child: ButtonScanQRWidget(
-        callback: () {
-          print('scan me');
+        callback: () async {
+          openScanQRScreen();
         },
       ),
     );

@@ -21,9 +21,9 @@ class CouponRepository {
     return rs;
   }
 
-  Future<QrCodeModel> scanQRCode(String id, String code) async {
+  Future<QrCodeModel> checkQR(String id, String code) async {
     try {
-      final rs = await couponAPI.scanQR(id: id, code: code);
+      final rs = await couponAPI.checkQR(id: id, code: code);
       print(rs);
       if (rs != null) {
         return rs;
