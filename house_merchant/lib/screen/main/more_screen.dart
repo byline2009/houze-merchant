@@ -304,6 +304,7 @@ class MoreScreenState extends State<MoreScreen> {
               ),
               trailing: arrowButton(),
               onTap: () {
+//                Router.pushDialogNoParams(context, Router.PROFILE_PAGE);
                 print('Thông tin cá nhân');
               },
             )),

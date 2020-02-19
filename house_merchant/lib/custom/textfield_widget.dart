@@ -18,6 +18,14 @@ class TextFieldWidgetController {
 
   TextFieldWidgetController() {}
 
+  get text {
+    return _controller.text;
+  }
+
+  set text(String text) {
+    _controller.text = text;
+  }
+
   void Refresh() {
     if (_callbackRefresh != null) {
       _callbackRefresh();
@@ -38,6 +46,7 @@ class TextFieldWidget extends StatelessWidget {
   String defaultHintText;
   bool isChanged = false;
   bool enabled = false;
+  bool obscureText = false;
   TextInputType keyboardType;
   CallBackHandler callback;
   TextFieldWidgetController controller;
@@ -47,6 +56,7 @@ class TextFieldWidget extends StatelessWidget {
   TextFieldWidget({
     this.controller,
     this.defaultHintText,
+    this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.callback,
     this.onTap,
@@ -80,6 +90,7 @@ class TextFieldWidget extends StatelessWidget {
 
             return new TextField(
               cursorColor: ThemeConstant.alto_color,
+              obscureText: this.obscureText,
               controller: this.controller.Controller,
               keyboardType: keyboardType,
               textAlign: TextAlign.left,

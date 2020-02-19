@@ -8,4 +8,13 @@ class ProfileRepository {
     final rs = await profileAPI.getProfile();
     return rs;
   }
+
+  Future<String> changePassword(String old_pass, String new_pass) async {
+    try {
+      final rs = await profileAPI.changePassword(old_pass, new_pass);
+      return rs;
+    } catch (e) {
+      return throw(e.toString());
+    }
+  }
 }
