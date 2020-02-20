@@ -279,13 +279,15 @@ class CouponListScreenState extends State<CouponListScreen> {
                                           );
                                         }),
                                         onRefresh: () {
-                                          couponListBloc
-                                              .add(CouponLoadList(page: -1, status: this.indexFilter));
+                                          couponListBloc.add(CouponLoadList(
+                                              page: -1,
+                                              status: this.indexFilter));
                                         },
                                         onLoading: () {
                                           if (mounted) {
                                             couponListBloc.add(
-                                              CouponLoadList(status: this.indexFilter),
+                                              CouponLoadList(
+                                                  status: this.indexFilter),
                                             );
                                           }
                                         },
@@ -309,8 +311,7 @@ class CouponListScreenState extends State<CouponListScreen> {
                                                   padding: EdgeInsets.only(
                                                       left: this._padding,
                                                       right: this._padding,
-                                                      top: 5,
-                                                      bottom: 5),
+                                                      top: 10),
                                                 ));
                                           },
                                           itemCount: couponList.data.length,

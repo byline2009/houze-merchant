@@ -61,8 +61,9 @@ class GroupRadioTagsWidgetState extends State<GroupRadioTagsWidget> {
                 LocalizationsUtil.of(context).translate(title),
                 style: TextStyle(
                     color: isSelected
-                        ? ThemeConstant.link_color
-                        : ThemeConstant.normal_color),
+                        ? ThemeConstant.violet_color
+                        : ThemeConstant.grey_color,
+                    fontWeight: FontWeight.w600),
               ),
               icon != null ? icon : Center()
             ],
