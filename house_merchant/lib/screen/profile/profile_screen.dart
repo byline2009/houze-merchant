@@ -7,6 +7,7 @@ import 'package:house_merchant/middle/bloc/profile/index.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
+import 'package:intl/intl.dart';
 
 class ProfileScreenWidget extends StatefulWidget {
 
@@ -104,9 +105,11 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
                                   SizedBox(height: 10.0,),
                                   makeRowData('Họ và tên:', result.fullname),
                                   makeRowData('Tên đăng nhập:', result.username),
-                                  makeRowData('Chức vụ:', ''),
-                                  makeRowData('Ngày sinh:', result.birthday),
-                                  makeRowData('Điện thoại:', result.phoneNumber.toString()),
+                                  makeRowData('Chức vụ:', 'Chủ quán'),
+                                  result.birthday != null ? makeRowData('Ngày sinh:', DateFormat('dd/MM/yyyy').format(
+                                      DateTime.parse(
+                                          result.birthday))): Center(),
+                                  result.phoneNumber != null ? makeRowData('Điện thoại:', result.phoneNumber.toString()):Center(),
 
                                 ],
                               )
@@ -177,7 +180,7 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
     final profileBloc = ProfileBloc();
 
     return BaseScaffoldNormal(
-        title: 'Liên hệ House Merchant',
+        title: 'Thông tin cá nhân',
         child: SafeArea(
         child: Container(
           child: Column(
