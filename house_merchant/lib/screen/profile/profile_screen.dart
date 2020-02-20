@@ -34,7 +34,7 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
 
   Widget makeRowData(String label, String value, {Color color}) {
     return Padding(
-      padding: const EdgeInsets.only(top: 5),
+      padding: const EdgeInsets.only(top: 6, bottom: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -102,7 +102,7 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
                                       radius: 33
                                   ),
 
-                                  SizedBox(height: 10.0,),
+                                  SizedBox(height: 25.0,),
                                   makeRowData('Họ và tên:', result.fullname),
                                   makeRowData('Tên đăng nhập:', result.username),
                                   makeRowData('Chức vụ:', 'Chủ quán'),

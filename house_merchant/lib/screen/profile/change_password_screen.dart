@@ -142,7 +142,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       progressToolkit.state.show();
                       final result = await _profileRepository.changePassword(_old_password.text, _new_password.text);
 
-                      T7GDialog.showSimpleDialog(context,  <Widget>[
+                      T7GDialog.showContentDialog(context,  <Widget>[
                         Container(padding: EdgeInsets.all(10) ,child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
@@ -165,13 +165,14 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   color: ThemeConstant.form_text_normal,
                                   fontWeight: ThemeConstant.appbar_text_weight,)
                             ),
+                            SizedBox(height: 54),
                             ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng nhập lại'), isActive: true, callback: () async {
                               _authenticationBloc.add(LoggedOut());
                               Navigator.of(context).popUntil((route) => route.isFirst);
                             })
                           ],
                         ),)
-                      ], barrierDismissible: false);
+                      ], barrierDismissible: false, closeShow: false);
 
                     } catch (e) {
                       _old_password.text = "";
