@@ -146,11 +146,25 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         Container(padding: EdgeInsets.all(10) ,child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
-                            Text(LocalizationsUtil.of(context).translate('Mật khẩu đã được đổi, mời bạn đăng nhập lại.'), textAlign: TextAlign.center, style: TextStyle(
-                                fontSize: ThemeConstant.form_font_normal,
-                                color: ThemeConstant.appbar_text_color,
-                                fontWeight: ThemeConstant.appbar_text_weight)),
-                            SizedBox(height: 10),
+                            Image.asset('assets/images/dialogs/graphic-password.png', width: 100, height: 100),
+                            SizedBox(height: 20),
+                            Text(LocalizationsUtil.of(context).translate("Đổi thành công!"),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: ThemeConstant.form_font_family,
+                                  fontSize: _screenSize.width < 350 ? 16 : 24,
+                                  color: ThemeConstant.black_color,
+                                  fontWeight: ThemeConstant.appbar_text_weight_bold,)
+                            ),
+                            SizedBox(height: 20),
+                            Text(LocalizationsUtil.of(context).translate("Mật khẩu đã được đổi\nVui lòng đăng nhập lại"),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: ThemeConstant.form_font_family,
+                                  fontSize: 16,
+                                  color: ThemeConstant.form_text_normal,
+                                  fontWeight: ThemeConstant.appbar_text_weight,)
+                            ),
                             ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng nhập lại'), isActive: true, callback: () async {
                               _authenticationBloc.add(LoggedOut());
                               Navigator.of(context).popUntil((route) => route.isFirst);
