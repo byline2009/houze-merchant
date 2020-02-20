@@ -202,7 +202,7 @@ class MoreScreenState extends State<MoreScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              _screenSize.width < 350 ? SvgPicture.asset('assets/images/dialogs/graphic-logout.svg', width: 100, height: 100) : SvgPicture.asset('assets/images/dialogs/graphic-logout.svg'),
+              Image.asset('assets/images/dialogs/graphic-logout.png', width: 100, height: 100),
               SizedBox(height: 20),
               Text(LocalizationsUtil.of(context).translate("Xác nhận"),
                   textAlign: TextAlign.center,
@@ -304,7 +304,7 @@ class MoreScreenState extends State<MoreScreen> {
               ),
               trailing: arrowButton(),
               onTap: () {
-//                Router.pushDialogNoParams(context, Router.PROFILE_PAGE);
+                Router.pushDialogNoParams(context, Router.PROFILE_PAGE);
                 print('Thông tin cá nhân');
               },
             )),

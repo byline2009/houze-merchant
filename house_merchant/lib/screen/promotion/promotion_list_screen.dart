@@ -226,9 +226,8 @@ class CouponListScreenState extends State<CouponListScreen> {
                                               'assets/images/ic-promotion-default.svg'));
                                 }
 
-                                if (!couponListBloc.isNext &&
-                                    couponList != null &&
-                                    couponList.data.length > 0) {
+                                if (couponList == null ||
+                                    couponList.data.length == 0) {
                                   return Center(
                                       child: Padding(
                                           padding: EdgeInsets.only(bottom: 20),
