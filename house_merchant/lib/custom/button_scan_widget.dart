@@ -18,7 +18,6 @@ class ButtonScanQRWidgetState extends State<ButtonScanQRWidget> {
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.only(bottom: 20),
-        width: 140,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(24.0)),
           gradient: LinearGradient(
@@ -29,10 +28,10 @@ class ButtonScanQRWidgetState extends State<ButtonScanQRWidget> {
                 ThemeConstant.primary_color,
               ]),
         ),
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        child: InkWell(
-          splashColor: Colors.cyan,
-          onTap: () {
+        width: 140,
+        padding: EdgeInsets.all(0),
+        child: FlatButton(
+          onPressed: () {
             widget.callback();
           },
           child: Row(

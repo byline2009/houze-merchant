@@ -37,7 +37,7 @@ class CouponListScreen extends StatefulWidget {
 class CouponListScreenState extends State<CouponListScreen> {
   Size _screenSize;
   double _padding;
-  var indexFilter = -1;
+  var statusFilter = -1;
 
   CouponListBloc couponListBloc = CouponListBloc();
   RefreshController _refreshController =
@@ -55,10 +55,12 @@ class CouponListScreenState extends State<CouponListScreen> {
         GroupRadioTags(id: 1, title: "Đang chạy"),
         GroupRadioTags(id: 0, title: "Chờ duyệt"),
         GroupRadioTags(id: -2, title: "Hết hạn"),
+        GroupRadioTags(id: 3, title: "Bị từ chối"),
+        GroupRadioTags(id: 2, title: "Đã hủy"),
       ],
-      callback: (dynamic index) {
-        this.indexFilter = index;
-        couponListBloc.add(CouponLoadList(page: -1, status: index));
+      callback: (dynamic id) {
+        this.statusFilter = id;
+        couponListBloc.add(CouponLoadList(page: -1, status: id));
       },
       defaultIndex: 0,
     );
@@ -281,13 +283,13 @@ class CouponListScreenState extends State<CouponListScreen> {
                                         onRefresh: () {
                                           couponListBloc.add(CouponLoadList(
                                               page: -1,
-                                              status: this.indexFilter));
+                                              status: this.statusFilter));
                                         },
                                         onLoading: () {
                                           if (mounted) {
                                             couponListBloc.add(
                                               CouponLoadList(
-                                                  status: this.indexFilter),
+                                                  status: this.statusFilter),
                                             );
                                           }
                                         },
@@ -328,28 +330,45 @@ class CouponListScreenState extends State<CouponListScreen> {
     ));
   }
 
-  bool isValidate(String scanQR) {
+  bool checkValidate(String scanQR) {
     return (scanQR.length > 0 && scanQR.contains(','));
   }
 
-  Future openScanQRScreen() async {
+  _navigatedToPromotionScanSuccessScreen(QrCodeModel rs) async {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) {
+              return PromotionScanSuccessScreen(params: {
+                'qr_code_model': rs,
+                'callback': (bool refreshData) {
+                  if (refreshData) {
+                    couponListBloc.add(CouponLoadList(page: -1, status: -1));
+                    return;
+                  }
+                  return;
+                }
+              });
+            },
+            settings: RouteSettings(name: Router.COUPON_SCAN_QR_SUCCESS_PAGE),
+            fullscreenDialog: true));
+  }
+
+  Future _openAndCheckQRCode() async {
     String resultQRCode;
 
     try {
       resultQRCode = await FlutterBarcodeScanner.scanBarcode(
           "#7a1dff", "Hủy", true, ScanMode.QR);
     } on PlatformException {
-      resultQRCode = 'Failed to get platform version.';
-      T7GDialog.showAlertDialog(context, '', resultQRCode);
+      T7GDialog.showContentDialog(context, [showErrorPopup()],
+          closeShow: false, barrierDismissible: false);
     }
-    print('===========> $resultQRCode');
 
     if (!mounted) return null;
-    if (this.isValidate(resultQRCode)) {
+    if (this.checkValidate(resultQRCode)) {
       String _id = resultQRCode.split(',').first;
       String _code = resultQRCode.split(',').last;
-      print('===========> ID: $_id');
-      print('===========> CODE: $_code');
 
       if (_id != null && _code != null) {
         var rs;
@@ -360,8 +379,6 @@ class CouponListScreenState extends State<CouponListScreen> {
           T7GDialog.showContentDialog(context, [showErrorPopup()],
               closeShow: false, barrierDismissible: false);
         }
-        print(
-            '===========> scanQRCode ${rs.coupon.title.toUpperCase()} user: ${rs.customer.fullname}');
 
         if (rs != null) {
           if (rs.isUsed == true) {
@@ -373,23 +390,11 @@ class CouponListScreenState extends State<CouponListScreen> {
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 16.0);
-            return;
           } else {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) {
-                      return PromotionScanSuccessScreen(
-                        params: {"qr_code_model": rs},
-                      );
-                    },
-                    settings:
-                        RouteSettings(name: Router.COUPON_SCAN_QR_SUCCESS_PAGE),
-                    fullscreenDialog: true));
-            return;
+            _navigatedToPromotionScanSuccessScreen(rs);
           }
+          return;
         }
-        return;
       }
     }
     T7GDialog.showContentDialog(context, [showErrorPopup()],
@@ -439,8 +444,10 @@ class CouponListScreenState extends State<CouponListScreen> {
                         height: 48.0,
                         child:
                             BaseWidget.buttonThemePink('Thử lại', callback: () {
-                          Navigator.of(context).pop();
-                          this.openScanQRScreen();
+                          Navigator.of(context).popUntil((route) {
+                            return route.isFirst;
+                          });
+                          this._openAndCheckQRCode();
                         }),
                       ),
                     ),
@@ -463,7 +470,7 @@ class CouponListScreenState extends State<CouponListScreen> {
       alignment: Alignment.bottomCenter,
       child: ButtonScanQRWidget(
         callback: () async {
-          openScanQRScreen();
+          _openAndCheckQRCode();
         },
       ),
     );

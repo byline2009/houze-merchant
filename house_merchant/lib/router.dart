@@ -52,9 +52,7 @@ class Router {
         );
 
       case COUPON_SCAN_QR_SUCCESS_PAGE:
-        return PromotionScanSuccessScreen(
-          params: params,
-        );
+        return PromotionScanSuccessScreen(params: params);
 
       case SHOP_IMAGES_PAGE:
         return StoreEditImageScreen(
