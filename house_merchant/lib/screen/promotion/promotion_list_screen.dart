@@ -378,6 +378,7 @@ class CouponListScreenState extends State<CouponListScreen> {
         } catch (e) {
           T7GDialog.showContentDialog(context, [showErrorPopup()],
               closeShow: false, barrierDismissible: false);
+          return;
         }
 
         if (rs != null) {
@@ -456,7 +457,9 @@ class CouponListScreenState extends State<CouponListScreen> {
                         child: Container(
                       height: 48.0,
                       child: BaseWidget.buttonOutline('Thoát', callback: () {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).popUntil((route) {
+                          return route.isFirst;
+                        });
                       }),
                     )),
                   ],
