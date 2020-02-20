@@ -78,7 +78,7 @@ class MoreScreenState extends State<MoreScreen> {
                       children: <Widget>[
                         Expanded(
                             child: Text(
-                          shop.name,
+                          shop.name ?? '',
                           style: ThemeConstant.headerTitleBoldStyle(
                               ThemeConstant.black_color),
                         )),
@@ -157,6 +157,9 @@ class MoreScreenState extends State<MoreScreen> {
                   if (shopState is ShopGetDetailSuccessful) {
                     final shopModel = shopState.result;
                     return _buildBody(_profileBloc, shopModel);
+                  }
+                  if (shopState is ShopFailure) {
+                    return _buildBody(_profileBloc, null);
                   }
                   return CardListSkeleton(
                     shrinkWrap: true,
@@ -247,11 +250,11 @@ class MoreScreenState extends State<MoreScreen> {
   Widget _buildBody(ProfileBloc profileBloc, ShopModel shop) {
     return Column(
       children: <Widget>[
-        _headerWidget(profileBloc, shop),
+        shop != null ? _headerWidget(profileBloc, shop): Center(),
         Container(
           decoration: ThemeConstant.decorationGreyBottom(10.0),
         ),
-        Container(
+        shop != null ? Container(
             color: Colors.white,
             child: ListTile(
               dense: true,
@@ -270,7 +273,7 @@ class MoreScreenState extends State<MoreScreen> {
               onTap: () {
                 print('Trạng thái cửa hàng');
               },
-            )),
+            )) : Center(),
         Container(
           decoration: ThemeConstant.decorationGreyBottom(2.0),
         ),

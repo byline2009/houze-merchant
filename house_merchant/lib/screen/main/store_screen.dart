@@ -338,6 +338,10 @@ class StoreScreenState extends State<StoreScreen> {
                   ]);
             }
 
+            if (shopState is ShopFailure) {
+              return Center();
+            }
+
             return CardListSkeleton(
               shrinkWrap: true,
               length: 4,

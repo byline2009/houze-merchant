@@ -106,10 +106,10 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
                                   makeRowData('Họ và tên:', result.fullname),
                                   makeRowData('Tên đăng nhập:', result.username),
                                   makeRowData('Chức vụ:', 'Chủ quán'),
-                                  makeRowData('Ngày sinh:', DateFormat('dd/MM/yyyy').format(
+                                  result.birthday != null ? makeRowData('Ngày sinh:', DateFormat('dd/MM/yyyy').format(
                                       DateTime.parse(
-                                          result.birthday))),
-                                  makeRowData('Điện thoại:', result.phoneNumber.toString()),
+                                          result.birthday))): Center(),
+                                  result.phoneNumber != null ? makeRowData('Điện thoại:', result.phoneNumber.toString()):Center(),
 
                                 ],
                               )
