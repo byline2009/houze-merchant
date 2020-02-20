@@ -1,126 +1,194 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
+import 'package:house_merchant/custom/flutter_skeleton/flutter_skeleton.dart';
+import 'package:house_merchant/middle/bloc/profile/index.dart';
+import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
-import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class ProfileScreenWidget extends StatelessWidget {
+class ProfileScreenWidget extends StatefulWidget {
 
-  Widget itemContact(BuildContext context, String title, String image, String content, Function onTap) {
-    return Container(
-      padding: EdgeInsets.only(left: 20.0, right: 15.0, top: 20.0, bottom: 10.0),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            SvgPicture.asset(image, width: 20, height: 20,),
-            SizedBox(width: 10.0,),
-            Expanded(
+  dynamic params;
 
-              child: Text(title, style: TextStyle(
-                  color: ThemeConstant.black_color,
-                  fontFamily: ThemeConstant
-                      .form_font_family_display,
-                  fontSize: ThemeConstant.form_font_title,
-                  fontWeight: ThemeConstant
-                      .appbar_text_weight)),
-            )
+  ProfileScreenWidget({Key key, this.params}) : super(key: key);
 
-          ],
-        ),
-        SizedBox(height: 10.0,),
-        GestureDetector(
-          onTap: onTap,
-          child: Text(content, style: TextStyle(
-              color: ThemeConstant.primary_color,
-              fontFamily: ThemeConstant
-                  .form_font_family_display,
-              fontSize: ThemeConstant.label_font_size,
-              fontWeight: ThemeConstant
-                  .fontWeightBold),),
-        ),
+  @override
+  ProfileScreenState createState() => new ProfileScreenState(params: this.params);
+}
 
-      ],
-    ));
+class ProfileScreenState extends State<ProfileScreenWidget> {
+
+  dynamic params;
+
+  ProfileScreenState({this.params}) {
+
   }
 
-  Widget contactBody(BuildContext context) {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Widget makeRowData(String label, String value, {Color color}) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            LocalizationsUtil.of(context).translate(label),
+            textAlign: TextAlign.left,
+            style: TextStyle(
+                color: color ?? ThemeConstant.normal_color,
+                fontSize: ThemeConstant.form_font_normal,
+                fontFamily: ThemeConstant.form_font_family_display
+            ),
+          ),
+          SizedBox(width: 20),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                  color: color ?? Colors.black,
+                  fontSize: ThemeConstant.form_font_normal,
+                  fontFamily: ThemeConstant.form_font_family_display
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget profileBody(BuildContext context, ProfileBloc profileBloc) {
     final _screenSize = MediaQuery.of(context).size;
     final _padding = _screenSize.width * 5 / 100;
     return CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(
-              child: Container(
-                color: Colors.white,
-                  child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                          LocalizationsUtil.of(context).translate(
-                          'Nếu có bất kì thắc mắc hay vấn đề trong quá trình sử dụng. Vui lòng liên hệ với chúng tôi qua các kênh sau:'),
-                          style: TextStyle(
-                          color: ThemeConstant.grey_color,
-                          fontFamily: ThemeConstant
-                              .form_font_family_display,
-                          fontSize: ThemeConstant.form_font_smaller,
-                          fontWeight: ThemeConstant
-                              .appbar_text_weight)),
+              child: BlocBuilder(
+                bloc: profileBloc,
+                builder: (BuildContext context, ProfileState profileState) {
+                  print('============> STATE: $profileState');
 
-                          SizedBox(height: 10.0,),
-                          Container(
-                            padding: EdgeInsets.only(bottom: 20.0),
-                            decoration: BoxDecoration(
-                              color: ThemeConstant.background_grey_color,
-                              borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                            ),
+                  if (profileState is ProfileInitial) {
+                    profileBloc.add(GetProfileEvent());
+                  }
+
+                  if (profileState is ProfileGetSuccessful) {
+                    final result = profileState.result; // as ProfileModel;
+                    print('============> RESULT: $result');
+
+                    return Container(
+                        color: Colors.white,
+                        child: Column(children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.all(20.0),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  itemContact(context, 'Điện thoại', 'assets/icons/ic-phone.svg', '(+84) 35 482 9688', (){
-                                    launch('tel://(+84) 35 482 9688');
-                                  }),
-                                  itemContact(context, 'Email', 'assets/icons/ic-mail.svg', 'support@housemap.vn', (){
-                                    launch('mailto:support@housemap.vn');
-                                  }),
-                                  itemContact(context, 'Facebook', 'assets/icons/ic-facebook.svg', '/zrooms.asia', (){
-                                    launch('https://www.facebook.com/zrooms.asia');
-                                  }),
+                                  CircleAvatar(
+                                      backgroundColor: ThemeConstant.alto_color,
+                                      child: Text('',
+                                          style:
+                                          ThemeConstant.titleLargeStyle(Colors.white)
+                                      ),
+                                      radius: 33
+                                  ),
+
+                                  SizedBox(height: 10.0,),
+                                  makeRowData('Họ và tên:', result.fullname),
+                                  makeRowData('Tên đăng nhập:', result.username),
+                                  makeRowData('Chức vụ:', ''),
+                                  makeRowData('Ngày sinh:', result.birthday),
+                                  makeRowData('Điện thoại:', result.phoneNumber.toString()),
+
                                 ],
                               )
                           ),
-                        ],
-                        )
-                      )
-                  )
-              )
+                          buildGreyRow(
+                              'Mật khẩu',
+                              TextStyle(
+                                  fontSize: 20.0,
+                                  color: ThemeConstant.unselected_color,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.29)
+                          ),
+                          Container(
+                              color: Colors.white,
+                              height: 60.0,
+                              child: ListTile(
+                                dense: true,
+                                contentPadding:
+                                EdgeInsets.only(left: 20.0, right: 20.0, top: 5, bottom: 0),
+                                title: Text(
+                                  'Thay đổi mật khẩu',
+                                  style: ThemeConstant.titleStyle(Colors.black),
+                                ),
+                                trailing: arrowButton(),
+                                onTap: () {
+                                  print('Thay đổi mật khẩu');
+                                  Router.pushDialogNoParams(context, Router.CHANGE_PASSWORD);
+                                },
+                              )),
+                        ],)
+                    );
+                  }
+                  return CardListSkeleton(
+                    shrinkWrap: true,
+                    length: 4,
+                    config: SkeletonConfig(
+                      theme: SkeletonTheme.Light,
+                      isShowAvatar: false,
+                      isCircleAvatar: false,
+                      bottomLinesCount: 4,
+                      radius: 0.0,
+                    ),
+                  );
+                },
+              ),
+              ),
 
         ]);
   }
 
+  Widget arrowButton() {
+    return Icon(Icons.arrow_forward, color: ThemeConstant.alto_color, size: 16);
+  }
+
+  Widget buildGreyRow(String title, TextStyle style) {
+    return Container(
+      padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
+      height: 50.0,
+      color: ThemeConstant.background_grey_color,
+      child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[Text(title, style: style)]),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final profileBloc = ProfileBloc();
 
     return BaseScaffoldNormal(
         title: 'Liên hệ House Merchant',
         child: SafeArea(
         child: Container(
-          child: Stack(
-            children: <Widget>[
-              Column(
+          child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   SizedBox(height: 10.0,),
-                  Expanded(child: contactBody(context)),
+
+                  Expanded(child: profileBody(context,profileBloc)),
+
                 ],
               )
-            ],
-          )
         ),
       )
     );
