@@ -6,7 +6,6 @@ import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/middle/model/qrcode_model.dart';
 import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/router.dart';
-import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
@@ -14,7 +13,7 @@ import 'package:house_merchant/utils/progresshub.dart';
 
 class PromotionScanSuccessScreen extends StatefulWidget {
   dynamic params;
-  PromotionScanSuccessScreen({this.params, key}) : super(key: key);
+  PromotionScanSuccessScreen({@required this.params, key}) : super(key: key);
 
   @override
   PromotionScanSuccessState createState() => new PromotionScanSuccessState();
@@ -39,11 +38,19 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
         progressToolkit.state.show();
 
         var couponRepository = CouponRepository();
+
         var rs = await couponRepository.confirmCode(
             this._qrCodeModel.id, this._qrCodeModel.code);
         if (rs != null) {
-          Router.push(
-              context, Router.COUPON_DETAIL_PAGE, {"coupon_model": rs.coupon});
+          Router.push(context, Router.COUPON_DETAIL_PAGE, {
+            "coupon_model": rs.coupon,
+            'callback': (reload) {
+              if (reload && widget.params['callback'] != null) {
+                widget.params['callback'](true);
+              }
+              return;
+            }
+          });
         }
       } catch (e) {
         Fluttertoast.showToast(

@@ -1,31 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_outline_widget.dart';
 import 'package:house_merchant/custom/button_widget.dart';
-import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
-import 'package:house_merchant/middle/model/qrcode_model.dart';
-import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
-import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:intl/intl.dart';
 
 class CouponDetailScreen extends StatefulWidget {
-  dynamic params;
+  final dynamic params;
 
-  CouponDetailScreen({this.params, Key key}) : super(key: key);
+  CouponDetailScreen({@required this.params, Key key}) : super(key: key);
 
   @override
   CouponDetailScreenState createState() => new CouponDetailScreenState();
@@ -53,7 +47,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
-
     var _heightPhoto = this._screenSize.height * (300 / 818);
 
     int _status = _couponModel.status;
@@ -197,6 +190,10 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       title: 'Chi tiết ưu đãi',
       callback: () {
         Navigator.of(context).popUntil((route) {
+          //scan qr code success => promotion list need to reload data
+          if (widget.params['callback'] != null) {
+            widget.params['callback'](true);
+          }
           return route.isFirst;
         });
       },
