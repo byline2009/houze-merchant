@@ -151,7 +151,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                 color: ThemeConstant.appbar_text_color,
                                 fontWeight: ThemeConstant.appbar_text_weight)),
                             SizedBox(height: 10),
-                            ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng nhập'), isActive: true, callback: () async {
+                            ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng nhập lại'), isActive: true, callback: () async {
                               _authenticationBloc.add(LoggedOut());
                               Navigator.of(context).popUntil((route) => route.isFirst);
                             })
@@ -185,7 +185,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
 
     return BaseScaffoldNormal(
-        title: 'Liên hệ House Merchant',
+        title: 'Đổi mật khẩu',
         child: SafeArea(child:BlocBuilder(
             bloc: _authenticationBloc,
             builder: (BuildContext context, AuthenticationState authState) {
