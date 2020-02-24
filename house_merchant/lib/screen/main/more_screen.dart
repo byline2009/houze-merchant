@@ -200,10 +200,7 @@ class MoreScreenState extends State<MoreScreen> {
     T7GDialog.showContentDialog(context, <Widget>[
       Container(
           width: _screenSize.width * 80 / 100,
-          height: _screenSize.height * 55 / 100,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Image.asset('assets/images/dialogs/graphic-logout.png', width: 100, height: 100),
               SizedBox(height: 20),
@@ -224,19 +221,10 @@ class MoreScreenState extends State<MoreScreen> {
                     color: ThemeConstant.form_text_normal,
                     fontWeight: ThemeConstant.appbar_text_weight,)
               ),
-              Flexible(child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-
-                      Padding(padding: paddingButton, child: ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng xuất'), callback: () async {
-                        Navigator.of(context).pop();
-                        _authenticationBloc.add(LoggedOut());
-                      }, isActive: true,)),
-
-                  ]
-              )
-                ,)
+              Padding(padding: paddingButton, child: ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng xuất'), callback: () async {
+                Navigator.of(context).pop();
+                _authenticationBloc.add(LoggedOut());
+              }, isActive: true,))
             ],
           )
       )
