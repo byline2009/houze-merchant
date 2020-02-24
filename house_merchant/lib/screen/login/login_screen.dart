@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
+import 'package:house_merchant/middle/bloc/authentication/authentication_bloc.dart';
 import 'package:house_merchant/middle/bloc/login/index.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
@@ -125,7 +126,8 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final loginBloc = BlocProvider.of<LoginBloc>(context);
+    final loginBloc = LoginBloc(authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
+    print('bugg rebuild');
 
     final introduceSection = Container(
         child: Row(
