@@ -12,13 +12,9 @@ import Flutter
 class StreamHandle: FlutterStreamHandler {
     
     var eventSink: FlutterEventSink?
-    var deviceToken: String?
     
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         eventSink = events
-        if (deviceToken != nil) {
-            eventSink!(deviceToken)
-        }
         return nil
     }
     
@@ -30,8 +26,6 @@ class StreamHandle: FlutterStreamHandler {
     func excuteEventSink(data: String) {
         if (eventSink != nil) {
             eventSink!(data)
-        } else {
-            deviceToken = data
         }
     }
 }

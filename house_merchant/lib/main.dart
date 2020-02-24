@@ -11,6 +11,9 @@ import 'package:worker_manager/executor.dart';
 
 void main() async {
   // add this, and it should be the first line in main method
+  ErrorWidget.builder = (errorDetails) {
+    return Container(color: Colors.white, child: Text('Thông tin bị lỗi, vui lòng thử lại sau!'),);
+  };
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   if (Platform.isAndroid) {
