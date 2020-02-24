@@ -88,7 +88,9 @@ import Flutter
         print(userInfo)
         
         let jsonData = DictionaryToJSONString(dict: userInfo)
-        self.receiveNotificationStreamHandler?.eventSink!(jsonData)
+        if let jsonData = DictionaryToJSONString(dict: userInfo) {
+            self.receiveNotificationStreamHandler?.excuteEventSink(data: jsonData)
+        }
         completionHandler()
     }
     
