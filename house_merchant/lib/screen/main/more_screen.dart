@@ -16,6 +16,7 @@ import 'package:house_merchant/middle/bloc/profile/index.dart';
 import 'package:house_merchant/middle/bloc/shop/index.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/router.dart';
+import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 import 'package:house_merchant/middle/bloc/shop/index.dart';
@@ -199,8 +200,9 @@ class MoreScreenState extends State<MoreScreen> {
     final paddingButton = EdgeInsets.all(padding);
     T7GDialog.showContentDialog(context, <Widget>[
       Container(
+        padding: EdgeInsets.all(10.0),
           width: _screenSize.width * 80 / 100,
-          height: _screenSize.height * 55 / 100,
+          height: _screenSize.height * 40 / 100,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -215,7 +217,6 @@ class MoreScreenState extends State<MoreScreen> {
                     color: ThemeConstant.black_color,
                     fontWeight: ThemeConstant.appbar_text_weight_bold,)
               ),
-              SizedBox(height: 20),
               Text(LocalizationsUtil.of(context).translate("Bạn muốn đăng xuất khỏi\nứng dụng House Merchant?"),
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -224,23 +225,34 @@ class MoreScreenState extends State<MoreScreen> {
                     color: ThemeConstant.form_text_normal,
                     fontWeight: ThemeConstant.appbar_text_weight,)
               ),
-              Flexible(child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      height: 48.0,
+                      child:
+                      BaseWidget.buttonThemePink('Không', callback: () {
 
-                      Padding(padding: paddingButton, child: ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng xuất'), callback: () async {
                         Navigator.of(context).pop();
-                        _authenticationBloc.add(LoggedOut());
-                      }, isActive: true,)),
+                      }),
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Expanded(
+                      child: Container(
+                        height: 48.0,
+                        child: BaseWidget.buttonOutline('Đăng xuất', callback: () {
+                          _authenticationBloc.add(LoggedOut());
 
-                  ]
+                        }),
+                      )),
+                ],
               )
-                ,)
             ],
           )
       )
-    ]);
+    ], closeShow: false);
   }
 
   Widget arrowButton() {
