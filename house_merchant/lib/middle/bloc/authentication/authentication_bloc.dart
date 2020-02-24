@@ -3,6 +3,7 @@ import 'package:house_merchant/middle/api/oauth_api.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_event.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_state.dart';
 import 'package:house_merchant/middle/repository/user_repository.dart';
+import 'package:house_merchant/utils/sqflite.dart';
 
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
@@ -36,7 +37,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       yield AuthenticationLoading();
       OauthAPI.token = null;
       await userRepository.deleteToken();
-      //await Sqflite.flush();
+      await Sqflite.flush();
       yield AuthenticationUnauthenticated();
     }
   }
