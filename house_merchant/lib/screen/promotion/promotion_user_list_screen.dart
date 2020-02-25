@@ -97,7 +97,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
             subtitle: Text(
                 'Ngày sử dụng: ' +
                     DateFormat('HH:mm - dd/MM/yyyy')
-                        .format(DateTime.parse(user.created)),
+                        .format(DateTime.parse(user.modified)),
                 style: ThemeConstant.subtitleTileStyle),
           ));
     }
