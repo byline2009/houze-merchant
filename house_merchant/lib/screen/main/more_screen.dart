@@ -192,6 +192,42 @@ class MoreScreenState extends State<MoreScreen> {
   void showLogoutDialog(BuildContext context) {
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     final _screenSize = MediaQuery.of(context).size;
+    final padding = _screenSize.width * 5 / 100;
+    final paddingButton = EdgeInsets.all(padding);
+    T7GDialog.showContentDialog(context, <Widget>[
+      Container(
+        padding: EdgeInsets.all(20.0),
+          width: _screenSize.width * 90 / 100,
+          child: Column(
+            children: <Widget>[
+              Image.asset('assets/images/dialogs/graphic-logout.png', width: 100, height: 100),
+              SizedBox(height: 20),
+              Text(LocalizationsUtil.of(context).translate("Xác nhận"),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: ThemeConstant.form_font_family,
+                    fontSize: _screenSize.width < 350 ? 16 : 24,
+                    color: ThemeConstant.black_color,
+                    fontWeight: ThemeConstant.appbar_text_weight_bold,)
+              ),
+              SizedBox(height: 20,),
+              Text(LocalizationsUtil.of(context).translate("Bạn muốn đăng xuất khỏi\nứng dụng House Merchant?"),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: ThemeConstant.form_font_family,
+                    fontSize: 16,
+                    color: ThemeConstant.form_text_normal,
+                    fontWeight: ThemeConstant.appbar_text_weight,)
+              ),
+              SizedBox(height: 54,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      height: 48.0,
+                      child:
+                      BaseWidget.buttonThemePink('Không', callback: () {
 
     T7GDialog.showContentDialog(
         context,
@@ -242,6 +278,8 @@ class MoreScreenState extends State<MoreScreen> {
                         child:
                             BaseWidget.buttonOutline('Đăng xuất', callback: () {
                           _authenticationBloc.add(LoggedOut());
+
+                          Navigator.of(context).pop();
                         }),
                       )),
                     ],

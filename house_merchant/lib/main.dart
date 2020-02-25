@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_merchant/config/app_config.dart';
+import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_bloc.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_event.dart';
 import 'package:house_merchant/screen/base/bootstrap_widget.dart';
@@ -18,7 +19,12 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   if (Platform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.white);
+        SystemUiOverlayStyle(
+            statusBarColor: ThemeConstant.appbar_background_color,
+            statusBarIconBrightness: Brightness.dark,
+
+            systemNavigationBarColor: Colors.black,
+        );
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 
