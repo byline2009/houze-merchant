@@ -208,6 +208,7 @@ class CouponListScreenState extends State<CouponListScreen> {
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
+    var _dataDisplay = List<CouponModel>();
 
     return SafeArea(
         child: Container(
@@ -226,7 +227,9 @@ class CouponListScreenState extends State<CouponListScreen> {
                               bloc: couponListBloc,
                               builder: (BuildContext context,
                                   CouponList couponList) {
-                                if (couponList == null) {
+                                _dataDisplay = couponList.data;
+
+                                if (couponList.data.length == 0) {
                                   return Container(
                                       color: Colors.white,
                                       child: ComingSoonWidget(
@@ -324,7 +327,8 @@ class CouponListScreenState extends State<CouponListScreen> {
               color: Colors.white,
             ),
           ),
-          Positioned(child: scanQRButton())
+          Positioned(
+              child: _dataDisplay.length == 0 ? Center() : scanQRButton())
         ],
       ),
     ));
