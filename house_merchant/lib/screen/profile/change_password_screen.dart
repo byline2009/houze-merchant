@@ -22,7 +22,6 @@ import 'package:house_merchant/utils/string_util.dart';
 typedef void checkHandler(String value);
 
 class ChangePasswordScreen extends StatefulWidget {
-
   ChangePasswordScreen({Key key}) : super(key: key);
 
   @override
@@ -30,15 +29,15 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class ChangePasswordScreenState extends State<ChangePasswordScreen> {
-
   Size _screenSize;
-  BuildContext _context;
+
   var padding;
 
   var _confirmEnable = false;
-  final _old_password = TextFieldWidgetController();
-  final _new_password = TextFieldWidgetController();
-  StreamController<ButtonSubmitEvent> _confirmButtonController = new StreamController<ButtonSubmitEvent>();
+  final _oldPassword = TextFieldWidgetController();
+  final _newPassword = TextFieldWidgetController();
+  StreamController<ButtonSubmitEvent> _confirmButtonController =
+      new StreamController<ButtonSubmitEvent>();
 
   ProgressHUD progressToolkit = Progress.instanceCreate();
 
@@ -52,27 +51,37 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     super.initState();
   }
 
-  Widget inputContent(BuildContext context, String title, TextFieldWidgetController _controller, List<FormFieldValidator> validators, checkHandler checkCallback, {String attribute="", obscureText=false}) {
-
+  Widget inputContent(
+      BuildContext context,
+      String title,
+      TextFieldWidgetController _controller,
+      List<FormFieldValidator> validators,
+      checkHandler checkCallback,
+      {String attribute = "",
+      obscureText = false}) {
     final paddingScreen = EdgeInsets.only(left: padding, right: padding);
 
     return Padding(
         padding: paddingScreen,
         child: Column(children: <Widget>[
-          Row(children: <Widget>[
-            Text(LocalizationsUtil.of(context).translate(title),
-                style: TextStyle(
-                  fontFamily: 'SFProDisplay',
-                  fontSize: ThemeConstant.label_font_size,
-                  fontWeight: FontWeight.w500,
-                ))
-          ],),
-          SizedBox(height: 10.0,),
+          Row(
+            children: <Widget>[
+              Text(LocalizationsUtil.of(context).translate(title),
+                  style: TextStyle(
+                    fontFamily: 'SFProDisplay',
+                    fontSize: ThemeConstant.label_font_size,
+                    fontWeight: FontWeight.w500,
+                  ))
+            ],
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
           FormBuilderCustomField(
               attribute: attribute,
               validators: validators,
               formField: FormField(
-                // key: _fieldKey,
+                  // key: _fieldKey,
                   enabled: true,
                   //autovalidate: this._nextEnable,
                   builder: (FormFieldState<dynamic> field) {
@@ -87,27 +96,29 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             new Expanded(
-                              child:TextFieldWidget(
+                              child: TextFieldWidget(
                                   controller: _controller,
                                   obscureText: obscureText,
                                   defaultHintText: '',
                                   callback: (String password) {
-
-                                  field.didChange(password);
-                                  checkCallback(password);
+                                    field.didChange(password);
+                                    checkCallback(password);
                                   }),
                             ),
                           ],
                         ),
                       ),
-                      Row(children: [ Text(StringUtil.isEmpty(field.errorText) ? "" : field.errorText, style: TextStyle(color: Colors.red),)] ),
+                      Row(children: [
+                        Text(
+                          StringUtil.isEmpty(field.errorText)
+                              ? ""
+                              : field.errorText,
+                          style: TextStyle(color: Colors.red),
+                        )
+                      ]),
                     ]);
-                  }
-              )
-          ),
-
-        ])
-    );
+                  })),
+        ]));
   }
 
   Widget showSucessful() {
@@ -155,7 +166,6 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   Widget initContent(BuildContext context) {
-
     final padding = this._screenSize.width * 5 / 100;
     final paddingButton = EdgeInsets.all(padding);
 
@@ -211,39 +221,34 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     this._screenSize = MediaQuery.of(context).size;
-    this._context = context;
     this.padding = this._screenSize.width * 5 / 100;
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
 
     return BaseScaffoldNormal(
         title: 'Đổi mật khẩu',
-        child: SafeArea(child:BlocBuilder(
-            bloc: _authenticationBloc,
-            builder: (BuildContext context, AuthenticationState authState) {
-              return Stack(children: <Widget>[
-                new GestureDetector(
-                    onTap: () {
-                      // Click outside and close Keyboard.
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                    },
-                    child: Container(
-                        color: ThemeConstant.white_color,
-                        child: ListView(
-                          children: <Widget>[
-                            Container(height: this._screenSize.height * 10 / 100),
-                            initContent(context)
-                          ],
-                        )
-                    )
-                ),
-                progressToolkit,
-              ]);
-            })
-    )
-    );
-
+        child: SafeArea(
+            child: BlocBuilder(
+                bloc: _authenticationBloc,
+                builder: (BuildContext context, AuthenticationState authState) {
+                  return Stack(children: <Widget>[
+                    new GestureDetector(
+                        onTap: () {
+                          // Click outside and close Keyboard.
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                        },
+                        child: Container(
+                            color: ThemeConstant.white_color,
+                            child: ListView(
+                              children: <Widget>[
+                                Container(
+                                    height: this._screenSize.height * 10 / 100),
+                                initContent(context)
+                              ],
+                            ))),
+                    progressToolkit,
+                  ]);
+                })));
   }
 
   @override

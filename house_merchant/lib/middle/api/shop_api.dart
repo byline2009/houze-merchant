@@ -1,7 +1,3 @@
-
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/middle/api/oauth_api.dart';
 import 'package:house_merchant/middle/model/base_model.dart';
@@ -27,7 +23,7 @@ class ShopAPI extends OauthAPI {
   Future<ShopModel> getShop(String id) async {
 
     final response = await this.get(
-      "${APIConstant.baseMerchantUrlShop}${id}/",
+      "${APIConstant.baseMerchantUrlShop}$id/",
       queryParameters: {}
     );
 
@@ -37,7 +33,7 @@ class ShopAPI extends OauthAPI {
   Future<ShopModel> updateImages(String id, List<ImageModel> images) async {
 
     final response = await this.patch(
-        "${APIConstant.baseMerchantUrlShop}${id}/",
+        "${APIConstant.baseMerchantUrlShop}$id/",
         data: ShopModel(
           images: images
         )
@@ -49,7 +45,7 @@ class ShopAPI extends OauthAPI {
   Future<ShopModel> updateInfo(String id, ShopModel shopModel) async {
 
     final response = await this.put(
-      "${APIConstant.baseMerchantUrlShop}${id}/",
+      "${APIConstant.baseMerchantUrlShop}$id/",
       data: shopModel
     );
 

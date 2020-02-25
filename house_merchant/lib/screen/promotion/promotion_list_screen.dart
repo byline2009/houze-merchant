@@ -6,6 +6,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_scan_widget.dart';
 import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
@@ -46,6 +47,7 @@ class CouponListScreenState extends State<CouponListScreen> {
   @override
   void initState() {
     super.initState();
+    couponListBloc.add(CouponLoadList(page: -1, status: this.statusFilter));
   }
 
   Widget tags() {
@@ -55,12 +57,12 @@ class CouponListScreenState extends State<CouponListScreen> {
         GroupRadioTags(id: 1, title: "Đang chạy"),
         GroupRadioTags(id: 0, title: "Chờ duyệt"),
         GroupRadioTags(id: -2, title: "Hết hạn"),
-        GroupRadioTags(id: 3, title: "Bị từ chối"),
-        GroupRadioTags(id: 2, title: "Đã hủy"),
+        GroupRadioTags(id: 2, title: "Bị từ chối"),
+        GroupRadioTags(id: 3, title: "Đã hủy"),
       ],
       callback: (dynamic id) {
         this.statusFilter = id;
-        couponListBloc.add(CouponLoadList(page: -1, status: id));
+        couponListBloc.add(CouponLoadList(page: -1, status: statusFilter));
       },
       defaultIndex: 0,
     );
@@ -69,35 +71,35 @@ class CouponListScreenState extends State<CouponListScreen> {
   Widget statusProduct(int status) {
     switch (status) {
       case -1:
-        return Text('HẾT HẠN',
+        return Text(Promotion.expire,
             style: TextStyle(
                 color: ThemeConstant.promotion_status_expired,
                 fontFamily: ThemeConstant.form_font_family_display,
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
-      case 0:
-        return Text('CHỜ DUYỆT',
+      case Promotion.pendingStatus:
+        return Text(Promotion.pending,
             style: TextStyle(
                 color: ThemeConstant.promotion_status_pending,
                 fontFamily: ThemeConstant.form_font_family_display,
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
-      case 1:
-        return Text('ĐANG CHẠY',
+      case Promotion.approveStatus:
+        return Text(Promotion.approved,
             style: TextStyle(
                 color: ThemeConstant.promotion_status_running,
                 fontFamily: ThemeConstant.form_font_family_display,
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
-      case 2:
-        return Text('ĐÃ HUỶ',
+      case Promotion.canceledStatus:
+        return Text(Promotion.canceled,
             style: TextStyle(
                 color: ThemeConstant.promotion_status_expired,
                 fontFamily: ThemeConstant.form_font_family_display,
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
-      case 3:
-        return Text('BỊ TỪ CHỐI',
+      case Promotion.rejectStatus:
+        return Text(Promotion.rejected,
             style: TextStyle(
                 color: ThemeConstant.promotion_status_cancel,
                 fontFamily: ThemeConstant.form_font_family_display,
@@ -208,6 +210,7 @@ class CouponListScreenState extends State<CouponListScreen> {
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
+    var _dataDisplay = List<CouponModel>();
 
     return SafeArea(
         child: Container(
@@ -226,7 +229,10 @@ class CouponListScreenState extends State<CouponListScreen> {
                               bloc: couponListBloc,
                               builder: (BuildContext context,
                                   CouponList couponList) {
-                                if (couponList == null) {
+                                _dataDisplay = couponList.data;
+
+                                if (couponList.data.length == 0 &&
+                                    this.statusFilter == -1) {
                                   return Container(
                                       color: Colors.white,
                                       child: ComingSoonWidget(
@@ -324,7 +330,8 @@ class CouponListScreenState extends State<CouponListScreen> {
               color: Colors.white,
             ),
           ),
-          Positioned(child: scanQRButton())
+          Positioned(
+              child: _dataDisplay.length == 0 ? Center() : scanQRButton())
         ],
       ),
     ));

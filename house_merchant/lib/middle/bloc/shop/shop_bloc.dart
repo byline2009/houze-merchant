@@ -25,6 +25,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
       try {
         yield ShopLoading();
         final result = await shopRepository.updateInfo(event.shopModel);
+        print(result);
         yield ShopSuccessful();
       } catch (error) {
         yield ShopFailure(error: error.toString());

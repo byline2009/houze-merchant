@@ -326,6 +326,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   .toList();
 
               final result = shopRepository.updateInfo(this._shopModel);
+              print(result);
               Navigator.of(context).pop();
               Fluttertoast.showToast(
                   msg: 'Cập nhật thời gian thành công',

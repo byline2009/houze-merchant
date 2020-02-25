@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class Utils {
   static bool isEmpty(String value) {
     /// In the case value is null
