@@ -6,7 +6,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 
 typedef void CallBackHandler(String value);
@@ -16,7 +15,7 @@ class TextFieldWidgetController {
   TextEditingController _controller = new TextEditingController();
   VoidFunc _callbackRefresh;
 
-  TextFieldWidgetController() {}
+  TextFieldWidgetController();
 
   get text {
     return _controller.text;
@@ -42,7 +41,6 @@ class TextFieldWidgetController {
 }
 
 class TextFieldWidget extends StatelessWidget {
-
   String defaultHintText;
   bool isChanged = false;
   bool enabled = false;
@@ -50,19 +48,18 @@ class TextFieldWidget extends StatelessWidget {
   TextInputType keyboardType;
   CallBackHandler callback;
   TextFieldWidgetController controller;
-  final StreamController<String> textStreamController = new StreamController<String>.broadcast();
+  final StreamController<String> textStreamController =
+      new StreamController<String>.broadcast();
   VoidFunc onTap;
 
-  TextFieldWidget({
-    this.controller,
-    this.defaultHintText,
-    this.obscureText = false,
-    this.keyboardType = TextInputType.text,
-    this.callback,
-    this.onTap,
-    this.enabled = true
-  }) {
-
+  TextFieldWidget(
+      {this.controller,
+      this.defaultHintText,
+      this.obscureText = false,
+      this.keyboardType = TextInputType.text,
+      this.callback,
+      this.onTap,
+      this.enabled = true}) {
     //Init controller
     this.controller._callbackRefresh = () {
       this.controller.Controller.clear();
@@ -72,11 +69,9 @@ class TextFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder(
         stream: textStreamController.stream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-
 //          Container(
 //            padding: EdgeInsets.only(left: 10, right: 10),
 //            decoration: BoxDecoration(
@@ -88,44 +83,49 @@ class TextFieldWidget extends StatelessWidget {
 //                    style: BorderStyle.solid)
 //            ),
 
-            return new TextField(
-              cursorColor: ThemeConstant.alto_color,
-              obscureText: this.obscureText,
-              controller: this.controller.Controller,
-              keyboardType: keyboardType,
-              textAlign: TextAlign.left,
-              onTap: () {
-                if (this.onTap != null) {
-                  this.onTap();
-                }
-              },
-              enabled: this.enabled,
-              maxLines: keyboardType == TextInputType.multiline ? 5 : 1,
-              style: TextStyle(
-                color: ThemeConstant.normal_color,
-                fontFamily: ThemeConstant.form_font_family,
-                fontSize: ThemeConstant.form_font_normal,
+          return new TextField(
+            cursorColor: ThemeConstant.alto_color,
+            obscureText: this.obscureText,
+            controller: this.controller.Controller,
+            keyboardType: keyboardType,
+            textAlign: TextAlign.left,
+            onTap: () {
+              if (this.onTap != null) {
+                this.onTap();
+              }
+            },
+            enabled: this.enabled,
+            maxLines: keyboardType == TextInputType.multiline ? 5 : 1,
+            style: TextStyle(
+              color: ThemeConstant.normal_color,
+              fontFamily: ThemeConstant.form_font_family,
+              fontSize: ThemeConstant.form_font_normal,
+            ),
+            decoration: InputDecoration(
+              hintText: this.defaultHintText,
+              contentPadding: EdgeInsets.only(left: 10, right: 10, top: 20),
+              border: InputBorder.none,
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                borderSide: BorderSide(
+                    color: this.controller.Controller.text != ""
+                        ? ThemeConstant.form_border_changed
+                        : ThemeConstant.form_border_normal),
               ),
-              decoration: InputDecoration(
-                hintText: this.defaultHintText,
-                contentPadding: EdgeInsets.only(left: 10, right: 10, top: 20),
-                border: InputBorder.none,
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  borderSide: BorderSide(color: this.controller.Controller.text != "" ? ThemeConstant.form_border_changed : ThemeConstant.form_border_normal),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  borderSide: BorderSide(color: this.controller.Controller.text != "" ? ThemeConstant.form_border_changed : ThemeConstant.form_border_normal),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  borderSide: BorderSide(color: ThemeConstant.primary_color),
-                ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                borderSide: BorderSide(
+                    color: this.controller.Controller.text != ""
+                        ? ThemeConstant.form_border_changed
+                        : ThemeConstant.form_border_normal),
               ),
-              onChanged: this.callback,
-            );
-        }
-    );
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                borderSide: BorderSide(color: ThemeConstant.primary_color),
+              ),
+            ),
+            onChanged: this.callback,
+          );
+        });
   }
 }

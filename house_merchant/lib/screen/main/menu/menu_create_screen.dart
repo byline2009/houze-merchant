@@ -17,8 +17,6 @@ class MenuCreateScreen extends StatefulWidget {
 class MenuCreateScreenState extends State<MenuCreateScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
   Size _screenSize;
-  BuildContext _context;
-  double _padding;
 
   Widget showSucessful() {
     final width = this._screenSize.width * 90 / 100;
@@ -59,7 +57,6 @@ class MenuCreateScreenState extends State<MenuCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return BaseScaffoldNormal(
       child: showSucessful(),
     );

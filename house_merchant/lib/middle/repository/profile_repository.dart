@@ -9,12 +9,12 @@ class ProfileRepository {
     return rs;
   }
 
-  Future<String> changePassword(String old_pass, String new_pass) async {
+  Future<String> changePassword(String oldPass, String newPass) async {
     try {
-      final rs = await profileAPI.changePassword(old_pass, new_pass);
+      final rs = await profileAPI.changePassword(oldPass, newPass);
       return rs;
     } catch (e) {
-      return throw(e.toString());
+      return throw (e.toString());
     }
   }
 }

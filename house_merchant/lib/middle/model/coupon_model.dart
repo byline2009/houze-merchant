@@ -88,6 +88,7 @@ class CouponModel {
     if (this.status == 2) {
       return ThemeConstant.expired_status;
     }
+    return '';
   }
 
   Color getStatusColor() {
@@ -100,6 +101,7 @@ class CouponModel {
     if (this.status == 2) {
       return ThemeConstant.expired_color;
     }
+    return Colors.transparent;
   }
 
   String getUsedCound() {

@@ -1206,10 +1206,10 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                   },
                   children: new List<Widget>.generate(24, (int index) {
 
-                    var indexTxt = "${index}";
+                    var indexTxt = "$index";
 
                     if (index < 10)
-                      indexTxt = "0${index}";
+                      indexTxt = "0$index";
 
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -1237,10 +1237,10 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                   },
                   children: new List<Widget>.generate(60, (int index) {
 
-                    var indexTxt = "${index}";
+                    var indexTxt = "$index";
 
                     if (index < 10)
-                      indexTxt = "0${index}";
+                      indexTxt = "0$index";
 
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -1360,7 +1360,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                                     beginTime.Controller.clear();
                                     return;
                                   }
-                                  beginTime.Controller.text = "${hour<10?'0':''}${hour}:${minute<10?'0':''}${minute}";
+                                  beginTime.Controller.text = "${hour<10?'0':''}$hour:${minute<10?'0':''}$minute";
                                 }, beginHourPicker, beginMinutePicker);
                               },
                               child: Container(color: Colors.transparent, child:
@@ -1401,7 +1401,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                                     endTime.Controller.clear();
                                     return;
                                   }
-                                  endTime.Controller.text = "${hour<10?'0':''}${hour}:${minute<10?'0':''}${minute}";
+                                  endTime.Controller.text = "${hour<10?'0':''}$hour:${minute<10?'0':''}$minute";
                                 }, endHourPicker, endMinutePicker);
                               },
                               child: Container(color: Colors.transparent, child:

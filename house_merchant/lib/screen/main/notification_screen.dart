@@ -20,8 +20,6 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class NotificationScreenState extends State<NotificationScreen> {
-  Size _screenSize;
-  BuildContext _context;
   List notifications;
 
   @override
@@ -32,9 +30,6 @@ class NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    this._screenSize = MediaQuery.of(context).size;
-    this._context = context;
-
     Container makeListTile(NotificationModel noti) => Container(
         decoration: BoxDecoration(
             color: noti.isRead
