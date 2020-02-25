@@ -65,15 +65,12 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
         child: BlocBuilder(
           bloc: profileBloc,
           builder: (BuildContext context, ProfileState profileState) {
-            print('============> STATE: $profileState');
-
             if (profileState is ProfileInitial) {
               profileBloc.add(GetProfileEvent());
             }
 
             if (profileState is ProfileGetSuccessful) {
-              final result = profileState.result; // as ProfileModel;
-              print('============> RESULT: $result');
+              final result = profileState.result;
 
               return Container(
                   color: Colors.white,

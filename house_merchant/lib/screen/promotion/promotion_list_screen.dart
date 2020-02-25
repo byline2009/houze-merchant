@@ -112,10 +112,14 @@ class CouponListScreenState extends State<CouponListScreen> {
   Widget itemCard(CouponModel couponModel) {
     var startDate = DateFormat('HH:mm - dd/MM/yyyy')
         .format(DateTime.parse(couponModel.startDate));
+    print('=========> ${couponModel.title.toUpperCase()}');
+    print('\n');
+    print('startDate: ${couponModel.startDate} - $startDate');
 
     var endDate = DateFormat('HH:mm - dd/MM/yyyy')
         .format(DateTime.parse(couponModel.endDate));
-
+    print('endDate: ${couponModel.endDate} - $endDate');
+    print('\n');
     return Container(
         padding: EdgeInsets.all(12),
         child: Column(
@@ -184,7 +188,7 @@ class CouponListScreenState extends State<CouponListScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Lượt sử dụng',
+                Text('Lượt s��� dụng',
                     style: new TextStyle(
                       fontSize: ThemeConstant.form_font_small,
                       fontFamily: ThemeConstant.form_font_family_display,
