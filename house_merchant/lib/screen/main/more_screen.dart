@@ -130,166 +130,6 @@ class MoreScreenState extends State<MoreScreen> {
     );
   }
 
-  Widget _myListView(BuildContext context) {
-    ShopBloc _shopBloc = ShopBloc();
-    var _profileBloc = ProfileBloc();
-
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider<ShopBloc>(
-            create: (BuildContext context) => _shopBloc,
-          ),
-          BlocProvider<ProfileBloc>(
-            create: (BuildContext context) => _profileBloc,
-          ),
-        ],
-        child: ListView(
-          children: <Widget>[
-            // Container(
-            BlocBuilder(
-                bloc: _shopBloc,
-                builder: (BuildContext context, ShopState shopState) {
-                  if (shopState is ShopInitial) {
-                    _shopBloc.add(ShopGetDetail(id: Sqflite.current_shop));
-                  }
-                  if (shopState is ShopGetDetailSuccessful) {
-                    final shopModel = shopState.result;
-                    return _buildBody(_profileBloc, shopModel);
-                  }
-                  if (shopState is ShopFailure) {
-                    return _buildBody(_profileBloc, null);
-                  }
-                  return CardListSkeleton(
-                    shrinkWrap: true,
-                    length: 4,
-                    config: SkeletonConfig(
-                      theme: SkeletonTheme.Light,
-                      isShowAvatar: false,
-                      isCircleAvatar: false,
-                      bottomLinesCount: 4,
-                      radius: 0.0,
-                    ),
-                  );
-                }),
-            // ),
-            Container(
-                color: Colors.white,
-                child: ListTile(
-                  dense: true,
-                  title: Text('Đăng xuất',
-                      style: ThemeConstant.titleStyle(
-                          ThemeConstant.form_border_error)),
-                  trailing: arrowButton(),
-                  onTap: () {
-                    print('Đăng xuất');
-                    this.showLogoutDialog(context);
-                  },
-                )),
-          ],
-        ));
-  }
-
-  void showLogoutDialog(BuildContext context) {
-    final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
-    final _screenSize = MediaQuery.of(context).size;
-    final padding = _screenSize.width * 5 / 100;
-    final paddingButton = EdgeInsets.all(padding);
-    T7GDialog.showContentDialog(context, <Widget>[
-      Container(
-        padding: EdgeInsets.all(20.0),
-          width: _screenSize.width * 90 / 100,
-          child: Column(
-            children: <Widget>[
-              Image.asset('assets/images/dialogs/graphic-logout.png', width: 100, height: 100),
-              SizedBox(height: 20),
-              Text(LocalizationsUtil.of(context).translate("Xác nhận"),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: ThemeConstant.form_font_family,
-                    fontSize: _screenSize.width < 350 ? 16 : 24,
-                    color: ThemeConstant.black_color,
-                    fontWeight: ThemeConstant.appbar_text_weight_bold,)
-              ),
-              SizedBox(height: 20,),
-              Text(LocalizationsUtil.of(context).translate("Bạn muốn đăng xuất khỏi\nứng dụng House Merchant?"),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: ThemeConstant.form_font_family,
-                    fontSize: 16,
-                    color: ThemeConstant.form_text_normal,
-                    fontWeight: ThemeConstant.appbar_text_weight,)
-              ),
-              SizedBox(height: 54,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      height: 48.0,
-                      child:
-                      BaseWidget.buttonThemePink('Không', callback: () {
-
-    T7GDialog.showContentDialog(
-        context,
-        <Widget>[
-          Container(
-              padding: EdgeInsets.all(10.0),
-              width: _screenSize.width * 80 / 100,
-              height: _screenSize.height * 40 / 100,
-              child: Column(
-                children: <Widget>[
-                  Image.asset('assets/images/dialogs/graphic-logout.png',
-                      width: 100, height: 100),
-                  SizedBox(height: 20),
-                  Text(LocalizationsUtil.of(context).translate("Xác nhận"),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: ThemeConstant.form_font_family,
-                        fontSize: _screenSize.width < 350 ? 16 : 24,
-                        color: ThemeConstant.black_color,
-                        fontWeight: ThemeConstant.appbar_text_weight_bold,
-                      )),
-                  Text(
-                      LocalizationsUtil.of(context).translate(
-                          "Bạn muốn đăng xuất khỏi\nứng dụng House Merchant?"),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: ThemeConstant.form_font_family,
-                        fontSize: 16,
-                        color: ThemeConstant.form_text_normal,
-                        fontWeight: ThemeConstant.appbar_text_weight,
-                      )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          height: 48.0,
-                          child:
-                              BaseWidget.buttonThemePink('Không', callback: () {
-                            Navigator.of(context).pop();
-                          }),
-                        ),
-                      ),
-                      SizedBox(width: 15),
-                      Expanded(
-                          child: Container(
-                        height: 48.0,
-                        child:
-                            BaseWidget.buttonOutline('Đăng xuất', callback: () {
-                          _authenticationBloc.add(LoggedOut());
-
-                          Navigator.of(context).pop();
-                        }),
-                      )),
-                    ],
-                  )
-                ],
-              ))
-        ],
-        closeShow: false);
-  }
-
   Widget arrowButton() {
     return Icon(Icons.arrow_forward, color: ThemeConstant.alto_color, size: 16);
   }
@@ -406,6 +246,137 @@ class MoreScreenState extends State<MoreScreen> {
         ),
       ],
     );
+  }
+
+  Widget _myListView(BuildContext context) {
+    ShopBloc _shopBloc = ShopBloc();
+    var _profileBloc = ProfileBloc();
+
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<ShopBloc>(
+            create: (BuildContext context) => _shopBloc,
+          ),
+          BlocProvider<ProfileBloc>(
+            create: (BuildContext context) => _profileBloc,
+          ),
+        ],
+        child: ListView(
+          children: <Widget>[
+            // Container(
+            BlocBuilder(
+                bloc: _shopBloc,
+                builder: (BuildContext context, ShopState shopState) {
+                  if (shopState is ShopInitial) {
+                    _shopBloc.add(ShopGetDetail(id: Sqflite.current_shop));
+                  }
+                  if (shopState is ShopGetDetailSuccessful) {
+                    final shopModel = shopState.result;
+                    return _buildBody(_profileBloc, shopModel);
+                  }
+                  if (shopState is ShopFailure) {
+                    return _buildBody(_profileBloc, null);
+                  }
+                  return CardListSkeleton(
+                    shrinkWrap: true,
+                    length: 4,
+                    config: SkeletonConfig(
+                      theme: SkeletonTheme.Light,
+                      isShowAvatar: false,
+                      isCircleAvatar: false,
+                      bottomLinesCount: 4,
+                      radius: 0.0,
+                    ),
+                  );
+                }),
+            // ),
+            Container(
+                color: Colors.white,
+                child: ListTile(
+                  dense: true,
+                  title: Text('Đăng xuất',
+                      style: ThemeConstant.titleStyle(
+                          ThemeConstant.form_border_error)),
+                  trailing: arrowButton(),
+                  onTap: () {
+                    print('Đăng xuất');
+                    this.showLogoutDialog(context);
+                  },
+                )),
+          ],
+        ));
+  }
+
+  void showLogoutDialog(BuildContext context) {
+    final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    final _screenSize = MediaQuery.of(context).size;
+    final padding = _screenSize.width * 5 / 100;
+    final paddingButton = EdgeInsets.all(padding);
+
+    T7GDialog.showContentDialog(
+        context,
+        <Widget>[
+          Container(
+              padding: EdgeInsets.all(20.0),
+              width: _screenSize.width * 90 / 100,
+              child: Column(
+                children: <Widget>[
+                  Image.asset('assets/images/dialogs/graphic-logout.png',
+                      width: 100, height: 100),
+                  SizedBox(height: 20),
+                  Text(LocalizationsUtil.of(context).translate("Xác nhận"),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: ThemeConstant.form_font_family,
+                        fontSize: _screenSize.width < 350 ? 16 : 24,
+                        color: ThemeConstant.black_color,
+                        fontWeight: ThemeConstant.appbar_text_weight_bold,
+                      )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                      LocalizationsUtil.of(context).translate(
+                          "Bạn muốn đăng xuất khỏi\nứng dụng House Merchant?"),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: ThemeConstant.form_font_family,
+                        fontSize: 16,
+                        color: ThemeConstant.form_text_normal,
+                        fontWeight: ThemeConstant.appbar_text_weight,
+                      )),
+                  SizedBox(
+                    height: 54,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          height: 48.0,
+                          child:
+                              BaseWidget.buttonThemePink('Không', callback: () {
+                            Navigator.of(context).pop();
+                          }),
+                        ),
+                      ),
+                      SizedBox(width: 15),
+                      Expanded(
+                          child: Container(
+                        height: 48.0,
+                        child:
+                            BaseWidget.buttonOutline('Đăng xuất', callback: () {
+                          _authenticationBloc.add(LoggedOut());
+
+                          Navigator.of(context).pop();
+                        }),
+                      )),
+                    ],
+                  )
+                ],
+              ))
+        ],
+        closeShow: false);
   }
 
   @override

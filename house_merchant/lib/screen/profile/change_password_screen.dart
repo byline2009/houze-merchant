@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
@@ -122,7 +121,6 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   Widget showSucessful() {
-
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     final width = this._screenSize.width * 90 / 100;
     return Padding(
@@ -132,8 +130,8 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20),
-                Image.asset('assets/images/dialogs/graphic-password.png', width: 100, height: 100),
-
+                Image.asset('assets/images/dialogs/graphic-password.png',
+                    width: 100, height: 100),
                 SizedBox(height: 20),
                 Text(LocalizationsUtil.of(context).translate("Đổi thành công!"),
                     style: TextStyle(
@@ -145,21 +143,22 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     )),
                 SizedBox(height: 20),
                 Center(
-                    child: Text(LocalizationsUtil.of(context).translate("Mật khẩu đã được đổi\nVui lòng đăng nhập lại"),
-                      style: TextStyle(
-                          fontFamily: ThemeConstant.form_font_family_display,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.26,
-                          color: ThemeConstant.grey_color,
-                          height: 1.5),
-                      textAlign: TextAlign.center,
-                    )),
+                    child: Text(
+                  LocalizationsUtil.of(context).translate(
+                      "Mật khẩu đã được đổi\nVui lòng đăng nhập lại"),
+                  style: TextStyle(
+                      fontFamily: ThemeConstant.form_font_family_display,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.26,
+                      color: ThemeConstant.grey_color,
+                      height: 1.5),
+                  textAlign: TextAlign.center,
+                )),
                 SizedBox(height: 20),
                 BaseWidget.buttonThemePink('Đăng nhập lại', callback: () {
                   _authenticationBloc.add(LoggedOut());
                   Navigator.of(context).popUntil((route) => route.isFirst);
-
                 })
               ],
             )));
@@ -174,49 +173,55 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+          inputContent(context, "Mật khẩu cũ", _oldPassword, [],
+              (String oldPassword) {
+            if (_oldPassword.text.length >= 5 &&
+                _newPassword.text.length >= 5) {
+              _confirmButtonController.sink
+                  .add(ButtonSubmitEvent(this._confirmEnable = true));
+            } else {
+              _confirmButtonController.sink
+                  .add(ButtonSubmitEvent(this._confirmEnable = false));
+            }
+          }, attribute: "old_password", obscureText: true),
+          inputContent(context, "Mật khẩu mới", _newPassword, [],
+              (String newPassword) {
+            if (_oldPassword.text.length >= 5 &&
+                _newPassword.text.length >= 5) {
+              _confirmButtonController.sink
+                  .add(ButtonSubmitEvent(this._confirmEnable = true));
+            } else {
+              _confirmButtonController.sink
+                  .add(ButtonSubmitEvent(this._confirmEnable = false));
+            }
+          }, attribute: "new_password", obscureText: true),
+          Padding(
+              padding: paddingButton,
+              child: ButtonWidget(
+                defaultHintText:
+                    LocalizationsUtil.of(context).translate('Xác nhận đổi'),
+                controller: _confirmButtonController,
+                callback: () async {
+                  try {
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                    progressToolkit.state.show();
+                    final result = await _profileRepository.changePassword(
+                        _oldPassword.text, _newPassword.text);
 
-              inputContent(context, "Mật khẩu cũ", _old_password, [], (String old_password) {
-                if (_old_password.text.length >= 5 && _new_password.text.length >= 5) {
-                  _confirmButtonController.sink.add(ButtonSubmitEvent(this._confirmEnable = true));
-                } else {
-                  _confirmButtonController.sink.add(ButtonSubmitEvent(this._confirmEnable = false));
-                }
-              }, attribute: "old_password", obscureText: true),
-              inputContent(context, "Mật khẩu mới", _new_password, [], (String new_password) {
-                if (_old_password.text.length >= 5 && _new_password.text.length >= 5) {
-                  _confirmButtonController.sink.add(ButtonSubmitEvent(this._confirmEnable = true));
-                } else {
-                  _confirmButtonController.sink.add(ButtonSubmitEvent(this._confirmEnable = false));
-                }
-              }, attribute: "new_password", obscureText: true),
-
-              Padding(
-                  padding: paddingButton,
-                  child: ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Xác nhận đổi'), controller: _confirmButtonController, callback: () async {
-                    try {
-
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                      progressToolkit.state.show();
-                      final result = await _profileRepository.changePassword(_old_password.text, _new_password.text);
-
-                      T7GDialog.showContentDialog(context, [this.showSucessful()],
-                          closeShow: false, barrierDismissible: false);
-
-                    } catch (e) {
-                      _old_password.text = "";
-                      _new_password.text = "";
-                      _confirmButtonController.sink.add(ButtonSubmitEvent(this._confirmEnable = false));
-                      T7GDialog.showAlertDialog(context, "Cảnh báo", e);
-                    } finally {
-                      progressToolkit.state.dismiss();
-                    }
-
-                  },)
-              ),
-
-            ]
-        )
-    );
+                    T7GDialog.showContentDialog(context, [this.showSucessful()],
+                        closeShow: false, barrierDismissible: false);
+                  } catch (e) {
+                    _oldPassword.text = "";
+                    _newPassword.text = "";
+                    _confirmButtonController.sink
+                        .add(ButtonSubmitEvent(this._confirmEnable = false));
+                    T7GDialog.showAlertDialog(context, "Cảnh báo", e);
+                  } finally {
+                    progressToolkit.state.dismiss();
+                  }
+                },
+              )),
+        ]));
   }
 
   @override
