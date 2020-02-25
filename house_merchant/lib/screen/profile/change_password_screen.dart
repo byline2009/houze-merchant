@@ -184,6 +184,8 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   padding: paddingButton,
                   child: ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Xác nhận đổi'), controller: _confirmButtonController, callback: () async {
                     try {
+
+                      FocusScope.of(context).requestFocus(new FocusNode());
                       progressToolkit.state.show();
                       final result = await _profileRepository.changePassword(_old_password.text, _new_password.text);
 

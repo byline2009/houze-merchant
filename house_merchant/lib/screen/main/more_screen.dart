@@ -201,8 +201,7 @@ class MoreScreenState extends State<MoreScreen> {
     T7GDialog.showContentDialog(context, <Widget>[
       Container(
         padding: EdgeInsets.all(20.0),
-          width: _screenSize.width * 80 / 100,
-          height: _screenSize.height * 40 / 100,
+          width: _screenSize.width * 90 / 100,
           child: Column(
             children: <Widget>[
               Image.asset('assets/images/dialogs/graphic-logout.png', width: 100, height: 100),
@@ -245,6 +244,7 @@ class MoreScreenState extends State<MoreScreen> {
                         child: BaseWidget.buttonOutline('Đăng xuất', callback: () {
                           _authenticationBloc.add(LoggedOut());
 
+                          Navigator.of(context).pop();
                         }),
                       )),
                 ],

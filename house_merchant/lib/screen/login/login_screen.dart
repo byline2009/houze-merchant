@@ -35,6 +35,7 @@ class LoginScreenState extends State<LoginScreen> {
         controller: loginButtonController,
         defaultHintText: LocalizationsUtil.of(context).translate('Đăng nhập'),
         callback: () async {
+          FocusScope.of(context).requestFocus(new FocusNode());
           fbKey.currentState.save();
           loginBloc.add(LoginButtonPressed(
             username: fusername.text,
