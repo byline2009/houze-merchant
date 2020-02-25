@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:house_merchant/constant/api_constant.dart';
+import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/middle/api/oauth_api.dart';
 import 'package:house_merchant/middle/model/base_model.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
@@ -17,24 +18,25 @@ class CouponAPI extends OauthAPI {
   //MARK: Get coupons
   Future<List<CouponModel>> getCoupons(int offset,
       {int limit = 10, int status = -1}) async {
-    final Map<String, dynamic> params = {
-      "offset": offset,
-      "limit": limit,
-      'is_expired': 'false'
-    };
+    final Map<String, dynamic> params = {"offset": offset, "limit": limit};
 
     if (status > -1) {
       params['status'] = status;
+    }
+    if (status == Promotion.approveStatus) {
+      params['is_expired'] = 'false';
     }
 
     if (status == -2) {
       params['is_expired'] = 'true';
     }
-
+    print('=====> $params');
     final response = await this
         .get(APIConstant.baseMerchantUrlCoupon, queryParameters: params);
 
     return (PageModel.map(response.data).results as List).map((i) {
+      print(
+          '=====> ${CouponModel.fromJson(i).title} ${CouponModel.fromJson(i).status}');
       return CouponModel.fromJson(i);
     }).toList();
   }
