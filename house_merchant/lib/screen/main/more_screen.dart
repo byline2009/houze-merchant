@@ -3,9 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
-import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/flutter_skeleton/src/skeleton/card_list_skeleton.dart';
 import 'package:house_merchant/custom/flutter_skeleton/src/skeleton_config.dart';
@@ -19,7 +17,6 @@ import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/sqflite.dart';
-import 'package:house_merchant/middle/bloc/shop/index.dart';
 
 class MoreScreen extends StatefulWidget {
   MoreScreen({Key key}) : super(key: key);
@@ -193,64 +190,66 @@ class MoreScreenState extends State<MoreScreen> {
   }
 
   void showLogoutDialog(BuildContext context) {
-
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     final _screenSize = MediaQuery.of(context).size;
-    final padding = _screenSize.width * 5 / 100;
-    final paddingButton = EdgeInsets.all(padding);
-    T7GDialog.showContentDialog(context, <Widget>[
-      Container(
-        padding: EdgeInsets.all(10.0),
-          width: _screenSize.width * 80 / 100,
-          height: _screenSize.height * 40 / 100,
-          child: Column(
-            children: <Widget>[
-              Image.asset('assets/images/dialogs/graphic-logout.png', width: 100, height: 100),
-              SizedBox(height: 20),
-              Text(LocalizationsUtil.of(context).translate("Xác nhận"),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: ThemeConstant.form_font_family,
-                    fontSize: _screenSize.width < 350 ? 16 : 24,
-                    color: ThemeConstant.black_color,
-                    fontWeight: ThemeConstant.appbar_text_weight_bold,)
-              ),
-              Text(LocalizationsUtil.of(context).translate("Bạn muốn đăng xuất khỏi\nứng dụng House Merchant?"),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: ThemeConstant.form_font_family,
-                    fontSize: 16,
-                    color: ThemeConstant.form_text_normal,
-                    fontWeight: ThemeConstant.appbar_text_weight,)
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+    T7GDialog.showContentDialog(
+        context,
+        <Widget>[
+          Container(
+              padding: EdgeInsets.all(10.0),
+              width: _screenSize.width * 80 / 100,
+              height: _screenSize.height * 40 / 100,
+              child: Column(
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      height: 48.0,
-                      child:
-                      BaseWidget.buttonThemePink('Không', callback: () {
-
-                        Navigator.of(context).pop();
-                      }),
-                    ),
-                  ),
-                  SizedBox(width: 15),
-                  Expanded(
-                      child: Container(
+                  Image.asset('assets/images/dialogs/graphic-logout.png',
+                      width: 100, height: 100),
+                  SizedBox(height: 20),
+                  Text(LocalizationsUtil.of(context).translate("Xác nhận"),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: ThemeConstant.form_font_family,
+                        fontSize: _screenSize.width < 350 ? 16 : 24,
+                        color: ThemeConstant.black_color,
+                        fontWeight: ThemeConstant.appbar_text_weight_bold,
+                      )),
+                  Text(
+                      LocalizationsUtil.of(context).translate(
+                          "Bạn muốn đăng xuất khỏi\nứng dụng House Merchant?"),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: ThemeConstant.form_font_family,
+                        fontSize: 16,
+                        color: ThemeConstant.form_text_normal,
+                        fontWeight: ThemeConstant.appbar_text_weight,
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          height: 48.0,
+                          child:
+                              BaseWidget.buttonThemePink('Không', callback: () {
+                            Navigator.of(context).pop();
+                          }),
+                        ),
+                      ),
+                      SizedBox(width: 15),
+                      Expanded(
+                          child: Container(
                         height: 48.0,
-                        child: BaseWidget.buttonOutline('Đăng xuất', callback: () {
+                        child:
+                            BaseWidget.buttonOutline('Đăng xuất', callback: () {
                           _authenticationBloc.add(LoggedOut());
-
                         }),
                       )),
+                    ],
+                  )
                 ],
-              )
-            ],
-          )
-      )
-    ], closeShow: false);
+              ))
+        ],
+        closeShow: false);
   }
 
   Widget arrowButton() {
@@ -260,30 +259,32 @@ class MoreScreenState extends State<MoreScreen> {
   Widget _buildBody(ProfileBloc profileBloc, ShopModel shop) {
     return Column(
       children: <Widget>[
-        shop != null ? _headerWidget(profileBloc, shop): Center(),
+        shop != null ? _headerWidget(profileBloc, shop) : Center(),
         Container(
           decoration: ThemeConstant.decorationGreyBottom(10.0),
         ),
-        shop != null ? Container(
-            color: Colors.white,
-            child: ListTile(
-              dense: true,
-              contentPadding:
-                  EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
-              title: Text(
-                'Trạng thái cửa hàng',
-                style: ThemeConstant.titleStyle(Colors.black),
-              ),
-              subtitle: Text(
-                shop.getStatusName(),
-                style:
-                    ThemeConstant.subtitleStyle(ThemeConstant.status_approved),
-              ),
-              trailing: arrowButton(),
-              onTap: () {
-                print('Trạng thái cửa hàng');
-              },
-            )) : Center(),
+        shop != null
+            ? Container(
+                color: Colors.white,
+                child: ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.only(
+                      left: 20.0, right: 20.0, top: 0, bottom: 0),
+                  title: Text(
+                    'Trạng thái cửa hàng',
+                    style: ThemeConstant.titleStyle(Colors.black),
+                  ),
+                  subtitle: Text(
+                    shop.getStatusName(),
+                    style: ThemeConstant.subtitleStyle(
+                        ThemeConstant.status_approved),
+                  ),
+                  trailing: arrowButton(),
+                  onTap: () {
+                    print('Trạng thái cửa hàng');
+                  },
+                ))
+            : Center(),
         Container(
           decoration: ThemeConstant.decorationGreyBottom(2.0),
         ),

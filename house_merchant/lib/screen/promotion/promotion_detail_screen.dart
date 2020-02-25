@@ -34,7 +34,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       new StreamController<ButtonSubmitEvent>.broadcast();
   StreamController<ButtonSubmitEvent> editButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
-  String _scanBarCode = '';
 
   @override
   void initState() {

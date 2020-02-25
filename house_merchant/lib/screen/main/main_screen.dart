@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/services.dart';

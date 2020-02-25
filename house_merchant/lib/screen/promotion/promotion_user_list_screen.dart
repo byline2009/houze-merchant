@@ -20,7 +20,6 @@ class CouponUserListScreen extends StatefulWidget {
 
 class PromotionUsersScreenState extends State<CouponUserListScreen> {
   Size _screenSize;
-  BuildContext _context;
   double _padding;
   List<CouponUserModel> users;
   CouponModel _couponModel;
@@ -38,7 +37,6 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
-    this._context = context;
 
     Widget headerWidget = Container(
       color: Colors.white,

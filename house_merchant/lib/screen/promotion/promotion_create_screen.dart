@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +32,6 @@ class CouponCreateScreen extends StatefulWidget {
 class CouponCreateScreenState extends State<CouponCreateScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
   Size _screenSize;
-  BuildContext _context;
   double _padding;
 
   //Reposioty
@@ -60,7 +58,6 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
-    this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
 
     return BaseScaffoldNormal(
@@ -142,7 +139,6 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
   }
 
   Widget formCreate() {
-    final padding = this._screenSize.width * 5 / 100;
     return Padding(
         padding: EdgeInsets.only(top: 10, bottom: 10.0),
         child: Column(
@@ -229,7 +225,7 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
 
                     final result =
                         await couponRepository.createCoupon(_couponModel);
-
+                    print(result);
                     T7GDialog.showContentDialog(context, [this.showSucessful()],
                         closeShow: false, barrierDismissible: false);
 

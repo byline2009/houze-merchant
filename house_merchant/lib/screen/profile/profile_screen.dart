@@ -10,22 +10,19 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:intl/intl.dart';
 
 class ProfileScreenWidget extends StatefulWidget {
-
   dynamic params;
 
   ProfileScreenWidget({Key key, this.params}) : super(key: key);
 
   @override
-  ProfileScreenState createState() => new ProfileScreenState(params: this.params);
+  ProfileScreenState createState() =>
+      new ProfileScreenState(params: this.params);
 }
 
 class ProfileScreenState extends State<ProfileScreenWidget> {
-
   dynamic params;
 
-  ProfileScreenState({this.params}) {
-
-  }
+  ProfileScreenState({this.params});
 
   @override
   void initState() {
@@ -44,8 +41,7 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
             style: TextStyle(
                 color: color ?? ThemeConstant.normal_color,
                 fontSize: ThemeConstant.form_font_normal,
-                fontFamily: ThemeConstant.form_font_family_display
-            ),
+                fontFamily: ThemeConstant.form_font_family_display),
           ),
           SizedBox(width: 20),
           Flexible(
@@ -55,8 +51,7 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
               style: TextStyle(
                   color: color ?? Colors.black,
                   fontSize: ThemeConstant.form_font_normal,
-                  fontFamily: ThemeConstant.form_font_family_display
-              ),
+                  fontFamily: ThemeConstant.form_font_family_display),
             ),
           )
         ],
@@ -65,99 +60,98 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
   }
 
   Widget profileBody(BuildContext context, ProfileBloc profileBloc) {
-    final _screenSize = MediaQuery.of(context).size;
-    final _padding = _screenSize.width * 5 / 100;
-    return CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverToBoxAdapter(
-              child: BlocBuilder(
-                bloc: profileBloc,
-                builder: (BuildContext context, ProfileState profileState) {
-                  print('============> STATE: $profileState');
+    return CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+      SliverToBoxAdapter(
+        child: BlocBuilder(
+          bloc: profileBloc,
+          builder: (BuildContext context, ProfileState profileState) {
+            print('============> STATE: $profileState');
 
-                  if (profileState is ProfileInitial) {
-                    profileBloc.add(GetProfileEvent());
-                  }
+            if (profileState is ProfileInitial) {
+              profileBloc.add(GetProfileEvent());
+            }
 
-                  if (profileState is ProfileGetSuccessful) {
-                    final result = profileState.result; // as ProfileModel;
-                    print('============> RESULT: $result');
+            if (profileState is ProfileGetSuccessful) {
+              final result = profileState.result; // as ProfileModel;
+              print('============> RESULT: $result');
 
-                    return Container(
-                        color: Colors.white,
-                        child: Column(children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.all(20.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                      backgroundColor: ThemeConstant.alto_color,
-                                      child: Text('',
-                                          style:
-                                          ThemeConstant.titleLargeStyle(Colors.white)
-                                      ),
-                                      radius: 33
-                                  ),
-
-                                  SizedBox(height: 25.0,),
-                                  makeRowData('Họ và tên:', result.fullname),
-                                  makeRowData('Tên đăng nhập:', result.username),
-                                  makeRowData('Chức vụ:', 'Chủ quán'),
-                                  result.birthday != null ? makeRowData('Ngày sinh:', DateFormat('dd/MM/yyyy').format(
-                                      DateTime.parse(
-                                          result.birthday))): Center(),
-                                  result.phoneNumber != null ? makeRowData('Điện thoại:', result.phoneNumber.toString()):Center(),
-
-                                ],
-                              )
-                          ),
-                          buildGreyRow(
-                              'Mật khẩu',
-                              TextStyle(
-                                  fontSize: 20.0,
-                                  color: ThemeConstant.unselected_color,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 0.29)
-                          ),
-                          Container(
-                              color: Colors.white,
-                              height: 60.0,
-                              child: ListTile(
-                                dense: true,
-                                contentPadding:
-                                EdgeInsets.only(left: 20.0, right: 20.0, top: 5, bottom: 0),
-                                title: Text(
-                                  'Thay đổi mật khẩu',
-                                  style: ThemeConstant.titleStyle(Colors.black),
-                                ),
-                                trailing: arrowButton(),
-                                onTap: () {
-                                  print('Thay đổi mật khẩu');
-                                  Router.pushDialogNoParams(context, Router.CHANGE_PASSWORD);
-                                },
-                              )),
-                        ],)
-                    );
-                  }
-                  return CardListSkeleton(
-                    shrinkWrap: true,
-                    length: 4,
-                    config: SkeletonConfig(
-                      theme: SkeletonTheme.Light,
-                      isShowAvatar: false,
-                      isCircleAvatar: false,
-                      bottomLinesCount: 4,
-                      radius: 0.0,
-                    ),
-                  );
-                },
+              return Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              CircleAvatar(
+                                  backgroundColor: ThemeConstant.alto_color,
+                                  child: Text('',
+                                      style: ThemeConstant.titleLargeStyle(
+                                          Colors.white)),
+                                  radius: 33),
+                              SizedBox(
+                                height: 25.0,
+                              ),
+                              makeRowData('Họ và tên:', result.fullname),
+                              makeRowData('Tên đăng nhập:', result.username),
+                              makeRowData('Chức vụ:', 'Chủ quán'),
+                              result.birthday != null
+                                  ? makeRowData(
+                                      'Ngày sinh:',
+                                      DateFormat('dd/MM/yyyy').format(
+                                          DateTime.parse(result.birthday)))
+                                  : Center(),
+                              result.phoneNumber != null
+                                  ? makeRowData('Điện thoại:',
+                                      result.phoneNumber.toString())
+                                  : Center(),
+                            ],
+                          )),
+                      buildGreyRow(
+                          'Mật khẩu',
+                          TextStyle(
+                              fontSize: 20.0,
+                              color: ThemeConstant.unselected_color,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.29)),
+                      Container(
+                          color: Colors.white,
+                          height: 60.0,
+                          child: ListTile(
+                            dense: true,
+                            contentPadding: EdgeInsets.only(
+                                left: 20.0, right: 20.0, top: 5, bottom: 0),
+                            title: Text(
+                              'Thay đổi mật khẩu',
+                              style: ThemeConstant.titleStyle(Colors.black),
+                            ),
+                            trailing: arrowButton(),
+                            onTap: () {
+                              print('Thay đổi mật khẩu');
+                              Router.pushDialogNoParams(
+                                  context, Router.CHANGE_PASSWORD);
+                            },
+                          )),
+                    ],
+                  ));
+            }
+            return CardListSkeleton(
+              shrinkWrap: true,
+              length: 4,
+              config: SkeletonConfig(
+                theme: SkeletonTheme.Light,
+                isShowAvatar: false,
+                isCircleAvatar: false,
+                bottomLinesCount: 4,
+                radius: 0.0,
               ),
-              ),
-
-        ]);
+            );
+          },
+        ),
+      ),
+    ]);
   }
 
   Widget arrowButton() {
@@ -182,19 +176,16 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
     return BaseScaffoldNormal(
         title: 'Thông tin cá nhân',
         child: SafeArea(
-        child: Container(
-          child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SizedBox(height: 10.0,),
-
-                  Expanded(child: profileBody(context,profileBloc)),
-
-                ],
-              )
-        ),
-      )
-    );
+          child: Container(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              SizedBox(
+                height: 10.0,
+              ),
+              Expanded(child: profileBody(context, profileBloc)),
+            ],
+          )),
+        ));
   }
-
 }

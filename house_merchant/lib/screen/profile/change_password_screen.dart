@@ -20,7 +20,6 @@ import 'package:house_merchant/utils/string_util.dart';
 typedef void checkHandler(String value);
 
 class ChangePasswordScreen extends StatefulWidget {
-
   ChangePasswordScreen({Key key}) : super(key: key);
 
   @override
@@ -28,15 +27,15 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class ChangePasswordScreenState extends State<ChangePasswordScreen> {
-
   Size _screenSize;
-  BuildContext _context;
+
   var padding;
 
   var _confirmEnable = false;
-  final _old_password = TextFieldWidgetController();
-  final _new_password = TextFieldWidgetController();
-  StreamController<ButtonSubmitEvent> _confirmButtonController = new StreamController<ButtonSubmitEvent>();
+  final _oldPassword = TextFieldWidgetController();
+  final _newPassword = TextFieldWidgetController();
+  StreamController<ButtonSubmitEvent> _confirmButtonController =
+      new StreamController<ButtonSubmitEvent>();
 
   ProgressHUD progressToolkit = Progress.instanceCreate();
 
@@ -50,27 +49,37 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     super.initState();
   }
 
-  Widget inputContent(BuildContext context, String title, TextFieldWidgetController _controller, List<FormFieldValidator> validators, checkHandler checkCallback, {String attribute="", obscureText=false}) {
-
+  Widget inputContent(
+      BuildContext context,
+      String title,
+      TextFieldWidgetController _controller,
+      List<FormFieldValidator> validators,
+      checkHandler checkCallback,
+      {String attribute = "",
+      obscureText = false}) {
     final paddingScreen = EdgeInsets.only(left: padding, right: padding);
 
     return Padding(
         padding: paddingScreen,
         child: Column(children: <Widget>[
-          Row(children: <Widget>[
-            Text(LocalizationsUtil.of(context).translate(title),
-                style: TextStyle(
-                  fontFamily: 'SFProDisplay',
-                  fontSize: ThemeConstant.label_font_size,
-                  fontWeight: FontWeight.w500,
-                ))
-          ],),
-          SizedBox(height: 10.0,),
+          Row(
+            children: <Widget>[
+              Text(LocalizationsUtil.of(context).translate(title),
+                  style: TextStyle(
+                    fontFamily: 'SFProDisplay',
+                    fontSize: ThemeConstant.label_font_size,
+                    fontWeight: FontWeight.w500,
+                  ))
+            ],
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
           FormBuilderCustomField(
               attribute: attribute,
               validators: validators,
               formField: FormField(
-                // key: _fieldKey,
+                  // key: _fieldKey,
                   enabled: true,
                   //autovalidate: this._nextEnable,
                   builder: (FormFieldState<dynamic> field) {
@@ -85,31 +94,32 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             new Expanded(
-                              child:TextFieldWidget(
+                              child: TextFieldWidget(
                                   controller: _controller,
                                   obscureText: obscureText,
                                   defaultHintText: '',
                                   callback: (String password) {
-
-                                  field.didChange(password);
-                                  checkCallback(password);
+                                    field.didChange(password);
+                                    checkCallback(password);
                                   }),
                             ),
                           ],
                         ),
                       ),
-                      Row(children: [ Text(StringUtil.isEmpty(field.errorText) ? "" : field.errorText, style: TextStyle(color: Colors.red),)] ),
+                      Row(children: [
+                        Text(
+                          StringUtil.isEmpty(field.errorText)
+                              ? ""
+                              : field.errorText,
+                          style: TextStyle(color: Colors.red),
+                        )
+                      ]),
                     ]);
-                  }
-              )
-          ),
-
-        ])
-    );
+                  })),
+        ]));
   }
 
   Widget initContent(BuildContext context) {
-
     final padding = this._screenSize.width * 5 / 100;
     final paddingButton = EdgeInsets.all(padding);
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
@@ -119,113 +129,140 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-
-              inputContent(context, "Mật khẩu cũ", _old_password, [], (String old_password) {
-                if (_old_password.text.length >= 5 && _new_password.text.length >= 5) {
-                  _confirmButtonController.sink.add(ButtonSubmitEvent(this._confirmEnable = true));
-                } else {
-                  _confirmButtonController.sink.add(ButtonSubmitEvent(this._confirmEnable = false));
-                }
-              }, attribute: "old_password", obscureText: true),
-              inputContent(context, "Mật khẩu mới", _new_password, [], (String new_password) {
-                if (_old_password.text.length >= 5 && _new_password.text.length >= 5) {
-                  _confirmButtonController.sink.add(ButtonSubmitEvent(this._confirmEnable = true));
-                } else {
-                  _confirmButtonController.sink.add(ButtonSubmitEvent(this._confirmEnable = false));
-                }
-              }, attribute: "new_password", obscureText: true),
-
-              Padding(
-                  padding: paddingButton,
-                  child: ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Xác nhận đổi'), controller: _confirmButtonController, callback: () async {
-                    try {
-                      progressToolkit.state.show();
-                      final result = await _profileRepository.changePassword(_old_password.text, _new_password.text);
-
-                      T7GDialog.showContentDialog(context,  <Widget>[
-                        Container(padding: EdgeInsets.all(10) ,child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Image.asset('assets/images/dialogs/graphic-password.png', width: 100, height: 100),
-                            SizedBox(height: 20),
-                            Text(LocalizationsUtil.of(context).translate("Đổi thành công!"),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: ThemeConstant.form_font_family,
-                                  fontSize: _screenSize.width < 350 ? 16 : 24,
-                                  color: ThemeConstant.black_color,
-                                  fontWeight: ThemeConstant.appbar_text_weight_bold,)
+          inputContent(context, "Mật khẩu cũ", _oldPassword, [],
+              (String oldPassword) {
+            if (_oldPassword.text.length >= 5 &&
+                _newPassword.text.length >= 5) {
+              _confirmButtonController.sink
+                  .add(ButtonSubmitEvent(this._confirmEnable = true));
+            } else {
+              _confirmButtonController.sink
+                  .add(ButtonSubmitEvent(this._confirmEnable = false));
+            }
+          }, attribute: "old_password", obscureText: true),
+          inputContent(context, "Mật khẩu mới", _newPassword, [],
+              (String newPassword) {
+            if (_oldPassword.text.length >= 5 &&
+                _newPassword.text.length >= 5) {
+              _confirmButtonController.sink
+                  .add(ButtonSubmitEvent(this._confirmEnable = true));
+            } else {
+              _confirmButtonController.sink
+                  .add(ButtonSubmitEvent(this._confirmEnable = false));
+            }
+          }, attribute: "new_password", obscureText: true),
+          Padding(
+              padding: paddingButton,
+              child: ButtonWidget(
+                defaultHintText:
+                    LocalizationsUtil.of(context).translate('Xác nhận đổi'),
+                controller: _confirmButtonController,
+                callback: () async {
+                  try {
+                    progressToolkit.state.show();
+                    final result = await _profileRepository.changePassword(
+                        _oldPassword.text, _newPassword.text);
+                    print(result);
+                    T7GDialog.showContentDialog(
+                        context,
+                        <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                Image.asset(
+                                    'assets/images/dialogs/graphic-password.png',
+                                    width: 100,
+                                    height: 100),
+                                SizedBox(height: 20),
+                                Text(
+                                    LocalizationsUtil.of(context)
+                                        .translate("Đổi thành công!"),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily:
+                                          ThemeConstant.form_font_family,
+                                      fontSize:
+                                          _screenSize.width < 350 ? 16 : 24,
+                                      color: ThemeConstant.black_color,
+                                      fontWeight:
+                                          ThemeConstant.appbar_text_weight_bold,
+                                    )),
+                                SizedBox(height: 20),
+                                Text(
+                                    LocalizationsUtil.of(context).translate(
+                                        "Mật khẩu đã được đổi\nVui lòng đăng nhập lại"),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily:
+                                          ThemeConstant.form_font_family,
+                                      fontSize: 16,
+                                      color: ThemeConstant.form_text_normal,
+                                      fontWeight:
+                                          ThemeConstant.appbar_text_weight,
+                                    )),
+                                SizedBox(height: 54),
+                                ButtonWidget(
+                                    defaultHintText:
+                                        LocalizationsUtil.of(context)
+                                            .translate('Đăng nhập lại'),
+                                    isActive: true,
+                                    callback: () async {
+                                      _authenticationBloc.add(LoggedOut());
+                                      Navigator.of(context)
+                                          .popUntil((route) => route.isFirst);
+                                    })
+                              ],
                             ),
-                            SizedBox(height: 20),
-                            Text(LocalizationsUtil.of(context).translate("Mật khẩu đã được đổi\nVui lòng đăng nhập lại"),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: ThemeConstant.form_font_family,
-                                  fontSize: 16,
-                                  color: ThemeConstant.form_text_normal,
-                                  fontWeight: ThemeConstant.appbar_text_weight,)
-                            ),
-                            SizedBox(height: 54),
-                            ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng nhập lại'), isActive: true, callback: () async {
-                              _authenticationBloc.add(LoggedOut());
-                              Navigator.of(context).popUntil((route) => route.isFirst);
-                            })
-                          ],
-                        ),)
-                      ], barrierDismissible: false, closeShow: false);
-
-                    } catch (e) {
-                      _old_password.text = "";
-                      _new_password.text = "";
-                      _confirmButtonController.sink.add(ButtonSubmitEvent(this._confirmEnable = false));
-                      T7GDialog.showAlertDialog(context, "Cảnh báo", e);
-                    } finally {
-                      progressToolkit.state.dismiss();
-                    }
-
-                  },)
-              ),
-
-            ]
-        )
-    );
+                          )
+                        ],
+                        barrierDismissible: false,
+                        closeShow: false);
+                  } catch (e) {
+                    _oldPassword.text = "";
+                    _newPassword.text = "";
+                    _confirmButtonController.sink
+                        .add(ButtonSubmitEvent(this._confirmEnable = false));
+                    T7GDialog.showAlertDialog(context, "Cảnh báo", e);
+                  } finally {
+                    progressToolkit.state.dismiss();
+                  }
+                },
+              )),
+        ]));
   }
 
   @override
   Widget build(BuildContext context) {
-
     this._screenSize = MediaQuery.of(context).size;
-    this._context = context;
     this.padding = this._screenSize.width * 5 / 100;
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
 
     return BaseScaffoldNormal(
         title: 'Đổi mật khẩu',
-        child: SafeArea(child:BlocBuilder(
-            bloc: _authenticationBloc,
-            builder: (BuildContext context, AuthenticationState authState) {
-              return Stack(children: <Widget>[
-                new GestureDetector(
-                    onTap: () {
-                      // Click outside and close Keyboard.
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                    },
-                    child: Container(
-                        color: ThemeConstant.white_color,
-                        child: ListView(
-                          children: <Widget>[
-                            Container(height: this._screenSize.height * 10 / 100),
-                            initContent(context)
-                          ],
-                        )
-                    )
-                ),
-                progressToolkit,
-              ]);
-            })
-    )
-    );
-
+        child: SafeArea(
+            child: BlocBuilder(
+                bloc: _authenticationBloc,
+                builder: (BuildContext context, AuthenticationState authState) {
+                  return Stack(children: <Widget>[
+                    new GestureDetector(
+                        onTap: () {
+                          // Click outside and close Keyboard.
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                        },
+                        child: Container(
+                            color: ThemeConstant.white_color,
+                            child: ListView(
+                              children: <Widget>[
+                                Container(
+                                    height: this._screenSize.height * 10 / 100),
+                                initContent(context)
+                              ],
+                            ))),
+                    progressToolkit,
+                  ]);
+                })));
   }
 
   @override

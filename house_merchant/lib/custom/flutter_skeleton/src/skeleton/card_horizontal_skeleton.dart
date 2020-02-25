@@ -4,7 +4,6 @@ import '../skeleton_config.dart';
 import '../skeleton_animation.dart';
 import '../skeleton_decoration.dart';
 import '../skeleton_theme.dart';
-import './card_skeleton.dart';
 
 class CardListHorizontalSkeleton extends StatefulWidget {
 

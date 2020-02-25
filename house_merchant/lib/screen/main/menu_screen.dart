@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
-import 'package:house_merchant/custom/button_create_widget.dart';
 import 'package:house_merchant/custom/group_radio_tags_widget.dart';
 import 'package:house_merchant/middle/model/category_model.dart';
 import 'package:house_merchant/middle/model/product_model.dart';
@@ -19,8 +18,6 @@ class MenuScreen extends StatefulWidget {
 }
 
 class MenuScreenState extends State<MenuScreen> {
-  Size _screenSize;
-  double _padding;
   final formatter = new NumberFormat("#,###");
 
   List<CategoryModel> categories = [
@@ -168,9 +165,6 @@ class MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    this._screenSize = MediaQuery.of(context).size;
-    this._padding = this._screenSize.width * 5 / 100;
-
     return BaseScaffold(
       title: 'Menu',
       child: ComingSoonWidget(),
