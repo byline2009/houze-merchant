@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
@@ -13,6 +14,7 @@ import 'package:house_merchant/middle/bloc/authentication/authentication_event.d
 import 'package:house_merchant/middle/bloc/authentication/authentication_state.dart';
 import 'package:house_merchant/middle/repository/profile_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
+import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
@@ -108,11 +110,54 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
+  Widget showSucessful() {
+
+    final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    final width = this._screenSize.width * 90 / 100;
+    return Padding(
+        padding: EdgeInsets.all(20),
+        child: Container(
+            width: width,
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 20),
+                Image.asset('assets/images/dialogs/graphic-password.png', width: 100, height: 100),
+
+                SizedBox(height: 20),
+                Text(LocalizationsUtil.of(context).translate("Đổi thành công!"),
+                    style: TextStyle(
+                      fontFamily: ThemeConstant.form_font_family_display,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.26,
+                      color: ThemeConstant.black_color,
+                    )),
+                SizedBox(height: 20),
+                Center(
+                    child: Text(LocalizationsUtil.of(context).translate("Mật khẩu đã được đổi\nVui lòng đăng nhập lại"),
+                      style: TextStyle(
+                          fontFamily: ThemeConstant.form_font_family_display,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.26,
+                          color: ThemeConstant.grey_color,
+                          height: 1.5),
+                      textAlign: TextAlign.center,
+                    )),
+                SizedBox(height: 20),
+                BaseWidget.buttonThemePink('Đăng nhập lại', callback: () {
+                  _authenticationBloc.add(LoggedOut());
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+
+                })
+              ],
+            )));
+  }
+
   Widget initContent(BuildContext context) {
 
     final padding = this._screenSize.width * 5 / 100;
     final paddingButton = EdgeInsets.all(padding);
-    final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
 
     return FormBuilder(
         child: Column(
@@ -142,37 +187,8 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       progressToolkit.state.show();
                       final result = await _profileRepository.changePassword(_old_password.text, _new_password.text);
 
-                      T7GDialog.showContentDialog(context,  <Widget>[
-                        Container(padding: EdgeInsets.all(10) ,child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Image.asset('assets/images/dialogs/graphic-password.png', width: 100, height: 100),
-                            SizedBox(height: 20),
-                            Text(LocalizationsUtil.of(context).translate("Đổi thành công!"),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: ThemeConstant.form_font_family,
-                                  fontSize: _screenSize.width < 350 ? 16 : 24,
-                                  color: ThemeConstant.black_color,
-                                  fontWeight: ThemeConstant.appbar_text_weight_bold,)
-                            ),
-                            SizedBox(height: 20),
-                            Text(LocalizationsUtil.of(context).translate("Mật khẩu đã được đổi\nVui lòng đăng nhập lại"),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: ThemeConstant.form_font_family,
-                                  fontSize: 16,
-                                  color: ThemeConstant.form_text_normal,
-                                  fontWeight: ThemeConstant.appbar_text_weight,)
-                            ),
-                            SizedBox(height: 54),
-                            ButtonWidget(defaultHintText: LocalizationsUtil.of(context).translate('Đăng nhập lại'), isActive: true, callback: () async {
-                              _authenticationBloc.add(LoggedOut());
-                              Navigator.of(context).popUntil((route) => route.isFirst);
-                            })
-                          ],
-                        ),)
-                      ], barrierDismissible: false, closeShow: false);
+                      T7GDialog.showContentDialog(context, [this.showSucessful()],
+                          closeShow: false, barrierDismissible: false);
 
                     } catch (e) {
                       _old_password.text = "";
