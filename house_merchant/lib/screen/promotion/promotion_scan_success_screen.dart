@@ -74,7 +74,6 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
           confirmQR();
         });
 
-    // TODO: implement build
     return Scaffold(
         appBar: AppBar(
             title: Text(

@@ -229,7 +229,6 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
 
                     final result =
                         await couponRepository.createCoupon(_couponModel);
-                    print(result);
                     T7GDialog.showContentDialog(
                         context, [this._navigatedToPromotionListScreen()],
                         closeShow: false, barrierDismissible: false);

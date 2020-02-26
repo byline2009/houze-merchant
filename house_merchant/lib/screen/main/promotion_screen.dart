@@ -48,32 +48,30 @@ class CouponScreenState extends State<CouponScreen> {
   @override
   void initState() {
     super.initState();
-    couponListBloc.add(CouponLoadList(page: -1, status: this.statusCurrent));
+    this.getCouponsByStatus();
+  }
+
+  void getCouponsByStatus({int status = Promotion.allStatus}) {
+    this.statusCurrent = status;
+    this.tagIndexCurrent = status == Promotion.allStatus ? 0 : tagIndexCurrent;
+    couponListBloc.add(CouponLoadList(page: -1, status: status));
   }
 
   Widget tags() {
     return GroupRadioTagsWidget(
       tags: <GroupRadioTags>[
-        GroupRadioTags(id: -1, title: "Tất cả"),
+        GroupRadioTags(id: Promotion.allStatus, title: Promotion.all),
         GroupRadioTags(id: Promotion.approveStatus, title: Promotion.approved),
         GroupRadioTags(id: Promotion.pendingStatus, title: Promotion.pending),
-        GroupRadioTags(id: -2, title: Promotion.expire),
+        GroupRadioTags(id: Promotion.expiredStatus, title: Promotion.expire),
         GroupRadioTags(id: Promotion.rejectStatus, title: Promotion.rejected),
         GroupRadioTags(id: Promotion.canceledStatus, title: Promotion.canceled),
       ],
       callback: (dynamic id) {
-        this.statusCurrent = id;
-        print('\n\n');
-        print('==========> statusCurrent: $statusCurrent');
-        print('\n');
-        print('==========> id: $id');
-        print('\n');
-        couponListBloc.add(CouponLoadList(page: -1, status: statusCurrent));
+        this.getCouponsByStatus(status: id);
       },
       callBackIndex: (dynamic index) {
         tagIndexCurrent = index;
-        print('==========> callBackIndex: $index');
-        print('\n\n');
       },
       defaultIndex: this.tagIndexCurrent,
     );
@@ -226,10 +224,9 @@ class CouponScreenState extends State<CouponScreen> {
             builder: (context) {
               return PromotionScanSuccessScreen(params: {
                 'qr_code_model': rs,
-                'callback': (bool refreshData) {
-                  if (refreshData) {
-                    couponListBloc.add(CouponLoadList(page: -1, status: -1));
-                    return;
+                'callback': (bool isRefreshData) {
+                  if (isRefreshData) {
+                    this.getCouponsByStatus();
                   }
                   return;
                 }
@@ -387,7 +384,7 @@ class CouponScreenState extends State<CouponScreen> {
                                 _dataDisplay = couponList.data;
 
                                 if (couponList.data.length == 0 &&
-                                    this.statusCurrent == -1) {
+                                    this.statusCurrent == Promotion.allStatus) {
                                   return Container(
                                       color: Colors.white,
                                       child: ComingSoonWidget(
@@ -442,16 +439,13 @@ class CouponScreenState extends State<CouponScreen> {
                                           );
                                         }),
                                         onRefresh: () {
-                                          couponListBloc.add(CouponLoadList(
-                                              page: -1,
-                                              status: this.statusCurrent));
+                                          this.getCouponsByStatus(
+                                              status: statusCurrent);
                                         },
                                         onLoading: () {
                                           if (mounted) {
-                                            couponListBloc.add(
-                                              CouponLoadList(
-                                                  status: this.statusCurrent),
-                                            );
+                                            this.getCouponsByStatus(
+                                                status: statusCurrent);
                                           }
                                         },
                                         child: ListView.builder(
@@ -461,8 +455,7 @@ class CouponScreenState extends State<CouponScreen> {
                                                 onTap: () {
                                                   var data =
                                                       couponList.data[index];
-                                                  print(
-                                                      '=====> ${data.title.toUpperCase()} ----- ${data.statusName().toUpperCase()}');
+
                                                   Router.push(
                                                       context,
                                                       Router.COUPON_DETAIL_PAGE,
@@ -505,11 +498,10 @@ class CouponScreenState extends State<CouponScreen> {
             onPressed: () {
               Router.push(context, Router.COUPON_CREATE, {
                 "callback": (isReloadData) {
-                  print(isReloadData);
                   if (isReloadData) {
-                    couponListBloc.add(
-                        CouponLoadList(page: -1, status: this.statusCurrent));
+                    this.getCouponsByStatus();
                   }
+                  return;
                 }
               });
             },

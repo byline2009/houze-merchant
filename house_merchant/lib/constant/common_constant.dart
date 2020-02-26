@@ -11,12 +11,15 @@ class Format {
 }
 
 class Promotion {
+  static const String all = 'Tất cả';
   static const String pending = 'Chờ duyệt';
   static const String approved = 'Đang chạy';
   static const String expire = 'Hết hạn';
   static const String rejected = 'Bị từ chối';
   static const String canceled = 'Đã hủy';
 
+  static const int expiredStatus = -2;
+  static const int allStatus = -1;
   static const int pendingStatus = 0;
   static const int approveStatus = 1;
   static const int rejectStatus = 2;
