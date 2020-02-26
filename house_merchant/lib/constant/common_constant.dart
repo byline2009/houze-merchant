@@ -23,4 +23,4 @@ class Promotion {
   static const int canceledStatus = 3;
 }
 
-String DEVICE_TYPE = (Platform.isAndroid == true) ? "gcm" : "apple";
+String deviceType = (Platform.isAndroid == true) ? "gcm" : "apple";

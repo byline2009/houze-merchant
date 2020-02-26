@@ -454,10 +454,12 @@ class DayPicker extends StatelessWidget {
         labels.add(new Container());
       } else {
         final DateTime dayToBuild = new DateTime(year, month, day);
-        final bool disabled = dayToBuild.isBefore(DateTime.now().subtract(Duration(days: 1))) || dayToBuild.isAfter(lastDate) ||
-            dayToBuild.isBefore(firstDate) ||
-            (selectableDayPredicate != null &&
-                !selectableDayPredicate(dayToBuild));
+        final bool disabled =
+            dayToBuild.isBefore(DateTime.now().subtract(Duration(days: 1))) ||
+                dayToBuild.isAfter(lastDate) ||
+                dayToBuild.isBefore(firstDate) ||
+                (selectableDayPredicate != null &&
+                    !selectableDayPredicate(dayToBuild));
 
         BoxDecoration decoration;
         TextStyle itemStyle = themeData.textTheme.body1;
@@ -1017,7 +1019,6 @@ class _DatePickerWidget extends StatefulWidget {
 }
 
 class _DatePickerWidgetState extends State<_DatePickerWidget> {
-
   final beginTime = TextFieldWidgetController();
   final endTime = TextFieldWidgetController();
 
@@ -1026,7 +1027,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
 
   var endHourPicker = FixedExtentScrollController(initialItem: 0);
   var endMinutePicker = FixedExtentScrollController(initialItem: 0);
-  
+
   @override
   void initState() {
     super.initState();
@@ -1034,12 +1035,18 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
     _selectedLastDate = widget.initialLastDate;
     _mode = widget.initialDatePickerMode;
 
-    beginTime.Controller.text = intl.DateFormat('HH:mm').format(_selectedFirstDate);
-    endTime.Controller.text = intl.DateFormat('HH:mm').format(_selectedLastDate);
-    beginHourPicker = FixedExtentScrollController(initialItem: _selectedFirstDate.hour);
-    beginMinutePicker = FixedExtentScrollController(initialItem: _selectedFirstDate.minute);
-    endHourPicker = FixedExtentScrollController(initialItem: _selectedLastDate.hour);
-    endMinutePicker = FixedExtentScrollController(initialItem: _selectedLastDate.minute);
+    beginTime.controller.text =
+        intl.DateFormat('HH:mm').format(_selectedFirstDate);
+    endTime.controller.text =
+        intl.DateFormat('HH:mm').format(_selectedLastDate);
+    beginHourPicker =
+        FixedExtentScrollController(initialItem: _selectedFirstDate.hour);
+    beginMinutePicker =
+        FixedExtentScrollController(initialItem: _selectedFirstDate.minute);
+    endHourPicker =
+        FixedExtentScrollController(initialItem: _selectedLastDate.hour);
+    endMinutePicker =
+        FixedExtentScrollController(initialItem: _selectedLastDate.minute);
   }
 
   bool _announcedInitialDate = false;
@@ -1125,31 +1132,40 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
   }
 
   void _handleCancel() {
-    beginTime.Controller.clear();
-    endTime.Controller.clear();
+    beginTime.controller.clear();
+    endTime.controller.clear();
     Navigator.pop(context, List<DateTime>());
   }
 
   void _handleOk() {
     List<DateTime> result = [];
     if (_selectedFirstDate != null) {
-      result.add(DateTime(_selectedFirstDate.year, _selectedFirstDate.month, _selectedFirstDate.day, beginHourPicker.initialItem, beginMinutePicker.initialItem));
+      result.add(DateTime(
+          _selectedFirstDate.year,
+          _selectedFirstDate.month,
+          _selectedFirstDate.day,
+          beginHourPicker.initialItem,
+          beginMinutePicker.initialItem));
       if (_selectedLastDate != null) {
-        result.add(DateTime(_selectedLastDate.year, _selectedLastDate.month, _selectedLastDate.day, endHourPicker.initialItem, endMinutePicker.initialItem));
+        result.add(DateTime(
+            _selectedLastDate.year,
+            _selectedLastDate.month,
+            _selectedLastDate.day,
+            endHourPicker.initialItem,
+            endMinutePicker.initialItem));
       }
     }
     if (result.length == 2)
       Navigator.pop(context, result);
     else {
       Fluttertoast.showToast(
-        msg: "Chọn đầu đủ ngày, giờ bắt đầu và kết thúc",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIos: 5,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0
-      );
+          msg: "Chọn đầu đủ ngày, giờ bắt đầu và kết thúc",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIos: 5,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0);
     }
   }
 
@@ -1179,103 +1195,92 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
     return null;
   }
 
-  void timePicker(IntVoidFunc callback, FixedExtentScrollController hourPicker, FixedExtentScrollController minutePicker) {
-
+  void timePicker(IntVoidFunc callback, FixedExtentScrollController hourPicker,
+      FixedExtentScrollController minutePicker) {
     var hour = hourPicker.initialItem ?? 0;
     var minute = minutePicker.initialItem ?? 0;
 
     showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return BottomSheetWidget(
-          title: 'Chọn giờ',
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                child: CupertinoPicker(
-                  scrollController: hourPicker,
-                  itemExtent: _kPickerTitleHeight,
-                  offAxisFraction: -1,
-                  diameterRatio: 5,
-                  looping: true,
-                  backgroundColor: Colors.white,
-                  onSelectedItemChanged: (int index) {
-                    hour = index;
-                  },
-                  children: new List<Widget>.generate(24, (int index) {
+        context: context,
+        builder: (BuildContext context) {
+          return BottomSheetWidget(
+            title: 'Chọn giờ',
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                      child: CupertinoPicker(
+                    scrollController: hourPicker,
+                    itemExtent: _kPickerTitleHeight,
+                    offAxisFraction: -1,
+                    diameterRatio: 5,
+                    looping: true,
+                    backgroundColor: Colors.white,
+                    onSelectedItemChanged: (int index) {
+                      hour = index;
+                    },
+                    children: new List<Widget>.generate(24, (int index) {
+                      var indexTxt = "$index";
 
-                    var indexTxt = "$index";
+                      if (index < 10) indexTxt = "0$index";
 
-                    if (index < 10)
-                      indexTxt = "0$index";
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(right: 20),
+                              child: Text(indexTxt),
+                            )
+                          ]);
+                    }),
+                  )),
+                  Expanded(
+                      child: CupertinoPicker(
+                    scrollController: minutePicker,
+                    itemExtent: _kPickerTitleHeight,
+                    offAxisFraction: 1,
+                    diameterRatio: 5,
+                    looping: true,
+                    backgroundColor: Colors.white,
+                    onSelectedItemChanged: (int index) {
+                      minute = index;
+                    },
+                    children: new List<Widget>.generate(60, (int index) {
+                      var indexTxt = "$index";
 
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: Text(indexTxt),
-                        )
-                      ]
-                    );
+                      if (index < 10) indexTxt = "0$index";
 
-                  }),
-                )
-              ),
-              Expanded(
-                child: CupertinoPicker(
-                  scrollController: minutePicker,
-                  itemExtent: _kPickerTitleHeight,
-                  offAxisFraction: 1,
-                  diameterRatio: 5,
-                  looping: true,
-                  backgroundColor: Colors.white,
-                  onSelectedItemChanged: (int index) {
-                    minute = index;
-                  },
-                  children: new List<Widget>.generate(60, (int index) {
-
-                    var indexTxt = "$index";
-
-                    if (index < 10)
-                      indexTxt = "0$index";
-
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(left: 20),
-                          child: Text(indexTxt),
-                        )
-                      ]
-                    );
-                    
-                  }),
-                )
-              )
-          ]),
-          doneEvent: (int) {
-            hourPicker = FixedExtentScrollController(initialItem: hour);
-            minutePicker = FixedExtentScrollController(initialItem: minute);
-            callback(hour, minute);
-          },
-          cancelEvent: (int) {
-            hourPicker = FixedExtentScrollController(initialItem: 0);
-            minutePicker = FixedExtentScrollController(initialItem: 0);
-            callback(-1, -1);
-          },
-        );
-
-    });
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Text(indexTxt),
+                            )
+                          ]);
+                    }),
+                  ))
+                ]),
+            doneEvent: (int) {
+              hourPicker = FixedExtentScrollController(initialItem: hour);
+              minutePicker = FixedExtentScrollController(initialItem: minute);
+              callback(hour, minute);
+            },
+            cancelEvent: (int) {
+              hourPicker = FixedExtentScrollController(initialItem: 0);
+              minutePicker = FixedExtentScrollController(initialItem: 0);
+              callback(-1, -1);
+            },
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final _screenSize = MediaQuery.of(context).size;
-    final _padding = _screenSize.width*5/100;
+    final _padding = _screenSize.width * 5 / 100;
     final Widget picker = new Flexible(
       child: new SizedBox(
         height: _kMaxDayPickerHeight,
@@ -1324,93 +1329,122 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                     children: <Widget>[
                       picker,
                       Container(
-                        padding: EdgeInsets.only(left: _padding, right: _padding),
+                        padding:
+                            EdgeInsets.only(left: _padding, right: _padding),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _selectedFirstDate != null ? 
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text('Bắt đầu', style: TextStyle(
-                                    fontSize: 17
-                                  ),),
-
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                            _selectedFirstDate != null
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text(intl.DateFormat('dd').format(_selectedFirstDate), style: TextStyle(
-                                        fontSize: 27,
-                                        color: Colors.blueAccent
-                                      ),),
-                                      SizedBox(width: 10),
-                                      Text(intl.DateFormat('MMMM yyyy').format(_selectedFirstDate))
-                                    ],
-                                  )
-                                ]
-                              )
-                            : Center(),
+                                        Text(
+                                          'Bắt đầu',
+                                          style: TextStyle(fontSize: 17),
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: <Widget>[
+                                            Text(
+                                              intl.DateFormat('dd')
+                                                  .format(_selectedFirstDate),
+                                              style: TextStyle(
+                                                  fontSize: 27,
+                                                  color: Colors.blueAccent),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Text(intl.DateFormat('MMMM yyyy')
+                                                .format(_selectedFirstDate))
+                                          ],
+                                        )
+                                      ])
+                                : Center(),
                             SizedBox(height: 10),
                             GestureDetector(
-                              onTap: () async {
-                                timePicker((hour, minute) {
-                                  beginHourPicker = FixedExtentScrollController(initialItem: hour);
-                                  beginMinutePicker = FixedExtentScrollController(initialItem: minute);
-                                  if (hour == -1 && minute == -1) {
-                                    beginTime.Controller.clear();
-                                    return;
-                                  }
-                                  beginTime.Controller.text = "${hour<10?'0':''}$hour:${minute<10?'0':''}$minute";
-                                }, beginHourPicker, beginMinutePicker);
-                              },
-                              child: Container(color: Colors.transparent, child:
-                                TextFieldWidget(controller: beginTime, defaultHintText: '00:00 AM', enabled: false,)
-                              )
-                            ),
-
+                                onTap: () async {
+                                  timePicker((hour, minute) {
+                                    beginHourPicker =
+                                        FixedExtentScrollController(
+                                            initialItem: hour);
+                                    beginMinutePicker =
+                                        FixedExtentScrollController(
+                                            initialItem: minute);
+                                    if (hour == -1 && minute == -1) {
+                                      beginTime.controller.clear();
+                                      return;
+                                    }
+                                    beginTime.controller.text =
+                                        "${hour < 10 ? '0' : ''}$hour:${minute < 10 ? '0' : ''}$minute";
+                                  }, beginHourPicker, beginMinutePicker);
+                                },
+                                child: Container(
+                                    color: Colors.transparent,
+                                    child: TextFieldWidget(
+                                      controller: beginTime,
+                                      defaultHintText: '00:00 AM',
+                                      enabled: false,
+                                    ))),
                             SizedBox(height: 40),
-
-                            _selectedLastDate != null ?
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text('Cho đến', style: TextStyle(
-                                    fontSize: 17
-                                  ),),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                            _selectedLastDate != null
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text(intl.DateFormat('dd').format(_selectedLastDate), style: TextStyle(
-                                        fontSize: 27,
-                                        color: Colors.blueAccent
-                                      ),),
-                                      SizedBox(width: 10),
-                                      Text(intl.DateFormat('MMMM yyyy').format(_selectedLastDate))
+                                      Text(
+                                        'Cho đến',
+                                        style: TextStyle(fontSize: 17),
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: <Widget>[
+                                          Text(
+                                            intl.DateFormat('dd')
+                                                .format(_selectedLastDate),
+                                            style: TextStyle(
+                                                fontSize: 27,
+                                                color: Colors.blueAccent),
+                                          ),
+                                          SizedBox(width: 10),
+                                          Text(intl.DateFormat('MMMM yyyy')
+                                              .format(_selectedLastDate))
+                                        ],
+                                      )
                                     ],
                                   )
-                              ],)
-                              
-                            : Center(),
+                                : Center(),
                             SizedBox(height: 10),
-                            _selectedLastDate != null ? GestureDetector(
-                              onTap: () async {
-                                timePicker((hour, minute) {
-                                  endHourPicker = FixedExtentScrollController(initialItem: hour);
-                                  endMinutePicker = FixedExtentScrollController(initialItem: minute);
-                                  if (hour == -1 && minute == -1) {
-                                    endTime.Controller.clear();
-                                    return;
-                                  }
-                                  endTime.Controller.text = "${hour<10?'0':''}$hour:${minute<10?'0':''}$minute";
-                                }, endHourPicker, endMinutePicker);
-                              },
-                              child: Container(color: Colors.transparent, child:
-                                TextFieldWidget(controller: endTime, defaultHintText: '00:00 AM', enabled: false,)
-                              )
-                            ) : Center(),
-
+                            _selectedLastDate != null
+                                ? GestureDetector(
+                                    onTap: () async {
+                                      timePicker((hour, minute) {
+                                        endHourPicker =
+                                            FixedExtentScrollController(
+                                                initialItem: hour);
+                                        endMinutePicker =
+                                            FixedExtentScrollController(
+                                                initialItem: minute);
+                                        if (hour == -1 && minute == -1) {
+                                          endTime.controller.clear();
+                                          return;
+                                        }
+                                        endTime.controller.text =
+                                            "${hour < 10 ? '0' : ''}$hour:${minute < 10 ? '0' : ''}$minute";
+                                      }, endHourPicker, endMinutePicker);
+                                    },
+                                    child: Container(
+                                        color: Colors.transparent,
+                                        child: TextFieldWidget(
+                                          controller: endTime,
+                                          defaultHintText: '00:00 AM',
+                                          enabled: false,
+                                        )))
+                                : Center(),
                           ],
-                      ),),
+                        ),
+                      ),
                       actions,
                     ],
                   ),

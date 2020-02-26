@@ -27,7 +27,7 @@ class CouponScreenState extends State<CouponScreen> {
       trailing: Padding(
           child: ButtonCreateWidget(
             title: "Tạo mới",
-            callback: () {
+            onPressed: () {
               Router.pushNoParams(context, Router.COUPON_CREATE);
             },
             icon: Icon(
