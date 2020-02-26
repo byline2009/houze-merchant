@@ -1035,9 +1035,9 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
     _selectedLastDate = widget.initialLastDate;
     _mode = widget.initialDatePickerMode;
 
-    beginTime.controller.text =
+    beginTime.Controller.text =
         intl.DateFormat('HH:mm').format(_selectedFirstDate);
-    endTime.controller.text =
+    endTime.Controller.text =
         intl.DateFormat('HH:mm').format(_selectedLastDate);
     beginHourPicker =
         FixedExtentScrollController(initialItem: _selectedFirstDate.hour);
@@ -1132,8 +1132,8 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
   }
 
   void _handleCancel() {
-    beginTime.controller.clear();
-    endTime.controller.clear();
+    beginTime.Controller.clear();
+    endTime.Controller.clear();
     Navigator.pop(context, List<DateTime>());
   }
 
@@ -1372,10 +1372,10 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                                         FixedExtentScrollController(
                                             initialItem: minute);
                                     if (hour == -1 && minute == -1) {
-                                      beginTime.controller.clear();
+                                      beginTime.Controller.clear();
                                       return;
                                     }
-                                    beginTime.controller.text =
+                                    beginTime.Controller.text =
                                         "${hour < 10 ? '0' : ''}$hour:${minute < 10 ? '0' : ''}$minute";
                                   }, beginHourPicker, beginMinutePicker);
                                 },
@@ -1427,10 +1427,10 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                                             FixedExtentScrollController(
                                                 initialItem: minute);
                                         if (hour == -1 && minute == -1) {
-                                          endTime.controller.clear();
+                                          endTime.Controller.clear();
                                           return;
                                         }
-                                        endTime.controller.text =
+                                        endTime.Controller.text =
                                             "${hour < 10 ? '0' : ''}$hour:${minute < 10 ? '0' : ''}$minute";
                                       }, endHourPicker, endMinutePicker);
                                     },

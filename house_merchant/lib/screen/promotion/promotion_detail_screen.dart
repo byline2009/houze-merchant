@@ -261,13 +261,14 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                                         'Thời gian bắt đầu:',
                                         DateFormat('HH:mm-dd/MM/yyyy').format(
                                             DateTime.parse(
-                                                _couponModel.startDate))),
+                                                    _couponModel.startDate)
+                                                .toLocal())),
                                     SizedBox(height: 12.0),
                                     _timeRowFormat(
                                         'Thời gian kết thúc:',
                                         DateFormat('HH:mm-dd/MM/yyyy').format(
-                                            DateTime.parse(
-                                                _couponModel.endDate))),
+                                            DateTime.parse(_couponModel.endDate)
+                                                .toLocal())),
                                     SizedBox(height: 20.0),
                                     Container(
                                       height: 2.0,
