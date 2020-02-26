@@ -25,6 +25,16 @@ import Flutter
         
         application.registerForRemoteNotifications()
         
+        if let remoteNoti = launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] {
+            if let remoteNotiWhenLaunch = remoteNoti as? [AnyHashable : Any] {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    if let jsonData = self.DictionaryToJSONString(dict: remoteNotiWhenLaunch) {
+                        self.receiveNotificationStreamHandler?.excuteEventSink(data: jsonData)
+                    }
+                }
+            }
+        }
+        
         // [END register_for_notifications]
         
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
