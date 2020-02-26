@@ -234,22 +234,24 @@ class StoreScreenState extends State<StoreScreen> {
   }
 
   Widget editButton() {
-    return Row(
-      children: <Widget>[
-        Icon(
-          Icons.create,
-          color: ThemeConstant.primary_color,
-          size: 16,
-        ),
-        SizedBox(width: 5),
-        Text(LocalizationsUtil.of(context).translate('Chỉnh sửa'),
-            style: TextStyle(
-                color: ThemeConstant.primary_color,
-                fontFamily: ThemeConstant.form_font_family_display,
-                fontSize: ThemeConstant.form_font_smaller,
-                fontWeight: FontWeight.w600))
-      ],
-    );
+    return Container(
+        height: 44,
+        child: Row(
+          children: <Widget>[
+            Icon(
+              Icons.create,
+              color: ThemeConstant.primary_color,
+              size: 16,
+            ),
+            SizedBox(width: 5),
+            Text(LocalizationsUtil.of(context).translate('Chỉnh sửa'),
+                style: TextStyle(
+                    color: ThemeConstant.primary_color,
+                    fontFamily: ThemeConstant.form_font_family_display,
+                    fontSize: ThemeConstant.form_font_smaller,
+                    fontWeight: FontWeight.w600))
+          ],
+        ));
   }
 
   @override
