@@ -213,7 +213,6 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
                 callback: () async {
                   try {
                     progressToolkit.state.show();
-
                     final _couponModel = CouponModel(
                       title: ftitle.Controller.text,
                       quantity: int.parse(famount.Controller.text),

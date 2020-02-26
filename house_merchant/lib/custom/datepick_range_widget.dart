@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/date_range_picker/date_range_page.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
@@ -36,16 +37,15 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder(
         stream: widget.controller.stream,
         builder:
             (BuildContext context, AsyncSnapshot<List<DateTime>> snapshot) {
           if (snapshot.data != null && snapshot.data.length > 0) {
             localController.Controller.text =
-                DateFormat('HH:mm - dd/MM/yyyy').format(snapshot.data[0]) +
+                DateFormat(Format.timeAndDate).format(snapshot.data[0]) +
                     ' đến ' +
-                    DateFormat('HH:mm - dd/MM/yyyy').format(snapshot.data[1]);
+                    DateFormat(Format.timeAndDate).format(snapshot.data[1]);
             this.localDate = snapshot.data;
           }
 
@@ -68,11 +68,13 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
                 widget.controller.sink.add(result ?? []);
                 widget.callback(result ?? []);
               },
-              child: Container(color: ThemeConstant.white_color, child: TextFieldWidget(
-                controller: localController,
-                defaultHintText: widget.defaultHintText,
-                enabled: false,
-              )));
+              child: Container(
+                  color: ThemeConstant.white_color,
+                  child: TextFieldWidget(
+                    controller: localController,
+                    defaultHintText: widget.defaultHintText,
+                    enabled: false,
+                  )));
         });
   }
 }

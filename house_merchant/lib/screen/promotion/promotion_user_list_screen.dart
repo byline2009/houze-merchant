@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
@@ -96,7 +97,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
             ),
             subtitle: Text(
                 'Ngày sử dụng: ' +
-                    DateFormat('HH:mm - dd/MM/yyyy')
+                    DateFormat(Format.timeAndDate)
                         .format(DateTime.parse(user.modified)),
                 style: ThemeConstant.subtitleTileStyle),
           ));

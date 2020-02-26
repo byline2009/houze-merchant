@@ -25,11 +25,10 @@ class ImageWidget extends StatelessWidget {
               width: this.width,
               height: this.height,
               fit: BoxFit.cover,
-            ),
+            )
           ])),
       width: this.width,
       height: this.height,
-      // color: ThemeConstant.background_grey_color,
     );
   }
 }
