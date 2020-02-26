@@ -21,7 +21,6 @@ import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/coming_soon_widget.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
-import 'package:house_merchant/screen/promotion/promotion_list_screen.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
 import 'package:house_merchant/screen/promotion/promotion_scan_success_screen.dart';
@@ -39,7 +38,8 @@ class CouponScreen extends StatefulWidget {
 class CouponScreenState extends State<CouponScreen> {
   Size _screenSize;
   double _padding;
-  var statusFilter = -1;
+  var statusCurrent = -1; // status: tat ca
+  var tagIndexCurrent = 0; // tab: tat ca
 
   CouponListBloc couponListBloc = CouponListBloc();
   RefreshController _refreshController =
@@ -48,59 +48,69 @@ class CouponScreenState extends State<CouponScreen> {
   @override
   void initState() {
     super.initState();
-    couponListBloc.add(CouponLoadList(page: -1, status: this.statusFilter));
+    couponListBloc.add(CouponLoadList(page: -1, status: this.statusCurrent));
   }
 
   Widget tags() {
     return GroupRadioTagsWidget(
       tags: <GroupRadioTags>[
         GroupRadioTags(id: -1, title: "Tất cả"),
-        GroupRadioTags(id: 1, title: "Đang chạy"),
-        GroupRadioTags(id: 0, title: "Chờ duyệt"),
-        GroupRadioTags(id: -2, title: "Hết hạn"),
-        GroupRadioTags(id: 2, title: "Bị từ chối"),
-        GroupRadioTags(id: 3, title: "Đã hủy"),
+        GroupRadioTags(id: Promotion.approveStatus, title: Promotion.approved),
+        GroupRadioTags(id: Promotion.pendingStatus, title: Promotion.pending),
+        GroupRadioTags(id: -2, title: Promotion.expire),
+        GroupRadioTags(id: Promotion.rejectStatus, title: Promotion.rejected),
+        GroupRadioTags(id: Promotion.canceledStatus, title: Promotion.canceled),
       ],
       callback: (dynamic id) {
-        this.statusFilter = id;
-        couponListBloc.add(CouponLoadList(page: -1, status: statusFilter));
+        this.statusCurrent = id;
+        print('\n\n');
+        print('==========> statusCurrent: $statusCurrent');
+        print('\n');
+        print('==========> id: $id');
+        print('\n');
+        couponListBloc.add(CouponLoadList(page: -1, status: statusCurrent));
       },
-      defaultIndex: 0,
+      callBackIndex: (dynamic index) {
+        tagIndexCurrent = index;
+        print('==========> callBackIndex: $index');
+        print('\n\n');
+      },
+      defaultIndex: this.tagIndexCurrent,
     );
   }
 
   Widget statusProduct(int status) {
     switch (status) {
       case -1:
-        return Text(Promotion.expire,
+        return Text(Promotion.expire.toUpperCase(),
             style: TextStyle(
-                color: ThemeConstant.promotion_status_expired,
+                color: ThemeConstant.expired_color,
                 fontFamily: ThemeConstant.form_font_family_display,
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
       case Promotion.pendingStatus:
-        return Text(Promotion.pending,
+        return Text(Promotion.pending.toUpperCase(),
             style: TextStyle(
                 color: ThemeConstant.promotion_status_pending,
                 fontFamily: ThemeConstant.form_font_family_display,
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
       case Promotion.approveStatus:
-        return Text(Promotion.approved,
+        return Text(Promotion.approved.toUpperCase(),
             style: TextStyle(
-                color: ThemeConstant.promotion_status_running,
+                color: ThemeConstant.approved_color,
                 fontFamily: ThemeConstant.form_font_family_display,
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
       case Promotion.canceledStatus:
-        return Text(Promotion.canceled,
+        return Text(Promotion.canceled.toUpperCase(),
             style: TextStyle(
-                color: ThemeConstant.promotion_status_expired,
+                color: ThemeConstant.expired_color,
                 fontFamily: ThemeConstant.form_font_family_display,
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
       case Promotion.rejectStatus:
-        return Text(Promotion.rejected,
+        return Text(Promotion.rejected.toUpperCase(),
             style: TextStyle(
                 color: ThemeConstant.promotion_status_cancel,
                 fontFamily: ThemeConstant.form_font_family_display,
@@ -359,7 +369,7 @@ class CouponScreenState extends State<CouponScreen> {
 
     return SafeArea(
         child: Container(
-      color: ThemeConstant.ready_color,
+      color: ThemeConstant.approved_color,
       child: Stack(
         children: <Widget>[
           Positioned(
@@ -377,7 +387,7 @@ class CouponScreenState extends State<CouponScreen> {
                                 _dataDisplay = couponList.data;
 
                                 if (couponList.data.length == 0 &&
-                                    this.statusFilter == -1) {
+                                    this.statusCurrent == -1) {
                                   return Container(
                                       color: Colors.white,
                                       child: ComingSoonWidget(
@@ -434,13 +444,13 @@ class CouponScreenState extends State<CouponScreen> {
                                         onRefresh: () {
                                           couponListBloc.add(CouponLoadList(
                                               page: -1,
-                                              status: this.statusFilter));
+                                              status: this.statusCurrent));
                                         },
                                         onLoading: () {
                                           if (mounted) {
                                             couponListBloc.add(
                                               CouponLoadList(
-                                                  status: this.statusFilter),
+                                                  status: this.statusCurrent),
                                             );
                                           }
                                         },
@@ -449,14 +459,14 @@ class CouponScreenState extends State<CouponScreen> {
                                           itemBuilder: (c, index) {
                                             return GestureDetector(
                                                 onTap: () {
+                                                  var data =
+                                                      couponList.data[index];
+                                                  print(
+                                                      '=====> ${data.title.toUpperCase()} ----- ${data.statusName().toUpperCase()}');
                                                   Router.push(
                                                       context,
                                                       Router.COUPON_DETAIL_PAGE,
-                                                      {
-                                                        "coupon_model":
-                                                            couponList
-                                                                .data[index]
-                                                      });
+                                                      {"coupon_model": data});
                                                 },
                                                 child: Padding(
                                                   child: this.itemCard(
@@ -493,8 +503,15 @@ class CouponScreenState extends State<CouponScreen> {
           child: ButtonCreateWidget(
             title: "Tạo mới",
             onPressed: () {
-              Router.push(context, Router.COUPON_CREATE,
-                  {"callback": (isReloadData) {}});
+              Router.push(context, Router.COUPON_CREATE, {
+                "callback": (isReloadData) {
+                  print(isReloadData);
+                  if (isReloadData) {
+                    couponListBloc.add(
+                        CouponLoadList(page: -1, status: this.statusCurrent));
+                  }
+                }
+              });
             },
             icon: Icon(
               Icons.add,

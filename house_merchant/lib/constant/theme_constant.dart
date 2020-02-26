@@ -31,13 +31,10 @@ class ThemeConstant {
 
   //Status color
   static const Color status_pending = Color(0xffff9b00);
-  static const Color status_approved = Color(0xff00aa7d);
   static const Color status_rejected = Color(0xffff6666);
   static const Color status_canceled = Color(0xff808080);
 
   static const Color promotion_status_pending = Color(0xffd68100);
-  static const Color promotion_status_running = Color(0xff00aa7d);
-  static const Color promotion_status_expired = Color(0xffb5b5b5);
   static const Color promotion_status_cancel = Color(0xffc50000);
 
   //Form Theme
@@ -247,10 +244,6 @@ class ThemeConstant {
   static const Color start_yelow_color = Color(0xffffcc44);
 
   static const Color expired_color = Color(0xffb5b5b5);
-  static const Color ready_color = Color(0xff00aa7d);
+  static const Color approved_color = Color(0xff00aa7d);
   static const Color pending_color = Color(0xffe3a500);
-
-  static const String expired_status = 'Hết hạn';
-  static const String ready_status = 'Đang chạy';
-  static const String pending_status = 'Chờ duyệt';
 }

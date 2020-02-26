@@ -105,7 +105,7 @@ class MenuScreenState extends State<MenuScreen> {
       case 1:
         return Text('ĐANG BÁN',
             style: TextStyle(
-                color: ThemeConstant.status_approved,
+                color: ThemeConstant.approved_color,
                 fontFamily: ThemeConstant.form_font_family_display,
                 fontSize: ThemeConstant.form_font_smaller,
                 fontWeight: ThemeConstant.appbar_text_weight_bold));
