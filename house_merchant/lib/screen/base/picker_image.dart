@@ -107,9 +107,11 @@ class PickerImageState extends State<PickerImage> {
                 image.absolute.path, targetPath,
                 minHeight: 1280, minWidth: 1280, quality: 60, keepExif: false);
 
-            _uploadParrallel.add(uploadImage(FilePick(file: compressImage)));
+            if (Platform.isIOS) {
+                image.deleteSync();
+            }
 
-            compressImage.deleteSync();
+            _uploadParrallel.add(uploadImage(FilePick(file: compressImage)));
           }
         });
       });
