@@ -87,8 +87,8 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
             ),
           ),
           RectangleLabelWidget(
-            text: _couponModel.getStatusName(),
-            color: _couponModel.getStatusColor(),
+            text: _couponModel.statusName(),
+            color: _couponModel.satusColor(),
           )
         ],
       ),
@@ -259,15 +259,16 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                                     SizedBox(height: 20.0),
                                     _timeRowFormat(
                                         'Thời gian bắt đầu:',
-                                        DateFormat('HH:mm-dd/MM/yyyy').format(
+                                        DateFormat(Format.timeAndDate).format(
                                             DateTime.parse(
-                                                _couponModel.startDate))),
+                                                    _couponModel.startDate)
+                                                .toLocal())),
                                     SizedBox(height: 12.0),
                                     _timeRowFormat(
                                         'Thời gian kết thúc:',
-                                        DateFormat('HH:mm-dd/MM/yyyy').format(
-                                            DateTime.parse(
-                                                _couponModel.endDate))),
+                                        DateFormat(Format.timeAndDate).format(
+                                            DateTime.parse(_couponModel.endDate)
+                                                .toLocal())),
                                     SizedBox(height: 20.0),
                                     Container(
                                       height: 2.0,

@@ -11,16 +11,19 @@ class Format {
 }
 
 class Promotion {
-  static const String pending = 'CHỜ DUYỆT';
-  static const String approved = 'ĐANG CHẠY';
-  static const String expire = 'HẾT HẠN';
-  static const String rejected = 'BỊ TỪ CHỐI';
-  static const String canceled = 'ĐÃ HỦY';
+  static const String all = 'Tất cả';
+  static const String pending = 'Chờ duyệt';
+  static const String approved = 'Đang chạy';
+  static const String expire = 'Hết hạn';
+  static const String rejected = 'Bị từ chối';
+  static const String canceled = 'Đã hủy';
 
+  static const int expiredStatus = -2;
+  static const int allStatus = -1;
   static const int pendingStatus = 0;
   static const int approveStatus = 1;
   static const int rejectStatus = 2;
   static const int canceledStatus = 3;
 }
 
-String DEVICE_TYPE = (Platform.isAndroid == true) ? "gcm" : "apple";
+String deviceType = (Platform.isAndroid == true) ? "gcm" : "apple";

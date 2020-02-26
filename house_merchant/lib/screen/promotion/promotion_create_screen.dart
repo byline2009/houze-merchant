@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,12 @@ import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
 import 'package:path/path.dart' as path;
 
+typedef void CallBackHandler(dynamic value);
+
 class CouponCreateScreen extends StatefulWidget {
-  CouponCreateScreen({Key key}) : super(key: key);
+  dynamic params;
+
+  CouponCreateScreen({@required this.params, Key key}) : super(key: key);
 
   @override
   CouponCreateScreenState createState() => new CouponCreateScreenState();
@@ -224,7 +229,6 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
 
                     final result =
                         await couponRepository.createCoupon(_couponModel);
-                    print(result);
                     T7GDialog.showContentDialog(
                         context, [this._navigatedToPromotionListScreen()],
                         closeShow: false, barrierDismissible: false);
@@ -329,6 +333,9 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
                 SizedBox(height: 20),
                 BaseWidget.buttonThemePink('Về trang chính', callback: () {
                   Navigator.of(context).popUntil((route) {
+                    if (widget.params['callback'] != null) {
+                      widget.params['callback'](true);
+                    }
                     return route.isFirst;
                   });
                 })

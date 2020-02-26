@@ -36,38 +36,28 @@ class Router {
   Widget _getPage(String url, dynamic params) {
     switch (url) {
       case COUPON_CREATE:
-        return CouponCreateScreen();
+        return CouponCreateScreen(params: params);
 
       case NOTIFICATION_PAGE:
         return NotificationScreen();
 
       case COUPON_DETAIL_PAGE:
-        return CouponDetailScreen(
-          params: params,
-        );
+        return CouponDetailScreen(params: params);
 
       case COUPON_USER_LIST_PAGE:
-        return CouponUserListScreen(
-          params: params,
-        );
+        return CouponUserListScreen(params: params);
 
       case COUPON_SCAN_QR_SUCCESS_PAGE:
         return PromotionScanSuccessScreen(params: params);
 
       case SHOP_IMAGES_PAGE:
-        return StoreEditImageScreen(
-          params: params,
-        );
+        return StoreEditImageScreen(params: params);
 
       case SHOP_DESCRIPTION_PAGE:
-        return StoreEditDescriptionScreen(
-          params: params,
-        );
+        return StoreEditDescriptionScreen(params: params);
 
       case SHOP_TIME_PAGE:
-        return StoreEditTimeScreen(
-          params: params,
-        );
+        return StoreEditTimeScreen(params: params);
 
       case CONTACT_PAGE:
         return ContactScreenWidget();

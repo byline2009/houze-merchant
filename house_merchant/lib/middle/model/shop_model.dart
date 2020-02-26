@@ -32,15 +32,15 @@ class ShopModel {
   List<ImageModel> images = List<ImageModel>();
   List<Hours> hours = List<Hours>();
 
-  ShopModel({
-    this.id,
-    this.name,
-    this.description,
-    this.status,
-    this.lat,
-    this.long,
-    this.images,
-    this.hours});
+  ShopModel(
+      {this.id,
+      this.name,
+      this.description,
+      this.status,
+      this.lat,
+      this.long,
+      this.images,
+      this.hours});
 
   ShopModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -81,7 +81,7 @@ class ShopModel {
     return data;
   }
 
-  String getStatusName() {
+  String statusName() {
     return status == 0 ? 'Đang hoạt động' : 'Chưa hoạt động';
   }
 }

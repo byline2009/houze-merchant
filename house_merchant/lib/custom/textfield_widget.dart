@@ -25,7 +25,7 @@ class TextFieldWidgetController {
     _controller.text = text;
   }
 
-  void Refresh() {
+  void refresh() {
     if (_callbackRefresh != null) {
       _callbackRefresh();
     }

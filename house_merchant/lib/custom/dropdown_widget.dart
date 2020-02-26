@@ -18,7 +18,7 @@ class DropdownWidgetController {
   FixedExtentScrollController _controller = new FixedExtentScrollController();
   VoidFunc _callbackRefresh;
 
-  void Refresh() {
+  void refresh() {
     if (_callbackRefresh != null) {
       _callbackRefresh();
     }

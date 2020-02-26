@@ -150,9 +150,9 @@ class MoreScreenState extends State<MoreScreen> {
                     style: ThemeConstant.titleStyle(Colors.black),
                   ),
                   subtitle: Text(
-                    shop.getStatusName(),
+                    shop.statusName(),
                     style: ThemeConstant.subtitleStyle(
-                        ThemeConstant.status_approved),
+                        ThemeConstant.approved_color),
                   ),
                   trailing: arrowButton(),
                   onTap: () {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
@@ -78,30 +79,48 @@ class CouponModel {
     return data;
   }
 
-  String getStatusName() {
-    if (this.status == 0) {
-      return ThemeConstant.pending_status;
+  String statusName() {
+    if (this.isExpired == true) {
+      return Promotion.expire;
     }
-    if (this.status == 1) {
-      return ThemeConstant.ready_status;
+    switch (this.status) {
+      case Promotion.pendingStatus:
+        return Promotion.pending;
+
+      case Promotion.approveStatus:
+        return Promotion.approved;
+
+      case Promotion.rejectStatus:
+        return Promotion.rejected;
+
+      case Promotion.canceledStatus:
+        return Promotion.canceled;
+
+      default:
+        return '';
     }
-    if (this.status == 2) {
-      return ThemeConstant.expired_status;
-    }
-    return '';
   }
 
-  Color getStatusColor() {
-    if (this.status == 0) {
-      return ThemeConstant.pending_color;
+  Color satusColor() {
+    if (this.isExpired == true) {
+      return ThemeConstant.status_canceled;
     }
-    if (this.status == 1) {
-      return ThemeConstant.ready_color;
+    switch (this.status) {
+      case Promotion.pendingStatus:
+        return ThemeConstant.pending_color;
+
+      case Promotion.approveStatus:
+        return ThemeConstant.approved_color;
+
+      case Promotion.rejectStatus:
+        return ThemeConstant.status_rejected;
+
+      case Promotion.canceledStatus:
+        return ThemeConstant.status_cancel;
+
+      default:
+        return ThemeConstant.black_color;
     }
-    if (this.status == 2) {
-      return ThemeConstant.expired_color;
-    }
-    return Colors.transparent;
   }
 
   String getUsedCound() {

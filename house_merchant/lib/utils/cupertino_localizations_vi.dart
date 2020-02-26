@@ -35,7 +35,8 @@ class CupertinoLocalizationsVi implements CupertinoLocalizations {
 
   // TODO: implement datePickerDateTimeOrder
   @override
-  DatePickerDateTimeOrder get datePickerDateTimeOrder => DatePickerDateTimeOrder.date_time_dayPeriod;
+  DatePickerDateTimeOrder get datePickerDateTimeOrder =>
+      DatePickerDateTimeOrder.date_time_dayPeriod;
 
   @override
   String datePickerDayOfMonth(int dayIndex) {
@@ -62,8 +63,7 @@ class CupertinoLocalizationsVi implements CupertinoLocalizations {
 
   @override
   String datePickerMinuteSemanticsLabel(int minute) {
-    if (minute == 1)
-      return '1 minute';
+    if (minute == 1) return '1 minute';
     return minute.toString() + ' minutes';
   }
 
@@ -110,10 +110,11 @@ class CupertinoLocalizationsVi implements CupertinoLocalizations {
     return second.toString().padLeft(2, "0");
   }
 
-   @override
+  @override
   String timerPickerSecondLabel(int second) => 'sec';
 
-  static const LocalizationsDelegate<CupertinoLocalizations> delegate = _VietnamDelegate();
+  static const LocalizationsDelegate<CupertinoLocalizations> delegate =
+      _VietnamDelegate();
 
   static Future<CupertinoLocalizations> load(Locale locale) async {
     var localizaltions = CupertinoLocalizationsVi();
