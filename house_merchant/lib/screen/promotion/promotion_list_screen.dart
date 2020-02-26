@@ -110,12 +110,10 @@ class CouponListScreenState extends State<CouponListScreen> {
   }
 
   Widget itemCard(CouponModel couponModel) {
-    var startDate = DateFormat('HH:mm - dd/MM/yyyy')
-        .format(DateTime.parse(couponModel.startDate));
-
-    var endDate = DateFormat('HH:mm - dd/MM/yyyy')
-        .format(DateTime.parse(couponModel.endDate));
-
+    var startDate = DateFormat(Format.timeAndDate)
+        .format(DateTime.parse(couponModel.startDate).toLocal());
+    var endDate = DateFormat(Format.timeAndDate)
+        .format(DateTime.parse(couponModel.endDate).toLocal());
     return Container(
         padding: EdgeInsets.all(12),
         child: Column(

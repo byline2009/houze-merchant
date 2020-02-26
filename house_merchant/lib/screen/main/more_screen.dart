@@ -30,15 +30,12 @@ class MoreScreenState extends State<MoreScreen> {
     return BlocBuilder(
         bloc: profileBloc,
         builder: (BuildContext context, ProfileState profileState) {
-          print('============> STATE: $profileState');
-
           if (profileState is ProfileInitial) {
             profileBloc.add(GetProfileEvent());
           }
 
           if (profileState is ProfileGetSuccessful) {
             final result = profileState.result; // as ProfileModel;
-            print('============> RESULT: $result');
 
             return Container(
                 color: Colors.white,

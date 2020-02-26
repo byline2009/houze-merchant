@@ -6,6 +6,10 @@ class CommonConstant {
   static const int pagingLimit = 10;
 }
 
+class Format {
+  static const String timeAndDate = 'HH:mm - dd/MM/yyyy';
+}
+
 class Promotion {
   static const String pending = 'CHỜ DUYỆT';
   static const String approved = 'ĐANG CHẠY';

@@ -23,6 +23,7 @@ class CouponAPI extends OauthAPI {
     if (status > -1) {
       params['status'] = status;
     }
+    //get all coupon
     if (status == Promotion.approveStatus) {
       params['is_expired'] = 'false';
     }
@@ -30,13 +31,11 @@ class CouponAPI extends OauthAPI {
     if (status == -2) {
       params['is_expired'] = 'true';
     }
-    print('=====> $params');
+
     final response = await this
         .get(APIConstant.baseMerchantUrlCoupon, queryParameters: params);
 
     return (PageModel.map(response.data).results as List).map((i) {
-      print(
-          '=====> ${CouponModel.fromJson(i).title} ${CouponModel.fromJson(i).status}');
       return CouponModel.fromJson(i);
     }).toList();
   }
