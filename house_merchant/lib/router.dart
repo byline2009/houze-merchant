@@ -4,8 +4,8 @@ import 'package:house_merchant/screen/main/notification_screen.dart';
 import 'package:house_merchant/screen/profile/change_password_screen.dart';
 import 'package:house_merchant/screen/profile/contact_screen.dart';
 import 'package:house_merchant/screen/profile/profile_screen.dart';
+import 'package:house_merchant/screen/promotion/coupon_detail_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_create_screen.dart';
-import 'package:house_merchant/screen/promotion/promotion_detail_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_scan_success_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_user_list_screen.dart';
 import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
@@ -42,7 +42,8 @@ class Router {
         return NotificationScreen();
 
       case COUPON_DETAIL_PAGE:
-        return CouponDetailScreen(params: params);
+        return PromoDetailScreen(
+            params: params); //CouponDetailScreen(params: params);
 
       case COUPON_USER_LIST_PAGE:
         return CouponUserListScreen(params: params);

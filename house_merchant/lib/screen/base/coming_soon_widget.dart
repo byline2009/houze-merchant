@@ -27,7 +27,6 @@ class ComingSoonWidgetState extends State<ComingSoonWidget> {
         ? Center()
         : SvgPicture.asset(widget.subIconPath);
 
-    // TODO: implement build
     return Container(
         padding: EdgeInsets.only(top: 140.0),
         child: Column(children: <Widget>[

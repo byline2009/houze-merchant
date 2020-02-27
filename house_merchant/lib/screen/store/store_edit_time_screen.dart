@@ -358,7 +358,6 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
 
-    // TODO: implement build
     return BaseScaffoldNormal(
         title: 'Chỉnh sửa cửa hàng',
         child: SafeArea(
