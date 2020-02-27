@@ -12,16 +12,16 @@ import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:intl/intl.dart';
 
-class PromoDetailScreen extends StatefulWidget {
+class CouponDetailScreen extends StatefulWidget {
   final dynamic params;
 
-  PromoDetailScreen({@required this.params, Key key}) : super(key: key);
+  CouponDetailScreen({@required this.params, Key key}) : super(key: key);
 
   @override
-  PromoDetailScreenState createState() => new PromoDetailScreenState();
+  CouponDetailScreenState createState() => new CouponDetailScreenState();
 }
 
-class PromoDetailScreenState extends State<PromoDetailScreen> {
+class CouponDetailScreenState extends State<CouponDetailScreen> {
   Size _screenSize;
   var _padding;
   CouponModel _couponModel;
@@ -199,8 +199,63 @@ class PromoDetailScreenState extends State<PromoDetailScreen> {
               trimLines: 2,
               colorClickableText: ThemeConstant.primary_color,
               trimMode: TrimMode.Line,
-            )
+            ),
+            SizedBox(height: 20.0),
           ]));
+    }
+
+    Widget bodySection() {
+      return ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              headerImage,
+              Positioned(child: _statusWidget, bottom: 0, left: 0, right: 0)
+            ],
+          ),
+          SizedBox(
+              height: 10,
+              child: Container(color: ThemeConstant.background_grey_color)),
+          Container(
+            padding: EdgeInsets.all(this._padding),
+            color: ThemeConstant.white_color,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _bodyContent(),
+                // SizedBox(height: 20),
+              ],
+            ),
+          )
+        ],
+      );
+    }
+
+    Widget buttonBottom() {
+      return Align(
+          alignment: Alignment.bottomCenter,
+          child: (_couponModel.status == Promotion.pendingStatus)
+              ? Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.all(this._padding),
+                  child: ButtonOutlineWidget(
+                    defaultHintText: 'Chỉnh sửa',
+                    isActive: true,
+                    callback: () {
+                      Router.push(context, Router.COUPON_EDIT, {
+                        'coupon_model': this._couponModel,
+                        "callback": (isReloadData) {
+                          // if (isReloadData) {
+                          //   this.getCouponsByStatus();
+                          // }
+                          return;
+                        }
+                      });
+                    },
+                  ))
+              : Center());
     }
 
     return BaseScaffoldNormal(
@@ -216,43 +271,12 @@ class PromoDetailScreenState extends State<PromoDetailScreen> {
       },
       child: SafeArea(
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: double.infinity,
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  headerImage,
-                  Positioned(child: _statusWidget, bottom: 0, left: 0, right: 0)
-                ],
-              ),
-              SizedBox(
-                  height: 10,
-                  child: Container(color: ThemeConstant.background_grey_color)),
-              Container(
-                padding: EdgeInsets.all(this._padding),
-                color: ThemeConstant.white_color,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _bodyContent(),
-                    (_couponModel.status == Promotion.pendingStatus)
-                        ? ButtonOutlineWidget(
-                            defaultHintText: 'Chỉnh sửa',
-                            isActive: true,
-                            callback: () {
-                              print('click chinh sua');
-                            },
-                          )
-                        : Center()
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            child: Stack(children: <Widget>[
+              Positioned(child: bodySection()),
+              Positioned(child: buttonBottom())
+            ])),
       ),
     );
   }
