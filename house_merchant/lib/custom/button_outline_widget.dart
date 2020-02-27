@@ -26,6 +26,7 @@ class ButtonOutlineWidgetState extends State<ButtonOutlineWidget> {
 
   Widget initButton() {
     return Container(
+        width: double.infinity,
         decoration: widget.isActive == true
             ? ThemeConstant.borderOutline(ThemeConstant.primary_color)
             : const BoxDecoration(
