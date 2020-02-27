@@ -35,24 +35,21 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(
-            LocalizationsUtil.of(context).translate(label),
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                color: color ?? ThemeConstant.normal_color,
-                fontSize: ThemeConstant.form_font_normal,
-                fontFamily: ThemeConstant.form_font_family_display),
-          ),
+          Text(LocalizationsUtil.of(context).translate(label),
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  color: color ?? ThemeConstant.grey_color,
+                  fontSize: ThemeConstant.form_font_normal,
+                  fontFamily: ThemeConstant.form_font_family_display)),
           SizedBox(width: 20),
           Flexible(
-            child: Text(
-              value,
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                  color: color ?? Colors.black,
-                  fontSize: ThemeConstant.form_font_normal,
-                  fontFamily: ThemeConstant.form_font_family_display),
-            ),
+            child: Text(value,
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: color ?? Colors.black,
+                    fontSize: ThemeConstant.form_font_normal,
+                    fontFamily: ThemeConstant.form_font_family_display)),
           )
         ],
       ),
@@ -84,13 +81,11 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
                             children: <Widget>[
                               CircleAvatar(
                                   backgroundColor: ThemeConstant.alto_color,
-                                  child: Text('',
+                                  child: Text(result.fullname[0],
                                       style: ThemeConstant.titleLargeStyle(
                                           Colors.white)),
                                   radius: 33),
-                              SizedBox(
-                                height: 25.0,
-                              ),
+                              SizedBox(height: 25.0),
                               makeRowData('Họ và tên:', result.fullname),
                               makeRowData('Tên đăng nhập:', result.username),
                               makeRowData('Chức vụ:', 'Chủ quán'),
@@ -120,10 +115,8 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
                             dense: true,
                             contentPadding: EdgeInsets.only(
                                 left: 20.0, right: 20.0, top: 5, bottom: 0),
-                            title: Text(
-                              'Thay đổi mật khẩu',
-                              style: ThemeConstant.titleStyle(Colors.black),
-                            ),
+                            title: Text('Thay đổi mật khẩu',
+                                style: ThemeConstant.titleStyle(Colors.black)),
                             trailing: arrowButton(),
                             onTap: () {
                               print('Thay đổi mật khẩu');
@@ -136,12 +129,12 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
             }
             return CardListSkeleton(
               shrinkWrap: true,
-              length: 4,
+              length: 1,
               config: SkeletonConfig(
                 theme: SkeletonTheme.Light,
-                isShowAvatar: false,
-                isCircleAvatar: false,
-                bottomLinesCount: 4,
+                isShowAvatar: true,
+                isCircleAvatar: true,
+                bottomLinesCount: 6,
                 radius: 0.0,
               ),
             );
@@ -177,9 +170,7 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              SizedBox(
-                height: 10.0,
-              ),
+              SizedBox(height: 10.0),
               Expanded(child: profileBody(context, profileBloc)),
             ],
           )),
