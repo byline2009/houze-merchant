@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/flutter_skeleton/src/skeleton/card_list_skeleton.dart';
@@ -34,63 +35,64 @@ class MoreScreenState extends State<MoreScreen> {
             profileBloc.add(GetProfileEvent());
           }
 
+          if (profileState is ProfileFailure) {
+            final result = profileState.error;
+            Fluttertoast.showToast(
+                msg: result,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 5,
+                backgroundColor: Colors.redAccent,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }
+
           if (profileState is ProfileGetSuccessful) {
-            final result = profileState.result; // as ProfileModel;
+            final result = profileState.result;
 
             return Container(
                 color: Colors.white,
-                padding: EdgeInsets.all(
-                  20.0,
-                ),
+                padding: EdgeInsets.all(20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     ListTile(
-                      dense: true,
-                      contentPadding: EdgeInsets.all(0.0),
-                      leading: CircleAvatar(
-                          backgroundColor: ThemeConstant.alto_color,
-                          child: Text(result.fullname[0],
-                              style:
-                                  ThemeConstant.titleLargeStyle(Colors.white))),
-                      title: Text(
-                        result.fullname,
-                        style: ThemeConstant.headerTitleBoldStyle(
-                            ThemeConstant.black_color),
-                      ),
-                      subtitle: Text('QUẢN LÝ CỬA HÀNG',
-                          style: TextStyle(
-                              fontSize: 13.0,
-                              color: ThemeConstant.violet_color,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.26)),
-                      onTap: () {},
-                    ),
+                        dense: true,
+                        contentPadding: EdgeInsets.all(0.0),
+                        leading: CircleAvatar(
+                            backgroundColor: ThemeConstant.alto_color,
+                            child: Text(result.fullname[0],
+                                style: ThemeConstant.titleLargeStyle(
+                                    Colors.white))),
+                        title: Text(result.fullname,
+                            style: ThemeConstant.headerTitleBoldStyle(
+                                ThemeConstant.black_color)),
+                        subtitle: Text('QUẢN LÝ CỬA HÀNG',
+                            style: TextStyle(
+                                fontSize: 13.0,
+                                color: ThemeConstant.violet_color,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.26)),
+                        onTap: () {}),
                     SizedBox(height: 20.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Expanded(
-                            child: Text(
-                          shop.name ?? '',
-                          style: ThemeConstant.headerTitleBoldStyle(
-                              ThemeConstant.black_color),
-                        )),
+                            child: Text(shop.name ?? '',
+                                style: ThemeConstant.headerTitleBoldStyle(
+                                    ThemeConstant.black_color))),
                         Container(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Icon(
-                                Icons.star,
-                                color: ThemeConstant.start_yelow_color,
-                              ),
+                              Icon(Icons.star,
+                                  color: ThemeConstant.start_yelow_color),
                               SizedBox(width: 10.0),
-                              Text(
-                                '4.92',
-                                style: ThemeConstant.headerTitleBoldStyle(
-                                    ThemeConstant.start_yelow_color),
-                              )
+                              Text('4.92',
+                                  style: ThemeConstant.headerTitleBoldStyle(
+                                      ThemeConstant.start_yelow_color))
                             ],
                           ),
                         ),
@@ -99,21 +101,19 @@ class MoreScreenState extends State<MoreScreen> {
                   ],
                 ));
           }
+
           return CardListSkeleton(
             shrinkWrap: true,
-            length: 4,
+            length: 1,
             config: SkeletonConfig(
               theme: SkeletonTheme.Light,
-              isShowAvatar: false,
-              isCircleAvatar: false,
-              bottomLinesCount: 4,
+              isShowAvatar: true,
+              isCircleAvatar: true,
+              bottomLinesCount: 3,
               radius: 0.0,
             ),
           );
         });
-
-/*
-    */
   }
 
   Widget buildGreyRow(String title, TextStyle style) {
@@ -131,184 +131,161 @@ class MoreScreenState extends State<MoreScreen> {
     return Icon(Icons.arrow_forward, color: ThemeConstant.alto_color, size: 16);
   }
 
-  Widget _buildBody(ProfileBloc profileBloc, ShopModel shop) {
-    return Column(
-      children: <Widget>[
-        shop != null ? _headerWidget(profileBloc, shop) : Center(),
-        Container(
-          decoration: ThemeConstant.decorationGreyBottom(10.0),
-        ),
-        shop != null
-            ? Container(
-                color: Colors.white,
-                child: ListTile(
+  Widget makeBody(ProfileBloc profileBloc, ShopModel shop) {
+    return ListView(shrinkWrap: true, children: <Widget>[
+      Column(
+        children: <Widget>[
+          shop != null ? _headerWidget(profileBloc, shop) : Center(),
+          Container(decoration: ThemeConstant.decorationGreyBottom(10.0)),
+          shop != null
+              ? Container(
+                  color: Colors.white,
+                  child: ListTile(
+                      dense: true,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                      title: Text('Trạng thái cửa hàng',
+                          style: ThemeConstant.titleStyle(Colors.black)),
+                      subtitle: Text(shop.statusName(),
+                          style: ThemeConstant.subtitleStyle(
+                              ThemeConstant.approved_color)),
+                      trailing: arrowButton(),
+                      onTap: () {
+                        print('Trạng thái cửa hàng');
+                      }))
+              : Center(),
+          SizedBox(height: 2),
+          Container(
+              color: Colors.white,
+              child: ListTile(
                   dense: true,
-                  contentPadding: EdgeInsets.only(
-                      left: 20.0, right: 20.0, top: 0, bottom: 0),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
                   title: Text(
-                    'Trạng thái cửa hàng',
+                    'Quản lý tài khoản',
                     style: ThemeConstant.titleStyle(Colors.black),
                   ),
-                  subtitle: Text(
-                    shop.statusName(),
-                    style: ThemeConstant.subtitleStyle(
-                        ThemeConstant.approved_color),
+                  trailing: arrowButton(),
+                  onTap: () {
+                    print('cow');
+                  })),
+          SizedBox(height: 2),
+          Container(
+              color: Colors.white,
+              child: ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                  title: Text(
+                    'Thông tin cá nhân',
+                    style: ThemeConstant.titleStyle(Colors.black),
                   ),
                   trailing: arrowButton(),
                   onTap: () {
-                    print('Trạng thái cửa hàng');
-                  },
-                ))
-            : Center(),
-        Container(
-          decoration: ThemeConstant.decorationGreyBottom(2.0),
-        ),
-        Container(
-            color: Colors.white,
-            child: ListTile(
-              dense: true,
-              contentPadding:
-                  EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
-              title: Text(
-                'Quản lý tài khoản',
-                style: ThemeConstant.titleStyle(Colors.black),
-              ),
-              trailing: arrowButton(),
-              onTap: () {
-                print('cow');
-              },
-            )),
-        Container(
-          decoration: ThemeConstant.decorationGreyBottom(2.0),
-        ),
-        Container(
-            color: Colors.white,
-            child: ListTile(
-              dense: true,
-              contentPadding:
-                  EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
-              title: Text(
-                'Thông tin cá nhân',
-                style: ThemeConstant.titleStyle(Colors.black),
-              ),
-              trailing: arrowButton(),
-              onTap: () {
-                Router.pushDialogNoParams(context, Router.PROFILE_PAGE);
-                print('Thông tin cá nhân');
-              },
-            )),
-        buildGreyRow(
-            'Hỗ trợ',
-            TextStyle(
-                fontSize: 20.0,
-                color: ThemeConstant.unselected_color,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 0.29)),
-        Container(
-            color: Colors.white,
-            child: ListTile(
-              dense: true,
-              contentPadding:
-                  EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
-              title: Text(
-                'Liên hệ House Merchant',
-                style: ThemeConstant.titleStyle(Colors.black),
-              ),
-              trailing: arrowButton(),
-              onTap: () {
-                print('Liên hệ House Merchant');
-                Router.pushDialogNoParams(context, Router.CONTACT_PAGE);
-              },
-            )),
-        Container(
-          decoration: ThemeConstant.decorationGreyBottom(2.0),
-        ),
-        Container(
-            color: Colors.white,
-            child: ListTile(
-              dense: true,
-              contentPadding:
-                  EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
-              title: Text(
-                'Quy định & Điều khoản',
-                style: ThemeConstant.titleStyle(Colors.black),
-              ),
-              trailing: arrowButton(),
-              onTap: () {
-                print('Quy định & Điều khoản');
-              },
-            )),
-        Container(
-          decoration: ThemeConstant.decorationGreyBottom(50.0),
-        ),
-      ],
-    );
+                    Router.pushDialogNoParams(context, Router.PROFILE_PAGE);
+                  })),
+          buildGreyRow(
+              'Hỗ trợ',
+              TextStyle(
+                  fontSize: 20.0,
+                  color: ThemeConstant.unselected_color,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.29)),
+          Container(
+              color: Colors.white,
+              child: ListTile(
+                dense: true,
+                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                title: Text(
+                  'Liên hệ House Merchant',
+                  style: ThemeConstant.titleStyle(Colors.black),
+                ),
+                trailing: arrowButton(),
+                onTap: () {
+                  print('Liên hệ House Merchant');
+                  Router.pushDialogNoParams(context, Router.CONTACT_PAGE);
+                },
+              )),
+          SizedBox(height: 2),
+          Container(
+              color: Colors.white,
+              child: ListTile(
+                dense: true,
+                contentPadding:
+                    EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 0),
+                title: Text('Quy định & Điều khoản',
+                    style: ThemeConstant.titleStyle(Colors.black)),
+                trailing: arrowButton(),
+                onTap: () {
+                  print('Quy định & Điều khoản');
+                },
+              )),
+          SizedBox(height: 50.0)
+        ],
+      )
+    ]);
   }
 
-  Widget _myListView(BuildContext context) {
-    ShopBloc _shopBloc = ShopBloc();
-    var _profileBloc = ProfileBloc();
-
+  Widget buildBody(
+      BuildContext context, ProfileBloc profileBloc, ShopBloc shopBloc) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider<ShopBloc>(
-            create: (BuildContext context) => _shopBloc,
-          ),
-          BlocProvider<ProfileBloc>(
-            create: (BuildContext context) => _profileBloc,
-          ),
+      providers: [
+        BlocProvider<ShopBloc>(
+          create: (BuildContext context) => shopBloc,
+        ),
+        BlocProvider<ProfileBloc>(
+          create: (BuildContext context) => profileBloc,
+        )
+      ],
+      child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          BlocBuilder(
+              bloc: shopBloc,
+              builder: (BuildContext context, ShopState shopState) {
+                if (shopState is ShopInitial) {
+                  shopBloc.add(ShopGetDetail(id: Sqflite.current_shop));
+                }
+
+                if (shopState is ShopGetDetailSuccessful) {
+                  final shopModel = shopState.result;
+                  return makeBody(profileBloc, shopModel);
+                }
+
+                if (shopState is ShopFailure) {
+                  return makeBody(profileBloc, null);
+                }
+
+                return CardListSkeleton(
+                  shrinkWrap: true,
+                  length: 5,
+                  config: SkeletonConfig(
+                    theme: SkeletonTheme.Light,
+                    isShowAvatar: false,
+                    isCircleAvatar: false,
+                    bottomLinesCount: 2,
+                    radius: 0.0,
+                  ),
+                );
+              }),
+          Container(
+              color: Colors.white,
+              child: ListTile(
+                dense: true,
+                title: Text('Đăng xuất',
+                    style: ThemeConstant.titleStyle(
+                        ThemeConstant.form_border_error)),
+                trailing: arrowButton(),
+                onTap: () {
+                  print('Đăng xuất');
+                  this.showLogoutDialog(context);
+                },
+              )),
         ],
-        child: ListView(
-          children: <Widget>[
-            // Container(
-            BlocBuilder(
-                bloc: _shopBloc,
-                builder: (BuildContext context, ShopState shopState) {
-                  if (shopState is ShopInitial) {
-                    _shopBloc.add(ShopGetDetail(id: Sqflite.current_shop));
-                  }
-                  if (shopState is ShopGetDetailSuccessful) {
-                    final shopModel = shopState.result;
-                    return _buildBody(_profileBloc, shopModel);
-                  }
-                  if (shopState is ShopFailure) {
-                    return _buildBody(_profileBloc, null);
-                  }
-                  return CardListSkeleton(
-                    shrinkWrap: true,
-                    length: 4,
-                    config: SkeletonConfig(
-                      theme: SkeletonTheme.Light,
-                      isShowAvatar: false,
-                      isCircleAvatar: false,
-                      bottomLinesCount: 4,
-                      radius: 0.0,
-                    ),
-                  );
-                }),
-            // ),
-            Container(
-                color: Colors.white,
-                child: ListTile(
-                  dense: true,
-                  title: Text('Đăng xuất',
-                      style: ThemeConstant.titleStyle(
-                          ThemeConstant.form_border_error)),
-                  trailing: arrowButton(),
-                  onTap: () {
-                    print('Đăng xuất');
-                    this.showLogoutDialog(context);
-                  },
-                )),
-          ],
-        ));
+      ),
+    );
   }
 
   void showLogoutDialog(BuildContext context) {
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     final _screenSize = MediaQuery.of(context).size;
-    final padding = _screenSize.width * 5 / 100;
-    final paddingButton = EdgeInsets.all(padding);
 
     T7GDialog.showContentDialog(
         context,
@@ -329,9 +306,7 @@ class MoreScreenState extends State<MoreScreen> {
                         color: ThemeConstant.black_color,
                         fontWeight: ThemeConstant.appbar_text_weight_bold,
                       )),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Text(
                       LocalizationsUtil.of(context).translate(
                           "Bạn muốn đăng xuất khỏi\nứng dụng House Merchant?"),
@@ -342,21 +317,17 @@ class MoreScreenState extends State<MoreScreen> {
                         color: ThemeConstant.form_text_normal,
                         fontWeight: ThemeConstant.appbar_text_weight,
                       )),
-                  SizedBox(
-                    height: 54,
-                  ),
+                  SizedBox(height: 54),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
-                        child: Container(
-                          height: 48.0,
-                          child:
-                              BaseWidget.buttonThemePink('Không', callback: () {
-                            Navigator.of(context).pop();
-                          }),
-                        ),
-                      ),
+                          child: Container(
+                              height: 48.0,
+                              child: BaseWidget.buttonThemePink('Không',
+                                  callback: () {
+                                Navigator.of(context).pop();
+                              }))),
                       SizedBox(width: 15),
                       Expanded(
                           child: Container(
@@ -378,22 +349,22 @@ class MoreScreenState extends State<MoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    final shopBloc = ShopBloc();
+    final profileBloc = ProfileBloc();
+
     return SafeArea(
       child: Container(
         color: ThemeConstant.background_grey_color,
         child: Stack(
           children: <Widget>[
             Positioned(
-              top: 0,
-              bottom: 56.0,
-              left: 0,
-              right: 0,
-              child: Container(
-                color: ThemeConstant.background_grey_color,
-                child: _myListView(context),
-              ),
-            ),
+                top: 0,
+                bottom: 56.0,
+                left: 0,
+                right: 0,
+                child: Container(
+                    color: ThemeConstant.background_grey_color,
+                    child: buildBody(context, profileBloc, shopBloc))),
             Positioned(
               bottom: 20.0,
               left: 20,

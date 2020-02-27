@@ -13,7 +13,7 @@ class ProfileModel {
   ProfileModel(
       {this.id,
       this.fullname,
-        this.username,
+      this.username,
       this.phoneNumber,
       this.intlCode,
       this.gender,
