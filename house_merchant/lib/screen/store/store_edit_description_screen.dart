@@ -127,7 +127,6 @@ class StoreEditDescriptionScreenState
               }));
     }
 
-    // TODO: implement build
     return BaseScaffoldNormal(
         title: 'Chỉnh sửa cửa hàng',
         child: SafeArea(

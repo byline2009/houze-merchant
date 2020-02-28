@@ -108,4 +108,15 @@ class CouponAPI extends OauthAPI {
       return throw e;
     }
   }
+
+  Future<CouponModel> updateCoupon(String id, CouponModel data) async {
+    try {
+      final response = await this
+          .patch('${APIConstant.baseMerchantUrlCoupon}update/$id/', data: data);
+      return CouponModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print('[updateCoupon] error $e');
+      return throw e;
+    }
+  }
 }

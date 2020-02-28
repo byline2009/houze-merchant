@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:house_merchant/middle/model/coupon_model.dart';
 
 abstract class CouponEvent extends Equatable {
   CouponEvent([List props = const []]) : super(props);
@@ -21,4 +23,18 @@ class CouponUserLoadList extends CouponEvent {
 
   @override
   String toString() => 'CouponUserLoadList { id: $id}';
+}
+
+class SaveButtonPressed extends CouponEvent {
+  final CouponModel couponModel;
+  final String id;
+
+  SaveButtonPressed({
+    @required this.id,
+    @required this.couponModel,
+  }) : super([id, couponModel]);
+
+  @override
+  String toString() =>
+      'SaveButtonPressed { id: $id, couponModel: ${couponModel.toJson().toString()} }';
 }

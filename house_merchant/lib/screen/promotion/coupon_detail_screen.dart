@@ -243,13 +243,14 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                   child: ButtonOutlineWidget(
                     defaultHintText: 'Chỉnh sửa',
                     isActive: true,
-                    callback: () {
+                    callback: () async {
                       Router.push(context, Router.COUPON_EDIT, {
                         'coupon_model': this._couponModel,
-                        "callback": (isReloadData) {
-                          // if (isReloadData) {
-                          //   this.getCouponsByStatus();
-                          // }
+                        'callback': (CouponModel newData) {
+                          if (newData != null) {
+                            this._couponModel = newData;
+                            print(_couponModel.title.toUpperCase());
+                          }
                           return;
                         }
                       });

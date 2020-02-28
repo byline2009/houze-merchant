@@ -3,6 +3,7 @@ import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
+import 'package:intl/intl.dart';
 
 class CouponModel {
   String id;
@@ -77,6 +78,34 @@ class CouponModel {
     }
     data['is_expired'] = this.isExpired;
     return data;
+  }
+
+  String startDateLocal({String start}) {
+    return DateFormat(Format.timeAndDate)
+        .format(DateTime.parse(start).toLocal())
+        .toString();
+  }
+
+  String endDateLocal({String end}) {
+    return DateFormat(Format.timeAndDate)
+        .format(DateTime.parse(end).toLocal())
+        .toString();
+  }
+
+  String startDateUTC() {
+    return DateFormat(Format.timeAndDate)
+        .format(DateTime.parse(startDate).toLocal())
+        .toString();
+  }
+
+  String endDateUTC() {
+    return DateFormat(Format.timeAndDate)
+        .format(DateTime.parse(endDate).toUtc())
+        .toString();
+  }
+
+  String fullDate(String start, String end) {
+    return startDateLocal(start: start) + ' đến ' + endDateLocal(end: end);
   }
 
   String statusName() {

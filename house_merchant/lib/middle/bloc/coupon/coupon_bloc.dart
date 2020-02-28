@@ -31,5 +31,18 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
         yield CouponFailure(error: error.toString());
       }
     }
+
+    if (event is SaveButtonPressed) {
+      yield CouponLoading();
+
+      try {
+        final result =
+            await couponRepository.updateCoupon(event.id, event.couponModel);
+        print(result.toJson().toString());
+        yield CouponUpdateSuccessful(result: result);
+      } catch (error) {
+        yield CouponFailure(error: error.toString());
+      }
+    }
   }
 }
