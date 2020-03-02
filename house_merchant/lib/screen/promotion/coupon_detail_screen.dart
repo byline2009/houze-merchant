@@ -203,7 +203,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
             ),
             SizedBox(height: 10.0),
             ReadMoreText(
-              _couponModel.description,
+              _couponModel.description + '\n\n',
               style: TextStyle(
                   fontSize: 15,
                   color: ThemeConstant.grey_color,
@@ -212,7 +212,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
               colorClickableText: ThemeConstant.primary_color,
               trimMode: TrimMode.Line,
             ),
-            SizedBox(height: 20.0),
+            SizedBox(height: 40.0)
           ]));
     }
 
@@ -220,11 +220,14 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
       return ListView(
         shrinkWrap: true,
         children: <Widget>[
-          Stack(
-            children: <Widget>[
-              headerImage(),
-              Positioned(child: _statusWidget, bottom: 0, left: 0, right: 0)
-            ],
+          Container(
+            height: _heightPhoto + 45,
+            child: Stack(
+              children: <Widget>[
+                headerImage(),
+                Positioned(child: _statusWidget, bottom: 0, left: 0, right: 0)
+              ],
+            ),
           ),
           SizedBox(
               height: 10,

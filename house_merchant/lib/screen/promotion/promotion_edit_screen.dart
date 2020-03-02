@@ -396,29 +396,29 @@ class CouponEditScreenState extends State<CouponEditScreen> {
               ),
               SizedBox(height: 20),
               Text(
-                  LocalizationsUtil.of(context)
-                      .translate('Chỉnh sửa ưu đãi thành công!'),
-                  style: TextStyle(
+                LocalizationsUtil.of(context)
+                    .translate('Chỉnh sửa ưu đãi thành công!'),
+                style: TextStyle(
                     fontFamily: ThemeConstant.form_font_family_display,
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.26,
-                    color: ThemeConstant.black_color,
-                  )),
-              SizedBox(height: 20),
+                    color: ThemeConstant.black_color),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 30),
               Center(
                   child: Text(
-                LocalizationsUtil.of(context).translate(
-                    'Ưu đãi của bạn sẽ được duyệt bởi\nHouse Merchant trước khi đăng lên\nứng dụng cư dân'),
-                style: TextStyle(
-                    fontFamily: ThemeConstant.form_font_family_display,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.26,
-                    color: ThemeConstant.grey_color,
-                    height: 1.5),
-                textAlign: TextAlign.center,
-              )),
+                      LocalizationsUtil.of(context).translate(
+                          'Ưu đãi của bạn sẽ được duyệt bởi\nHouse Merchant trước khi đăng lên\nứng dụng cư dân'),
+                      style: TextStyle(
+                          fontFamily: ThemeConstant.form_font_family_display,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.26,
+                          color: ThemeConstant.grey_color,
+                          height: 1.5),
+                      textAlign: TextAlign.center)),
               SizedBox(height: 20),
               Container(
                 height: 48.0,
