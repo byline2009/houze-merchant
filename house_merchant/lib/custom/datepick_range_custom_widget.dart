@@ -64,11 +64,6 @@ class DateRangePickerCustomWidgetState
                     ' đến ' +
                     DateFormat(Format.timeAndDate).format(snapshot.data.last);
             widget.firstDate = snapshot.data.first;
-          }
-
-          if (snapshot.data != null && snapshot.data.length == 0) {
-            localController.Controller.clear();
-            widget.firstDate = snapshot.data.first;
             widget.lastDate = snapshot.data.last;
           }
 

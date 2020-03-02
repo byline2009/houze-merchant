@@ -244,7 +244,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
           children: <Widget>[
             Text(
                 LocalizationsUtil.of(context).translate(
-                    'Vui lòng điền đ���y đủ các thông tin ưu ����i dưới đây'),
+                    'Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'),
                 style: TextStyle(
                   fontFamily: ThemeConstant.form_font_family_display,
                   fontSize: 13,
@@ -280,18 +280,22 @@ class CouponEditScreenState extends State<CouponEditScreen> {
               'Thời gian hiệu lực',
             ),
             SizedBox(height: 5),
-            DateRangePickerCustomWidget(
-              firstDate: frangeTimeResult[0].toLocal(),
-              lastDate: frangeTimeResult[1].toLocal(),
-              controller: frangeTime,
-              defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY',
-              callback: (List<DateTime> values) {
-                if (values.length == 2) {
-                  frangeTimeResult = values;
-                  this.checkValidation();
-                }
-              },
-            ),
+            Container(
+                child: frangeTimeResult.length == 2
+                    ? DateRangePickerCustomWidget(
+                        firstDate: frangeTimeResult[0].toLocal(),
+                        lastDate: frangeTimeResult[1].toLocal(),
+                        controller: frangeTime,
+                        defaultHintText:
+                            '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY',
+                        callback: (List<DateTime> values) {
+                          if (values.length == 2) {
+                            frangeTimeResult = values;
+                            this.checkValidation();
+                          }
+                        },
+                      )
+                    : Center()),
             SizedBox(height: 25),
             this.controlHeader(
               'Nội dung ưu đãi',
