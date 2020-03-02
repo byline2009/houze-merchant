@@ -35,6 +35,15 @@ class CouponUpdateSuccessful extends CouponState {
   String toString() => 'CouponUpdateSuccessful { result: $result }';
 }
 
+class CouponGetDetailSuccessful extends CouponState {
+  final CouponModel result;
+
+  CouponGetDetailSuccessful({@required this.result});
+
+  @override
+  String toString() => 'CouponUpdateSuccessful { result: $result }';
+}
+
 class CouponScanQRCodeSuccessful extends CouponState {
   final QrCodeModel result;
 

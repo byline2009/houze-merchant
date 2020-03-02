@@ -80,4 +80,9 @@ class CouponRepository {
     print('[updateCoupon] ID = $id, result = ${rs.toString()}');
     return rs;
   }
+
+  Future<CouponModel> getCoupon(String id) async {
+    final rs = await couponAPI.getCoupon(id);
+    return rs;
+  }
 }

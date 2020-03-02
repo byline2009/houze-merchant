@@ -44,8 +44,7 @@ class Router {
         return NotificationScreen();
 
       case COUPON_DETAIL_PAGE:
-        return CouponDetailScreen(
-            params: params); //CouponDetailScreen(params: params);
+        return CouponDetailScreen(params: params);
 
       case COUPON_EDIT:
         return CouponEditScreen(params: params);

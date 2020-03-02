@@ -134,7 +134,7 @@ class CouponScreenState extends State<CouponScreen> {
                 Container(
                     width: 80,
                     height: 80,
-                    child: couponModel.images.length > 0
+                    child: couponModel.images.first.imageThumb.length > 0
                         ? ImageWidget(
                             imgUrl: couponModel.images.first.imageThumb,
                             width: 80,
@@ -293,7 +293,7 @@ class CouponScreenState extends State<CouponScreen> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20),
-                SvgPicture.asset(
+                Image.asset(
                   "assets/images/dialogs/ic-scan-failed.svg",
                 ),
                 SizedBox(height: 20),
@@ -439,10 +439,16 @@ class CouponScreenState extends State<CouponScreen> {
                                       onTap: () {
                                         var data = couponList.data[index];
 
-                                        Router.push(
-                                            context,
-                                            Router.COUPON_DETAIL_PAGE,
-                                            {"coupon_model": data});
+                                        Router.push(context,
+                                            Router.COUPON_DETAIL_PAGE, {
+                                          "coupon_model": data,
+                                          "callback": (bool isReloadData) {
+                                            if (isReloadData) {
+                                              this.getCouponsByStatus();
+                                            }
+                                            return;
+                                          }
+                                        });
                                       },
                                       child: Padding(
                                         child: this

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_outline_widget.dart';
+import 'package:house_merchant/custom/flutter_skeleton/src/skeleton/card_list_skeleton.dart';
+import 'package:house_merchant/custom/flutter_skeleton/src/skeleton_config.dart';
+import 'package:house_merchant/custom/flutter_skeleton/src/skeleton_theme.dart';
 import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
+import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
@@ -24,29 +29,36 @@ class CouponDetailScreen extends StatefulWidget {
 class CouponDetailScreenState extends State<CouponDetailScreen> {
   Size _screenSize;
   var _padding;
-  CouponModel _couponModel;
+  var _couponModel = new CouponModel();
 
   @override
   void initState() {
     super.initState();
     _couponModel = widget.params['coupon_model'];
+    print(_couponModel.id);
   }
 
   @override
   Widget build(BuildContext context) {
+    CouponBloc bloc = CouponBloc();
+
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
     var _heightPhoto = this._screenSize.height * (300 / 818);
 
-    var headerImage = _couponModel.images.length > 0
-        ? ImageWidget(
-            width: _screenSize.width,
-            height: _heightPhoto,
-            imgUrl: _couponModel.images.first.image)
-        : SvgPicture.asset('assets/image/ic-promotion-default.svg',
-            fit: BoxFit.contain);
+    Widget headerImage() {
+      return _couponModel.images.first.imageThumb.length > 0
+          ? ImageWidget(
+              width: _screenSize.width,
+              height: _heightPhoto,
+              imgUrl: _couponModel.images.first.imageThumb)
+          : SvgPicture.asset('assets/images/ic-promotion-default.svg',
+              fit: BoxFit.contain,
+              width: _screenSize.width,
+              height: _heightPhoto);
+    }
 
-    final _statusWidget = Container(
+    var _statusWidget = Container(
       padding: EdgeInsets.all(this._padding),
       height: 70.0,
       decoration: BoxDecoration(
@@ -210,7 +222,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         children: <Widget>[
           Stack(
             children: <Widget>[
-              headerImage,
+              headerImage(),
               Positioned(child: _statusWidget, bottom: 0, left: 0, right: 0)
             ],
           ),
@@ -225,7 +237,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 _bodyContent(),
-                // SizedBox(height: 20),
               ],
             ),
           )
@@ -248,6 +259,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                         'coupon_model': this._couponModel,
                         'callback': (CouponModel newData) {
                           if (newData != null) {
+                            widget.params['callback'](true);
                             this._couponModel = newData;
                             print(_couponModel.title.toUpperCase());
                           }
@@ -270,17 +282,43 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
           return route.isFirst;
         });
       },
-      child: SafeArea(
-        child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: double.infinity,
-            child: Stack(children: <Widget>[
-              Positioned(child: bodySection()),
-              Positioned(child: buttonBottom())
-            ])),
-      ),
+      child: BlocBuilder(
+          bloc: bloc,
+          builder: (BuildContext context, CouponState couponState) {
+            if (couponState is CouponInitial) {
+              bloc.add(CouponGetDetail(id: _couponModel.id));
+            }
+
+            if (couponState is CouponGetDetailSuccessful) {
+              final data = couponState.result;
+              this._couponModel = data;
+              return SafeArea(
+                child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: double.infinity,
+                    child: Stack(children: <Widget>[
+                      Positioned(child: bodySection()),
+                      Positioned(child: buttonBottom())
+                    ])),
+              );
+            }
+
+            if (couponState is CouponFailure) {
+              return Center();
+            }
+
+            return CardListSkeleton(
+              shrinkWrap: true,
+              length: 4,
+              config: SkeletonConfig(
+                theme: SkeletonTheme.Light,
+                isShowAvatar: false,
+                isCircleAvatar: false,
+                bottomLinesCount: 4,
+                radius: 0.0,
+              ),
+            );
+          }),
     );
   }
-
-  Widget _bottomSection() {}
 }

@@ -134,6 +134,7 @@ class PickerImageState extends State<PickerImage> {
   }
 
   Widget photoImage(FilePick f) {
+    print(f.urlThumb);
     return Container(
         child: Stack(
       children: <Widget>[

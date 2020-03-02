@@ -38,3 +38,14 @@ class SaveButtonPressed extends CouponEvent {
   String toString() =>
       'SaveButtonPressed { id: $id, couponModel: ${couponModel.toJson().toString()} }';
 }
+
+class CouponGetDetail extends CouponEvent {
+  final String id;
+
+  CouponGetDetail({
+    @required this.id,
+  }) : super();
+
+  @override
+  String toString() => 'CouponGetDetail { id: $id }';
+}

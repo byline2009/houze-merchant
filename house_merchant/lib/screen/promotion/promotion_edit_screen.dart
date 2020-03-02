@@ -10,7 +10,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
-import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
@@ -22,7 +21,6 @@ import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
-import 'package:path/path.dart' as path;
 
 typedef void CallBackHandler(dynamic value);
 
@@ -59,12 +57,13 @@ class CouponEditScreenState extends State<CouponEditScreen> {
     maxImage: 1,
   );
   //Model
-  var couponModel = CouponModel();
+
+  List<ImageModel> _imgList = new List<ImageModel>();
   Map<String, ImageModel> mappingImages = new Map<String, ImageModel>();
 
   bool checkValidation() {
     var isActive = false;
-    if (couponModel.images.length > 0 &&
+    if (_imgList.length > 0 &&
         !StringUtil.isEmpty(ftitle.Controller.text) &&
         !StringUtil.isEmpty(famount.Controller.text) &&
         frangeTimeResult != null &&
@@ -77,41 +76,46 @@ class CouponEditScreenState extends State<CouponEditScreen> {
 
   @override
   void initState() {
-    couponModel = widget.params['coupon_model'];
-
-    ftitle.Controller.text = couponModel.title;
-    fdesc.Controller.text = couponModel.description;
-    famount.Controller.text = couponModel.quantity.toString();
+    var data = new CouponModel();
+    data = widget.params['coupon_model'];
+    _imgList = data.images;
+    ftitle.Controller.text = data.title;
+    fdesc.Controller.text = data.description;
+    famount.Controller.text = data.quantity.toString();
     frangeTimeResult = [
-      DateTime.parse(couponModel.startDate).toLocal(),
-      DateTime.parse(couponModel.endDate).toLocal()
+      DateTime.parse(data.startDate).toLocal(),
+      DateTime.parse(data.endDate).toLocal()
     ];
     print(
         'frangeTimeResult = ${frangeTimeResult.first} - ${frangeTimeResult.last}');
 
-    final initImages = couponModel.images
+    final initImages = _imgList
         .map(
           (f) => FilePick(id: f.id, url: f.image, urlThumb: f.imageThumb),
         )
         .toList();
-
+    mappingImages[initImages.first.urlThumb] = _imgList.first;
     imagePicker.imagesInit = initImages;
 
     imagePicker.callbackUpload = (FilePick f) async {
       final rs = await couponRepository.uploadImage(f.file);
       if (rs != null) {
         var uploadModel = new ImageModel(id: rs.id);
-        couponModel.images.add(uploadModel);
-        mappingImages[path.basename(f.file.path)] = uploadModel;
+        _imgList.add(uploadModel);
+
+        mappingImages[f.urlThumb] = uploadModel;
+        print(mappingImages);
       }
       this.checkValidation();
     };
 
     imagePicker.callbackRemove = (FilePick f) async {
-      var data = couponModel.images.singleWhere((i) => i.image == f.url);
-      couponModel.images.remove(data);
-      print(couponModel.images);
-      couponModel.images.remove(mappingImages[path.basename(f.file.path)]);
+      ImageModel img = mappingImages[f.urlThumb];
+      if (img.imageThumb != null) {
+        _imgList.remove(img);
+      } else {
+        print('===> callbackRemove error');
+      }
 
       this.checkValidation();
     };
@@ -156,7 +160,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final couponBloc = CouponBloc();
+    var couponBloc = CouponBloc();
 
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
@@ -167,26 +171,6 @@ class CouponEditScreenState extends State<CouponEditScreen> {
             child: BlocListener(
                 bloc: couponBloc,
                 listener: (context, state) {
-                  if (state is CouponUpdateSuccessful) {
-                    progressToolkit.state.dismiss();
-                    this.couponModel = state.result;
-
-                    if (widget.params['callback'] != null) {
-                      widget.params['callback'] = this.couponModel;
-                    }
-                    Navigator.of(context).pop();
-
-                    Fluttertoast.showToast(
-                        msg: 'Chỉnh sửa ưu đãi thành công!',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 4,
-                        backgroundColor: Colors.black,
-                        textColor: Colors.white,
-                        fontSize: 14.0);
-                  }
-                  clearForm();
-
                   if (state is CouponFailure) {
                     Fluttertoast.showToast(
                         msg: state.error.toString(),
@@ -204,6 +188,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
                       BuildContext context,
                       CouponState state,
                     ) {
+                      print(state);
                       if (state is CouponLoading) {
                         progressToolkit.state.show();
                       }
@@ -285,8 +270,8 @@ class CouponEditScreenState extends State<CouponEditScreen> {
             ),
             SizedBox(height: 5),
             DateRangePickerCustomWidget(
-              firstDate: frangeTimeResult.first.toLocal(),
-              lastDate: frangeTimeResult.last.toLocal(),
+              firstDate: frangeTimeResult[0].toLocal(),
+              lastDate: frangeTimeResult[1].toLocal(),
               controller: frangeTime,
               defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY',
               callback: (List<DateTime> values) {
@@ -321,18 +306,43 @@ class CouponEditScreenState extends State<CouponEditScreen> {
         controller: saveButtonController,
         defaultHintText:
             LocalizationsUtil.of(context).translate('Lưu chỉnh sửa'),
-        callback: () {
+        callback: () async {
+          CouponModel coupon = widget.params['coupon_model'];
           final data = CouponModel(
               title: ftitle.Controller.text,
               quantity: int.parse(famount.Controller.text),
               startDate: frangeTimeResult[0].toUtc().toString(),
               endDate: frangeTimeResult[1].toUtc().toString(),
               description: fdesc.Controller.text,
-              images: couponModel.images,
-              shops: couponModel.shops);
+              images: _imgList,
+              shops: coupon.shops);
           print(data.toJson().toString());
-          couponBloc
-              .add(SaveButtonPressed(id: couponModel.id, couponModel: data));
+          final result = await couponRepository.updateCoupon(coupon.id, data);
+          if (result != null) {
+            progressToolkit.state.dismiss();
+
+            if (widget.params['callback'] != null) {
+              widget.params['callback'](result);
+            }
+
+            Fluttertoast.showToast(
+                msg: 'Chỉnh sửa ưu đãi thành công!',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 3,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 14.0);
+          } else {
+            Fluttertoast.showToast(
+                msg: 'Đã có lỗi xảy ra. Vui lòng thử lại sau!',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 4,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 14.0);
+          }
         });
   }
 
