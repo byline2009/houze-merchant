@@ -320,6 +320,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
           final result = await couponRepository.updateCoupon(coupon.id, data);
           if (result != null) {
             progressToolkit.state.dismiss();
+            widget.params['coupon_model'](result);
 
             if (widget.params['callback'] != null) {
               widget.params['callback'](result);
@@ -343,6 +344,9 @@ class CouponEditScreenState extends State<CouponEditScreen> {
                 textColor: Colors.white,
                 fontSize: 14.0);
           }
+
+          // couponBloc
+          //     .add(SaveButtonPressed(id: couponModel.id, couponModel: data));
         });
   }
 

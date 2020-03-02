@@ -253,7 +253,7 @@ class CouponScreenState extends State<CouponScreen> {
       String _code = resultQRCode.split(',').last;
 
       if (_id != null && _code != null) {
-        var rs;
+        QrCodeModel rs;
         try {
           var couponRepository = CouponRepository();
           rs = await couponRepository.checkQR(_id, _code);
@@ -264,7 +264,16 @@ class CouponScreenState extends State<CouponScreen> {
         }
 
         if (rs != null) {
-          if (rs.isUsed == true) {
+          if (rs.coupon.isExpired == true) {
+            Fluttertoast.showToast(
+                msg: "Mã này đã hết hạn!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 5,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          } else if (rs.isUsed == true) {
             Fluttertoast.showToast(
                 msg: "Mã này đã sử dụng!",
                 toastLength: Toast.LENGTH_SHORT,
