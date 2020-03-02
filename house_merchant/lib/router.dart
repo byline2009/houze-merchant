@@ -6,6 +6,7 @@ import 'package:house_merchant/screen/profile/contact_screen.dart';
 import 'package:house_merchant/screen/profile/profile_screen.dart';
 import 'package:house_merchant/screen/promotion/coupon_detail_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_create_screen.dart';
+import 'package:house_merchant/screen/promotion/promotion_edit_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_scan_success_screen.dart';
 import 'package:house_merchant/screen/promotion/promotion_user_list_screen.dart';
 import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
@@ -20,6 +21,7 @@ class Router {
 
   static const COUPON_CREATE = "app://CouponCreatePage";
   static const COUPON_DETAIL_PAGE = "app://CouponDetailPage";
+  static const COUPON_EDIT = "app://CouponEditPage";
 
   static const NOTIFICATION_PAGE = "app://NotificationPage";
   static const COUPON_USER_LIST_PAGE = "app://CouponUserListPage";
@@ -42,8 +44,10 @@ class Router {
         return NotificationScreen();
 
       case COUPON_DETAIL_PAGE:
-        return PromoDetailScreen(
-            params: params); //CouponDetailScreen(params: params);
+        return CouponDetailScreen(params: params);
+
+      case COUPON_EDIT:
+        return CouponEditScreen(params: params);
 
       case COUPON_USER_LIST_PAGE:
         return CouponUserListScreen(params: params);

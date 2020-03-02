@@ -83,7 +83,7 @@ class MoreScreenState extends State<MoreScreen> {
                             child: Text(shop.name ?? '',
                                 style: ThemeConstant.headerTitleBoldStyle(
                                     ThemeConstant.black_color))),
-                        Container(
+                        /*Container(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
@@ -95,7 +95,7 @@ class MoreScreenState extends State<MoreScreen> {
                                       ThemeConstant.start_yelow_color))
                             ],
                           ),
-                        ),
+                        ),*/
                       ],
                     )
                   ],
@@ -137,7 +137,7 @@ class MoreScreenState extends State<MoreScreen> {
         children: <Widget>[
           shop != null ? _headerWidget(profileBloc, shop) : Center(),
           Container(decoration: ThemeConstant.decorationGreyBottom(10.0)),
-          shop != null
+          /*shop != null
               ? Container(
                   color: Colors.white,
                   child: ListTile(
@@ -167,7 +167,7 @@ class MoreScreenState extends State<MoreScreen> {
                   onTap: () {
                     print('cow');
                   })),
-          SizedBox(height: 2),
+          SizedBox(height: 2),*/
           Container(
               color: Colors.white,
               child: ListTile(
@@ -203,7 +203,7 @@ class MoreScreenState extends State<MoreScreen> {
                   Router.pushDialogNoParams(context, Router.CONTACT_PAGE);
                 },
               )),
-          SizedBox(height: 2),
+          /*SizedBox(height: 2),
           Container(
               color: Colors.white,
               child: ListTile(
@@ -216,7 +216,7 @@ class MoreScreenState extends State<MoreScreen> {
                 onTap: () {
                   print('Quy định & Điều khoản');
                 },
-              )),
+              )),*/
           SizedBox(height: 50.0)
         ],
       )

@@ -21,6 +21,7 @@ class FilePick {
   String url;
   String urlThumb;
   File file;
+
   FilePick({this.id, this.file, this.url, this.urlThumb});
 }
 
@@ -108,7 +109,7 @@ class PickerImageState extends State<PickerImage> {
                 minHeight: 1280, minWidth: 1280, quality: 60, keepExif: false);
 
             if (Platform.isIOS) {
-                image.deleteSync();
+              image.deleteSync();
             }
 
             _uploadParrallel.add(uploadImage(FilePick(file: compressImage)));
@@ -133,26 +134,31 @@ class PickerImageState extends State<PickerImage> {
   }
 
   Widget photoImage(FilePick f) {
+    print(f.urlThumb);
     return Container(
         child: Stack(
-          children: <Widget>[
-            Container(
-                padding: EdgeInsets.only(top: 10, right: 5),
-                child: ClipRRect(
-                    borderRadius: new BorderRadius.circular(4.0),
-                    child: Stack(
-                      overflow: Overflow.clip,
-                      children: <Widget>[
-                        f.file != null ? Image.file(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(top: 10, right: 5),
+          child: ClipRRect(
+              borderRadius: new BorderRadius.circular(4.0),
+              child: Stack(
+                overflow: Overflow.clip,
+                children: <Widget>[
+                  f.file != null
+                      ? Image.file(
                           f.file,
                           fit: BoxFit.cover,
                           width: widget.width,
                           height: widget.height,
-                        ) : Container(
+                        )
+                      : Container(
                           child: CachedNetworkImage(
                             imageUrl: f.url,
-                            placeholder: (context, url) => Center(child: CupertinoActivityIndicator()),
-                            errorWidget: (context, url, error) => Center(child: Icon(Icons.error)),
+                            placeholder: (context, url) =>
+                                Center(child: CupertinoActivityIndicator()),
+                            errorWidget: (context, url, error) =>
+                                Center(child: Icon(Icons.error)),
                             width: widget.width,
                             height: widget.height,
                             fit: BoxFit.cover,
@@ -160,10 +166,9 @@ class PickerImageState extends State<PickerImage> {
                           width: widget.width,
                           height: widget.height,
                         )
-                      ],
-                    )
-
-                ),),
+                ],
+              )),
+        ),
 
 //                CachedNetworkImage(
 //                  imageUrl: f.url + "?session=" + DateTime.now().toIso8601String(),
@@ -173,30 +178,30 @@ class PickerImageState extends State<PickerImage> {
 //                  height: widget.height,
 //                  fit: BoxFit.cover,
 //                ),
-            Positioned(
-                top: -10,
-                right: -10,
-                child: IconButton(
-                  icon: SvgPicture.asset(
-                    'assets/icons/ic-close-bgred.svg',
-                    width: 30.0,
-                    height: 30.0,
-                  ),
-                  iconSize: 35,
-                  color: Colors.red[700],
-                  onPressed: () {
-                    setState(() {
-                      this.filesPick.remove(f);
-                      this.validationFilesPick.remove(f);
-                      // Clear main picture
-                      if (this.filesPick.length == 0) {
-                        this._fileSelected = null;
-                      }
-                      widget.callbackRemove(f);
-                    });
-                  },
-                ))
-          ],
+        Positioned(
+            top: -10,
+            right: -10,
+            child: IconButton(
+              icon: SvgPicture.asset(
+                'assets/icons/ic-close-bgred.svg',
+                width: 30.0,
+                height: 30.0,
+              ),
+              iconSize: 35,
+              color: Colors.red[700],
+              onPressed: () {
+                setState(() {
+                  this.filesPick.remove(f);
+                  this.validationFilesPick.remove(f);
+                  // Clear main picture
+                  if (this.filesPick.length == 0) {
+                    this._fileSelected = null;
+                  }
+                  widget.callbackRemove(f);
+                });
+              },
+            ))
+      ],
     ));
   }
 
@@ -209,31 +214,33 @@ class PickerImageState extends State<PickerImage> {
       listImages = [
             Container(
                 padding: EdgeInsets.only(top: 10, right: 5),
-                child: Stack(children: <Widget>[
-                  GestureDetector(
-                      onTap: () {
-                        this.pickImage(context);
-                      },
-                      child: DottedBorder(
-                          borderType: BorderType.RRect,
-                          dashPattern: [2, 2],
-                          color: ThemeConstant.border_color,
-                          radius: Radius.circular(5),
-                          child: Container(
-                              width: widget.width ?? double.infinity,
-                              height: widget.height ?? double.infinity,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  SvgPicture.asset(
-                                    "assets/images/ic-add-picture.svg",
-                                    width: 31,
-                                    height: 32,
-                                  ),
-                                ],
-                              ))))
-                ],))
+                child: Stack(
+                  children: <Widget>[
+                    GestureDetector(
+                        onTap: () {
+                          this.pickImage(context);
+                        },
+                        child: DottedBorder(
+                            borderType: BorderType.RRect,
+                            dashPattern: [2, 2],
+                            color: ThemeConstant.border_color,
+                            radius: Radius.circular(5),
+                            child: Container(
+                                width: widget.width ?? double.infinity,
+                                height: widget.height ?? double.infinity,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    SvgPicture.asset(
+                                      "assets/images/ic-add-picture.svg",
+                                      width: 31,
+                                      height: 32,
+                                    ),
+                                  ],
+                                ))))
+                  ],
+                ))
           ] +
           List<Container>.from(this.filesPick.length > 0
               ? this.filesPick.map((f) => this.photoImage(f)).toList()
@@ -242,17 +249,18 @@ class PickerImageState extends State<PickerImage> {
 
     if (widget.type == PickerImageType.grid) {
       return Container(
-          child: GridView.builder(
-            itemCount: listImages.length,
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: listImages[index],
-              );
-            },
-          ),);
+        child: GridView.builder(
+          itemCount: listImages.length,
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: listImages[index],
+            );
+          },
+        ),
+      );
     }
 
     return Container(

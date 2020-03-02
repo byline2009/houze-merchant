@@ -99,9 +99,10 @@ class NotificationScreenState extends State<NotificationScreen> {
     return BaseScaffoldNormal(
       title: 'Thông báo',
       child: Container(
-        color: ThemeConstant.background_grey_color,
-        child: notifications.length == 0 ? notificationEmptyView : makeBody,
-      ),
+          color: ThemeConstant.background_grey_color,
+          child:
+              notificationEmptyView //notifications.length == 0 ? notificationEmptyView : makeBody,
+          ),
     );
   }
 
