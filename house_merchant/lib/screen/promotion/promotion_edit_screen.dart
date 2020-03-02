@@ -236,7 +236,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
           children: <Widget>[
             Text(
                 LocalizationsUtil.of(context).translate(
-                    'Vui lòng điền đầy đủ các thông tin ưu đ��i dưới đây'),
+                    'Vui lòng điền đầy đủ các thông tin ưu đãi dưới đây'),
                 style: TextStyle(
                   fontFamily: ThemeConstant.form_font_family_display,
                   fontSize: 13,
