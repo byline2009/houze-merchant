@@ -94,16 +94,19 @@ class CouponEditScreenState extends State<CouponEditScreen> {
           (f) => FilePick(id: f.id, url: f.image, urlThumb: f.imageThumb),
         )
         .toList();
-    mappingImages[initImages.first.urlThumb] = _imgList.first;
+    mappingImages[_imgList.last.imageThumb] = _imgList.last;
     imagePicker.imagesInit = initImages;
 
     imagePicker.callbackUpload = (FilePick f) async {
       final rs = await couponRepository.uploadImage(f.file);
       if (rs != null) {
-        var uploadModel = new ImageModel(id: rs.id);
-        _imgList.add(uploadModel);
+        ImageModel img = mappingImages[rs.imageThumb];
+        if (img == null) {
+          var uploadModel = new ImageModel(id: rs.id);
+          mappingImages[f.urlThumb] = uploadModel;
+          _imgList.add(uploadModel);
+        }
 
-        mappingImages[f.urlThumb] = uploadModel;
         print(mappingImages);
       }
       this.checkValidation();
@@ -314,18 +317,11 @@ class CouponEditScreenState extends State<CouponEditScreen> {
               startDate: frangeTimeResult[0].toUtc().toString(),
               endDate: frangeTimeResult[1].toUtc().toString(),
               description: fdesc.Controller.text,
-              images: _imgList,
+              images: [_imgList.last],
               shops: coupon.shops);
           print(data.toJson().toString());
           final result = await couponRepository.updateCoupon(coupon.id, data);
           if (result != null) {
-            progressToolkit.state.dismiss();
-            widget.params['coupon_model'](result);
-
-            if (widget.params['callback'] != null) {
-              widget.params['callback'](result);
-            }
-
             Fluttertoast.showToast(
                 msg: 'Chỉnh sửa ưu đãi thành công!',
                 toastLength: Toast.LENGTH_SHORT,
@@ -334,6 +330,15 @@ class CouponEditScreenState extends State<CouponEditScreen> {
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 14.0);
+
+            if (widget.params['coupon_model'] != null) {
+              widget.params['coupon_model'](result);
+            }
+
+            if (widget.params['callback'] != null) {
+              widget.params['callback'](result);
+            }
+            progressToolkit.state.dismiss();
           } else {
             Fluttertoast.showToast(
                 msg: 'Đã có lỗi xảy ra. Vui lòng thử lại sau!',
@@ -343,10 +348,9 @@ class CouponEditScreenState extends State<CouponEditScreen> {
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 14.0);
-          }
 
-          // couponBloc
-          //     .add(SaveButtonPressed(id: couponModel.id, couponModel: data));
+            progressToolkit.state.dismiss();
+          }
         });
   }
 
