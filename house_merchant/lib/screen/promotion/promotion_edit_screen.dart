@@ -10,12 +10,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
+import 'package:house_merchant/custom/dialogs/T7GDialog.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/repository/coupon_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
+import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
@@ -76,6 +78,14 @@ class CouponEditScreenState extends State<CouponEditScreen> {
 
   @override
   void initState() {
+    this.fetchData();
+    this.processImagePicker();
+
+    super.initState();
+    this.checkValidation();
+  }
+
+  void fetchData() {
     var data = new CouponModel();
     data = widget.params['coupon_model'];
     _imgList = data.images;
@@ -86,9 +96,9 @@ class CouponEditScreenState extends State<CouponEditScreen> {
       DateTime.parse(data.startDate).toLocal(),
       DateTime.parse(data.endDate).toLocal()
     ];
-    print(
-        'frangeTimeResult = ${frangeTimeResult.first} - ${frangeTimeResult.last}');
+  }
 
+  void processImagePicker() {
     final initImages = _imgList
         .map(
           (f) => FilePick(id: f.id, url: f.image, urlThumb: f.imageThumb),
@@ -99,6 +109,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
 
     imagePicker.callbackUpload = (FilePick f) async {
       final rs = await couponRepository.uploadImage(f.file);
+
       if (rs != null) {
         ImageModel img = mappingImages[rs.imageThumb];
         if (img == null) {
@@ -106,14 +117,14 @@ class CouponEditScreenState extends State<CouponEditScreen> {
           mappingImages[f.urlThumb] = uploadModel;
           _imgList.add(uploadModel);
         }
-
-        print(mappingImages);
       }
+
       this.checkValidation();
     };
 
     imagePicker.callbackRemove = (FilePick f) async {
       ImageModel img = mappingImages[f.urlThumb];
+
       if (img.imageThumb != null) {
         _imgList.remove(img);
       } else {
@@ -122,8 +133,6 @@ class CouponEditScreenState extends State<CouponEditScreen> {
 
       this.checkValidation();
     };
-    super.initState();
-    this.checkValidation();
   }
 
   void clearForm() {
@@ -140,10 +149,9 @@ class CouponEditScreenState extends State<CouponEditScreen> {
     return Stack(children: <Widget>[
       CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
         SliverToBoxAdapter(
-          child: BoxesContainer(
-            child: Center(),
-          ),
-        ),
+            child: BoxesContainer(
+          child: Center(),
+        )),
         SliverToBoxAdapter(
             child: BoxesContainer(
           title: 'Hình ảnh',
@@ -236,7 +244,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
           children: <Widget>[
             Text(
                 LocalizationsUtil.of(context).translate(
-                    'Vui lòng điền đầy đủ các thông tin ưu đ��i dưới đây'),
+                    'Vui lòng điền đ���y đủ các thông tin ưu ����i dưới đây'),
                 style: TextStyle(
                   fontFamily: ThemeConstant.form_font_family_display,
                   fontSize: 13,
@@ -311,6 +319,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
             LocalizationsUtil.of(context).translate('Lưu chỉnh sửa'),
         callback: () async {
           CouponModel coupon = widget.params['coupon_model'];
+
           final data = CouponModel(
               title: ftitle.Controller.text,
               quantity: int.parse(famount.Controller.text),
@@ -319,25 +328,20 @@ class CouponEditScreenState extends State<CouponEditScreen> {
               description: fdesc.Controller.text,
               images: [_imgList.last],
               shops: coupon.shops);
+
           print(data.toJson().toString());
+
           final result = await couponRepository.updateCoupon(coupon.id, data);
+
           if (result != null) {
-            Fluttertoast.showToast(
-                msg: 'Chỉnh sửa ưu đãi thành công!',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIos: 3,
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-                fontSize: 14.0);
-
-            if (widget.params['coupon_model'] != null) {
-              widget.params['coupon_model'](result);
-            }
-
             if (widget.params['callback'] != null) {
               widget.params['callback'](result);
             }
+
+            T7GDialog.showContentDialog(
+                context, [_navigatedToPromotionListScreen(result)],
+                closeShow: false, barrierDismissible: true);
+
             progressToolkit.state.dismiss();
           } else {
             Fluttertoast.showToast(
@@ -375,7 +379,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
     );
   }
 
-  Widget _navigatedToPromotionListScreen() {
+  Widget _navigatedToPromotionListScreen(CouponModel rs) {
     final width = this._screenSize.width * 90 / 100;
     return Padding(
         padding: EdgeInsets.all(20),
@@ -410,7 +414,14 @@ class CouponEditScreenState extends State<CouponEditScreen> {
                     color: ThemeConstant.grey_color,
                     height: 1.5),
                 textAlign: TextAlign.center,
-              ))
+              )),
+              SizedBox(height: 20),
+              Container(
+                height: 48.0,
+                child: BaseWidget.buttonThemePink('OK', callback: () {
+                  Navigator.of(context).pop();
+                }),
+              ),
             ])));
   }
 }
