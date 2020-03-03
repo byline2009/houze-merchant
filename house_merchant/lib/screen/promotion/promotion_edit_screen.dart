@@ -63,9 +63,19 @@ class CouponEditScreenState extends State<CouponEditScreen> {
   List<ImageModel> _imgList = new List<ImageModel>();
   Map<String, ImageModel> mappingImages = new Map<String, ImageModel>();
 
+  bool imageValidation() {
+    if (_imgList.length > 0) {
+      var img = _imgList.first;
+      var rs =
+          img.id != null && img.image.length > 0 && img.imageThumb.length > 0;
+      return rs;
+    }
+    return false;
+  }
+
   bool checkValidation() {
     var isActive = false;
-    if (_imgList.length > 0 &&
+    if (imageValidation() &&
         !StringUtil.isEmpty(ftitle.Controller.text) &&
         !StringUtil.isEmpty(famount.Controller.text) &&
         frangeTimeResult != null &&
@@ -79,7 +89,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
   @override
   void initState() {
     this.fetchData();
-    this.processImagePicker();
+    this.callbackImagePickerDelegate();
 
     super.initState();
     this.checkValidation();
@@ -87,6 +97,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
 
   void fetchData() {
     var data = new CouponModel();
+
     data = widget.params['coupon_model'];
     _imgList = data.images;
     ftitle.Controller.text = data.title;
@@ -96,9 +107,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
       DateTime.parse(data.startDate).toLocal(),
       DateTime.parse(data.endDate).toLocal()
     ];
-  }
 
-  void processImagePicker() {
     final initImages = _imgList
         .map(
           (f) => FilePick(id: f.id, url: f.image, urlThumb: f.imageThumb),
@@ -106,16 +115,17 @@ class CouponEditScreenState extends State<CouponEditScreen> {
         .toList();
     mappingImages[_imgList.last.imageThumb] = _imgList.last;
     imagePicker.imagesInit = initImages;
+  }
 
+  void callbackImagePickerDelegate() {
     imagePicker.callbackUpload = (FilePick f) async {
       final rs = await couponRepository.uploadImage(f.file);
 
       if (rs != null) {
         ImageModel img = mappingImages[rs.imageThumb];
         if (img == null) {
-          var uploadModel = new ImageModel(id: rs.id);
-          mappingImages[f.urlThumb] = uploadModel;
-          _imgList.add(uploadModel);
+          mappingImages[rs.imageThumb] = rs;
+          _imgList.add(rs);
         }
       }
 
@@ -127,8 +137,6 @@ class CouponEditScreenState extends State<CouponEditScreen> {
 
       if (img.imageThumb != null) {
         _imgList.remove(img);
-      } else {
-        print('===> callbackRemove error');
       }
 
       this.checkValidation();
@@ -330,7 +338,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
               startDate: frangeTimeResult[0].toUtc().toString(),
               endDate: frangeTimeResult[1].toUtc().toString(),
               description: fdesc.Controller.text,
-              images: [_imgList.last],
+              images: [_imgList.first],
               shops: coupon.shops);
 
           print(data.toJson().toString());
@@ -396,29 +404,29 @@ class CouponEditScreenState extends State<CouponEditScreen> {
               ),
               SizedBox(height: 20),
               Text(
-                  LocalizationsUtil.of(context)
-                      .translate('Chỉnh sửa ưu đãi thành công!'),
-                  style: TextStyle(
+                LocalizationsUtil.of(context)
+                    .translate('Chỉnh sửa ưu đãi thành công!'),
+                style: TextStyle(
                     fontFamily: ThemeConstant.form_font_family_display,
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.26,
-                    color: ThemeConstant.black_color,
-                  )),
-              SizedBox(height: 20),
+                    color: ThemeConstant.black_color),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 30),
               Center(
                   child: Text(
-                LocalizationsUtil.of(context).translate(
-                    'Ưu đãi của bạn sẽ được duyệt bởi\nHouse Merchant trước khi đăng lên\nứng dụng cư dân'),
-                style: TextStyle(
-                    fontFamily: ThemeConstant.form_font_family_display,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.26,
-                    color: ThemeConstant.grey_color,
-                    height: 1.5),
-                textAlign: TextAlign.center,
-              )),
+                      LocalizationsUtil.of(context).translate(
+                          'Ưu đãi của bạn sẽ được duyệt bởi\nHouse Merchant trước khi đăng lên\nứng dụng cư dân'),
+                      style: TextStyle(
+                          fontFamily: ThemeConstant.form_font_family_display,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.26,
+                          color: ThemeConstant.grey_color,
+                          height: 1.5),
+                      textAlign: TextAlign.center)),
               SizedBox(height: 20),
               Container(
                 height: 48.0,
