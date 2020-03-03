@@ -89,7 +89,10 @@ class PickerImageState extends State<PickerImage> {
     try {
       images = await ChristianPickerImage.pickImages(
           maxImages: widget.maxImage - this.filesPick.length);
-    } catch (e) {} finally {
+      print(images);
+    } catch (e) {
+      print(e.toString());
+    } finally {
       Navigator.of(context).pop();
 
       setState(() {
