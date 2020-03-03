@@ -35,7 +35,6 @@ class LoginScreenState extends State<LoginScreen> {
         controller: loginButtonController,
         defaultHintText: LocalizationsUtil.of(context).translate('Đăng nhập'),
         callback: () async {
-          FocusScope.of(context).requestFocus(new FocusNode());
           fbKey.currentState.save();
           loginBloc.add(LoginButtonPressed(
             username: fusername.text,
@@ -127,9 +126,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final loginBloc = LoginBloc(
-        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
-    print('bugg rebuild');
+    final loginBloc = LoginBloc(authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
 
     final introduceSection = Container(
         child: Row(
@@ -200,9 +197,9 @@ class LoginScreenState extends State<LoginScreen> {
                           child: BlocListener(
                               bloc: loginBloc,
                               listener: (context, state) async {
+                                print('print show : ${state}');
                                 if (state is LoginLoading) {
                                   progressToolkit.state.show();
-                                  await Future.delayed(Duration(seconds: 3));
                                 }
 
                                 if (state is LoginFailure) {
