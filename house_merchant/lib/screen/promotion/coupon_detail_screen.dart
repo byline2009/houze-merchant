@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,32 +69,30 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
               topRight: const Radius.circular(30.0))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            child: Row(
-              children: <Widget>[
-                Text(_couponModel.getUsedCound(),
-                    style: TextStyle(
-                        fontSize: ThemeConstant.boxes_font_title,
-                        color: ThemeConstant.white_color,
-                        fontWeight: ThemeConstant.fontWeightBold,
-                        letterSpacing: 0.38)),
-                SizedBox(width: 5.0),
-                Text(
-                  'Lượt sử dụng',
-                  style: TextStyle(
-                      fontSize: ThemeConstant.font_size_16,
-                      letterSpacing: ThemeConstant.letter_spacing_026,
-                      color: ThemeConstant.alto_color),
-                ),
-              ],
-            ),
-          ),
+              child: Row(children: <Widget>[
+            Text(_couponModel.getUsedCound(),
+                style: TextStyle(
+                    fontSize: _screenSize.width < 350
+                        ? 20
+                        : ThemeConstant.boxes_font_title,
+                    color: ThemeConstant.white_color,
+                    fontWeight: ThemeConstant.fontWeightBold,
+                    letterSpacing: 0.38),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis),
+            SizedBox(width: 5.0),
+            Text('Lượt sử dụng',
+                style: TextStyle(
+                    fontSize: _screenSize.width < 350
+                        ? 13
+                        : ThemeConstant.font_size_16,
+                    letterSpacing: ThemeConstant.letter_spacing_026,
+                    color: ThemeConstant.alto_color))
+          ])),
           RectangleLabelWidget(
-            text: _couponModel.statusName(),
-            color: _couponModel.satusColor(),
-          )
+              text: _couponModel.statusName(), color: _couponModel.satusColor())
         ],
       ),
     );
@@ -103,23 +102,19 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(
-                fontSize: 15,
-                color: ThemeConstant.grey_color,
-                letterSpacing: 0.24),
-          ),
+          Text(title,
+              style: TextStyle(
+                  fontSize: 15,
+                  color: ThemeConstant.grey_color,
+                  letterSpacing: 0.24)),
           Expanded(
-              child: Text(
-            content,
-            textAlign: TextAlign.end,
-            style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.24,
-                color: Colors.black),
-          ))
+              child: Text(content,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.24,
+                      color: Colors.black)))
         ],
       );
     }
@@ -202,14 +197,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                   letterSpacing: 0.29),
             ),
             SizedBox(height: 10.0),
-            ReadMoreText(_couponModel.description + '\n\n',
-                style: TextStyle(
-                    fontSize: 15,
-                    color: ThemeConstant.grey_color,
-                    letterSpacing: 0.24),
-                trimLines: 2,
-                colorClickableText: ThemeConstant.primary_color,
-                trimMode: TrimMode.Line),
+            Text(_couponModel.description + '\n\n\n'),
             SizedBox(height: 40.0)
           ]));
     }

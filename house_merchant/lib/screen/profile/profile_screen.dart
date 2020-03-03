@@ -92,8 +92,11 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
                               result.birthday != null
                                   ? makeRowData(
                                       'Ngày sinh:',
-                                      DateFormat('dd/MM/yyyy').format(
-                                          DateTime.parse(result.birthday)))
+                                      DateFormat('dd/MM/yyyy')
+                                          .format(
+                                              DateTime.parse(result.birthday)
+                                                  .toLocal())
+                                          .toString())
                                   : Center(),
                               result.phoneNumber != null
                                   ? makeRowData('Điện thoại:',

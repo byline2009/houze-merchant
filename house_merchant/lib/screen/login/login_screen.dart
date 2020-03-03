@@ -140,11 +140,10 @@ class LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                 ConstrainedBox(
                     constraints: BoxConstraints(
-                      minWidth: 150,
-                      maxWidth: 300.0,
-                      minHeight: 40.0,
-                      maxHeight: 100.0,
-                    ),
+                        minWidth: 150,
+                        maxWidth: 300.0,
+                        minHeight: 40.0,
+                        maxHeight: 100.0),
                     child: FittedBox(
                         child: Text(
                       'House\nMerchant',
