@@ -202,14 +202,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                   letterSpacing: 0.29),
             ),
             SizedBox(height: 10.0),
-            ReadMoreText(_couponModel.description + '\n\n',
-                style: TextStyle(
-                    fontSize: 15,
-                    color: ThemeConstant.grey_color,
-                    letterSpacing: 0.24),
-                trimLines: 2,
-                colorClickableText: ThemeConstant.primary_color,
-                trimMode: TrimMode.Line),
+            Text(_couponModel.description + '\n\n\n\n'),
             SizedBox(height: 40.0)
           ]));
     }

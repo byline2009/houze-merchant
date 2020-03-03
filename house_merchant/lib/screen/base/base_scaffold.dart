@@ -19,7 +19,22 @@ class BaseScaffold extends StatelessWidget {
       this.backgroundColor});
 
   Widget notificationBoxLeading(BuildContext context) {
-    return Stack(
+    return Container(
+      height: 100.0,
+      padding: EdgeInsets.only(left: 20.0),
+      child: IconButton(
+        icon: SvgPicture.asset(
+          "assets/icons/ic-notification.svg",
+          width: 20.0,
+          height: 24.0,
+          fit: BoxFit.contain,
+        ),
+        onPressed: () {
+          Router.pushDialogNoParams(context, Router.NOTIFICATION_PAGE);
+        },
+      ),
+    );
+    /*Stack(
       children: <Widget>[
         Container(
           height: 100.0,
@@ -45,7 +60,7 @@ class BaseScaffold extends StatelessWidget {
               decoration: ThemeConstant.borderCircleNoti),
         )
       ],
-    );
+    );*/
   }
 
   @override
