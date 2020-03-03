@@ -80,21 +80,18 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
           decoration: BoxDecoration(color: ThemeConstant.white_color),
           child: ListTile(
             leading: Container(
-              width: 50,
-              height: 50,
-              child: CircleAvatar(
-                  backgroundColor: ThemeConstant.alto_color,
-                  child: user.customer.avatar == null
-                      ? BaseWidget.avatar(user.customer.avatar, 'O', 50)
-                      : Text(
-                          user.customer.fullname[0],
-                          style: ThemeConstant.titleLargeStyle(Colors.white),
-                        )),
-            ),
-            title: Text(
-              user.customer.fullname,
-              style: ThemeConstant.titleTileStyle,
-            ),
+                width: 50,
+                height: 50,
+                child: CircleAvatar(
+                    backgroundColor: ThemeConstant.alto_color,
+                    child: user.customer.avatar != null
+                        ? BaseWidget.avatar(user.customer.avatar, 'O', 50)
+                        : Text(
+                            user.customer.fullname[0],
+                            style: ThemeConstant.titleLargeStyle(Colors.white),
+                          ))),
+            title: Text(user.customer.fullname,
+                style: ThemeConstant.titleTileStyle),
             subtitle: Text(
                 'Ngày sử dụng: ' +
                     DateFormat(Format.timeAndDate)

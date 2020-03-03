@@ -15,18 +15,17 @@ class RectangleLabelWidgetState extends State<RectangleLabelWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
-      decoration: BoxDecoration(
-        color: widget.color,
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-      ),
-      child: Center(
-          child: Text(widget.text != null ? widget.text.toUpperCase() : '',
-              style: TextStyle(
-                  letterSpacing: ThemeConstant.letter_spacing_026,
-                  color: ThemeConstant.white_color,
-                  fontSize: ThemeConstant.form_font_smaller,
-                  fontWeight: FontWeight.w600))),
-    );
+        padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8.0),
+        decoration: BoxDecoration(
+          color: widget.color,
+          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        ),
+        child: Center(
+            child: Text(widget.text != null ? widget.text.toUpperCase() : '',
+                style: TextStyle(
+                    letterSpacing: ThemeConstant.letter_spacing_026,
+                    color: ThemeConstant.white_color,
+                    fontSize: ThemeConstant.form_font_smaller,
+                    fontWeight: FontWeight.w600))));
   }
 }

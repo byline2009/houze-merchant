@@ -127,7 +127,8 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final loginBloc = LoginBloc(authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
+    final loginBloc = LoginBloc(
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
     print('bugg rebuild');
 
     final introduceSection = Container(
@@ -142,11 +143,10 @@ class LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                 ConstrainedBox(
                     constraints: BoxConstraints(
-                      minWidth: 150,
-                      maxWidth: 300.0,
-                      minHeight: 40.0,
-                      maxHeight: 100.0,
-                    ),
+                        minWidth: 150,
+                        maxWidth: 300.0,
+                        minHeight: 40.0,
+                        maxHeight: 100.0),
                     child: FittedBox(
                         child: Text(
                       'House\nMerchant',

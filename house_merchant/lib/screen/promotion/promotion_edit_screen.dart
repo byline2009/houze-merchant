@@ -430,8 +430,11 @@ class CouponEditScreenState extends State<CouponEditScreen> {
               SizedBox(height: 20),
               Container(
                 height: 48.0,
-                child: BaseWidget.buttonThemePink('OK', callback: () {
-                  Navigator.of(context).pop();
+                child:
+                    BaseWidget.buttonThemePink('Về trang chính', callback: () {
+                  Navigator.of(context).popUntil((route) {
+                    return route.isFirst;
+                  });
                 }),
               ),
             ])));
