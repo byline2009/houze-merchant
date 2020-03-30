@@ -241,7 +241,7 @@ class LoginScreenState extends State<LoginScreen> {
                                         SizedBox(height: 70.0),
                                         this.loginButton(loginBloc),
                                         SizedBox(height: 40.0),
-                                        forgotLabel
+                                        //forgotLabel
                                       ],
                                     );
                                   })),
