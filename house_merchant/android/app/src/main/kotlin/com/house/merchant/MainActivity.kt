@@ -23,7 +23,7 @@ class MainActivity: FlutterActivity() {
   private var openEventSink: EventChannel.EventSink? = null
 
   override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
-    GeneratedPluginRegistrant.registerWith(this)
+    GeneratedPluginRegistrant.registerWith(flutterEngine)
 
     MethodChannel(flutterEngine.dartExecutor, CHANNEL).setMethodCallHandler { call, result ->
       if (call.method == TOKEN()) {

@@ -76,14 +76,10 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
           SizedBox(
             height: 10.0,
           ),
-          FormBuilderCustomField(
-              attribute: attribute,
-              validators: validators,
-              formField: FormField(
-                  // key: _fieldKey,
-                  enabled: true,
-                  //autovalidate: this._nextEnable,
-                  builder: (FormFieldState<dynamic> field) {
+          FormBuilderField(
+              name: attribute,
+              validator: FormBuilderValidators.compose(validators),
+              builder: (FormFieldState<dynamic> field) {
                     return new Column(children: <Widget>[
                       Container(
                         width: _screenSize.width,
@@ -116,7 +112,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         )
                       ]),
                     ]);
-                  })),
+                  }),
         ]));
   }
 

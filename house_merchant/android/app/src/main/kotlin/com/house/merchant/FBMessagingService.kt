@@ -53,7 +53,7 @@ class FBMessagingService : FirebaseMessagingService() {
             if (mChannel == null) {
                 mChannel = NotificationChannel(requestID.toString(), title, importance)
                 //mChannel.enableVibration(true);
-                notifManager!!.createNotificationChannel(mChannel)
+                notifManager!!.createNotificationChannel(mChannel!!)
             }
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             intent.putExtra(MainActivity.DATA(), data)

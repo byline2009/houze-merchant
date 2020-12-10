@@ -44,11 +44,9 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   Widget usernameSection() {
-    return FormBuilderCustomField(
-        attribute: "name",
-        formField: FormField(
-            enabled: true,
-            builder: (FormFieldState<dynamic> field) {
+    return FormBuilderField(
+        name: "name",
+        builder: (FormFieldState<dynamic> field) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,15 +78,13 @@ class LoginScreenState extends State<LoginScreen> {
                       })
                 ],
               );
-            }));
+            });
   }
 
   Widget passwordSection() {
-    return FormBuilderCustomField(
-      attribute: "password",
-      formField: FormField(
-          enabled: true,
-          builder: (FormFieldState<dynamic> field) {
+    return FormBuilderField(
+      name: "password",
+      builder: (FormFieldState<dynamic> field) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +116,7 @@ class LoginScreenState extends State<LoginScreen> {
                     })
               ],
             );
-          }),
+          }
     );
   }
 
