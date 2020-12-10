@@ -1087,6 +1087,8 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
         break;
       case TargetPlatform.iOS:
         break;
+      default:
+
     }
   }
 

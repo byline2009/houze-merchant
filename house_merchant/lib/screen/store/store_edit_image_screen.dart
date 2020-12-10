@@ -54,20 +54,14 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
     String currentShop = await Sqflite.currentShop();
 
-    final task = Task(
-        function: uploadShopImageWorker,
-        arg: ArgUpload(
-            url: APIConstant.baseMerchantUrlShopImageCreate,
-            token: OauthAPI.token,
-            shopId: currentShop,
-            storageShared: Storage.prefs,
-            file: f));
-
     Executor()
-        .addTask(
-      task: task,
-    )
-        .listen((result) async {
+        .execute(arg1: ArgUpload(
+        url: APIConstant.baseMerchantUrlShopImageCreate,
+        token: OauthAPI.token,
+        shopId: currentShop,
+        storageShared: Storage.prefs,
+        file: f), fun1: uploadShopImageWorker
+    ).then((result) async {
       if (result != null && result.id != "") {
         this.imagePicker.state.validationFilesPick.insert(
             0,
@@ -75,7 +69,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
                 id: result.id, url: result.image, urlThumb: result.imageThumb));
       }
       completer.complete(result);
-    }).onError((error) {
+    }).catchError((error) {
       completer.completeError(error);
     });
 
@@ -87,22 +81,18 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
     String currentShop = await Sqflite.currentShop();
 
-    final task = Task(
-        fuction: removeShopImageWorker,
-        arg: ArgUpload(
-            url: APIConstant.baseMerchantUrlShopImageDelete,
-            token: OauthAPI.token,
-            shopId: currentShop,
-            storageShared: Storage.prefs,
-            imageId: ids));
-
     Executor()
-        .addTask(
-      task: task,
+        .execute(
+      arg1: ArgUpload(
+          url: APIConstant.baseMerchantUrlShopImageDelete,
+          token: OauthAPI.token,
+          shopId: currentShop,
+          storageShared: Storage.prefs,
+          imageId: ids), fun1: removeShopImageWorker
     )
-        .listen((result) async {
+        .then((result) async {
       completer.complete(result);
-    }).onError((error) {
+    }).catchError((error) {
       completer.completeError(error);
     });
 
