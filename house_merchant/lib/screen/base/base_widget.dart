@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
-import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -99,23 +97,7 @@ class BaseWidget {
                     Container(
                         color: Colors.white,
                         child: url != null
-                            ? TransitionToImage(
-                                image: AdvancedNetworkImage(
-                                  url,
-                                  useDiskCache: true,
-                                  cacheRule: CacheRule(
-                                      maxAge: const Duration(days: 7)),
-                                  timeoutDuration: Duration(seconds: 2),
-                                  retryLimit: 0,
-                                ),
-                                placeholder: Center(
-                                    child: SvgPicture.asset(
-                                        "assets/images/gender/avt-$gender.svg")),
-                                fit: BoxFit.cover,
-                                printError: true,
-                                height: height,
-                                width: height,
-                              )
+                            ? Image.network(url, fit: BoxFit.cover)
                             : SvgPicture.asset(
                                 "assets/images/gender/avt-O.svg"))
                   ])),
