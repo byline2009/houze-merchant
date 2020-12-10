@@ -30,7 +30,7 @@ class BaseScaffold extends StatelessWidget {
           fit: BoxFit.contain,
         ),
         onPressed: () {
-          Router.pushDialogNoParams(context, Router.NOTIFICATION_PAGE);
+          AppRouter.pushDialogNoParams(context, AppRouter.NOTIFICATION_PAGE);
         },
       ),
     );
@@ -47,7 +47,7 @@ class BaseScaffold extends StatelessWidget {
               fit: BoxFit.contain,
             ),
             onPressed: () {
-              Router.pushDialogNoParams(context, Router.NOTIFICATION_PAGE);
+              AppRouter.pushDialogNoParams(context, AppRouter.NOTIFICATION_PAGE);
             },
           ),
         ),

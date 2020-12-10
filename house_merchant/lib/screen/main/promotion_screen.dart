@@ -232,7 +232,8 @@ class CouponScreenState extends State<CouponScreen> {
                 }
               });
             },
-            settings: RouteSettings(name: Router.COUPON_SCAN_QR_SUCCESS_PAGE),
+            settings:
+                RouteSettings(name: AppRouter.COUPON_SCAN_QR_SUCCESS_PAGE),
             fullscreenDialog: true));
   }
 
@@ -448,8 +449,8 @@ class CouponScreenState extends State<CouponScreen> {
                                       onTap: () {
                                         var data = couponList.data[index];
 
-                                        Router.push(context,
-                                            Router.COUPON_DETAIL_PAGE, {
+                                        AppRouter.push(context,
+                                            AppRouter.COUPON_DETAIL_PAGE, {
                                           "coupon_model": data,
                                           "callback": (bool isReloadData) {
                                             if (isReloadData) {
@@ -487,7 +488,7 @@ class CouponScreenState extends State<CouponScreen> {
             child: ButtonCreateWidget(
                 title: "Tạo mới",
                 onPressed: () {
-                  Router.push(context, Router.COUPON_CREATE, {
+                  AppRouter.push(context, AppRouter.COUPON_CREATE, {
                     "callback": (isReloadData) {
                       if (isReloadData) {
                         this.getCouponsByStatus();

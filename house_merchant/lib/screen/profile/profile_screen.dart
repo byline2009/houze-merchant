@@ -123,8 +123,8 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
                             trailing: arrowButton(),
                             onTap: () {
                               print('Thay đổi mật khẩu');
-                              Router.pushDialogNoParams(
-                                  context, Router.CHANGE_PASSWORD);
+                              AppRouter.pushDialogNoParams(
+                                  context, AppRouter.CHANGE_PASSWORD);
                             },
                           )),
                     ],

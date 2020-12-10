@@ -13,7 +13,7 @@ import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
 import 'package:house_merchant/screen/store/store_edit_image_screen.dart';
 import 'package:house_merchant/screen/store/store_edit_time_screen.dart';
 
-class Router {
+class AppRouter {
   static const HOME_PAGE = 'app://';
 
   static const BOOTSTRAP_PAGE = "app://BootStrapPage";
@@ -77,7 +77,7 @@ class Router {
     return null;
   }
 
-  Router.replaceNoParams(BuildContext context, String url) {
+  AppRouter.replaceNoParams(BuildContext context, String url) {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -87,7 +87,7 @@ class Router {
             settings: RouteSettings(name: url)));
   }
 
-  Router.replace(BuildContext context, String url, dynamic params) {
+  AppRouter.replace(BuildContext context, String url, dynamic params) {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -97,7 +97,7 @@ class Router {
             settings: RouteSettings(name: url)));
   }
 
-  Router.pushNoParams(BuildContext context, String url) {
+  AppRouter.pushNoParams(BuildContext context, String url) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -107,7 +107,7 @@ class Router {
             settings: RouteSettings(name: url)));
   }
 
-  Router.push(BuildContext context, String url, dynamic params) {
+  AppRouter.push(BuildContext context, String url, dynamic params) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -117,7 +117,7 @@ class Router {
             settings: RouteSettings(name: url)));
   }
 
-  Router.pushDialogNoParams(BuildContext context, String url) {
+  AppRouter.pushDialogNoParams(BuildContext context, String url) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -128,7 +128,7 @@ class Router {
             fullscreenDialog: true));
   }
 
-  Router.pushDialog(BuildContext context, String url, dynamic params) {
+  AppRouter.pushDialog(BuildContext context, String url, dynamic params) {
     Navigator.push(
         context,
         MaterialPageRoute(

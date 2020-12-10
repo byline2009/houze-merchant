@@ -294,7 +294,8 @@ class StoreScreenState extends State<StoreScreen> {
                       child: introStore(shopModel),
                       action: InkWell(
                           onTap: () async {
-                            Router.push(context, Router.SHOP_IMAGES_PAGE, {
+                            AppRouter.push(
+                                context, AppRouter.SHOP_IMAGES_PAGE, {
                               "shop_model": shopModel,
                               "callback": (List<FilePick> validationPicks) {
                                 shopModel.images = validationPicks.map((f) {
@@ -315,7 +316,8 @@ class StoreScreenState extends State<StoreScreen> {
                       child: descriptionStore(shopModel),
                       action: InkWell(
                           onTap: () async {
-                            Router.push(context, Router.SHOP_DESCRIPTION_PAGE, {
+                            AppRouter.push(
+                                context, AppRouter.SHOP_DESCRIPTION_PAGE, {
                               "shop_model": shopModel,
                               "callback": (ShopModel _shopModel) {
                                 shopModel.description = _shopModel.description;
@@ -331,7 +333,7 @@ class StoreScreenState extends State<StoreScreen> {
                       child: timeStore(shopModel),
                       action: InkWell(
                           onTap: () {
-                            Router.push(context, Router.SHOP_TIME_PAGE,
+                            AppRouter.push(context, AppRouter.SHOP_TIME_PAGE,
                                 {"shop_model": shopModel});
                           },
                           child: editButton()),

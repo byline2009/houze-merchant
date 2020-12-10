@@ -42,7 +42,7 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
         var rs = await couponRepository.confirmCode(
             this._qrCodeModel.id, this._qrCodeModel.code);
         if (rs != null) {
-          Router.push(context, Router.COUPON_DETAIL_PAGE, {
+          AppRouter.push(context, AppRouter.COUPON_DETAIL_PAGE, {
             "coupon_model": rs.coupon,
             'callback': (reload) {
               if (reload && widget.params['callback'] != null) {

@@ -179,7 +179,8 @@ class MoreScreenState extends State<MoreScreen> {
                   ),
                   trailing: arrowButton(),
                   onTap: () {
-                    Router.pushDialogNoParams(context, Router.PROFILE_PAGE);
+                    AppRouter.pushDialogNoParams(
+                        context, AppRouter.PROFILE_PAGE);
                   })),
           buildGreyRow(
               'Hỗ trợ',
@@ -200,7 +201,7 @@ class MoreScreenState extends State<MoreScreen> {
                 trailing: arrowButton(),
                 onTap: () {
                   print('Liên hệ House Merchant');
-                  Router.pushDialogNoParams(context, Router.CONTACT_PAGE);
+                  AppRouter.pushDialogNoParams(context, AppRouter.CONTACT_PAGE);
                 },
               )),
           /*SizedBox(height: 2),

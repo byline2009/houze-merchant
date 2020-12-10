@@ -92,7 +92,7 @@ class CouponAPI extends OauthAPI {
   Future<dynamic> uploadImage(File image) async {
     try {
       FormData formData =
-          new FormData.from({"image": new UploadFileInfo(image, "ticket.jpg")});
+          new FormData.fromMap({"image": MultipartFile.fromFileSync(image.path, filename : "ticket.jpg")});
 
       final String url = APIConstant.baseMerchantUrlCouponUpload;
 

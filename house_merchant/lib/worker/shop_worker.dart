@@ -35,7 +35,7 @@ class ShopRequest extends OauthAPI {
       String url, String token, String shopId, File image) async {
     try {
       FormData formData =
-          new FormData.from({"image": new UploadFileInfo(image, "image.jpg")});
+          new FormData.fromMap({"image": MultipartFile.fromFileSync(image.path, filename : "image.jpg")});
 
       final response = await this.post(
         "$url$shopId/",

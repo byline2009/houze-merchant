@@ -18,7 +18,7 @@ import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 import 'package:house_merchant/utils/storage.dart';
 import 'package:house_merchant/worker/shop_worker.dart';
-import 'package:worker_manager/executor.dart';
+import 'package:worker_manager/worker_manager.dart';
 
 class StoreEditImageScreen extends StatefulWidget {
   dynamic params;
@@ -88,7 +88,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
     String currentShop = await Sqflite.currentShop();
 
     final task = Task(
-        function: removeShopImageWorker,
+        fuction: removeShopImageWorker,
         arg: ArgUpload(
             url: APIConstant.baseMerchantUrlShopImageDelete,
             token: OauthAPI.token,

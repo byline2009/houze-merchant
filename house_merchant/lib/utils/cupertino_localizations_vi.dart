@@ -125,6 +125,16 @@ class CupertinoLocalizationsVi implements CupertinoLocalizations {
   @override
   // TODO: implement todayLabel
   String get todayLabel => null;
+
+  @override
+  // TODO: implement modalBarrierDismissLabel
+  String get modalBarrierDismissLabel => throw UnimplementedError();
+
+  @override
+  String tabSemanticsLabel({int tabIndex, int tabCount}) {
+    // TODO: implement tabSemanticsLabel
+    throw UnimplementedError();
+  }
 }
 
 class _VietnamDelegate extends LocalizationsDelegate<CupertinoLocalizations> {

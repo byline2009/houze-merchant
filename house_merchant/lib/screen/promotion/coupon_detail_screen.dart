@@ -129,7 +129,9 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                     Container(),
                     InkWell(
                         onTap: () {
-                          Router.push(context, Router.COUPON_USER_LIST_PAGE,
+                          AppRouter.push(
+                              context,
+                              AppRouter.COUPON_USER_LIST_PAGE,
                               {"coupon_model": _couponModel});
                         },
                         child: Container(
@@ -244,7 +246,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                     defaultHintText: 'Chỉnh sửa',
                     isActive: true,
                     callback: () async {
-                      Router.push(context, Router.COUPON_EDIT, {
+                      AppRouter.push(context, AppRouter.COUPON_EDIT, {
                         'coupon_model': this._couponModel,
                         'callback': (CouponModel newData) {
                           if (newData != null) {
