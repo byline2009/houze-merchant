@@ -6,19 +6,55 @@ PODS:
   - connectivity (0.0.1):
     - Flutter
     - Reachability
+  - DKImagePickerController/Core (4.3.2):
+    - DKImagePickerController/ImageDataManager
+    - DKImagePickerController/Resource
+  - DKImagePickerController/ImageDataManager (4.3.2)
+  - DKImagePickerController/PhotoGallery (4.3.2):
+    - DKImagePickerController/Core
+    - DKPhotoGallery
+  - DKImagePickerController/Resource (4.3.2)
+  - DKPhotoGallery (0.0.17):
+    - DKPhotoGallery/Core (= 0.0.17)
+    - DKPhotoGallery/Model (= 0.0.17)
+    - DKPhotoGallery/Preview (= 0.0.17)
+    - DKPhotoGallery/Resource (= 0.0.17)
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - file_picker (0.0.1):
+    - DKImagePickerController/PhotoGallery
+    - Flutter
   - Flutter (1.0.0)
-  - flutter_barcode_scanner (0.1.7):
+  - flutter_barcode_scanner (1.0.1):
     - Flutter
   - flutter_image_compress (0.0.1):
     - Flutter
     - Mantle
-  - flutter_keyboard_visibility (0.7.0):
+  - flutter_keyboard_visibility (0.0.1):
     - Flutter
   - fluttertoast (0.0.2):
     - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - image_picker (0.0.1):
+    - Flutter
   - Imaginary (4.3.1):
     - Cache (~> 5.3.0)
   - Lightbox (2.3.0):
@@ -28,24 +64,38 @@ PODS:
   - Mantle/extobjc (2.1.6)
   - path_provider (0.0.1):
     - Flutter
+  - "permission_handler (5.0.1+1)":
+    - Flutter
+  - phone_number (0.8.0):
+    - Flutter
+    - PhoneNumberKit/PhoneNumberKitCore (= 3.3.1)
+  - PhoneNumberKit/PhoneNumberKitCore (3.3.1)
   - Reachability (3.2)
+  - SDWebImage (5.9.4):
+    - SDWebImage/Core (= 5.9.4)
+  - SDWebImage/Core (5.9.4)
   - shared_preferences (0.0.1):
     - Flutter
-  - sqflite (0.0.1):
+  - sqflite (0.0.2):
     - Flutter
-    - FMDB (~> 2.7.2)
+    - FMDB (>= 2.7.5)
+  - SwiftyGif (5.3.0)
   - url_launcher (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - christian_picker_image (from `.symlinks/plugins/christian_picker_image/ios`)
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_barcode_scanner (from `.symlinks/plugins/flutter_barcode_scanner/ios`)
   - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - phone_number (from `.symlinks/plugins/phone_number/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
@@ -53,17 +103,24 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Cache
+    - DKImagePickerController
+    - DKPhotoGallery
     - FMDB
     - Imaginary
     - Lightbox
     - Mantle
+    - PhoneNumberKit
     - Reachability
+    - SDWebImage
+    - SwiftyGif
 
 EXTERNAL SOURCES:
   christian_picker_image:
     :path: ".symlinks/plugins/christian_picker_image/ios"
   connectivity:
     :path: ".symlinks/plugins/connectivity/ios"
+  file_picker:
+    :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
     :path: Flutter
   flutter_barcode_scanner:
@@ -74,8 +131,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+  phone_number:
+    :path: ".symlinks/plugins/phone_number/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
@@ -85,22 +148,31 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Cache: 48762993ec44e1d93483c4d4a13edd18452326f4
-  christian_picker_image: ffc0219d6636341af236a8cb629ca3784a28c437
-  connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
+  christian_picker_image: 3b610fdaaa6b26d747e388ede0d7a2d5ce71c898
+  connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
+  DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
+  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
+  file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_barcode_scanner: c7d23c65b4866f5eaaa1cce1da8d2d1669b57800
+  flutter_barcode_scanner: 49cd22fac3304077a6c1672f63bee4a2572ffd85
   flutter_image_compress: f69d0e0e078ce52b4810695593bc861ee319ae7d
-  flutter_keyboard_visibility: 6195387fb6d8f46e5cd6dda4a4154e41f800f545
+  flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   Imaginary: 18c5bba364229eef383b925199db442e71d175e1
   Lightbox: d317750e4132bfb871a5307cfe0a2c7d6a583c65
   Mantle: 4c0ed6ce47c96eccc4dc3bb071deb3def0e2c3be
-  path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
+  phone_number: 0c59d1ce0ceaf822e4507d9b60b2300754e8633e
+  PhoneNumberKit: ff153d5e299f6da566cb73c6aa71e354933b2932
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  SDWebImage: b69257f4ab14e9b6a2ef53e910fdf914d8f757c1
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
-  sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
-  url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  SwiftyGif: e466e86c660d343357ab944a819a101c4127cb40
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
 PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
 
