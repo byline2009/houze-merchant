@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +14,7 @@ import 'package:house_merchant/screen/base/base_scaffold.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:house_merchant/screen/base/picker_image.dart';
+import 'package:house_merchant/screen/store/list/widget_description_box.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 
@@ -26,7 +29,7 @@ class StoreScreenState extends State<StoreScreen> {
   Size _screenSize;
   double _padding;
 
-  ShopBloc shopBloc = ShopBloc();
+  final shopBloc = ShopBloc();
 
   Widget introStore(ShopModel shopModel) {
     return Column(
@@ -61,35 +64,6 @@ class StoreScreenState extends State<StoreScreen> {
                 );
               },
             ))
-      ],
-    );
-  }
-
-  Widget descriptionStore(ShopModel shopModel) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        SizedBox(height: 5),
-        Text(
-            LocalizationsUtil.of(context).translate(
-                'Lời văn thật hay để cửa hàng bạn thu hút cư dân nhé!'),
-            style: TextStyle(
-                color: ThemeConstant.grey_color,
-                fontFamily: ThemeConstant.form_font_family_display,
-                fontSize: ThemeConstant.form_font_smaller,
-                fontWeight: ThemeConstant.appbar_text_weight)),
-        SizedBox(height: 15),
-        Container(
-            padding: EdgeInsets.only(top: 15, bottom: 19, left: 10, right: 10),
-            decoration: BoxDecoration(
-              color: ThemeConstant.background_grey_color,
-              borderRadius: BorderRadius.all(Radius.circular(4.0)),
-            ),
-            child: Text(shopModel.description != null &&
-                    shopModel.description.length > 0
-                ? shopModel.description
-                : 'Chưa có mô tả'))
       ],
     );
   }
@@ -254,6 +228,14 @@ class StoreScreenState extends State<StoreScreen> {
         ));
   }
 
+  final StreamController<ShopModel> _controller = StreamController.broadcast();
+
+  @override
+  void dispose() {
+    _controller.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
@@ -313,7 +295,17 @@ class StoreScreenState extends State<StoreScreen> {
                     SliverToBoxAdapter(
                         child: BoxesContainer(
                       title: 'Mô tả',
-                      child: descriptionStore(shopModel),
+                      child: DescriptionBox(shopModel: shopModel),
+
+                      // StreamBuilder<ShopModel>(
+                      //     stream: _controller.stream,
+                      //     initialData: shopModel,
+                      //     builder: (context, snapshot) {
+                      //       if (snapshot.hasData) {
+                      //         return DescriptionBox(shopModel: snapshot.data);
+                      //       }
+                      //       return Container();
+                      //     }),
                       action: InkWell(
                           onTap: () async {
                             AppRouter.push(
@@ -321,7 +313,8 @@ class StoreScreenState extends State<StoreScreen> {
                               "shop_model": shopModel,
                               "callback": (ShopModel _shopModel) {
                                 shopModel.description = _shopModel.description;
-                                print(_shopModel.description.toUpperCase());
+                                // print(_shopModel.description.toUpperCase());
+                                // _controller.sink.add(shopModel);
                               }
                             });
                           },
