@@ -42,7 +42,7 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
         builder:
             (BuildContext context, AsyncSnapshot<List<DateTime>> snapshot) {
           if (snapshot.data != null && snapshot.data.length > 0) {
-            localController.Controller.text =
+            localController.controller.text =
                 DateFormat(Format.timeAndDate).format(snapshot.data[0]) +
                     ' đến ' +
                     DateFormat(Format.timeAndDate).format(snapshot.data[1]);
@@ -50,7 +50,7 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
           }
 
           if (snapshot.data != null && snapshot.data.length == 0) {
-            localController.Controller.clear();
+            localController.controller.clear();
             this.localDate = [];
           }
 

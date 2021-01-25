@@ -30,6 +30,19 @@ class LoginScreenState extends State<LoginScreen> {
   final fusernameLength = 5;
   final fpassLength = 5;
 
+  @override
+  void initState() {
+    // fusername.text = 'Highlands';
+    // fpassword.text = '123456@Houz';
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    loginButtonController.close();
+    super.dispose();
+  }
+
   Widget loginButton(LoginBloc loginBloc) {
     return ButtonWidget(
         controller: loginButtonController,

@@ -13,18 +13,19 @@ import 'package:worker_manager/worker_manager.dart';
 void main() async {
   // add this, and it should be the first line in main method
   ErrorWidget.builder = (errorDetails) {
-    return Container(color: Colors.white, child: Text('Thông tin bị lỗi, vui lòng thử lại sau!'),);
+    return Container(
+      color: Colors.white,
+      child: Text('Thông tin bị lỗi, vui lòng thử lại sau!'),
+    );
   };
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   if (Platform.isAndroid) {
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(
-            statusBarColor: ThemeConstant.appbar_background_color,
-            statusBarIconBrightness: Brightness.dark,
-
-            systemNavigationBarColor: Colors.black,
-        );
+    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
+      statusBarColor: ThemeConstant.appbar_background_color,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.black,
+    );
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 
