@@ -9,7 +9,7 @@ const String envProd = '.env.prod';
 const String envDev = '.env.dev';
 
 class AppConfig {
-  static init({String env = envProd}) async {
+  static init({String env = envDev}) async {
     // Instance SharedPreferences
     Storage.prefs = await SharedPreferences.getInstance();
 

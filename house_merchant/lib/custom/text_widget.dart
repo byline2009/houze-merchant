@@ -8,21 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class TextWidget extends StatelessWidget {
-  StreamController<String> controller = StreamController<String>.broadcast();
+  final StreamController<String> controller;
 
   final TextStyle style;
   final String text;
-  int maxLines = 1;
-  bool softWrap = false;
-  TextOverflow overflow = TextOverflow.clip;
+  final int maxLines;
 
   TextWidget(
     this.text, {
     this.controller,
     this.maxLines = 1,
-    this.softWrap = true,
     this.style,
-    this.overflow,
   });
 
   @override
@@ -31,12 +27,10 @@ class TextWidget extends StatelessWidget {
         stream: controller.stream,
         initialData: text,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return Text(
-            snapshot.data,
-            style: this.style,
-            maxLines: this.maxLines,
-            overflow: TextOverflow.ellipsis,
-          );
+          return Text(snapshot.data,
+              style: this.style,
+              maxLines: this.maxLines ?? 1,
+              overflow: TextOverflow.ellipsis);
         });
   }
 }

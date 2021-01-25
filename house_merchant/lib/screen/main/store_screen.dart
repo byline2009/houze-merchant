@@ -321,6 +321,7 @@ class StoreScreenState extends State<StoreScreen> {
                               "shop_model": shopModel,
                               "callback": (ShopModel _shopModel) {
                                 shopModel.description = _shopModel.description;
+                                print(_shopModel.description.toUpperCase());
                               }
                             });
                           },

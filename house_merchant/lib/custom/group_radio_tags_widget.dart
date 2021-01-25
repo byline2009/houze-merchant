@@ -36,7 +36,7 @@ class GroupRadioTagsWidget extends StatefulWidget {
 class GroupRadioTagsWidgetState extends State<GroupRadioTagsWidget> {
   Widget buttonIcon({index, id, title, icon, isSelected = false}) {
     return Padding(
-        padding: EdgeInsets.only(left: 15, right: 15),
+        padding: EdgeInsets.only(left: 15, right: 0),
         child: FlatButton(
           color:
               isSelected ? ThemeConstant.listview_selected_color : Colors.white,

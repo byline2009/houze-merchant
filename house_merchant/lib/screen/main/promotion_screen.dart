@@ -38,12 +38,12 @@ class CouponScreen extends StatefulWidget {
 class CouponScreenState extends State<CouponScreen> {
   Size _screenSize;
   double _padding;
-  var statusCurrent = -1; // status: tat ca
-  var tagIndexCurrent = 0; // tab: tat ca
+  int statusCurrent = -1; // status: tat ca
+  int tagIndexCurrent = 0; // tab: tat ca
 
-  CouponListBloc couponListBloc = CouponListBloc();
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: true);
+  final couponListBloc = CouponListBloc();
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -59,27 +59,16 @@ class CouponScreenState extends State<CouponScreen> {
 
   Widget tags() {
     return GroupRadioTagsWidget(
-      tags: <GroupRadioTags>[
-        GroupRadioTags(id: Promotion.allStatus, title: Promotion.all),
-        GroupRadioTags(id: Promotion.approveStatus, title: Promotion.approved),
-        GroupRadioTags(id: Promotion.pendingStatus, title: Promotion.pending),
-        GroupRadioTags(id: Promotion.expiredStatus, title: Promotion.expire),
-        GroupRadioTags(id: Promotion.rejectStatus, title: Promotion.rejected),
-        GroupRadioTags(id: Promotion.canceledStatus, title: Promotion.canceled),
-      ],
-      callback: (dynamic id) {
-        this.getCouponsByStatus(status: id);
-      },
-      callBackIndex: (dynamic index) {
-        tagIndexCurrent = index;
-      },
+      tags: Promotion.statusTags.toList(),
+      callback: (dynamic id) => this.getCouponsByStatus(status: id),
+      callBackIndex: (dynamic index) => tagIndexCurrent = index,
       defaultIndex: this.tagIndexCurrent,
     );
   }
 
   Widget statusProduct(int status) {
     switch (status) {
-      case -1:
+      case Promotion.allStatus:
         return Text(Promotion.expire.toUpperCase(),
             style: TextStyle(
                 color: ThemeConstant.expired_color,
@@ -124,6 +113,7 @@ class CouponScreenState extends State<CouponScreen> {
     var endDate = DateFormat(Format.timeAndDate)
         .format(DateTime.parse(couponModel.endDate).toLocal());
     return Container(
+        key: Key(couponModel.id),
         padding: EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,11 +353,7 @@ class CouponScreenState extends State<CouponScreen> {
   Widget scanQRButton() {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: ButtonScanQRWidget(
-        callback: () async {
-          _openAndCheckQRCode();
-        },
-      ),
+      child: ButtonScanQRWidget(callback: () async => _openAndCheckQRCode()),
     );
   }
 
@@ -444,10 +430,12 @@ class CouponScreenState extends State<CouponScreen> {
                               },
                               child: ListView.builder(
                                 shrinkWrap: true,
+                                padding: EdgeInsets.zero,
                                 itemBuilder: (c, index) {
                                   return GestureDetector(
                                       onTap: () {
-                                        var data = couponList.data[index];
+                                        CouponModel data =
+                                            couponList.data[index];
 
                                         AppRouter.push(context,
                                             AppRouter.COUPON_DETAIL_PAGE, {
