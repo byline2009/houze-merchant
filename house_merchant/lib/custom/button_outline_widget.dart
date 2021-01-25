@@ -6,10 +6,10 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 
 class ButtonOutlineWidget extends StatefulWidget {
-  String defaultHintText;
+  final String defaultHintText;
   bool isActive = false;
   StreamController<ButtonSubmitEvent> controller;
-  CallBackHandler callback;
+  final CallBackHandler callback;
 
   ButtonOutlineWidget({
     this.defaultHintText,

@@ -47,82 +47,79 @@ class LoginScreenState extends State<LoginScreen> {
     return FormBuilderField(
         name: "name",
         builder: (FormFieldState<dynamic> field) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Tên đăng nhập",
-                      style: TextStyle(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w600,
-                          color: ThemeConstant.black_color)),
-                  SizedBox(height: 5.0),
-                  TextFormField(
-                      cursorColor: ThemeConstant.alto_color,
-                      keyboardType: TextInputType.text,
-                      controller: fusername,
-                      decoration: ThemeConstant.tfInputDecoration(
-                          'Vui lòng nhập tên đăng nhập'),
-                      onChanged: (String username) {
-                        field.didChange(username);
-                        if (fusername.text.length >= fusernameLength &&
-                            fpassword.text.length >= fpassLength) {
-                          loginButtonController.sink
-                              .add(ButtonSubmitEvent(true));
-                        }
-                        if (fusername.text.length <= fusernameLength - 1 ||
-                            fpassword.text.length <= fpassLength - 1) {
-                          loginButtonController.sink
-                              .add(ButtonSubmitEvent(false));
-                        }
-                      })
-                ],
-              );
-            });
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("Tên đăng nhập",
+                  style: TextStyle(
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.w600,
+                      color: ThemeConstant.black_color)),
+              SizedBox(height: 5.0),
+              TextFormField(
+                  cursorColor: ThemeConstant.alto_color,
+                  keyboardType: TextInputType.text,
+                  controller: fusername,
+                  decoration: ThemeConstant.tfInputDecoration(
+                      'Vui lòng nhập tên đăng nhập'),
+                  onChanged: (String username) {
+                    field.didChange(username);
+                    if (fusername.text.length >= fusernameLength &&
+                        fpassword.text.length >= fpassLength) {
+                      loginButtonController.sink.add(ButtonSubmitEvent(true));
+                    }
+                    if (fusername.text.length <= fusernameLength - 1 ||
+                        fpassword.text.length <= fpassLength - 1) {
+                      loginButtonController.sink.add(ButtonSubmitEvent(false));
+                    }
+                  })
+            ],
+          );
+        });
   }
 
   Widget passwordSection() {
     return FormBuilderField(
-      name: "password",
-      builder: (FormFieldState<dynamic> field) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Mật khẩu",
-                    style: TextStyle(
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w600,
-                        color: ThemeConstant.black_color)),
-                SizedBox(height: 5.0),
-                TextField(
-                    cursorColor: ThemeConstant.alto_color,
-                    keyboardType: TextInputType.text,
-                    controller: fpassword,
-                    obscureText: true,
-                    decoration: ThemeConstant.tfInputDecoration(
-                        'Vui lòng nhập mật khẩu'),
-                    onChanged: (String password) {
-                      field.didChange(password);
-                      if (fusername.text.length >= fusernameLength &&
-                          fpassword.text.length >= fpassLength) {
-                        loginButtonController.sink.add(ButtonSubmitEvent(true));
-                      }
-                      if (fusername.text.length <= fusernameLength - 1 ||
-                          fpassword.text.length <= fpassLength - 1) {
-                        loginButtonController.sink
-                            .add(ButtonSubmitEvent(false));
-                      }
-                    })
-              ],
-            );
-          }
-    );
+        name: "password",
+        builder: (FormFieldState<dynamic> field) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("Mật khẩu",
+                  style: TextStyle(
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.w600,
+                      color: ThemeConstant.black_color)),
+              SizedBox(height: 5.0),
+              TextField(
+                  cursorColor: ThemeConstant.alto_color,
+                  keyboardType: TextInputType.text,
+                  controller: fpassword,
+                  obscureText: true,
+                  decoration:
+                      ThemeConstant.tfInputDecoration('Vui lòng nhập mật khẩu'),
+                  onChanged: (String password) {
+                    field.didChange(password);
+                    if (fusername.text.length >= fusernameLength &&
+                        fpassword.text.length >= fpassLength) {
+                      loginButtonController.sink.add(ButtonSubmitEvent(true));
+                    }
+                    if (fusername.text.length <= fusernameLength - 1 ||
+                        fpassword.text.length <= fpassLength - 1) {
+                      loginButtonController.sink.add(ButtonSubmitEvent(false));
+                    }
+                  })
+            ],
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    final loginBloc = LoginBloc(authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
+    final loginBloc = LoginBloc(
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
 
     final introduceSection = Container(
         child: Row(
@@ -161,15 +158,6 @@ class LoginScreenState extends State<LoginScreen> {
               width: 134.0, height: 162.0, fit: BoxFit.fitHeight),
         ]));
 
-    final forgotLabel = FlatButton(
-      child: Text('Quên mật khẩu',
-          style: TextStyle(
-              color: ThemeConstant.violet_color,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold)),
-      onPressed: () {},
-    );
-
     this._screenSize = MediaQuery.of(context).size;
     final _padding = this._screenSize.width * 5 / 100;
 
@@ -193,7 +181,7 @@ class LoginScreenState extends State<LoginScreen> {
                           child: BlocListener(
                               bloc: loginBloc,
                               listener: (context, state) async {
-                                print('print show : ${state}');
+                                print('print show : $state');
                                 if (state is LoginLoading) {
                                   progressToolkit.state.show();
                                 }

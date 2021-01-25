@@ -15,10 +15,10 @@ class ButtonSubmitEvent {
 }
 
 class ButtonWidget extends StatefulWidget {
-  String defaultHintText;
+  final String defaultHintText;
   bool isActive = false;
   StreamController<ButtonSubmitEvent> controller;
-  CallBackHandler callback;
+  final CallBackHandler callback;
 
   ButtonWidget({
     this.defaultHintText,

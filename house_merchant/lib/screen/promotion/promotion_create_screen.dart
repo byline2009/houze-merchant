@@ -26,7 +26,7 @@ import 'package:path/path.dart' as path;
 typedef void CallBackHandler(dynamic value);
 
 class CouponCreateScreen extends StatefulWidget {
-  dynamic params;
+  final dynamic params;
 
   CouponCreateScreen({@required this.params, Key key}) : super(key: key);
 
@@ -95,10 +95,10 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
   bool checkValidation() {
     var isActive = false;
     if (imagePicker.state.filesPick.length > 0 &&
-        !StringUtil.isEmpty(ftitle.Controller.text) &&
-        !StringUtil.isEmpty(famount.Controller.text) &&
+        !StringUtil.isEmpty(ftitle.controller.text) &&
+        !StringUtil.isEmpty(famount.controller.text) &&
         frangeTimeResult != null &&
-        !StringUtil.isEmpty(fdesc.Controller.text)) {
+        !StringUtil.isEmpty(fdesc.controller.text)) {
       isActive = true;
     }
     sendButtonController.sink.add(ButtonSubmitEvent(isActive));
@@ -106,11 +106,11 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
   }
 
   void clearForm() {
-    ftitle.Controller.clear();
-    famount.Controller.clear();
+    ftitle.controller.clear();
+    famount.controller.clear();
     frangeTimeResult = null;
     frangeTime.add([]);
-    fdesc.Controller.clear();
+    fdesc.controller.clear();
     imagePicker.clear();
     sendButtonController.add(ButtonSubmitEvent(false));
   }
@@ -219,16 +219,15 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
                   try {
                     progressToolkit.state.show();
                     final _couponModel = CouponModel(
-                      title: ftitle.Controller.text,
-                      quantity: int.parse(famount.Controller.text),
+                      title: ftitle.controller.text,
+                      quantity: int.parse(famount.controller.text),
                       startDate: frangeTimeResult[0].toUtc().toString(),
                       endDate: frangeTimeResult[1].toUtc().toString(),
-                      description: fdesc.Controller.text,
+                      description: fdesc.controller.text,
                       images: couponModel.images,
                     );
 
-                    final result =
-                        await couponRepository.createCoupon(_couponModel);
+                    await couponRepository.createCoupon(_couponModel);
                     T7GDialog.showContentDialog(
                         context, [this._navigatedToPromotionListScreen()],
                         closeShow: false, barrierDismissible: false);

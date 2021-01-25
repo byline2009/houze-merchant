@@ -27,7 +27,7 @@ import 'package:house_merchant/utils/string_util.dart';
 typedef void CallBackHandler(dynamic value);
 
 class CouponEditScreen extends StatefulWidget {
-  dynamic params;
+  final dynamic params;
 
   CouponEditScreen({@required this.params, Key key}) : super(key: key);
 
@@ -76,10 +76,10 @@ class CouponEditScreenState extends State<CouponEditScreen> {
   bool checkValidation() {
     var isActive = false;
     if (imageValidation() &&
-        !StringUtil.isEmpty(ftitle.Controller.text) &&
-        !StringUtil.isEmpty(famount.Controller.text) &&
+        !StringUtil.isEmpty(ftitle.controller.text) &&
+        !StringUtil.isEmpty(famount.controller.text) &&
         frangeTimeResult != null &&
-        !StringUtil.isEmpty(fdesc.Controller.text)) {
+        !StringUtil.isEmpty(fdesc.controller.text)) {
       isActive = true;
     }
     saveButtonController.sink.add(ButtonSubmitEvent(isActive));
@@ -100,9 +100,9 @@ class CouponEditScreenState extends State<CouponEditScreen> {
 
     data = widget.params['coupon_model'];
     _imgList = data.images;
-    ftitle.Controller.text = data.title;
-    fdesc.Controller.text = data.description;
-    famount.Controller.text = data.quantity.toString();
+    ftitle.controller.text = data.title;
+    fdesc.controller.text = data.description;
+    famount.controller.text = data.quantity.toString();
     frangeTimeResult = [
       DateTime.parse(data.startDate).toLocal(),
       DateTime.parse(data.endDate).toLocal()
@@ -144,11 +144,11 @@ class CouponEditScreenState extends State<CouponEditScreen> {
   }
 
   void clearForm() {
-    ftitle.Controller.clear();
-    famount.Controller.clear();
+    ftitle.controller.clear();
+    famount.controller.clear();
     frangeTimeResult = null;
     frangeTime.add([]);
-    fdesc.Controller.clear();
+    fdesc.controller.clear();
     imagePicker.clear();
     saveButtonController.add(ButtonSubmitEvent(false));
   }
@@ -333,11 +333,11 @@ class CouponEditScreenState extends State<CouponEditScreen> {
           CouponModel coupon = widget.params['coupon_model'];
 
           final data = CouponModel(
-              title: ftitle.Controller.text,
-              quantity: int.parse(famount.Controller.text),
+              title: ftitle.controller.text,
+              quantity: int.parse(famount.controller.text),
               startDate: frangeTimeResult[0].toUtc().toString(),
               endDate: frangeTimeResult[1].toUtc().toString(),
-              description: fdesc.Controller.text,
+              description: fdesc.controller.text,
               images: [_imgList.first],
               shops: coupon.shops);
 

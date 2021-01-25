@@ -30,40 +30,6 @@ class NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Container makeListTile(NotificationModel noti) => Container(
-        decoration: BoxDecoration(
-            color: noti.isRead
-                ? ThemeConstant.white_color
-                : ThemeConstant.listview_selected_color),
-        child: ListTile(
-            contentPadding: EdgeInsets.only(left: 20.0),
-            leading: Container(
-              width: 40,
-              height: 40,
-              child: SvgPicture.asset(noti.isRead
-                  ? "assets/images/ic-order-empty.svg"
-                  : "assets/images/ic-promotion-highlight.svg"),
-            ),
-            title: Text(
-              noti.title,
-              style: TextStyle(
-                  color: Colors.black, fontSize: 15, letterSpacing: 0.24),
-            ),
-            subtitle: Row(
-              children: <Widget>[
-                Expanded(
-                    flex: 4,
-                    child: Text(noti.content,
-                        style: TextStyle(
-                            color: ThemeConstant.grey_color,
-                            fontSize: 12,
-                            letterSpacing: 0.24))),
-              ],
-            ),
-            onTap: () {
-              print(noti.title);
-            }));
-
     final notificationEmptyView = Container(
         child: Center(
       child: Column(
@@ -83,18 +49,6 @@ class NotificationScreenState extends State<NotificationScreen> {
         ],
       ),
     ));
-
-    final makeBody = Container(
-      child: ListView.separated(
-        scrollDirection: Axis.vertical,
-        itemCount: notifications.length,
-        itemBuilder: (BuildContext context, int index) {
-          return makeListTile(notifications[index]);
-        },
-        separatorBuilder: (BuildContext context, int index) =>
-            Divider(height: 2, color: ThemeConstant.background_grey_color),
-      ),
-    );
 
     return BaseScaffoldNormal(
       title: 'Thông báo',

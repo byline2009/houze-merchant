@@ -10,17 +10,16 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:intl/intl.dart';
 
 class ProfileScreenWidget extends StatefulWidget {
-  dynamic params;
+  final dynamic params;
 
   ProfileScreenWidget({Key key, this.params}) : super(key: key);
 
   @override
-  ProfileScreenState createState() =>
-      new ProfileScreenState(params: this.params);
+  ProfileScreenState createState() => ProfileScreenState(params: this.params);
 }
 
 class ProfileScreenState extends State<ProfileScreenWidget> {
-  dynamic params;
+  final dynamic params;
 
   ProfileScreenState({this.params});
 

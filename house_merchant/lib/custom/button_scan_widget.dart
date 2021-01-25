@@ -6,7 +6,7 @@ import 'package:house_merchant/constant/theme_constant.dart';
 typedef void CallBackHandler();
 
 class ButtonScanQRWidget extends StatefulWidget {
-  CallBackHandler callback;
+  final CallBackHandler callback;
 
   ButtonScanQRWidget({@required this.callback});
 

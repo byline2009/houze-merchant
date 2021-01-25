@@ -7,7 +7,7 @@ typedef void CallBackHandler();
 class BaseScaffoldNormal extends StatelessWidget {
   final Widget child;
   final String title;
-  CallBackHandler callback;
+  final CallBackHandler callback;
 
   BaseScaffoldNormal({this.title, this.child, this.callback});
 

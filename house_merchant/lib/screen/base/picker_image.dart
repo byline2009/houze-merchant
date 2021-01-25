@@ -12,7 +12,7 @@ import 'package:christian_picker_image/christian_picker_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
-typedef void callBackUploadHandler(FilePick file);
+typedef void CallBackUploadHandler(FilePick file);
 
 enum PickerImageType { grid, list }
 
@@ -26,14 +26,14 @@ class FilePick {
 }
 
 class PickerImage extends StatefulWidget {
-  callBackUploadHandler callbackUpload;
-  callBackUploadHandler callbackRemove;
+  CallBackUploadHandler callbackUpload;
+  CallBackUploadHandler callbackRemove;
 
   int maxImage;
   double width, height;
   PickerImageType type;
-  PickerImageState state = new PickerImageState();
-  List<FilePick> imagesInit = new List<FilePick>();
+  PickerImageState state = PickerImageState();
+  List<FilePick> imagesInit = List<FilePick>();
 
   PickerImage(
       {Key key,
@@ -44,7 +44,7 @@ class PickerImage extends StatefulWidget {
       this.type = PickerImageType.grid})
       : super(key: key) {
     if (this.imagesInit == null) {
-      this.imagesInit = new List<FilePick>();
+      this.imagesInit = List<FilePick>();
     }
   }
 
@@ -57,11 +57,11 @@ class PickerImage extends StatefulWidget {
 }
 
 class PickerImageState extends State<PickerImage> {
-  List<FilePick> filesPick = new List<FilePick>();
+  List<FilePick> filesPick = List<FilePick>();
   //Final pick
-  List<FilePick> validationFilesPick = new List<FilePick>();
+  List<FilePick> validationFilesPick = List<FilePick>();
   File _fileSelected;
-  List<Future<dynamic>> _uploadParrallel = new List<Future<dynamic>>();
+  List<Future<dynamic>> _uploadParrallel = List<Future<dynamic>>();
 
   @override
   void initState() {
@@ -70,7 +70,7 @@ class PickerImageState extends State<PickerImage> {
   }
 
   void clear() {
-    this.filesPick = new List<FilePick>();
+    this.filesPick = List<FilePick>();
     this._fileSelected = null;
     setState(() {});
   }
@@ -85,7 +85,7 @@ class PickerImageState extends State<PickerImage> {
   }
 
   void uploadProcessing(BuildContext context) async {
-    List<File> images = new List<File>();
+    List<File> images = List<File>();
     try {
       images = await ChristianPickerImage.pickImages(
           maxImages: widget.maxImage - this.filesPick.length);
@@ -144,7 +144,7 @@ class PickerImageState extends State<PickerImage> {
         Container(
           padding: EdgeInsets.only(top: 10, right: 5),
           child: ClipRRect(
-              borderRadius: new BorderRadius.circular(4.0),
+              borderRadius: BorderRadius.circular(4.0),
               child: Stack(
                 overflow: Overflow.clip,
                 children: <Widget>[

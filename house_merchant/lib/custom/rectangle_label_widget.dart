@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 
 class RectangleLabelWidget extends StatefulWidget {
-  String text;
-  Color color;
+  final String text;
+  final Color color;
 
   RectangleLabelWidget({this.text, this.color});
 

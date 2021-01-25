@@ -15,10 +15,10 @@ typedef void CallBackHandler(List<DateTime> value);
 typedef VoidFunc = void Function();
 
 class DateRangePickerWidget extends StatefulWidget {
-  String defaultHintText;
+  final String defaultHintText;
   bool isActive = false;
   StreamController<List<DateTime>> controller;
-  CallBackHandler callback;
+  final CallBackHandler callback;
 
   DateRangePickerWidget({this.controller, this.defaultHintText, this.callback});
 

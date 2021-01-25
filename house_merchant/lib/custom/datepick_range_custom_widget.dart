@@ -36,13 +36,12 @@ class DateRangePickerCustomWidget extends StatefulWidget {
 class DateRangePickerCustomWidgetState
     extends State<DateRangePickerCustomWidget> {
   DateTime now;
-  TextFieldWidgetController localController = new TextFieldWidgetController();
+  final localController = TextFieldWidgetController();
 
   DateRangePickerCustomWidgetState();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     localController.Controller.text =

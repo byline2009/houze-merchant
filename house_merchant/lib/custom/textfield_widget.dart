@@ -12,7 +12,7 @@ typedef void CallBackHandler(String value);
 typedef VoidFunc = void Function();
 
 class TextFieldWidgetController {
-  TextEditingController _controller = new TextEditingController();
+  TextEditingController _controller = TextEditingController();
   VoidFunc _callbackRefresh;
 
   TextFieldWidgetController();
@@ -31,11 +31,11 @@ class TextFieldWidgetController {
     }
   }
 
-  TextEditingController get Controller {
+  TextEditingController get controller {
     return this._controller;
   }
 
-  set Controller(TextEditingController _controller) {
+  set controller(TextEditingController _controller) {
     this._controller = _controller;
   }
 }
@@ -49,7 +49,7 @@ class TextFieldWidget extends StatelessWidget {
   CallBackHandler callback;
   TextFieldWidgetController controller;
   final StreamController<String> textStreamController =
-      new StreamController<String>.broadcast();
+      StreamController<String>.broadcast();
   VoidFunc onTap;
 
   TextFieldWidget(
@@ -62,7 +62,7 @@ class TextFieldWidget extends StatelessWidget {
       this.enabled = true}) {
     //Init controller
     this.controller._callbackRefresh = () {
-      this.controller.Controller.clear();
+      this.controller.controller.clear();
       textStreamController.sink.add("");
     };
   }
@@ -78,15 +78,15 @@ class TextFieldWidget extends StatelessWidget {
 //                borderRadius: BorderRadius.all(Radius.circular(5.0)),
 //                color: Colors.white,
 //                border: Border.all(
-//                    color: this.controller.Controller.text != "" ? ThemeConstant.form_border_changed : ThemeConstant.form_border_normal,
+//                    color: this.controller.controller.text != "" ? ThemeConstant.form_border_changed : ThemeConstant.form_border_normal,
 //                    width: ThemeConstant.form_border_width,
 //                    style: BorderStyle.solid)
 //            ),
 
-          return new TextField(
+          return TextField(
             cursorColor: ThemeConstant.alto_color,
             obscureText: this.obscureText,
-            controller: this.controller.Controller,
+            controller: this.controller.controller,
             keyboardType: keyboardType,
             textAlign: TextAlign.left,
             onTap: () {
@@ -108,14 +108,14 @@ class TextFieldWidget extends StatelessWidget {
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 borderSide: BorderSide(
-                    color: this.controller.Controller.text != ""
+                    color: this.controller.controller.text != ""
                         ? ThemeConstant.form_border_changed
                         : ThemeConstant.form_border_normal),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 borderSide: BorderSide(
-                    color: this.controller.Controller.text != ""
+                    color: this.controller.controller.text != ""
                         ? ThemeConstant.form_border_changed
                         : ThemeConstant.form_border_normal),
               ),

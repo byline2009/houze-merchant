@@ -1,11 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 
 class TextFieldStyle1Widget extends TextFieldWidget {
-
   String defaultHintText;
   bool isChanged = false;
   bool enabled = false;
@@ -13,16 +11,18 @@ class TextFieldStyle1Widget extends TextFieldWidget {
   CallBackHandler callback;
   TextFieldWidgetController controller;
 
-  TextFieldStyle1Widget({this.controller,
-    this.defaultHintText,
-    this.keyboardType = TextInputType.text,
-    this.callback,
-    this.enabled = true}) : super(
-      controller: controller,
-      defaultHintText: defaultHintText,
-      callback: callback,
-      enabled: enabled,
-  );
+  TextFieldStyle1Widget(
+      {this.controller,
+      this.defaultHintText,
+      this.keyboardType = TextInputType.text,
+      this.callback,
+      this.enabled = true})
+      : super(
+          controller: controller,
+          defaultHintText: defaultHintText,
+          callback: callback,
+          enabled: enabled,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class TextFieldStyle1Widget extends TextFieldWidget {
               //         style: BorderStyle.solid)),
               child: new TextField(
                 cursorColor: ThemeConstant.alto_color,
-                controller: this.controller.Controller,
+                controller: this.controller.controller,
                 keyboardType: keyboardType,
                 textAlign: TextAlign.left,
                 onTap: () {},

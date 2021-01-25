@@ -24,7 +24,7 @@ class ChangePasswordScreen extends StatefulWidget {
   ChangePasswordScreen({Key key}) : super(key: key);
 
   @override
-  ChangePasswordScreenState createState() => new ChangePasswordScreenState();
+  ChangePasswordScreenState createState() => ChangePasswordScreenState();
 }
 
 class ChangePasswordScreenState extends State<ChangePasswordScreen> {
@@ -32,11 +32,11 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   var padding;
 
-  var _confirmEnable = false;
+  bool _confirmEnable = false;
   final _oldPassword = TextFieldWidgetController();
   final _newPassword = TextFieldWidgetController();
-  StreamController<ButtonSubmitEvent> _confirmButtonController =
-      new StreamController<ButtonSubmitEvent>();
+  final StreamController<ButtonSubmitEvent> _confirmButtonController =
+      StreamController<ButtonSubmitEvent>();
 
   ProgressHUD progressToolkit = Progress.instanceCreate();
 
@@ -48,6 +48,12 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _confirmButtonController.close();
+    super.dispose();
   }
 
   Widget inputContent(
@@ -80,39 +86,39 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
               name: attribute,
               validator: FormBuilderValidators.compose(validators),
               builder: (FormFieldState<dynamic> field) {
-                    return new Column(children: <Widget>[
-                      Container(
-                        width: _screenSize.width,
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.only(bottom: 10.0),
-                        padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-                        child: new Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            new Expanded(
-                              child: TextFieldWidget(
-                                  controller: _controller,
-                                  obscureText: obscureText,
-                                  defaultHintText: '',
-                                  callback: (String password) {
-                                    field.didChange(password);
-                                    checkCallback(password);
-                                  }),
-                            ),
-                          ],
+                return Column(children: <Widget>[
+                  Container(
+                    width: _screenSize.width,
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(bottom: 10.0),
+                    padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: TextFieldWidget(
+                              controller: _controller,
+                              obscureText: obscureText,
+                              defaultHintText: '',
+                              callback: (String password) {
+                                field.didChange(password);
+                                checkCallback(password);
+                              }),
                         ),
-                      ),
-                      Row(children: [
-                        Text(
-                          StringUtil.isEmpty(field.errorText)
-                              ? ""
-                              : field.errorText,
-                          style: TextStyle(color: Colors.red),
-                        )
-                      ]),
-                    ]);
-                  }),
+                      ],
+                    ),
+                  ),
+                  Row(children: [
+                    Text(
+                      StringUtil.isEmpty(field.errorText)
+                          ? ""
+                          : field.errorText,
+                      style: TextStyle(color: Colors.red),
+                    )
+                  ]),
+                ]);
+              }),
         ]));
   }
 
@@ -201,7 +207,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   try {
                     FocusScope.of(context).requestFocus(new FocusNode());
                     progressToolkit.state.show();
-                    final result = await _profileRepository.changePassword(
+                    await _profileRepository.changePassword(
                         _oldPassword.text, _newPassword.text);
 
                     T7GDialog.showContentDialog(context, [this.showSucessful()],
@@ -233,7 +239,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 bloc: _authenticationBloc,
                 builder: (BuildContext context, AuthenticationState authState) {
                   return Stack(children: <Widget>[
-                    new GestureDetector(
+                    GestureDetector(
                         onTap: () {
                           // Click outside and close Keyboard.
                           FocusScope.of(context).requestFocus(new FocusNode());
@@ -250,10 +256,5 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     progressToolkit,
                   ]);
                 })));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }
