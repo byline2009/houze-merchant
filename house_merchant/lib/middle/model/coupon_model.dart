@@ -152,7 +152,7 @@ class CouponModel {
     }
   }
 
-  String getUsedCound() {
+  String getNumberOfUsersUsed() {
     return '$usedCount/$quantity';
   }
 }

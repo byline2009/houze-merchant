@@ -68,9 +68,8 @@ class CouponRepository {
     return null;
   }
 
-  Future<List<CouponUserModel>> getCouponUserList(
-      {String id, int offset = 0, int limit = APIConstant.limitDefault}) async {
-    final rs = await couponAPI.getCouponUsers(id, limit: limit, offset: offset);
+  Future<List<CouponUserModel>> getCouponUserList({String id, int page}) async {
+    final rs = await couponAPI.getCouponUsers(id, page: page);
     print('[getCouponUserList] ID = $id, result = $rs');
     return rs;
   }

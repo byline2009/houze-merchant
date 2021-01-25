@@ -173,7 +173,7 @@ class CouponScreenState extends State<CouponScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(couponModel.getUsedCound(),
+                Text(couponModel.getNumberOfUsersUsed(),
                     style: new TextStyle(
                       fontSize: ThemeConstant.label_font_size,
                       fontFamily: ThemeConstant.form_font_family_display,

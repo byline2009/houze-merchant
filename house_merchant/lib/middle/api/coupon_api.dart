@@ -72,11 +72,10 @@ class CouponAPI extends OauthAPI {
 
   //MARK: Get coupons
   Future<List<CouponUserModel>> getCouponUsers(String id,
-      {int limit = 10, int offset}) async {
+      {int page, int limit = 10, int offset}) async {
     final Map<String, dynamic> params = {
-      "offset": offset,
+      "offset": page * limit,
       "limit": limit,
-      // 'coupon_pk': id
     };
 
     final response = await this.get(
@@ -91,8 +90,9 @@ class CouponAPI extends OauthAPI {
   //MARK: Upload image
   Future<dynamic> uploadImage(File image) async {
     try {
-      FormData formData =
-          new FormData.fromMap({"image": MultipartFile.fromFileSync(image.path, filename : "ticket.jpg")});
+      FormData formData = new FormData.fromMap({
+        "image": MultipartFile.fromFileSync(image.path, filename: "ticket.jpg")
+      });
 
       final String url = APIConstant.baseMerchantUrlCouponUpload;
 

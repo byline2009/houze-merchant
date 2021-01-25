@@ -69,7 +69,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         children: <Widget>[
           Container(
               child: Row(children: <Widget>[
-            Text(_couponModel.getUsedCound(),
+            Text(_couponModel.getNumberOfUsersUsed(),
                 style: TextStyle(
                     fontSize: _screenSize.width < 350
                         ? 20

@@ -18,8 +18,8 @@ class CouponLoadList extends CouponEvent {
 
 class CouponUserLoadList extends CouponEvent {
   final String id;
-
-  CouponUserLoadList({this.id}) : super([id]);
+  final int page;
+  CouponUserLoadList({this.id, @required this.page}) : super([id]);
 
   @override
   String toString() => 'CouponUserLoadList { id: $id}';
