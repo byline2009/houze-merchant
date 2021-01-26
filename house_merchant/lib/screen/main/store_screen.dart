@@ -228,11 +228,8 @@ class StoreScreenState extends State<StoreScreen> {
         ));
   }
 
-  final StreamController<ShopModel> _controller = StreamController.broadcast();
-
   @override
   void dispose() {
-    _controller.close();
     super.dispose();
   }
 
@@ -295,17 +292,9 @@ class StoreScreenState extends State<StoreScreen> {
                     SliverToBoxAdapter(
                         child: BoxesContainer(
                       title: 'Mô tả',
-                      child: DescriptionBox(shopModel: shopModel),
-
-                      // StreamBuilder<ShopModel>(
-                      //     stream: _controller.stream,
-                      //     initialData: shopModel,
-                      //     builder: (context, snapshot) {
-                      //       if (snapshot.hasData) {
-                      //         return DescriptionBox(shopModel: snapshot.data);
-                      //       }
-                      //       return Container();
-                      //     }),
+                      child: DescriptionBox(
+                        shopModel: shopModel,
+                      ),
                       action: InkWell(
                           onTap: () async {
                             AppRouter.push(

@@ -132,7 +132,7 @@ class OauthAPI {
               if (e.response?.statusCode == 401) {
                 Fluttertoast.showToast(
                     msg:
-                        "Your session ended because there was no activity. Try signing in again.",
+                        "Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIos: 5,
