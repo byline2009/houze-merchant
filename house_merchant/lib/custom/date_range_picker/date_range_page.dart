@@ -6,8 +6,8 @@ import 'package:house_merchant/custom/date_range_picker/date_range_picker.dart'
     as DateRagePicker;
 
 class DateRangePage extends StatefulWidget {
-  dynamic callback;
-  List<DateTime> data;
+  final dynamic callback;
+  final List<DateTime> data;
 
   DateRangePage({this.callback, this.data, Key key}) : super(key: key);
 

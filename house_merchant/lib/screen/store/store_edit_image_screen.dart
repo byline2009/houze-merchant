@@ -21,12 +21,12 @@ import 'package:house_merchant/worker/shop_worker.dart';
 import 'package:worker_manager/worker_manager.dart';
 
 class StoreEditImageScreen extends StatefulWidget {
-  dynamic params;
+  final dynamic params;
 
   StoreEditImageScreen({Key key, this.params}) : super(key: key);
 
   @override
-  StoreEditImageScreenState createState() => new StoreEditImageScreenState();
+  StoreEditImageScreenState createState() => StoreEditImageScreenState();
 }
 
 class StoreEditImageScreenState extends State<StoreEditImageScreen> {
@@ -35,33 +35,34 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   BuildContext _context;
   double _padding;
   StreamController<ButtonSubmitEvent> saveButtonController =
-      new StreamController<ButtonSubmitEvent>.broadcast();
+      StreamController<ButtonSubmitEvent>.broadcast();
   PickerImage imagePicker;
   int maxImage = 4;
   int initImageCount = 0;
-  final StreamController<String> statusPickedText =
-      new StreamController<String>();
+  final StreamController<String> statusPickedText = StreamController<String>();
   ShopRepository shopRepository = ShopRepository();
   var shopModel = ShopModel(images: []);
 
   //Action Event List data
-  List<File> filesCompressedPick = new List<File>();
-  List<String> filesIdDeletedPick = new List<String>();
+  List<File> filesCompressedPick = List<File>();
+  List<String> filesIdDeletedPick = List<String>();
 
   //Task processing
   Future<dynamic> runTaskUpload(File f) async {
-    var completer = new Completer();
+    var completer = Completer();
 
     String currentShop = await Sqflite.currentShop();
 
     Executor()
-        .execute(arg1: ArgUpload(
-        url: APIConstant.baseMerchantUrlShopImageCreate,
-        token: OauthAPI.token,
-        shopId: currentShop,
-        storageShared: Storage.prefs,
-        file: f), fun1: uploadShopImageWorker
-    ).then((result) async {
+        .execute(
+            arg1: ArgUpload(
+                url: APIConstant.baseMerchantUrlShopImageCreate,
+                token: OauthAPI.token,
+                shopId: currentShop,
+                storageShared: Storage.prefs,
+                file: f),
+            fun1: uploadShopImageWorker)
+        .then((result) async {
       if (result != null && result.id != "") {
         this.imagePicker.state.validationFilesPick.insert(
             0,
@@ -77,19 +78,19 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   }
 
   Future<dynamic> runTaskRemove(List<String> ids) async {
-    var completer = new Completer();
+    var completer = Completer();
 
     String currentShop = await Sqflite.currentShop();
 
     Executor()
         .execute(
-      arg1: ArgUpload(
-          url: APIConstant.baseMerchantUrlShopImageDelete,
-          token: OauthAPI.token,
-          shopId: currentShop,
-          storageShared: Storage.prefs,
-          imageId: ids), fun1: removeShopImageWorker
-    )
+            arg1: ArgUpload(
+                url: APIConstant.baseMerchantUrlShopImageDelete,
+                token: OauthAPI.token,
+                shopId: currentShop,
+                storageShared: Storage.prefs,
+                imageId: ids),
+            fun1: removeShopImageWorker)
         .then((result) async {
       completer.complete(result);
     }).catchError((error) {
@@ -122,7 +123,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
         .toList();
     initImageCount = initImages.length;
 
-    imagePicker = new PickerImage(
+    imagePicker = PickerImage(
         width: 160,
         height: 140,
         type: PickerImageType.grid,
@@ -241,7 +242,6 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
           }
         });
 
-    // TODO: implement build
     return BaseScaffoldNormal(
         title: 'Chỉnh sửa cửa hàng',
         child: SafeArea(
@@ -257,5 +257,11 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
           ),
           progressToolkit
         ])));
+  }
+
+  @override
+  void dispose() {
+    saveButtonController.close();
+    super.dispose();
   }
 }

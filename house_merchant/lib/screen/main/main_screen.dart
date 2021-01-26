@@ -1,4 +1,3 @@
-
 import 'package:badges/badges.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +24,7 @@ class NaviagationBottom {
 
 class MainScreen extends StatefulWidget {
   @override
-  MainScreenState createState() => new MainScreenState();
+  MainScreenState createState() => MainScreenState();
 }
 
 class MainScreenState extends State<MainScreen> {
@@ -34,7 +33,7 @@ class MainScreenState extends State<MainScreen> {
     keepPage: true,
   );
   List<NaviagationBottom> navigationButtons = List();
-  List<Widget> listPage = new List<Widget>();
+  List<Widget> listPage = List<Widget>();
   int _currentIndex = 0;
 
   //Bloc
@@ -74,7 +73,7 @@ class MainScreenState extends State<MainScreen> {
 
   List<NaviagationBottom> listNaviagation() {
     return [
-      new NaviagationBottom(
+      NaviagationBottom(
           OrderScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
@@ -83,11 +82,9 @@ class MainScreenState extends State<MainScreen> {
             icon: bottomNavItem(
                 SvgPicture.asset('assets/images/ic-order-default.svg'),
                 badge: ""),
-            title: new Text(
-              LocalizationsUtil.of(context).translate('Đơn hàng'),
-            ),
+            label: LocalizationsUtil.of(context).translate('Đơn hàng'),
           )),
-      new NaviagationBottom(
+      NaviagationBottom(
           MenuScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
@@ -96,11 +93,9 @@ class MainScreenState extends State<MainScreen> {
             icon: bottomNavItem(
                 SvgPicture.asset('assets/images/ic-menu-default.svg'),
                 badge: ""),
-            title: Text(
-              LocalizationsUtil.of(context).translate('Menu'),
-            ),
+            label: LocalizationsUtil.of(context).translate('Menu'),
           )),
-      new NaviagationBottom(
+      NaviagationBottom(
           CouponScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
@@ -109,11 +104,9 @@ class MainScreenState extends State<MainScreen> {
             icon: bottomNavItem(
                 SvgPicture.asset('assets/images/ic-promotion-default.svg'),
                 badge: ""),
-            title: Text(
-              LocalizationsUtil.of(context).translate('Ưu đãi'),
-            ),
+            label: LocalizationsUtil.of(context).translate('Ưu đãi'),
           )),
-      new NaviagationBottom(
+      NaviagationBottom(
           StoreScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
@@ -122,11 +115,9 @@ class MainScreenState extends State<MainScreen> {
             icon: bottomNavItem(
                 SvgPicture.asset('assets/images/ic-store-default.svg'),
                 badge: ""),
-            title: Text(
-              LocalizationsUtil.of(context).translate('Cửa hàng'),
-            ),
+            label: LocalizationsUtil.of(context).translate('Cửa hàng'),
           )),
-      new NaviagationBottom(
+      NaviagationBottom(
           MoreScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
@@ -135,9 +126,7 @@ class MainScreenState extends State<MainScreen> {
             icon: bottomNavItem(
                 SvgPicture.asset('assets/images/ic-more-default.svg'),
                 badge: ""),
-            title: Text(
-              LocalizationsUtil.of(context).translate('Thêm'),
-            ),
+            label: LocalizationsUtil.of(context).translate('Thêm'),
           )),
     ];
   }
@@ -182,7 +171,7 @@ class MainScreenState extends State<MainScreen> {
                                   overlayBloc.add(ShopPicked());
                                 }
 
-                                listPage = new List<Widget>();
+                                listPage = List<Widget>();
 
                                 listPage.add(PageView(
                                   controller: pageController,
@@ -228,7 +217,7 @@ class MainScreenState extends State<MainScreen> {
                                   listPage.removeAt(1);
                                 }
 
-                                return new Scaffold(
+                                return Scaffold(
                                     backgroundColor: Colors.white,
                                     body: Stack(
                                       children: listPage,
@@ -254,10 +243,10 @@ class MainScreenState extends State<MainScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      new Text(
+                      Text(
                         'There are no bottons to push :)',
                       ),
-                      new Text(
+                      Text(
                         'Just turn off your internet.',
                       ),
                     ],

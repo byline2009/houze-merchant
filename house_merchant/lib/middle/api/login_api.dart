@@ -16,6 +16,7 @@ class LoginAPI extends BaseAPI {
       );
       return TokenModel.fromJson(response.data);
     } on DioError catch (e) {
+      print(e.message.toString().toUpperCase());
       if (e.response != null && e.response.statusCode != 200)
         throw ("Sai tài khoản hoặc mật khẩu");
       else {

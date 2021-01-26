@@ -18,7 +18,7 @@ import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
 
 class StoreEditDescriptionScreen extends StatefulWidget {
-  dynamic params;
+  final dynamic params;
   StoreEditDescriptionScreen({Key key, this.params}) : super(key: key);
 
   @override
@@ -34,7 +34,7 @@ class StoreEditDescriptionScreenState
   ShopRepository shopRepository = new ShopRepository();
   final fdesc = TextFieldWidgetController();
 
-  StreamController<ButtonSubmitEvent> saveButtonController =
+  final StreamController<ButtonSubmitEvent> saveButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
   ProgressHUD progressToolkit = Progress.instanceCreate();
 
@@ -43,13 +43,19 @@ class StoreEditDescriptionScreenState
   @override
   void initState() {
     _shopModel = widget.params['shop_model'];
-    fdesc.Controller.text = _shopModel.description;
+    fdesc.controller.text = _shopModel.description;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    saveButtonController.close();
+    super.dispose();
   }
 
   bool checkValidation() {
     var isActive = false;
-    if (!StringUtil.isEmpty(fdesc.Controller.text)) {
+    if (!StringUtil.isEmpty(fdesc.controller.text)) {
       isActive = true;
     }
     saveButtonController.sink.add(ButtonSubmitEvent(isActive));
@@ -122,7 +128,7 @@ class StoreEditDescriptionScreenState
               defaultHintText:
                   LocalizationsUtil.of(context).translate('Lưu thay đổi'),
               callback: () async {
-                this._shopModel.description = fdesc.Controller.text;
+                this._shopModel.description = fdesc.controller.text;
                 shopBloc.add(SaveButtonPressed(shopModel: this._shopModel));
               }));
     }
@@ -137,7 +143,7 @@ class StoreEditDescriptionScreenState
                     progressToolkit.state.show();
                     if (widget.params['callback'] != null) {
                       var shopModel = widget.params['shop_model'] as ShopModel;
-                      shopModel.description = fdesc.Controller.text;
+                      shopModel.description = fdesc.controller.text;
                       widget.params['callback'](shopModel);
                     }
                     Navigator.of(context).pop();

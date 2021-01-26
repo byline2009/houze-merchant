@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:house_merchant/custom/button_outline_widget.dart';
 import 'package:house_merchant/custom/flutter_skeleton/src/skeleton/card_list_skeleton.dart';
 import 'package:house_merchant/custom/flutter_skeleton/src/skeleton_config.dart';
 import 'package:house_merchant/custom/flutter_skeleton/src/skeleton_theme.dart';
-import 'package:house_merchant/custom/read_more_text_widget.dart';
 import 'package:house_merchant/custom/rectangle_label_widget.dart';
 import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
@@ -31,6 +29,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
   Size _screenSize;
   var _padding;
   var _couponModel = new CouponModel();
+  final bloc = CouponBloc();
 
   @override
   void initState() {
@@ -41,8 +40,6 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CouponBloc bloc = CouponBloc();
-
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
     var _heightPhoto = this._screenSize.height * (300 / 818);
@@ -72,7 +69,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         children: <Widget>[
           Container(
               child: Row(children: <Widget>[
-            Text(_couponModel.getUsedCound(),
+            Text(_couponModel.getNumberOfUsersUsed(),
                 style: TextStyle(
                     fontSize: _screenSize.width < 350
                         ? 20

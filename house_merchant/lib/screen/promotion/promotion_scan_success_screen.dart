@@ -12,7 +12,7 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 
 class PromotionScanSuccessScreen extends StatefulWidget {
-  dynamic params;
+  final dynamic params;
   PromotionScanSuccessScreen({@required this.params, key}) : super(key: key);
 
   @override

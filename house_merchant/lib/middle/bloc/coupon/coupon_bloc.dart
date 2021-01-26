@@ -14,7 +14,8 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
       yield CouponLoading();
 
       try {
-        final result = await couponRepository.getCouponUserList(id: event.id);
+        final result = await couponRepository.getCouponUserList(
+            id: event.id, page: event.page);
         yield CouponGetUserListSuccessful(result: result);
       } catch (error) {
         yield CouponFailure(error: error.toString());

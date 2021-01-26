@@ -7,8 +7,8 @@ abstract class CouponEvent extends Equatable {
 }
 
 class CouponLoadList extends CouponEvent {
-  int page;
-  int status;
+  final int page;
+  final int status;
 
   CouponLoadList({this.page, this.status = -1}) : super([page, status]);
 
@@ -17,9 +17,9 @@ class CouponLoadList extends CouponEvent {
 }
 
 class CouponUserLoadList extends CouponEvent {
-  String id;
-
-  CouponUserLoadList({this.id}) : super([id]);
+  final String id;
+  final int page;
+  CouponUserLoadList({this.id, @required this.page}) : super([id]);
 
   @override
   String toString() => 'CouponUserLoadList { id: $id}';

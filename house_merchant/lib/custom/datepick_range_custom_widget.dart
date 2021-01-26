@@ -36,16 +36,15 @@ class DateRangePickerCustomWidget extends StatefulWidget {
 class DateRangePickerCustomWidgetState
     extends State<DateRangePickerCustomWidget> {
   DateTime now;
-  TextFieldWidgetController localController = new TextFieldWidgetController();
+  final localController = TextFieldWidgetController();
 
   DateRangePickerCustomWidgetState();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    localController.Controller.text =
+    localController.controller.text =
         DateFormat(Format.timeAndDate).format(widget.firstDate) +
             ' đến ' +
             DateFormat(Format.timeAndDate).format(widget.lastDate);
@@ -59,7 +58,7 @@ class DateRangePickerCustomWidgetState
         builder:
             (BuildContext context, AsyncSnapshot<List<DateTime>> snapshot) {
           if (snapshot.data != null && snapshot.data.length > 0) {
-            localController.Controller.text =
+            localController.controller.text =
                 DateFormat(Format.timeAndDate).format(snapshot.data.first) +
                     ' đến ' +
                     DateFormat(Format.timeAndDate).format(snapshot.data.last);

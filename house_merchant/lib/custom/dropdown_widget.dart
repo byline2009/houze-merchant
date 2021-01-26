@@ -24,11 +24,11 @@ class DropdownWidgetController {
     }
   }
 
-  FixedExtentScrollController get Controller {
+  FixedExtentScrollController get controller {
     return this._controller;
   }
 
-  set Controller(FixedExtentScrollController _controller) {
+  set controller(FixedExtentScrollController _controller) {
     this._controller = _controller;
   }
 }
@@ -106,14 +106,14 @@ class _DropdownWidgetState extends State<DropdownWidget> {
     //Init controller
     this.controller._callbackRefresh = () {
       this.selectedIndex = -1;
-      this.controller.Controller = FixedExtentScrollController();
+      this.controller.controller = FixedExtentScrollController();
       _dropdownController.clear();
       _dropdownStreamController.sink.add(-1);
     };
 
     if (this.initIndex > -1 && dataSource.length > 0) {
       this.selectedIndex = this.initIndex;
-      controller.Controller =
+      controller.controller =
           FixedExtentScrollController(initialItem: this.selectedIndex);
       _dropdownController.text = dataSource[this.selectedIndex].value;
       // print("=======");
@@ -124,7 +124,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
   }
 
   void onCompleteNoRefreshDataSource() {
-    controller.Controller =
+    controller.controller =
         FixedExtentScrollController(initialItem: this.selectedIndex);
     _dropdownController.text = dataSource[this.selectedIndex].value;
     _dropdownStreamController.sink.add(this.selectedIndex);
@@ -178,7 +178,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                           onPressed: () {
                             if (cancelEvent != null) {
                               this.selectedIndex = -1;
-                              controller.Controller =
+                              controller.controller =
                                   FixedExtentScrollController();
                               _dropdownController.clear();
                               _dropdownStreamController.sink.add(-1);
@@ -250,7 +250,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                         return _buildBottomPicker(
                             context,
                             CupertinoPicker(
-                              scrollController: controller.Controller,
+                              scrollController: controller.controller,
                               itemExtent: _kPickerTitleHeight,
                               backgroundColor: CupertinoColors.white,
                               onSelectedItemChanged: (int index) {

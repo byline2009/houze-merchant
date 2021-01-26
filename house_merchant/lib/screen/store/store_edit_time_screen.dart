@@ -17,23 +17,23 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 
 class StoreEditTimeScreen extends StatefulWidget {
-  dynamic params;
+  final dynamic params;
   StoreEditTimeScreen({Key key, this.params}) : super(key: key);
 
   @override
-  StoreEditTimeScreenState createState() => new StoreEditTimeScreenState();
+  StoreEditTimeScreenState createState() => StoreEditTimeScreenState();
 }
 
 class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   Size _screenSize;
   BuildContext _context;
   double _padding;
-  StreamController<ButtonSubmitEvent> saveButtonController =
-      new StreamController<ButtonSubmitEvent>.broadcast();
+  final StreamController<ButtonSubmitEvent> saveButtonController =
+      StreamController<ButtonSubmitEvent>.broadcast();
   ProgressHUD _progressToolkit = Progress.instanceCreate();
 
-  StreamController<String> messageText =
-      new StreamController<String>.broadcast();
+  final StreamController<String> messageText =
+      StreamController<String>.broadcast();
   final _fOpeningHours = DropdownWidgetController();
   final _fCloseHours = DropdownWidgetController();
   final _dataSourceHours = [];
@@ -41,7 +41,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   List _selectedWorkingDayList = List();
   var messageError = "";
 
-  ShopRepository shopRepository = new ShopRepository();
+  ShopRepository shopRepository = ShopRepository();
   //Model
   var openTime, closeTime = "";
   ShopModel _shopModel;
@@ -50,6 +50,13 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   int _initCloseHourIndex = 0;
 
   dynamic params;
+
+  @override
+  void dispose() {
+    messageText.close();
+    saveButtonController.close();
+    super.dispose();
+  }
 
   @override
   void initState() {

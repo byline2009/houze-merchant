@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:house_merchant/custom/group_radio_tags_widget.dart';
+
 class CommonConstant {
   static const String tokenType = 'Bearer';
   static const int maxImage = 5;
@@ -24,6 +26,15 @@ class Promotion {
   static const int approveStatus = 1;
   static const int rejectStatus = 2;
   static const int canceledStatus = 3;
+
+  static final List<GroupRadioTags> statusTags = [
+    GroupRadioTags(id: Promotion.allStatus, title: Promotion.all),
+    GroupRadioTags(id: Promotion.approveStatus, title: Promotion.approved),
+    GroupRadioTags(id: Promotion.pendingStatus, title: Promotion.pending),
+    GroupRadioTags(id: Promotion.expiredStatus, title: Promotion.expire),
+    GroupRadioTags(id: Promotion.rejectStatus, title: Promotion.rejected),
+    GroupRadioTags(id: Promotion.canceledStatus, title: Promotion.canceled),
+  ];
 }
 
 String deviceType = (Platform.isAndroid == true) ? "gcm" : "apple";

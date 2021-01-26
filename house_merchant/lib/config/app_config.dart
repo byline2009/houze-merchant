@@ -1,4 +1,3 @@
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/middle/api/oauth_api.dart';
@@ -6,10 +5,11 @@ import 'package:house_merchant/utils/sqflite.dart';
 import 'package:house_merchant/utils/storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+const String envProd = '.env.prod';
+const String envDev = '.env.dev';
+
 class AppConfig {
-
-  static init({String env='.env.prod'}) async {
-
+  static init({String env = envProd}) async {
     // Instance SharedPreferences
     Storage.prefs = await SharedPreferences.getInstance();
 
@@ -25,5 +25,4 @@ class AppConfig {
     //OAuth init
     OauthAPI.init();
   }
-
 }

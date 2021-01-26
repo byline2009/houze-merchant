@@ -6,9 +6,9 @@ import 'package:house_merchant/utils/localizations_util.dart';
 typedef void CallBackHandler();
 
 class ButtonCreateWidget extends StatefulWidget {
-  CallBackHandler onPressed;
-  Widget icon;
-  String title;
+  final CallBackHandler onPressed;
+  final Widget icon;
+  final String title;
 
   ButtonCreateWidget(
       {@required this.onPressed, @required this.title, this.icon});
