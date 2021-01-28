@@ -53,8 +53,9 @@ class CouponScreenState extends State<CouponScreen> {
 
   void getCouponsByStatus({int status = Promotion.allStatus}) {
     this.statusCurrent = status;
-    this.tagIndexCurrent = status == Promotion.allStatus ? 0 : tagIndexCurrent;
-    couponListBloc.add(CouponLoadList(page: -1, status: status));
+    this.tagIndexCurrent =
+        statusCurrent == Promotion.allStatus ? 0 : tagIndexCurrent;
+    couponListBloc.add(CouponLoadList(page: -1, status: statusCurrent));
   }
 
   Widget tags() {
@@ -216,7 +217,7 @@ class CouponScreenState extends State<CouponScreen> {
                 'qr_code_model': rs,
                 'callback': (bool isRefreshData) {
                   if (isRefreshData) {
-                    this.getCouponsByStatus();
+                    this.getCouponsByStatus(status: this.statusCurrent);
                   }
                   return;
                 }
@@ -442,7 +443,8 @@ class CouponScreenState extends State<CouponScreen> {
                                           "coupon_model": data,
                                           "callback": (bool isReloadData) {
                                             if (isReloadData) {
-                                              this.getCouponsByStatus();
+                                              this.getCouponsByStatus(
+                                                  status: this.statusCurrent);
                                             }
                                             return;
                                           }
@@ -472,28 +474,31 @@ class CouponScreenState extends State<CouponScreen> {
 
     return BaseScaffold(
         title: 'Ưu đãi',
-        trailing: Padding(
-            child: ButtonCreateWidget(
-                title: "Tạo mới",
-                onPressed: () {
-                  AppRouter.push(context, AppRouter.COUPON_CREATE, {
-                    "callback": (isReloadData) {
-                      if (isReloadData) {
-                        this.getCouponsByStatus();
-                      }
-                      return;
-                    }
-                  });
-                },
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 25.0,
-                )),
-            padding: EdgeInsets.only(right: this._padding)),
+        trailing: _createNewPromotionButton,
         child: Stack(children: <Widget>[
           Positioned(child: bodySection(context)),
           Positioned(child: scanQRButton())
         ]));
   }
+
+  Widget get _createNewPromotionButton => Padding(
+      child: ButtonCreateWidget(
+        title: "Tạo mới",
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 25.0,
+        ),
+        onPressed: () {
+          AppRouter.push(context, AppRouter.COUPON_CREATE, {
+            "callback": (isReloadData) {
+              if (isReloadData) {
+                this.getCouponsByStatus();
+              }
+              return;
+            }
+          });
+        },
+      ),
+      padding: EdgeInsets.only(right: this._padding));
 }
