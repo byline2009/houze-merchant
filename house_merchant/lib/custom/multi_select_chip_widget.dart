@@ -4,16 +4,16 @@ import 'package:house_merchant/constant/theme_constant.dart';
 class ChoiceChipsWidget extends StatefulWidget {
   final List choiceChipList;
   final Function(List<int>) onSelectionChanged;
-  List<int> selectedChoices = List();
+  final List<int> selectedChoices;
 
-  ChoiceChipsWidget(this.choiceChipList, {this.onSelectionChanged, this.selectedChoices});
+  const ChoiceChipsWidget(this.choiceChipList,
+      {this.onSelectionChanged, this.selectedChoices});
 
   @override
   _ChoiceChipsWidgetState createState() => _ChoiceChipsWidgetState();
 }
 
 class _ChoiceChipsWidgetState extends State<ChoiceChipsWidget> {
-
   _buildChoiceList() {
     List<Widget> choices = List();
 
@@ -37,6 +37,9 @@ class _ChoiceChipsWidgetState extends State<ChoiceChipsWidget> {
           child: ChoiceChip(
               padding: EdgeInsets.all(0),
               backgroundColor: Colors.white,
+              avatarBorder: null,
+              elevation: 0.0,
+              pressElevation: 0.0,
               selectedColor: ThemeConstant.listview_selected_color,
               disabledColor: Colors.transparent,
               selectedShadowColor: Colors.transparent,

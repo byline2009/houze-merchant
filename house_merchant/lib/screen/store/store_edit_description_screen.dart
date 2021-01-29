@@ -14,21 +14,15 @@ import 'package:house_merchant/middle/bloc/shop/shop_event.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
+import 'package:house_merchant/screen/main/store_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
 
-typedef void CallBackHandler(String description);
-
-class StoreEditDescriptionArgument {
-  final CallBackHandler callback;
-  final ShopModel shopModel;
-  StoreEditDescriptionArgument(
-      {@required this.callback, @required this.shopModel});
-}
+typedef void CallBackHandler(ShopModel shop);
 
 class StoreEditDescriptionScreen extends StatefulWidget {
-  final StoreEditDescriptionArgument params;
+  final StoreEditArgument params;
 
   StoreEditDescriptionScreen({Key key, this.params}) : super(key: key);
 
@@ -153,7 +147,9 @@ class StoreEditDescriptionScreenState
                 listener: (context, state) async {
                   if (state is ShopSuccessful) {
                     progressToolkit.state.show();
-                    widget.params.callback(fdesc.controller.text);
+                    this._shopModel.description = fdesc.controller.text;
+
+                    widget.params.callback(_shopModel);
                     Navigator.of(context).pop();
 
                     Fluttertoast.showToast(

@@ -13,11 +13,12 @@ import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
+import 'package:house_merchant/screen/main/store_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 
 class StoreEditTimeScreen extends StatefulWidget {
-  final dynamic params;
+  final StoreEditArgument params;
   StoreEditTimeScreen({Key key, this.params}) : super(key: key);
 
   @override
@@ -53,6 +54,8 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
 
   @override
   void dispose() {
+    _fCloseHours.controller?.dispose();
+    _fOpeningHours.controller?.dispose();
     messageText.close();
     saveButtonController.close();
     super.dispose();
@@ -61,7 +64,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   @override
   void initState() {
     super.initState();
-    this._shopModel = widget.params['shop_model'] as ShopModel;
+    this._shopModel = widget.params.shopModel;
     this._selectedWorkingDayList =
         this._shopModel.hours.map((f) => f.weekday).toList();
     //Init dataSourceYear
@@ -135,7 +138,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   }
 
   bool checkValidation() {
-    showMessage();
+    checkHourValidate();
     var isActive = false;
     if (_initOpeningHourIndex < _initCloseHourIndex &&
         _selectedWorkingDayList.length > 0) {
@@ -145,8 +148,11 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
     return isActive;
   }
 
-  void showMessage() {
+  void checkHourValidate() {
     String str = '';
+    if (_selectedWorkingDayList.length == 0) {
+      str = 'Bạn chưa chọn ngày làm việc!';
+    }
 
     if ((_initOpeningHourIndex < _initCloseHourIndex) == false &&
         _selectedWorkingDayList.length <= 0) {
@@ -155,10 +161,6 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
 
     if ((_initOpeningHourIndex < _initCloseHourIndex) == false) {
       str = 'Giờ đóng cửa phải lớn hơn giờ mở cửa!';
-    }
-
-    if (_selectedWorkingDayList.length == 0) {
-      str = 'Bạn chưa chọn ngày làm việc!';
     }
 
     messageError = str;
@@ -224,10 +226,8 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'Thời gian',
-                style: ThemeConstant.titleLargeStyle(Colors.black),
-              ),
+              Text('Thời gian',
+                  style: ThemeConstant.titleLargeStyle(Colors.black)),
               SizedBox(height: 30),
               _titleSection('Chọn ngày làm việc'),
               SizedBox(height: 10),
@@ -332,9 +332,10 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                       ))
                   .toList();
 
-              final result = shopRepository.updateInfo(this._shopModel);
-              print(result);
-              Navigator.of(context).pop();
+              shopRepository
+                  .updateInfo(this._shopModel)
+                  .then((value) => widget.params.callback(value));
+
               Fluttertoast.showToast(
                   msg: 'Cập nhật thời gian thành công',
                   toastLength: Toast.LENGTH_SHORT,

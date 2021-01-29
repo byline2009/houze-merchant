@@ -17,6 +17,12 @@ import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 
+class StoreEditArgument {
+  final CallBackHandler callback;
+  final ShopModel shopModel;
+  StoreEditArgument({@required this.callback, @required this.shopModel});
+}
+
 class StoreScreen extends StatefulWidget {
   StoreScreen({Key key}) : super(key: key);
 
@@ -67,8 +73,8 @@ class StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget timeStore(ShopModel shopModel) {
-    if (shopModel.hours.length == 0) {
+  Widget timeStore(List<Hours> hours) {
+    if (hours.length == 0) {
       return Padding(
         child: Center(child: Text('Chưa có giờ làm việc')),
         padding: EdgeInsets.only(top: 15),
@@ -85,7 +91,7 @@ class StoreScreenState extends State<StoreScreen> {
       6: true,
     };
 
-    shopModel.hours.forEach((f) {
+    hours.forEach((f) {
       disableWeekday[f.weekday] = false;
     });
 
@@ -159,7 +165,7 @@ class StoreScreenState extends State<StoreScreen> {
                                 fontSize: ThemeConstant.form_font_small,
                                 fontWeight: FontWeight.w600)),
                         SizedBox(height: 5),
-                        Text(shopModel.hours[0].startTime,
+                        Text(hours[0].startTime,
                             style: TextStyle(
                                 color: ThemeConstant.black_color,
                                 fontFamily:
@@ -190,7 +196,7 @@ class StoreScreenState extends State<StoreScreen> {
                                 fontSize: ThemeConstant.form_font_small,
                                 fontWeight: FontWeight.w600)),
                         SizedBox(height: 5),
-                        Text(shopModel.hours[0].endTime,
+                        Text(hours[0].endTime,
                             style: TextStyle(
                                 color: ThemeConstant.black_color,
                                 fontFamily:
@@ -251,6 +257,7 @@ class StoreScreenState extends State<StoreScreen> {
 
             if (shopState is ShopGetDetailSuccessful) {
               final shopModel = shopState.result;
+              List<Hours> _hours = shopState.result.hours;
               _description = shopModel.description;
               return CustomScrollView(
                   physics: const BouncingScrollPhysics(),
@@ -302,30 +309,17 @@ class StoreScreenState extends State<StoreScreen> {
                             AppRouter.push(
                                 context,
                                 AppRouter.SHOP_DESCRIPTION_PAGE,
-                                StoreEditDescriptionArgument(
-                                    callback: (value) {
-                                      if (value.toLowerCase() !=
+                                StoreEditArgument(
+                                    callback: (shop) {
+                                      if (shop.description.toLowerCase() !=
                                           _description.toLowerCase()) {
-                                        print(value);
+                                        print(shop.description);
                                         setState(() {
-                                          _description = value;
+                                          _description = shop.description;
                                         });
                                       }
                                     },
-                                    shopModel: shopModel)
-
-                                //     {
-                                //   "shop_model": shopModel,
-                                //   "callback": (String value) {
-                                //     if (shopModel.description != value) {
-                                //       print(value);
-                                //       shopBloc.add(
-                                //           ShopGetDetail(id: Sqflite.current_shop));
-                                //     }
-                                //   }
-                                // }
-
-                                );
+                                    shopModel: shopModel));
                           },
                           child: editButton()),
                       padding: EdgeInsets.all(this._padding),
@@ -333,11 +327,22 @@ class StoreScreenState extends State<StoreScreen> {
                     SliverToBoxAdapter(
                         child: BoxesContainer(
                       title: 'Thời gian',
-                      child: timeStore(shopModel),
+                      child: timeStore(_hours),
                       action: InkWell(
                           onTap: () {
-                            AppRouter.push(context, AppRouter.SHOP_TIME_PAGE,
-                                {"shop_model": shopModel});
+                            AppRouter.push(
+                                context,
+                                AppRouter.SHOP_TIME_PAGE,
+                                StoreEditArgument(
+                                    callback: (shop) {
+                                      if (shop.hours != shopModel.hours) {
+                                        print(shop.hours);
+                                        setState(() {
+                                          _hours = shop.hours;
+                                        });
+                                      }
+                                    },
+                                    shopModel: shopModel));
                           },
                           child: editButton()),
                       padding: EdgeInsets.all(this._padding),

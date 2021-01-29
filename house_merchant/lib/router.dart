@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:house_merchant/screen/main/notification_screen.dart';
+import 'package:house_merchant/screen/main/store_screen.dart';
 import 'package:house_merchant/screen/profile/change_password_screen.dart';
 import 'package:house_merchant/screen/profile/contact_screen.dart';
 import 'package:house_merchant/screen/profile/profile_screen.dart';
@@ -59,7 +60,7 @@ class AppRouter {
         return StoreEditImageScreen(params: params);
 
       case SHOP_DESCRIPTION_PAGE:
-        final arg = params as StoreEditDescriptionArgument;
+        final arg = params as StoreEditArgument;
         return StoreEditDescriptionScreen(params: arg);
 
       case SHOP_TIME_PAGE:
