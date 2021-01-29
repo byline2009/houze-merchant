@@ -14,6 +14,8 @@ import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
 import 'package:house_merchant/screen/store/store_edit_image_screen.dart';
 import 'package:house_merchant/screen/store/store_edit_time_screen.dart';
 
+import 'screen/base/sc_image_view.dart';
+
 class AppRouter {
   static const HOME_PAGE = 'app://';
 
@@ -32,12 +34,18 @@ class AppRouter {
   static const SHOP_DESCRIPTION_PAGE = "app://ShopDescription";
   static const SHOP_TIME_PAGE = "app://ShopTime";
 
+  static const IMAGE_VIEW_SCREEN = "app://ImageViewPage";
+
   static const CONTACT_PAGE = "app://ContactPage";
   static const PROFILE_PAGE = "app://ProfilePage";
   static const CHANGE_PASSWORD = "app://ChangePassword";
 
   Widget _getPage(String url, dynamic params) {
     switch (url) {
+      case IMAGE_VIEW_SCREEN:
+        var args = params as ImageViewScreenArgument;
+        return ImageViewScreen(params: args);
+
       case COUPON_CREATE:
         return CouponCreateScreen(params: params);
 

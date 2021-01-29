@@ -14,6 +14,7 @@ import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
+import 'package:house_merchant/screen/base/sc_image_view.dart';
 import 'package:intl/intl.dart';
 
 class CouponDetailScreen extends StatefulWidget {
@@ -46,10 +47,21 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
 
     Widget headerImage() {
       return _couponModel.images.first.imageThumb.length > 0
-          ? ImageWidget(
-              width: _screenSize.width,
-              height: _heightPhoto,
-              imgUrl: _couponModel.images.first.imageThumb)
+          ? GestureDetector(
+              onTap: () {
+                List<String> _imgs = [];
+
+                _couponModel.images
+                    .forEach((element) => _imgs.add(element.image));
+
+                AppRouter.pushDialog(context, AppRouter.IMAGE_VIEW_SCREEN,
+                    ImageViewScreenArgument(images: _imgs));
+              },
+              child: ImageWidget(
+                  width: _screenSize.width,
+                  height: _heightPhoto,
+                  imgUrl: _couponModel.images.first.imageThumb),
+            )
           : SvgPicture.asset('assets/images/ic-promotion-default.svg',
               fit: BoxFit.contain,
               width: _screenSize.width,

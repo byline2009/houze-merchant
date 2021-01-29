@@ -12,6 +12,7 @@ import 'package:house_merchant/screen/base/base_scaffold.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:house_merchant/screen/base/picker_image.dart';
+import 'package:house_merchant/screen/base/sc_image_view.dart';
 import 'package:house_merchant/screen/store/list/widget_description_box.dart';
 import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
@@ -57,15 +58,25 @@ class StoreScreenState extends State<StoreScreen> {
               scrollDirection: Axis.horizontal,
               itemCount: images.length,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  child: ImageWidget(
-                    width: 120,
-                    height: 120,
-                    imgUrl: images[index].imageThumb.length > 0
-                        ? images[index].imageThumb
-                        : "https://anhdaostorage.blob.core.windows.net/qa-media/facility/20191114014630397045/meeting-room.jpg",
+                return GestureDetector(
+                  onTap: () {
+                    List<String> _imgs = [];
+
+                    images.forEach((element) => _imgs.add(element.image));
+
+                    AppRouter.pushDialog(context, AppRouter.IMAGE_VIEW_SCREEN,
+                        ImageViewScreenArgument(images: _imgs));
+                  },
+                  child: Container(
+                    child: ImageWidget(
+                      width: 120,
+                      height: 120,
+                      imgUrl: images[index].imageThumb.length > 0
+                          ? images[index].imageThumb
+                          : "https://anhdaostorage.blob.core.windows.net/qa-media/facility/20191114014630397045/meeting-room.jpg",
+                    ),
+                    padding: EdgeInsets.only(right: 15),
                   ),
-                  padding: EdgeInsets.only(right: 15),
                 );
               },
             ))

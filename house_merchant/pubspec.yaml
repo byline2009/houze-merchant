@@ -23,10 +23,14 @@ dependencies:
   equatable: ^0.3.0
 
   flutter_dotenv: ^2.0.3
-  flutter_svg: ^0.18.0
+
   flutter_offline: "^0.2.4"
   intl: ^0.16.0
+
   cached_network_image: ^2.3.3
+  photo_view: ^0.9.2
+  flutter_svg: ^0.18.0
+
   pull_to_refresh: ^1.5.0
   jose: ^0.1.2
   flutter_staggered_animations: ^0.1.2
