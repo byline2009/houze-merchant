@@ -13,11 +13,12 @@ import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
+import 'package:house_merchant/screen/main/store_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 
 class StoreEditTimeScreen extends StatefulWidget {
-  final dynamic params;
+  final StoreEditArgument params;
   StoreEditTimeScreen({Key key, this.params}) : super(key: key);
 
   @override
@@ -53,6 +54,8 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
 
   @override
   void dispose() {
+    _fCloseHours.controller?.dispose();
+    _fOpeningHours.controller?.dispose();
     messageText.close();
     saveButtonController.close();
     super.dispose();
@@ -61,7 +64,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   @override
   void initState() {
     super.initState();
-    this._shopModel = widget.params['shop_model'] as ShopModel;
+    this._shopModel = widget.params.shopModel;
     this._selectedWorkingDayList =
         this._shopModel.hours.map((f) => f.weekday).toList();
     //Init dataSourceYear
@@ -135,7 +138,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   }
 
   bool checkValidation() {
-    showMessage();
+    checkHourValidate();
     var isActive = false;
     if (_initOpeningHourIndex < _initCloseHourIndex &&
         _selectedWorkingDayList.length > 0) {
@@ -145,8 +148,11 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
     return isActive;
   }
 
-  void showMessage() {
+  void checkHourValidate() {
     String str = '';
+    if (_selectedWorkingDayList.length == 0) {
+      str = 'Bạn chưa chọn ngày làm việc!';
+    }
 
     if ((_initOpeningHourIndex < _initCloseHourIndex) == false &&
         _selectedWorkingDayList.length <= 0) {
@@ -155,10 +161,6 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
 
     if ((_initOpeningHourIndex < _initCloseHourIndex) == false) {
       str = 'Giờ đóng cửa phải lớn hơn giờ mở cửa!';
-    }
-
-    if (_selectedWorkingDayList.length == 0) {
-      str = 'Bạn chưa chọn ngày làm việc!';
     }
 
     messageError = str;
@@ -171,11 +173,10 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
         children: <Widget>[
           Text('*',
               style: TextStyle(
-                fontFamily: ThemeConstant.form_font_family_display,
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: ThemeConstant.required_color,
-              )),
+                  fontFamily: ThemeConstant.form_font_family_display,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: ThemeConstant.required_color)),
           SizedBox(width: 5),
           Text(LocalizationsUtil.of(context).translate(title),
               style: TextStyle(
@@ -224,10 +225,8 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'Thời gian',
-                style: ThemeConstant.titleLargeStyle(Colors.black),
-              ),
+              Text('Thời gian',
+                  style: ThemeConstant.titleLargeStyle(Colors.black)),
               SizedBox(height: 30),
               _titleSection('Chọn ngày làm việc'),
               SizedBox(height: 10),
@@ -264,7 +263,6 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                           doneEvent: (index) async {
                             _initOpeningHourIndex = index;
                             this.checkValidation();
-                            //print(_dataSourceHours[index].key);
                             openTime = _dataSourceHours[index].value;
                           })
                     ]))),
@@ -296,7 +294,6 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                                 doneEvent: (index) async {
                                   _initCloseHourIndex = index;
                                   this.checkValidation();
-                                  //print(_dataSourceHours[index].value);
                                   closeTime = _dataSourceHours[index].value;
                                 })
                           ],
@@ -320,8 +317,9 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
         defaultHintText:
             LocalizationsUtil.of(_context).translate('Lưu thay đổi'),
         callback: () async {
+          _progressToolkit.state.show();
+
           if (this.checkValidation()) {
-            _progressToolkit.state.show();
             try {
               //Reupdate hours
               this._shopModel.hours = _selectedWorkingDayList
@@ -332,9 +330,10 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                       ))
                   .toList();
 
-              final result = shopRepository.updateInfo(this._shopModel);
-              print(result);
-              Navigator.of(context).pop();
+              await shopRepository
+                  .updateInfo(this._shopModel)
+                  .then((value) => widget.params.callback(value));
+              _progressToolkit.state.dismiss();
               Fluttertoast.showToast(
                   msg: 'Cập nhật thời gian thành công',
                   toastLength: Toast.LENGTH_SHORT,
@@ -344,6 +343,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   textColor: Colors.white,
                   fontSize: 14.0);
             } catch (e) {
+              _progressToolkit.state.dismiss();
               Fluttertoast.showToast(
                   msg: e.toString(),
                   toastLength: Toast.LENGTH_SHORT,
@@ -353,6 +353,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   textColor: Colors.white,
                   fontSize: 14.0);
             } finally {
+              saveButtonController.sink.add(ButtonSubmitEvent(false));
               _progressToolkit.state.dismiss();
             }
           }
@@ -365,7 +366,8 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
 
-    return BaseScaffoldNormal(
+    return Stack(children: <Widget>[
+      BaseScaffoldNormal(
         title: 'Chỉnh sửa cửa hàng',
         child: SafeArea(
             child: Container(
@@ -379,8 +381,10 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                       child: saveChangeButton(),
                       padding: EdgeInsets.all(_padding),
                     ),
-                    _progressToolkit
                   ],
-                ))));
+                ))),
+      ),
+      _progressToolkit
+    ]);
   }
 }

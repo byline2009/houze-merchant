@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,12 +14,16 @@ import 'package:house_merchant/middle/bloc/shop/shop_event.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
+import 'package:house_merchant/screen/main/store_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
 
+typedef void CallBackHandler(ShopModel shop);
+
 class StoreEditDescriptionScreen extends StatefulWidget {
-  final dynamic params;
+  final StoreEditArgument params;
+
   StoreEditDescriptionScreen({Key key, this.params}) : super(key: key);
 
   @override
@@ -31,7 +36,7 @@ class StoreEditDescriptionScreenState
   Size _screenSize;
   double _padding;
 
-  ShopRepository shopRepository = new ShopRepository();
+  final shopRepository = new ShopRepository();
   final fdesc = TextFieldWidgetController();
 
   final StreamController<ButtonSubmitEvent> saveButtonController =
@@ -42,7 +47,7 @@ class StoreEditDescriptionScreenState
 
   @override
   void initState() {
-    _shopModel = widget.params['shop_model'];
+    _shopModel = widget.params.shopModel; //widget.params['shop_model'];
     fdesc.controller.text = _shopModel.description;
     super.initState();
   }
@@ -53,9 +58,10 @@ class StoreEditDescriptionScreenState
     super.dispose();
   }
 
-  bool checkValidation() {
+  bool checkValidation(String value) {
     var isActive = false;
-    if (!StringUtil.isEmpty(fdesc.controller.text)) {
+    if (!StringUtil.isEmpty(fdesc.controller.text) &&
+        (value.toLowerCase() != _shopModel.description.toLowerCase())) {
       isActive = true;
     }
     saveButtonController.sink.add(ButtonSubmitEvent(isActive));
@@ -107,7 +113,7 @@ class StoreEditDescriptionScreenState
                           'Nhập mô tả, các điều khoản sử dụng ưu đãi của cửa hàng...',
                       keyboardType: TextInputType.multiline,
                       callback: (String value) {
-                        checkValidation();
+                        checkValidation(value);
                       })
                 ])));
   }
@@ -139,14 +145,15 @@ class StoreEditDescriptionScreenState
             child: BlocListener(
                 bloc: shopBloc,
                 listener: (context, state) async {
+                  progressToolkit.state.show();
+
                   if (state is ShopSuccessful) {
-                    progressToolkit.state.show();
-                    if (widget.params['callback'] != null) {
-                      var shopModel = widget.params['shop_model'] as ShopModel;
-                      shopModel.description = fdesc.controller.text;
-                      widget.params['callback'](shopModel);
-                    }
-                    Navigator.of(context).pop();
+                    progressToolkit.state.dismiss();
+                    saveButtonController.sink.add(ButtonSubmitEvent(false));
+
+                    this._shopModel.description = fdesc.controller.text;
+                    widget.params.callback(_shopModel);
+
                     Fluttertoast.showToast(
                         msg: 'Cập nhật mô tả thành công',
                         toastLength: Toast.LENGTH_SHORT,
@@ -158,6 +165,8 @@ class StoreEditDescriptionScreenState
                   }
 
                   if (state is ShopFailure) {
+                    progressToolkit.state.dismiss();
+
                     Fluttertoast.showToast(
                         msg: state.error.toString(),
                         toastLength: Toast.LENGTH_SHORT,
@@ -166,7 +175,6 @@ class StoreEditDescriptionScreenState
                         backgroundColor: Colors.black,
                         textColor: Colors.white,
                         fontSize: 14.0);
-                    progressToolkit.state.dismiss();
                   }
                 },
                 child: BlocBuilder<ShopBloc, ShopState>(
@@ -179,15 +187,17 @@ class StoreEditDescriptionScreenState
                         progressToolkit.state.show();
                       }
 
-                      return Stack(children: <Widget>[
-                        Container(
-                          decoration: BoxDecoration(
-                              color: ThemeConstant.background_grey_color),
-                        ),
-                        buildBody(),
-                        saveDataButton(shopBloc),
-                        progressToolkit
-                      ]);
+                      return Stack(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                                color: ThemeConstant.background_grey_color),
+                          ),
+                          buildBody(),
+                          saveDataButton(shopBloc),
+                          progressToolkit
+                        ],
+                      );
                     }))));
   }
 }
