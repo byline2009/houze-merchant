@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +13,7 @@ import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/screen/store/list/widget_description_box.dart';
+import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 
@@ -233,6 +232,8 @@ class StoreScreenState extends State<StoreScreen> {
     super.dispose();
   }
 
+  String _description = '';
+
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
@@ -243,13 +244,14 @@ class StoreScreenState extends State<StoreScreen> {
       child: BlocBuilder(
           bloc: shopBloc,
           builder: (BuildContext context, ShopState shopState) {
+            print(shopState.toString().toUpperCase());
             if (shopState is ShopInitial) {
               shopBloc.add(ShopGetDetail(id: Sqflite.current_shop));
             }
 
             if (shopState is ShopGetDetailSuccessful) {
               final shopModel = shopState.result;
-
+              _description = shopModel.description;
               return CustomScrollView(
                   physics: const BouncingScrollPhysics(),
                   slivers: [
@@ -293,19 +295,37 @@ class StoreScreenState extends State<StoreScreen> {
                         child: BoxesContainer(
                       title: 'Mô tả',
                       child: DescriptionBox(
-                        shopModel: shopModel,
+                        description: _description,
                       ),
                       action: InkWell(
                           onTap: () async {
                             AppRouter.push(
-                                context, AppRouter.SHOP_DESCRIPTION_PAGE, {
-                              "shop_model": shopModel,
-                              "callback": (ShopModel _shopModel) {
-                                shopModel.description = _shopModel.description;
-                                // print(_shopModel.description.toUpperCase());
-                                // _controller.sink.add(shopModel);
-                              }
-                            });
+                                context,
+                                AppRouter.SHOP_DESCRIPTION_PAGE,
+                                StoreEditDescriptionArgument(
+                                    callback: (value) {
+                                      if (value.toLowerCase() !=
+                                          _description.toLowerCase()) {
+                                        print(value);
+                                        setState(() {
+                                          _description = value;
+                                        });
+                                      }
+                                    },
+                                    shopModel: shopModel)
+
+                                //     {
+                                //   "shop_model": shopModel,
+                                //   "callback": (String value) {
+                                //     if (shopModel.description != value) {
+                                //       print(value);
+                                //       shopBloc.add(
+                                //           ShopGetDetail(id: Sqflite.current_shop));
+                                //     }
+                                //   }
+                                // }
+
+                                );
                           },
                           child: editButton()),
                       padding: EdgeInsets.all(this._padding),

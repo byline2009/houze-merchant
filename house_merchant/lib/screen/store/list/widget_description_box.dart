@@ -1,13 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
-import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
 class DescriptionBox extends StatelessWidget {
-  final ShopModel shopModel;
-  DescriptionBox({this.shopModel});
+  final String description;
+  DescriptionBox({this.description});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,9 +27,8 @@ class DescriptionBox extends StatelessWidget {
               color: ThemeConstant.background_grey_color,
               borderRadius: BorderRadius.all(Radius.circular(4.0)),
             ),
-            child: Text(shopModel.description != null &&
-                    shopModel.description.length > 0
-                ? shopModel.description
+            child: Text(description != null && description.length > 0
+                ? description
                 : 'Chưa có mô tả'))
       ],
     );

@@ -59,7 +59,8 @@ class AppRouter {
         return StoreEditImageScreen(params: params);
 
       case SHOP_DESCRIPTION_PAGE:
-        return StoreEditDescriptionScreen(params: params);
+        final arg = params as StoreEditDescriptionArgument;
+        return StoreEditDescriptionScreen(params: arg);
 
       case SHOP_TIME_PAGE:
         return StoreEditTimeScreen(params: params);
