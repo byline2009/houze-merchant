@@ -317,8 +317,9 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
         defaultHintText:
             LocalizationsUtil.of(_context).translate('Lưu thay đổi'),
         callback: () async {
+          _progressToolkit.state.show();
+
           if (this.checkValidation()) {
-            _progressToolkit.state.show();
             try {
               //Reupdate hours
               this._shopModel.hours = _selectedWorkingDayList
@@ -329,7 +330,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                       ))
                   .toList();
 
-              shopRepository
+              await shopRepository
                   .updateInfo(this._shopModel)
                   .then((value) => widget.params.callback(value));
               _progressToolkit.state.dismiss();
@@ -365,7 +366,8 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
     this._context = context;
     this._padding = this._screenSize.width * 5 / 100;
 
-    return BaseScaffoldNormal(
+    return Stack(children: <Widget>[
+      BaseScaffoldNormal(
         title: 'Chỉnh sửa cửa hàng',
         child: SafeArea(
             child: Container(
@@ -379,8 +381,10 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                       child: saveChangeButton(),
                       padding: EdgeInsets.all(_padding),
                     ),
-                    _progressToolkit
                   ],
-                ))));
+                ))),
+      ),
+      _progressToolkit
+    ]);
   }
 }
