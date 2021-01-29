@@ -173,11 +173,10 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
         children: <Widget>[
           Text('*',
               style: TextStyle(
-                fontFamily: ThemeConstant.form_font_family_display,
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: ThemeConstant.required_color,
-              )),
+                  fontFamily: ThemeConstant.form_font_family_display,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: ThemeConstant.required_color)),
           SizedBox(width: 5),
           Text(LocalizationsUtil.of(context).translate(title),
               style: TextStyle(
@@ -264,7 +263,6 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                           doneEvent: (index) async {
                             _initOpeningHourIndex = index;
                             this.checkValidation();
-                            //print(_dataSourceHours[index].key);
                             openTime = _dataSourceHours[index].value;
                           })
                     ]))),
@@ -296,7 +294,6 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                                 doneEvent: (index) async {
                                   _initCloseHourIndex = index;
                                   this.checkValidation();
-                                  //print(_dataSourceHours[index].value);
                                   closeTime = _dataSourceHours[index].value;
                                 })
                           ],
@@ -335,7 +332,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
               shopRepository
                   .updateInfo(this._shopModel)
                   .then((value) => widget.params.callback(value));
-
+              _progressToolkit.state.dismiss();
               Fluttertoast.showToast(
                   msg: 'Cập nhật thời gian thành công',
                   toastLength: Toast.LENGTH_SHORT,
@@ -345,6 +342,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   textColor: Colors.white,
                   fontSize: 14.0);
             } catch (e) {
+              _progressToolkit.state.dismiss();
               Fluttertoast.showToast(
                   msg: e.toString(),
                   toastLength: Toast.LENGTH_SHORT,
@@ -354,6 +352,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   textColor: Colors.white,
                   fontSize: 14.0);
             } finally {
+              saveButtonController.sink.add(ButtonSubmitEvent(false));
               _progressToolkit.state.dismiss();
             }
           }

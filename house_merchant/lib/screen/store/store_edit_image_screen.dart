@@ -9,10 +9,12 @@ import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/middle/api/oauth_api.dart';
+import 'package:house_merchant/middle/model/image_meta_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 import 'package:house_merchant/screen/base/picker_image.dart';
+import 'package:house_merchant/screen/main/store_screen.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/sqflite.dart';
@@ -21,7 +23,7 @@ import 'package:house_merchant/worker/shop_worker.dart';
 import 'package:worker_manager/worker_manager.dart';
 
 class StoreEditImageScreen extends StatefulWidget {
-  final dynamic params;
+  final StoreEditArgument params;
 
   StoreEditImageScreen({Key key, this.params}) : super(key: key);
 
@@ -37,10 +39,10 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   StreamController<ButtonSubmitEvent> saveButtonController =
       StreamController<ButtonSubmitEvent>.broadcast();
   PickerImage imagePicker;
-  int maxImage = 4;
+  final int maxImage = 4;
   int initImageCount = 0;
   final StreamController<String> statusPickedText = StreamController<String>();
-  ShopRepository shopRepository = ShopRepository();
+  final shopRepository = ShopRepository();
   var shopModel = ShopModel(images: []);
 
   //Action Event List data
@@ -114,7 +116,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
   @override
   void initState() {
-    ShopModel shopModel = widget.params['shop_model'];
+    shopModel = widget.params.shopModel;
 
     final initImages = shopModel.images
         .map(
@@ -131,9 +133,11 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
         imagesInit: initImages);
 
     imagePicker.callbackUpload = (FilePick f) async {
-      statusPickedText.add(imagePicker.state.filesPick.length.toString());
-      this.filesCompressedPick.add(f.file);
-      this.checkValidation();
+      if (imagePicker.state.filesPick.length <= maxImage) {
+        statusPickedText.add(imagePicker.state.filesPick.length.toString());
+        this.filesCompressedPick.add(f.file);
+        this.checkValidation();
+      }
     };
 
     imagePicker.callbackRemove = (FilePick f) async {
@@ -213,22 +217,30 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
           try {
             progressToolkit.state.show();
             await sendData();
-            if (widget.params['callback'] != null) {
-              widget.params['callback'](
-                  this.imagePicker.state.validationFilesPick);
+            if (widget.params.callback != null) {
+              List<ImageModel> imgs =
+                  this.imagePicker.state.validationFilesPick.map((f) {
+                return ImageModel(
+                    id: f.id, image: f.url, imageThumb: f.urlThumb);
+              }).toList();
+
+              shopModel.images = imgs;
+              widget.params.callback(shopModel);
             }
-            //Clear all
-            this.clearForm();
-            Navigator.of(context).pop();
+            progressToolkit.state.dismiss();
             Fluttertoast.showToast(
                 msg: 'Cập nhật hình ảnh thành công',
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
-                timeInSecForIos: 5,
+                timeInSecForIos: 4,
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 14.0);
           } catch (e) {
+            progressToolkit.state.dismiss();
+            //Clear all
+            this.clearForm();
+
             Fluttertoast.showToast(
                 msg: e.toString(),
                 toastLength: Toast.LENGTH_SHORT,
@@ -239,24 +251,25 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
                 fontSize: 14.0);
           } finally {
             progressToolkit.state.dismiss();
+            Navigator.of(context).pop();
           }
         });
 
-    return BaseScaffoldNormal(
+    return Stack(children: <Widget>[
+      BaseScaffoldNormal(
         title: 'Chỉnh sửa cửa hàng',
-        child: SafeArea(
-            child: Stack(children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(this._padding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[Expanded(child: buildBody()), buttonBottom],
-            ),
-            color: ThemeConstant.background_white_color,
+        child: Container(
+          padding: EdgeInsets.all(this._padding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[Expanded(child: buildBody()), buttonBottom],
           ),
-          progressToolkit
-        ])));
+          color: ThemeConstant.background_white_color,
+        ),
+      ),
+      progressToolkit
+    ]);
   }
 
   @override

@@ -145,12 +145,14 @@ class StoreEditDescriptionScreenState
             child: BlocListener(
                 bloc: shopBloc,
                 listener: (context, state) async {
-                  if (state is ShopSuccessful) {
-                    progressToolkit.state.show();
-                    this._shopModel.description = fdesc.controller.text;
+                  progressToolkit.state.show();
 
+                  if (state is ShopSuccessful) {
+                    progressToolkit.state.dismiss();
+                    saveButtonController.sink.add(ButtonSubmitEvent(false));
+
+                    this._shopModel.description = fdesc.controller.text;
                     widget.params.callback(_shopModel);
-                    Navigator.of(context).pop();
 
                     Fluttertoast.showToast(
                         msg: 'Cập nhật mô tả thành công',
@@ -163,6 +165,8 @@ class StoreEditDescriptionScreenState
                   }
 
                   if (state is ShopFailure) {
+                    progressToolkit.state.dismiss();
+
                     Fluttertoast.showToast(
                         msg: state.error.toString(),
                         toastLength: Toast.LENGTH_SHORT,
@@ -171,7 +175,6 @@ class StoreEditDescriptionScreenState
                         backgroundColor: Colors.black,
                         textColor: Colors.white,
                         fontSize: 14.0);
-                    progressToolkit.state.dismiss();
                   }
                 },
                 child: BlocBuilder<ShopBloc, ShopState>(

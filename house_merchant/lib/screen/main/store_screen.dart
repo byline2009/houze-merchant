@@ -36,7 +36,7 @@ class StoreScreenState extends State<StoreScreen> {
 
   final shopBloc = ShopBloc();
 
-  Widget introStore(ShopModel shopModel) {
+  Widget introStore(List<ImageModel> images) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,14 +55,14 @@ class StoreScreenState extends State<StoreScreen> {
             height: 120,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: shopModel.images.length,
+              itemCount: images.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   child: ImageWidget(
                     width: 120,
                     height: 120,
-                    imgUrl: shopModel.images[index].imageThumb.length > 0
-                        ? shopModel.images[index].imageThumb
+                    imgUrl: images[index].imageThumb.length > 0
+                        ? images[index].imageThumb
                         : "https://anhdaostorage.blob.core.windows.net/qa-media/facility/20191114014630397045/meeting-room.jpg",
                   ),
                   padding: EdgeInsets.only(right: 15),
@@ -238,8 +238,6 @@ class StoreScreenState extends State<StoreScreen> {
     super.dispose();
   }
 
-  String _description = '';
-
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
@@ -257,8 +255,9 @@ class StoreScreenState extends State<StoreScreen> {
 
             if (shopState is ShopGetDetailSuccessful) {
               final shopModel = shopState.result;
+              List<ImageModel> _images = shopState.result.images;
               List<Hours> _hours = shopState.result.hours;
-              _description = shopModel.description;
+              String _description = shopModel.description;
               return CustomScrollView(
                   physics: const BouncingScrollPhysics(),
                   slivers: [
@@ -279,21 +278,19 @@ class StoreScreenState extends State<StoreScreen> {
                     SliverToBoxAdapter(
                         child: BoxesContainer(
                       title: 'Hình ảnh',
-                      child: introStore(shopModel),
+                      child: introStore(_images),
                       action: InkWell(
                           onTap: () async {
                             AppRouter.push(
-                                context, AppRouter.SHOP_IMAGES_PAGE, {
-                              "shop_model": shopModel,
-                              "callback": (List<FilePick> validationPicks) {
-                                shopModel.images = validationPicks.map((f) {
-                                  return ImageModel(
-                                      id: f.id,
-                                      image: f.url,
-                                      imageThumb: f.urlThumb);
-                                }).toList();
-                              }
-                            });
+                                context,
+                                AppRouter.SHOP_IMAGES_PAGE,
+                                StoreEditArgument(
+                                    callback: (shop) {
+                                      setState(() {
+                                        _images = shop.images;
+                                      });
+                                    },
+                                    shopModel: shopModel));
                           },
                           child: editButton()),
                       padding: EdgeInsets.all(this._padding),
@@ -301,9 +298,7 @@ class StoreScreenState extends State<StoreScreen> {
                     SliverToBoxAdapter(
                         child: BoxesContainer(
                       title: 'Mô tả',
-                      child: DescriptionBox(
-                        description: _description,
-                      ),
+                      child: DescriptionBox(description: _description),
                       action: InkWell(
                           onTap: () async {
                             AppRouter.push(
