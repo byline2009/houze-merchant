@@ -47,7 +47,7 @@ class MainActivity: FlutterActivity() {
 
   override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
-    openEventSink!!.success(intent.getStringExtra(DATA()))
+    openEventSink?.success(intent.getStringExtra(DATA()))
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

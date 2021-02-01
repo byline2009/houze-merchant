@@ -152,7 +152,7 @@ class LoginScreenState extends State<LoginScreen> {
                         maxHeight: 100.0),
                     child: FittedBox(
                         child: Text(
-                      'House\nMerchant',
+                      'Houze\nMerchant',
                       style: TextStyle(
                           letterSpacing: 0.68,
                           fontSize: 34.0,

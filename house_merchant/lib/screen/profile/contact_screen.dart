@@ -110,7 +110,7 @@ class ContactScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldNormal(
-        title: 'Liên hệ House Merchant',
+        title: 'Liên hệ Houze Merchant',
         child: SafeArea(
           child: Container(
               color: Colors.white,

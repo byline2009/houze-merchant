@@ -195,12 +195,12 @@ class MoreScreenState extends State<MoreScreen> {
                 dense: true,
                 contentPadding: EdgeInsets.symmetric(horizontal: 20),
                 title: Text(
-                  'Liên hệ House Merchant',
+                  'Liên hệ Houze Merchant',
                   style: ThemeConstant.titleStyle(Colors.black),
                 ),
                 trailing: arrowButton(),
                 onTap: () {
-                  print('Liên hệ House Merchant');
+                  print('Liên hệ Houze Merchant');
                   AppRouter.pushDialogNoParams(context, AppRouter.CONTACT_PAGE);
                 },
               )),
@@ -310,7 +310,7 @@ class MoreScreenState extends State<MoreScreen> {
                   SizedBox(height: 20),
                   Text(
                       LocalizationsUtil.of(context).translate(
-                          "Bạn muốn đăng xuất khỏi\nứng dụng House Merchant?"),
+                          "Bạn muốn đăng xuất khỏi\nứng dụng Houze Merchant?"),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: ThemeConstant.form_font_family,
@@ -370,7 +370,7 @@ class MoreScreenState extends State<MoreScreen> {
               bottom: 20.0,
               left: 20,
               right: 0,
-              child: Text('House Merchant v1.0',
+              child: Text('Houze Merchant v1.0',
                   style: TextStyle(
                       fontSize: 13,
                       color: ThemeConstant.grey_color,

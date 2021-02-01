@@ -41,7 +41,7 @@ PODS:
     - DKImagePickerController/PhotoGallery
     - Flutter
   - Flutter (1.0.0)
-  - flutter_barcode_scanner (1.0.1):
+  - flutter_barcode_scanner (1.0.2):
     - Flutter
   - flutter_image_compress (0.0.1):
     - Flutter
@@ -154,7 +154,7 @@ SPEC CHECKSUMS:
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_barcode_scanner: 49cd22fac3304077a6c1672f63bee4a2572ffd85
+  flutter_barcode_scanner: fc42adac0732eca7bd9d3d676b215bce5903f269
   flutter_image_compress: f69d0e0e078ce52b4810695593bc861ee319ae7d
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
@@ -176,4 +176,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0
