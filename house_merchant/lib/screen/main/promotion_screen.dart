@@ -125,7 +125,7 @@ class CouponScreenState extends State<CouponScreen> {
                 Container(
                     width: 80,
                     height: 80,
-                    child: couponModel.images.first.imageThumb.length > 0
+                    child: couponModel.images.length > 0
                         ? ImageWidget(
                             imgUrl: couponModel.images.first.imageThumb,
                             width: 80,

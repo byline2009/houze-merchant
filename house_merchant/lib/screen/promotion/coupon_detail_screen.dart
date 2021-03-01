@@ -46,7 +46,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
     var _heightPhoto = this._screenSize.height * (300 / 818);
 
     Widget headerImage() {
-      return _couponModel.images.first.imageThumb.length > 0
+      return _couponModel.images.length > 0
           ? GestureDetector(
               onTap: () {
                 List<String> _imgs = [];
@@ -218,6 +218,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
         shrinkWrap: true,
         children: <Widget>[
           Container(
+            alignment: Alignment.center,
             height: _heightPhoto + 45,
             child: Stack(
               children: <Widget>[
