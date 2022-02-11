@@ -1161,7 +1161,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
           msg: "Chọn đầu đủ ngày, giờ bắt đầu và kết thúc",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
-          timeInSecForIos: 5,
+          timeInSecForIosWeb: 5,
           backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 14.0);

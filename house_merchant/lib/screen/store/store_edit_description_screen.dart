@@ -158,7 +158,7 @@ class StoreEditDescriptionScreenState
                         msg: 'Cập nhật mô tả thành công',
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 5,
+                        timeInSecForIosWeb: 5,
                         backgroundColor: Colors.black,
                         textColor: Colors.white,
                         fontSize: 14.0);
@@ -171,7 +171,7 @@ class StoreEditDescriptionScreenState
                         msg: state.error.toString(),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 5,
+                        timeInSecForIosWeb: 5,
                         backgroundColor: Colors.black,
                         textColor: Colors.white,
                         fontSize: 14.0);

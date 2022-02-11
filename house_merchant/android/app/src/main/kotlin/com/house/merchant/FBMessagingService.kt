@@ -35,7 +35,7 @@ class FBMessagingService : FirebaseMessagingService() {
         val title = map["title"]
         val message = map["message"]
         val data = map["data"]
-        Log.d("FBMessagingService", data)
+        Log.d("FBMessagingService", data.toString())
         if (!TextUtils.isEmpty(data)) {
             val gson = Gson()
             addNotification(title, message, data)

@@ -135,6 +135,22 @@ class CupertinoLocalizationsVi implements CupertinoLocalizations {
     // TODO: implement tabSemanticsLabel
     throw UnimplementedError();
   }
+
+  @override
+  // TODO: implement searchTextFieldPlaceholderLabel
+  String get searchTextFieldPlaceholderLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement timerPickerHourLabels
+  List<String> get timerPickerHourLabels => throw UnimplementedError();
+
+  @override
+  // TODO: implement timerPickerMinuteLabels
+  List<String> get timerPickerMinuteLabels => throw UnimplementedError();
+
+  @override
+  // TODO: implement timerPickerSecondLabels
+  List<String> get timerPickerSecondLabels => throw UnimplementedError();
 }
 
 class _VietnamDelegate extends LocalizationsDelegate<CupertinoLocalizations> {

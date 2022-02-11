@@ -33,11 +33,21 @@ void main() async {
   await AppConfig.init();
 
   await Executor().warmUp();
-
+  //Upgrade flutter to 2.10.1
+  HttpOverrides.global = MyHttpOverrides();
   runApp(
     BlocProvider(
       create: (BuildContext context) => AuthenticationBloc()..add(AppStarted()),
       child: BootstrapScreen(),
     ),
   );
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
 }

@@ -261,7 +261,7 @@ class CouponScreenState extends State<CouponScreen> {
                 msg: "Mã này đã hết hạn!",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
-                timeInSecForIos: 5,
+                timeInSecForIosWeb: 5,
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 16.0);
@@ -270,7 +270,7 @@ class CouponScreenState extends State<CouponScreen> {
                 msg: "Mã này đã sử dụng!",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
-                timeInSecForIos: 5,
+                timeInSecForIosWeb: 5,
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 16.0);

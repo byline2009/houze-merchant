@@ -195,7 +195,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
                         msg: state.error.toString(),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 5,
+                        timeInSecForIosWeb: 5,
                         backgroundColor: Colors.black,
                         textColor: Colors.white,
                         fontSize: 14.0);
@@ -360,7 +360,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
                 msg: 'Đã có lỗi xảy ra. Vui lòng thử lại sau!',
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
-                timeInSecForIos: 4,
+                timeInSecForIosWeb: 4,
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 14.0);

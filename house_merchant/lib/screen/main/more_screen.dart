@@ -41,7 +41,7 @@ class MoreScreenState extends State<MoreScreen> {
                 msg: result,
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
-                timeInSecForIos: 5,
+                timeInSecForIosWeb: 5,
                 backgroundColor: Colors.redAccent,
                 textColor: Colors.white,
                 fontSize: 16.0);

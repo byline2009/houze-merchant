@@ -17,6 +17,7 @@ import 'package:house_merchant/screen/base/base_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
 typedef void checkHandler(String value);
 

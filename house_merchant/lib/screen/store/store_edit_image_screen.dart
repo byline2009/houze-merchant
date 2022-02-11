@@ -270,7 +270,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
               msg: 'Cập nhật hình ảnh thành công',
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
-              timeInSecForIos: 4,
+              timeInSecForIosWeb: 4,
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 14.0);
@@ -283,7 +283,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
               msg: e.toString(),
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.CENTER,
-              timeInSecForIos: 5,
+              timeInSecForIosWeb: 5,
               backgroundColor: Colors.black,
               textColor: Colors.white,
               fontSize: 14.0);
