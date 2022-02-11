@@ -350,8 +350,8 @@ class MoreScreenState extends State<MoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final shopBloc = ShopBloc();
-    final profileBloc = ProfileBloc();
+    final shopBloc = ShopBloc(ShopInitial());
+    final profileBloc = ProfileBloc(ProfileInitial());
 
     return SafeArea(
       child: Container(

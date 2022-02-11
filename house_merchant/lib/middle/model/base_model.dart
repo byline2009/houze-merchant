@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class PageModel  {
-
+class PageModel {
   int count;
   String next;
   String previous;
@@ -26,12 +25,11 @@ class PageModel  {
   }
 
   Map<String, dynamic> toJson() => {
-    'count': count,
-    'next': next,
-    'previous': previous,
-    'results': results,
-  };
-
+        'count': count,
+        'next': next,
+        'previous': previous,
+        'results': results,
+      };
 }
 
 class IdNameModel extends Equatable {
@@ -51,7 +49,11 @@ class IdNameModel extends Equatable {
       : null;
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-  };
+        "id": id,
+        "name": name,
+      };
+
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
 }

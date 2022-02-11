@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   dio: 3.0.10
-  equatable: ^0.3.0
+  equatable: ^2.0.3
   flutter_dotenv: ^2.0.3
 
   flutter_offline: "^0.2.4"
@@ -32,7 +32,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
   jose: ^0.1.2
   flutter_staggered_animations: ^0.1.2
-  flutter_bloc: ^3.0.0
+  flutter_bloc: ^8.0.1
   shared_preferences: ^2.0.13
   fluttertoast: ^8.0.8
   synchronized: ^2.1.0+1

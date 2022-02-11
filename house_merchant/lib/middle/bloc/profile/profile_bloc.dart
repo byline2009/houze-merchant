@@ -5,21 +5,32 @@ import 'package:house_merchant/middle/repository/profile_repository.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileRepository profileRepository = ProfileRepository();
 
-  ProfileBloc();
-
-  ProfileState get initialState => ProfileInitial();
-
-  @override
-  Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
-    if (event is GetProfileEvent) {
-      yield ProfileLoading();
+  ProfileBloc(ProfileState initialState) : super(initialState) {
+    on<GetProfileEvent>((event, emit) async {
+      emit(ProfileLoading());
 
       try {
         final result = await ProfileRepository().getProfile();
-        yield ProfileGetSuccessful(result: result);
+        emit(ProfileGetSuccessful(result: result));
       } catch (error) {
-        yield ProfileFailure(error: error.toString());
+        emit(ProfileFailure(error: error.toString()));
       }
-    }
+    });
   }
+
+  // ProfileState get initialState => ProfileInitial();
+
+  // @override
+  // Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
+  //   if (event is GetProfileEvent) {
+  //     yield ProfileLoading();
+
+  //     try {
+  //       final result = await ProfileRepository().getProfile();
+  //       yield ProfileGetSuccessful(result: result);
+  //     } catch (error) {
+  //       yield ProfileFailure(error: error.toString());
+  //     }
+  //   }
+  // }
 }

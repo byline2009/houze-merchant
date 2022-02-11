@@ -35,7 +35,7 @@ class StoreScreenState extends State<StoreScreen> {
   Size _screenSize;
   double _padding;
 
-  final shopBloc = ShopBloc();
+  final shopBloc = ShopBloc(ShopInitial());
 
   Widget introStore(List<ImageModel> images) {
     return Column(

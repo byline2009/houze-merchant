@@ -10,18 +10,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   UserRepository userRepository;
   final AuthenticationBloc authenticationBloc;
 
-  LoginBloc({
-    @required this.authenticationBloc,
-  }) {
+  LoginBloc({@required this.authenticationBloc, LoginState initialState})
+      : super(initialState) {
     this.userRepository = authenticationBloc.userRepository;
-  }
-
-  LoginState get initialState => LoginInitial();
-
-  @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginButtonPressed) {
-      yield LoginLoading();
+    on<LoginButtonPressed>((event, emit) async {
+      emit(LoginLoading());
 
       try {
         final token = await userRepository.authenticate(
@@ -32,10 +25,33 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         authenticationBloc.add(LoggedIn(token: token));
 
-        yield LoginSuccessful();
+        emit(LoginSuccessful());
       } catch (error) {
-        yield LoginFailure(error: error.toString());
+        emit(LoginFailure(error: error.toString()));
       }
-    }
+    });
   }
+
+  // LoginState get initialState => LoginInitial();
+
+  // @override
+  // Stream<LoginState> mapEventToState(LoginEvent event) async* {
+  //   if (event is LoginButtonPressed) {
+  //     yield LoginLoading();
+
+  //     try {
+  //       final token = await userRepository.authenticate(
+  //         phoneDial: event.phoneDial,
+  //         username: event.username,
+  //         password: event.password,
+  //       );
+
+  //       authenticationBloc.add(LoggedIn(token: token));
+
+  //       yield LoginSuccessful();
+  //     } catch (error) {
+  //       yield LoginFailure(error: error.toString());
+  //     }
+  //   }
+  // }
 }

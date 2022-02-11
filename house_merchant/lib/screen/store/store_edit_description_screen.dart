@@ -120,7 +120,7 @@ class StoreEditDescriptionScreenState
 
   @override
   Widget build(BuildContext context) {
-    final shopBloc = ShopBloc();
+    final shopBloc = ShopBloc(ShopInitial());
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
 

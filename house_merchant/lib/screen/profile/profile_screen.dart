@@ -163,7 +163,7 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final profileBloc = ProfileBloc();
+    final profileBloc = ProfileBloc(ProfileInitial());
 
     return BaseScaffoldNormal(
         title: 'Thông tin cá nhân',

@@ -132,7 +132,8 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final loginBloc = LoginBloc(
-        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+        initialState: LoginInitial());
 
     final introduceSection = Container(
         child: Row(

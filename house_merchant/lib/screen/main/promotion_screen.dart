@@ -41,7 +41,8 @@ class CouponScreenState extends State<CouponScreen> {
   int statusCurrent = -1; // status: tat ca
   int tagIndexCurrent = 0; // tab: tat ca
 
-  final couponListBloc = CouponListBloc();
+  final couponListBloc =
+      CouponListBloc(CouponList(data: new List<CouponModel>(), response: 1));
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 

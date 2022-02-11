@@ -30,7 +30,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
   Size _screenSize;
   var _padding;
   var _couponModel = new CouponModel();
-  final bloc = CouponBloc();
+  final bloc = CouponBloc(CouponInitial());
 
   @override
   void initState() {

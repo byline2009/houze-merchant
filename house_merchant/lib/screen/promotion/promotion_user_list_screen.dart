@@ -32,7 +32,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
   int page = 0;
 
   CouponModel _couponModel;
-  final _couponBloc = CouponBloc();
+  final _couponBloc = CouponBloc(CouponInitial());
   bool shouldLoadMore = true;
   ScrollController scrollController;
 

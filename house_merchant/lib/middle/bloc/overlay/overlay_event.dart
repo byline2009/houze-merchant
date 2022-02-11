@@ -1,11 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-abstract class OverlayBlocEvent extends Equatable {
-  OverlayBlocEvent([List props = const []]) : super(props);
-}
+abstract class OverlayBlocEvent {}
 
 class ShopPicked extends OverlayBlocEvent {
-
-  ShopPicked() : super([]);
-
+  ShopPicked();
 }

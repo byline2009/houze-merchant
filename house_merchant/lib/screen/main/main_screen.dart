@@ -37,7 +37,7 @@ class MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   //Bloc
-  final overlayBloc = OverlayBloc();
+  final overlayBloc = OverlayBloc(ShopInitial());
 
   Widget bottomNavItem(SvgPicture _image, {String badge = " "}) {
     return Container(

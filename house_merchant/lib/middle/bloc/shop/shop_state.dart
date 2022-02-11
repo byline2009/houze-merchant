@@ -3,7 +3,8 @@ import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:meta/meta.dart';
 
 abstract class ShopState extends Equatable {
-  ShopState([List props = const []]) : super(props);
+  ShopState([List props = const []]) : super();
+  List<Object> get props => [];
 }
 
 class ShopInitial extends ShopState {
@@ -12,7 +13,6 @@ class ShopInitial extends ShopState {
 }
 
 class ShopGetDetailSuccessful extends ShopState {
-
   final ShopModel result;
 
   ShopGetDetailSuccessful({@required this.result});

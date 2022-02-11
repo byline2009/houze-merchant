@@ -5,7 +5,7 @@ import 'package:house_merchant/middle/model/qrcode_model.dart';
 import 'package:meta/meta.dart';
 
 abstract class CouponState extends Equatable {
-  CouponState([List props = const []]) : super(props);
+  List<Object> get props => [];
 }
 
 class CouponGetUserListSuccessful extends CouponState {
@@ -66,7 +66,7 @@ class CouponLoading extends CouponState {
 class CouponFailure extends CouponState {
   final String error;
 
-  CouponFailure({@required this.error}) : super([error]);
+  CouponFailure({@required this.error});
 
   @override
   String toString() => 'CouponFailure { error: $error }';
