@@ -1,10 +1,7 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:house_merchant/custom/datepick_range_custom_widget.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -60,7 +57,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
   );
   //Model
 
-  List<ImageModel> _imgList = new List<ImageModel>();
+  List<ImageModel> _imgList = <ImageModel>[];
   Map<String, ImageModel> mappingImages = new Map<String, ImageModel>();
 
   bool imageValidation() {

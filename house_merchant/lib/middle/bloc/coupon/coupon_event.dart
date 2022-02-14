@@ -2,7 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
 
-abstract class CouponEvent {}
+abstract class CouponEvent extends Equatable {
+  List<Object> get props => [];
+}
 
 class CouponLoadList extends CouponEvent {
   final int page;

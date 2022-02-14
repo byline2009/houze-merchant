@@ -30,32 +30,4 @@ class AuthenticationBloc
       emit(AuthenticationUnauthenticated());
     });
   }
-
-  // @override
-  // Stream<AuthenticationState> mapEventToState(
-  //   AuthenticationEvent event,
-  // ) async* {
-  //   if (event is AppStarted) {
-  //     final bool hasToken = await userRepository.hasToken();
-
-  //     if (hasToken) {
-  //       yield AuthenticationAuthenticated();
-  //     } else {
-  //       yield AuthenticationUnauthenticated();
-  //     }
-  //   }
-
-  //   if (event is LoggedIn) {
-  //     yield AuthenticationLoading();
-  //     yield AuthenticationAuthenticated();
-  //   }
-
-  //   if (event is LoggedOut) {
-  //     yield AuthenticationLoading();
-  //     OauthAPI.token = null;
-  //     await userRepository.deleteToken();
-  //     await Sqflite.flush();
-  //     yield AuthenticationUnauthenticated();
-  //   }
-  // }
 }

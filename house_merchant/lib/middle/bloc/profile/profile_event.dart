@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-abstract class ProfileEvent {}
+abstract class ProfileEvent extends Equatable {
+  List<Object> get props => [];
+}
 
 class GetProfileEvent extends ProfileEvent {
   GetProfileEvent();

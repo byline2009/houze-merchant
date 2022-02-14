@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
@@ -19,7 +18,7 @@ import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/string_util.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
-typedef void checkHandler(String value);
+typedef void CheckHandler(String value);
 
 class ChangePasswordScreen extends StatefulWidget {
   ChangePasswordScreen({Key key}) : super(key: key);
@@ -33,7 +32,6 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   var padding;
 
-  bool _confirmEnable = false;
   final _oldPassword = TextFieldWidgetController();
   final _newPassword = TextFieldWidgetController();
   final StreamController<ButtonSubmitEvent> _confirmButtonController =
@@ -62,7 +60,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
       String title,
       TextFieldWidgetController _controller,
       List<FormFieldValidator> validators,
-      checkHandler checkCallback,
+      CheckHandler checkCallback,
       {String attribute = "",
       obscureText = false}) {
     final paddingScreen = EdgeInsets.only(left: padding, right: padding);
@@ -123,7 +121,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
         ]));
   }
 
-  Widget showSucessful() {
+  Widget showSuccessful() {
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     final width = this._screenSize.width * 90 / 100;
     return Padding(
@@ -180,23 +178,13 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
               (String oldPassword) {
             if (_oldPassword.text.length >= 5 &&
                 _newPassword.text.length >= 5) {
-              _confirmButtonController.sink
-                  .add(ButtonSubmitEvent(this._confirmEnable = true));
-            } else {
-              _confirmButtonController.sink
-                  .add(ButtonSubmitEvent(this._confirmEnable = false));
-            }
+            } else {}
           }, attribute: "old_password", obscureText: true),
           inputContent(context, "Mật khẩu mới", _newPassword, [],
               (String newPassword) {
             if (_oldPassword.text.length >= 5 &&
                 _newPassword.text.length >= 5) {
-              _confirmButtonController.sink
-                  .add(ButtonSubmitEvent(this._confirmEnable = true));
-            } else {
-              _confirmButtonController.sink
-                  .add(ButtonSubmitEvent(this._confirmEnable = false));
-            }
+            } else {}
           }, attribute: "new_password", obscureText: true),
           Padding(
               padding: paddingButton,
@@ -211,13 +199,12 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     await _profileRepository.changePassword(
                         _oldPassword.text, _newPassword.text);
 
-                    T7GDialog.showContentDialog(context, [this.showSucessful()],
+                    T7GDialog.showContentDialog(
+                        context, [this.showSuccessful()],
                         closeShow: false, barrierDismissible: false);
                   } catch (e) {
                     _oldPassword.text = "";
                     _newPassword.text = "";
-                    _confirmButtonController.sink
-                        .add(ButtonSubmitEvent(this._confirmEnable = false));
                     T7GDialog.showAlertDialog(context, "Cảnh báo", e);
                   } finally {
                     progressToolkit.state.dismiss();

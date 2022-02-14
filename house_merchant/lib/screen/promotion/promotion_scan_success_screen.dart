@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
@@ -129,7 +128,7 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
                                       _user.avatar, _user.gender, 100.0),
                                   SizedBox(height: 15),
                                   Text(
-                                    _user.fullname,
+                                    _user.fullName,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 18,

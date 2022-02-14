@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 import 'dart:io';
 
@@ -33,7 +35,7 @@ class PickerImage extends StatefulWidget {
   double width, height;
   PickerImageType type;
   PickerImageState state = PickerImageState();
-  List<FilePick> imagesInit = List<FilePick>();
+  List<FilePick> imagesInit = <FilePick>[];
 
   PickerImage(
       {Key key,
@@ -44,7 +46,7 @@ class PickerImage extends StatefulWidget {
       this.type = PickerImageType.grid})
       : super(key: key) {
     if (this.imagesInit == null) {
-      this.imagesInit = List<FilePick>();
+      this.imagesInit = <FilePick>[];
     }
   }
 
@@ -57,11 +59,10 @@ class PickerImage extends StatefulWidget {
 }
 
 class PickerImageState extends State<PickerImage> {
-  List<FilePick> filesPick = List<FilePick>();
+  List<FilePick> filesPick = <FilePick>[];
   //Final pick
-  List<FilePick> validationFilesPick = List<FilePick>();
-  File _fileSelected;
-  List<Future<dynamic>> _uploadParrallel = List<Future<dynamic>>();
+  List<FilePick> validationFilesPick = <FilePick>[];
+  List<Future<dynamic>> _uploadParallel = <Future<dynamic>>[];
 
   @override
   void initState() {
@@ -70,8 +71,7 @@ class PickerImageState extends State<PickerImage> {
   }
 
   void clear() {
-    this.filesPick = List<FilePick>();
-    this._fileSelected = null;
+    this.filesPick = <FilePick>[];
     setState(() {});
   }
 
@@ -85,7 +85,7 @@ class PickerImageState extends State<PickerImage> {
   }
 
   void uploadProcessing(BuildContext context) async {
-    List<File> images = List<File>();
+    List<File> images = <File>[];
     try {
       images = await ChristianPickerImage.pickImages(
           maxImages: widget.maxImage - this.filesPick.length);
@@ -96,9 +96,7 @@ class PickerImageState extends State<PickerImage> {
       Navigator.of(context).pop();
 
       setState(() {
-        if (images.length > 0) {
-          _fileSelected = images[0];
-        }
+        if (images.length > 0) {}
 
         images.forEach((image) async {
           if (image != null) {
@@ -115,7 +113,7 @@ class PickerImageState extends State<PickerImage> {
               image.deleteSync();
             }
 
-            _uploadParrallel.add(uploadImage(FilePick(file: compressImage)));
+            _uploadParallel.add(uploadImage(FilePick(file: compressImage)));
           }
         });
       });
@@ -146,7 +144,7 @@ class PickerImageState extends State<PickerImage> {
           child: ClipRRect(
               borderRadius: BorderRadius.circular(4.0),
               child: Stack(
-                overflow: Overflow.clip,
+                clipBehavior: Clip.none,
                 children: <Widget>[
                   f.file != null
                       ? Image.file(
@@ -197,9 +195,7 @@ class PickerImageState extends State<PickerImage> {
                   this.filesPick.remove(f);
                   this.validationFilesPick.remove(f);
                   // Clear main picture
-                  if (this.filesPick.length == 0) {
-                    this._fileSelected = null;
-                  }
+                  if (this.filesPick.length == 0) {}
                   widget.callbackRemove(f);
                 });
               },
@@ -278,8 +274,8 @@ class PickerImageState extends State<PickerImage> {
     );
   }
 
-  List<Future<dynamic>> getUploadParrallel() {
-    return this._uploadParrallel;
+  List<Future<dynamic>> getUploadParallel() {
+    return this._uploadParallel;
   }
 
   @override

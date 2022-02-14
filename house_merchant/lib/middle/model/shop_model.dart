@@ -29,8 +29,8 @@ class ShopModel {
   int status;
   double lat;
   double long;
-  List<ImageModel> images = List<ImageModel>();
-  List<Hours> hours = List<Hours>();
+  List<ImageModel> images = <ImageModel>[];
+  List<Hours> hours = <Hours>[];
 
   ShopModel(
       {this.id,
@@ -51,13 +51,13 @@ class ShopModel {
     long = json['long'];
 
     if (json['images'] != null) {
-      images = new List<ImageModel>();
+      images = <ImageModel>[];
       json['images'].forEach((v) {
         images.add(new ImageModel.fromJson(v));
       });
     }
     if (json['hours'] != null) {
-      hours = new List<Hours>();
+      hours = <Hours>[];
       json['hours'].forEach((v) {
         hours.add(new Hours.fromJson(v));
       });

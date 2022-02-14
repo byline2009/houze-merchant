@@ -1,7 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
@@ -37,9 +38,18 @@ class GroupRadioTagsWidgetState extends State<GroupRadioTagsWidget> {
   Widget buttonIcon({index, id, title, icon, isSelected = false}) {
     return Padding(
         padding: EdgeInsets.only(left: 15, right: 0),
-        child: FlatButton(
-          color:
-              isSelected ? ThemeConstant.listview_selected_color : Colors.white,
+        child: TextButton(
+          style: TextButton.styleFrom(
+            primary: isSelected
+                ? ThemeConstant.listview_selected_color
+                : Colors.white,
+            shape: new RoundedRectangleBorder(
+                borderRadius: ThemeConstant.button_radius,
+                side: BorderSide(
+                    color: isSelected
+                        ? ThemeConstant.listview_selected_color
+                        : ThemeConstant.form_border_small)),
+          ),
           onPressed: () {
             setState(() {
               widget.defaultIndex = index;
@@ -47,12 +57,6 @@ class GroupRadioTagsWidgetState extends State<GroupRadioTagsWidget> {
             if (widget.callback != null) widget.callback(id);
             if (widget.callBackIndex != null) widget.callBackIndex(index);
           },
-          shape: new RoundedRectangleBorder(
-              borderRadius: ThemeConstant.button_radius,
-              side: BorderSide(
-                  color: isSelected
-                      ? ThemeConstant.listview_selected_color
-                      : ThemeConstant.form_border_small)),
           child: Container(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

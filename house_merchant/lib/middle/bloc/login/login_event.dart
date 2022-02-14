@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-abstract class LoginEvent {}
+abstract class LoginEvent extends Equatable {
+  List<Object> get props => [];
+}
 
 class LoginButtonPressed extends LoginEvent {
   final String phoneDial;

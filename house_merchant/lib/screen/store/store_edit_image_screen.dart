@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/api_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
@@ -47,8 +45,8 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   var shopModel = ShopModel(images: []);
 
   //Action Event List data
-  List<File> filesCompressedPick = List<File>();
-  List<String> filesIdDeletedPick = List<String>();
+  List<File> filesCompressedPick = <File>[];
+  List<String> filesIdDeletedPick = <String>[];
 
   //Task processing
   Future<dynamic> runTaskUpload(File f) async {

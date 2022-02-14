@@ -1,10 +1,12 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ImageWidget extends StatelessWidget {
   Widget child;
-  String imgUrl;
+  final String imgUrl;
   double width = 50;
   double height = 50;
 
@@ -15,7 +17,7 @@ class ImageWidget extends StatelessWidget {
     return Container(
       child: ClipRRect(
           borderRadius: new BorderRadius.all(Radius.circular(4.0)),
-          child: Stack(overflow: Overflow.clip, children: <Widget>[
+          child: Stack(clipBehavior: Clip.none, children: <Widget>[
             CachedNetworkImage(
               imageUrl: this.imgUrl,
               placeholder: (context, url) =>

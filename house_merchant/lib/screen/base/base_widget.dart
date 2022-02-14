@@ -93,7 +93,7 @@ class BaseWidget {
             RawMaterialButton(
               child: ClipRRect(
                   borderRadius: new BorderRadius.circular(height / 2),
-                  child: Stack(overflow: Overflow.clip, children: <Widget>[
+                  child: Stack(clipBehavior: Clip.none, children: <Widget>[
                     Container(
                         color: Colors.white,
                         child: url != null

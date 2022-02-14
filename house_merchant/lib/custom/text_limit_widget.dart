@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 /*
 Using for textfield single and multiline
  */

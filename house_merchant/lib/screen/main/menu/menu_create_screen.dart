@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
@@ -18,7 +17,7 @@ class MenuCreateScreenState extends State<MenuCreateScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
   Size _screenSize;
 
-  Widget showSucessful() {
+  Widget showSuccessful() {
     final width = this._screenSize.width * 90 / 100;
     return Padding(
         padding: EdgeInsets.all(15),
@@ -58,7 +57,7 @@ class MenuCreateScreenState extends State<MenuCreateScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldNormal(
-      child: showSucessful(),
+      child: showSuccessful(),
     );
   }
 }

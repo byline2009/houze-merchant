@@ -6,7 +6,7 @@ import 'package:house_merchant/middle/repository/coupon_repository.dart';
 
 class CouponListBloc extends Bloc<CouponEvent, CouponList> {
   int page = 1;
-  List<CouponModel> result = new List<CouponModel>();
+  List<CouponModel> result = <CouponModel>[];
   bool isNext = true;
   int offset = 0;
 

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 /*
   Widget by T7G, author: p.nguyen
 */
@@ -6,7 +8,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/middle/model/keyvalue_model.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
@@ -41,7 +42,7 @@ class DropdownWidget extends StatefulWidget {
   bool centerText;
   Function buildChild;
   Function customDialog;
-  List<dynamic> dataSource = new List<dynamic>();
+  List<dynamic> dataSource = [];
   Int2VoidFunc doneEvent;
   Int2VoidFunc cancelEvent;
   DropdownWidgetController controller;
@@ -78,7 +79,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
   String defaultHintText;
   int selectedIndex = -1;
   int initIndex;
-  List<dynamic> dataSource = new List<dynamic>();
+  List<dynamic> dataSource = [];
   Function buildChild;
   Int2VoidFunc doneEvent;
   Int2VoidFunc cancelEvent;
@@ -167,7 +168,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                     children: <Widget>[
                       Container(
                         height: _kPickerTitleHeight,
-                        child: FlatButton(
+                        child: TextButton(
                           child: Text(
                             LocalizationsUtil.of(context).translate('Hủy'),
                             style: TextStyle(
@@ -201,7 +202,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                       ),
                       Container(
                         height: _kPickerTitleHeight,
-                        child: FlatButton(
+                        child: TextButton(
                           child: Text(
                             LocalizationsUtil.of(context).translate('Hoàn tất'),
                             style: TextStyle(

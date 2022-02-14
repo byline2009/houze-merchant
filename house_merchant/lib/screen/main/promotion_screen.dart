@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -42,7 +41,7 @@ class CouponScreenState extends State<CouponScreen> {
   int tagIndexCurrent = 0; // tab: tat ca
 
   final couponListBloc =
-      CouponListBloc(CouponList(data: new List<CouponModel>(), response: 1));
+      CouponListBloc(CouponList(data: <CouponModel>[], response: 1));
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -295,7 +294,7 @@ class CouponScreenState extends State<CouponScreen> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20),
-                Image.asset(
+                SvgPicture.asset(
                   "assets/images/dialogs/ic-scan-failed.svg",
                 ),
                 SizedBox(height: 20),

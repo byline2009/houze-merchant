@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/common_constant.dart';
@@ -101,7 +100,8 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                     color: ThemeConstant.alto_color))
           ])),
           RectangleLabelWidget(
-              text: _couponModel.statusName(), color: _couponModel.satusColor())
+              text: _couponModel.statusName(),
+              color: _couponModel.statusColor())
         ],
       ),
     );

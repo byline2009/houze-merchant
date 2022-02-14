@@ -17,7 +17,7 @@ class ProfileAPI extends OauthAPI {
   Future<String> changePassword(String oldPass, String newPass) async {
     try {
       final response = await this.put(
-        APIConstant.baseMerchantUrlChangepass,
+        APIConstant.baseMerchantUrlChangePass,
         data: {"old_password": oldPass, "new_password": newPass},
       );
       return response.data;
