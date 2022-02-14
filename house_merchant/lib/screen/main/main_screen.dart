@@ -31,7 +31,7 @@ class MainScreenState extends State<MainScreen> {
     initialPage: 0,
     keepPage: true,
   );
-  List<NavigationBottom> navigationButtons = List();
+  List<NavigationBottom> navigationButtons = [];
   List<Widget> listPage = <Widget>[];
   int _currentIndex = 0;
 
@@ -70,7 +70,7 @@ class MainScreenState extends State<MainScreen> {
     debugPrint("MainScreen initState");
   }
 
-  List<NavigationBottom> listNaviagation() {
+  List<NavigationBottom> listNavigation() {
     return [
       NavigationBottom(
           OrderScreen(),
@@ -134,7 +134,7 @@ class MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     debugPrint('*main_screen build');
 
-    navigationButtons = listNaviagation();
+    navigationButtons = listNavigation();
 
     return MultiBlocProvider(
       providers: [
