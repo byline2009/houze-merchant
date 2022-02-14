@@ -135,7 +135,7 @@ class OauthAPI {
                         "Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
-                    timeInSecForIos: 5,
+                    timeInSecForIosWeb: 5,
                     backgroundColor: Colors.black,
                     textColor: Colors.white,
                     fontSize: 14.0);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/flutter_skeleton/flutter_skeleton.dart';
@@ -80,12 +79,12 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
                             children: <Widget>[
                               CircleAvatar(
                                   backgroundColor: ThemeConstant.alto_color,
-                                  child: Text(result.fullname[0],
+                                  child: Text(result.fullName[0],
                                       style: ThemeConstant.titleLargeStyle(
                                           Colors.white)),
                                   radius: 33),
                               SizedBox(height: 25.0),
-                              makeRowData('Họ và tên:', result.fullname),
+                              makeRowData('Họ và tên:', result.fullName),
                               makeRowData('Tên đăng nhập:', result.username),
                               makeRowData('Chức vụ:', 'Chủ quán'),
                               result.birthday != null
@@ -163,7 +162,7 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final profileBloc = ProfileBloc();
+    final profileBloc = ProfileBloc(ProfileInitial());
 
     return BaseScaffoldNormal(
         title: 'Thông tin cá nhân',

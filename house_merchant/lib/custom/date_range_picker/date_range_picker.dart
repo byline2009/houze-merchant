@@ -14,7 +14,6 @@ import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/custom/date_range_picker/bottomsheet_widget.dart';
@@ -1133,7 +1132,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
   void _handleCancel() {
     beginTime.controller.clear();
     endTime.controller.clear();
-    Navigator.pop(context, List<DateTime>());
+    Navigator.pop(context, <DateTime>[]);
   }
 
   void _handleOk() {
@@ -1161,7 +1160,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
           msg: "Chọn đầu đủ ngày, giờ bắt đầu và kết thúc",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
-          timeInSecForIos: 5,
+          timeInSecForIosWeb: 5,
           backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 14.0);
@@ -1290,11 +1289,11 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
       data: ButtonBarThemeData(),
       child: ButtonBar(
         children: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(localizations.cancelButtonLabel),
             onPressed: _handleCancel,
           ),
-          FlatButton(
+          TextButton(
             child: Text(localizations.okButtonLabel),
             onPressed: _handleOk,
           ),

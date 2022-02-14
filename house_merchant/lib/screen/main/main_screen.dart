@@ -2,7 +2,6 @@ import 'package:badges/badges.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
@@ -16,10 +15,10 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 import 'package:house_merchant/utils/storage.dart';
 
-class NaviagationBottom {
+class NavigationBottom {
   final Widget screen;
   final BottomNavigationBarItem barItem;
-  const NaviagationBottom(this.screen, this.barItem);
+  const NavigationBottom(this.screen, this.barItem);
 }
 
 class MainScreen extends StatefulWidget {
@@ -32,12 +31,12 @@ class MainScreenState extends State<MainScreen> {
     initialPage: 0,
     keepPage: true,
   );
-  List<NaviagationBottom> navigationButtons = List();
-  List<Widget> listPage = List<Widget>();
+  List<NavigationBottom> navigationButtons = [];
+  List<Widget> listPage = <Widget>[];
   int _currentIndex = 0;
 
   //Bloc
-  final overlayBloc = OverlayBloc();
+  final overlayBloc = OverlayBloc(ShopInitial());
 
   Widget bottomNavItem(SvgPicture _image, {String badge = " "}) {
     return Container(
@@ -71,9 +70,9 @@ class MainScreenState extends State<MainScreen> {
     debugPrint("MainScreen initState");
   }
 
-  List<NaviagationBottom> listNaviagation() {
+  List<NavigationBottom> listNavigation() {
     return [
-      NaviagationBottom(
+      NavigationBottom(
           OrderScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
@@ -84,7 +83,7 @@ class MainScreenState extends State<MainScreen> {
                 badge: ""),
             label: LocalizationsUtil.of(context).translate('Đơn hàng'),
           )),
-      NaviagationBottom(
+      NavigationBottom(
           MenuScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
@@ -95,7 +94,7 @@ class MainScreenState extends State<MainScreen> {
                 badge: ""),
             label: LocalizationsUtil.of(context).translate('Menu'),
           )),
-      NaviagationBottom(
+      NavigationBottom(
           CouponScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
@@ -106,7 +105,7 @@ class MainScreenState extends State<MainScreen> {
                 badge: ""),
             label: LocalizationsUtil.of(context).translate('Ưu đãi'),
           )),
-      NaviagationBottom(
+      NavigationBottom(
           StoreScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
@@ -117,7 +116,7 @@ class MainScreenState extends State<MainScreen> {
                 badge: ""),
             label: LocalizationsUtil.of(context).translate('Cửa hàng'),
           )),
-      NaviagationBottom(
+      NavigationBottom(
           MoreScreen(),
           BottomNavigationBarItem(
             activeIcon: bottomNavItem(
@@ -135,7 +134,7 @@ class MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     debugPrint('*main_screen build');
 
-    navigationButtons = listNaviagation();
+    navigationButtons = listNavigation();
 
     return MultiBlocProvider(
       providers: [
@@ -171,7 +170,7 @@ class MainScreenState extends State<MainScreen> {
                                   overlayBloc.add(ShopPicked());
                                 }
 
-                                listPage = List<Widget>();
+                                listPage = <Widget>[];
 
                                 listPage.add(PageView(
                                   controller: pageController,

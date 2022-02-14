@@ -3,7 +3,7 @@ import 'package:house_merchant/middle/model/profile_model.dart';
 import 'package:meta/meta.dart';
 
 abstract class ProfileState extends Equatable {
-  ProfileState([List props = const []]) : super(props);
+  List<Object> get props => [];
 }
 
 class ProfileGetSuccessful extends ProfileState {
@@ -27,7 +27,7 @@ class ProfileLoading extends ProfileState {
 class ProfileFailure extends ProfileState {
   final String error;
 
-  ProfileFailure({@required this.error}) : super([error]);
+  ProfileFailure({@required this.error});
 
   @override
   String toString() => 'ProfileFailure { error: $error }';

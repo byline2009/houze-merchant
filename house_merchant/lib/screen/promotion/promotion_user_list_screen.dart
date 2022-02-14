@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/flutter_skeleton/flutter_skeleton.dart';
-import 'package:house_merchant/custom/flutter_skeleton/src/skeleton_config.dart';
 import 'package:house_merchant/middle/bloc/coupon/indext.dart';
 import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/middle/model/coupon_user_model.dart';
@@ -32,7 +30,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
   int page = 0;
 
   CouponModel _couponModel;
-  final _couponBloc = CouponBloc();
+  final _couponBloc = CouponBloc(CouponInitial());
   bool shouldLoadMore = true;
   ScrollController scrollController;
 
@@ -199,11 +197,11 @@ class UserItem extends StatelessWidget {
                   child: user.customer.avatar != null
                       ? BaseWidget.avatar(user.customer.avatar, 'O', 50)
                       : Text(
-                          user.customer.fullname[0],
+                          user.customer.fullName[0],
                           style: ThemeConstant.titleLargeStyle(Colors.white),
                         ))),
           title:
-              Text(user.customer.fullname, style: ThemeConstant.titleTileStyle),
+              Text(user.customer.fullName, style: ThemeConstant.titleTileStyle),
           subtitle: Text(
               'Ngày sử dụng: ' +
                   DateFormat(Format.timeAndDate)

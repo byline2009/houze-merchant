@@ -5,54 +5,47 @@ import 'package:house_merchant/middle/repository/coupon_repository.dart';
 class CouponBloc extends Bloc<CouponEvent, CouponState> {
   CouponRepository couponRepository = CouponRepository();
 
-  CouponBloc();
-  CouponState get initialState => CouponInitial();
-
-  @override
-  Stream<CouponState> mapEventToState(CouponEvent event) async* {
-    if (event is CouponUserLoadList) {
-      yield CouponLoading();
+  CouponBloc(CouponState initialState) : super(initialState) {
+    on<CouponUserLoadList>((event, emit) async {
+      emit(CouponLoading());
 
       try {
         final result = await couponRepository.getCouponUserList(
             id: event.id, page: event.page);
-        yield CouponGetUserListSuccessful(result: result);
+        emit(CouponGetUserListSuccessful(result: result));
       } catch (error) {
-        yield CouponFailure(error: error.toString());
+        emit(CouponFailure(error: error.toString()));
       }
-    }
-
-    if (event is CouponLoadList) {
-      yield CouponLoading();
+    });
+    on<CouponLoadList>((event, emit) async {
+      emit(CouponLoading());
 
       try {
         final result = await couponRepository.getCoupons();
-        yield CouponGetListSuccessful(result: result);
+        emit(CouponGetListSuccessful(result: result));
       } catch (error) {
-        yield CouponFailure(error: error.toString());
+        emit(CouponFailure(error: error.toString()));
       }
-    }
-
-    if (event is SaveButtonPressed) {
-      yield CouponLoading();
+    });
+    on<SaveButtonPressed>((event, emit) async {
+      emit(CouponLoading());
 
       try {
         final result =
             await couponRepository.updateCoupon(event.id, event.couponModel);
         print(result.toJson().toString());
-        yield CouponUpdateSuccessful(result: result);
+        emit(CouponUpdateSuccessful(result: result));
       } catch (error) {
-        yield CouponFailure(error: error.toString());
+        emit(CouponFailure(error: error.toString()));
       }
-    }
-
-    if (event is CouponGetDetail) {
+    });
+    on<CouponGetDetail>((event, emit) async {
       try {
         final result = await couponRepository.getCoupon(event.id);
-        yield CouponGetDetailSuccessful(result: result);
+        emit(CouponGetDetailSuccessful(result: result));
       } catch (error) {
-        yield CouponFailure(error: error.toString());
+        emit(CouponFailure(error: error.toString()));
       }
-    }
+    });
   }
 }

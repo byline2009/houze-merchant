@@ -4,7 +4,7 @@ import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 
 abstract class OverlayBlocState extends Equatable {
-  OverlayBlocState([List props = const []]) : super(props);
+  List<Object> get props => [];
 }
 
 class ShopInitial extends OverlayBlocState {
@@ -35,7 +35,7 @@ class ShopChanged extends OverlayBlocState {
 class ShopFailure extends OverlayBlocState {
   final String error;
 
-  ShopFailure({@required this.error}) : super([error]);
+  ShopFailure({@required this.error});
 
   @override
   String toString() => 'ShopFailure { error: $error }';
@@ -71,7 +71,7 @@ class CouponChanged extends OverlayBlocState {
 class CouponFailure extends OverlayBlocState {
   final String error;
 
-  CouponFailure({@required this.error}) : super([error]);
+  CouponFailure({@required this.error});
 
   @override
   String toString() => 'CouponFailure { error: $error }';

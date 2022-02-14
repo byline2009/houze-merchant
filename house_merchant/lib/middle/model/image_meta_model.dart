@@ -20,6 +20,10 @@ class ImageMetaModel extends Equatable {
         'id': id,
         'url': url,
       };
+
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
 }
 
 class ImageModel {

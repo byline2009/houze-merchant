@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 /*
 Using for textfield single and multiline
  */
@@ -5,7 +7,6 @@ Using for textfield single and multiline
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 
 typedef void CallBackHandler(String value);
@@ -48,6 +49,7 @@ class TextFieldWidget extends StatelessWidget {
   TextInputType keyboardType;
   CallBackHandler callback;
   TextFieldWidgetController controller;
+  // ignore: close_sinks
   final StreamController<String> textStreamController =
       StreamController<String>.broadcast();
   VoidFunc onTap;

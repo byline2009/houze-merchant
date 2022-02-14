@@ -7,6 +7,7 @@ import 'package:house_merchant/config/app_config.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_bloc.dart';
 import 'package:house_merchant/middle/bloc/authentication/authentication_event.dart';
+import 'package:house_merchant/middle/bloc/authentication/authentication_state.dart';
 import 'package:house_merchant/screen/base/bootstrap_widget.dart';
 import 'package:worker_manager/worker_manager.dart';
 
@@ -33,11 +34,22 @@ void main() async {
   await AppConfig.init();
 
   await Executor().warmUp();
-
+  //Upgrade flutter to 2.10.1
+  HttpOverrides.global = MyHttpOverrides();
   runApp(
     BlocProvider(
-      create: (BuildContext context) => AuthenticationBloc()..add(AppStarted()),
+      create: (BuildContext context) =>
+          AuthenticationBloc(AuthenticationInitial())..add(AppStarted()),
       child: BootstrapScreen(),
     ),
   );
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
 }

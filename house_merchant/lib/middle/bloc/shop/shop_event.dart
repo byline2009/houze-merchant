@@ -3,7 +3,7 @@ import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:meta/meta.dart';
 
 abstract class ShopEvent extends Equatable {
-  ShopEvent([List props = const []]) : super(props);
+  List<Object> get props => [];
 }
 
 class ShopGetDetail extends ShopEvent {
@@ -22,7 +22,7 @@ class SaveButtonPressed extends ShopEvent {
 
   SaveButtonPressed({
     this.shopModel,
-  }) : super([shopModel]);
+  });
 
   @override
   String toString() => 'SaveButtonPressed { shopModel: $shopModel }';

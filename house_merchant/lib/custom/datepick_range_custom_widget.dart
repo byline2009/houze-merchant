@@ -1,10 +1,11 @@
+// ignore_for_file: must_be_immutable
+
 /*
 Using for textfield single and multiline
  */
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/common_constant.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/date_range_picker/date_range_page.dart';

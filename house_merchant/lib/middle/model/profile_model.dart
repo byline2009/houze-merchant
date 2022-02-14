@@ -1,6 +1,6 @@
 class ProfileModel {
   String id;
-  String fullname;
+  String fullName;
   String username;
   int phoneNumber;
   int intlCode;
@@ -12,7 +12,7 @@ class ProfileModel {
 
   ProfileModel(
       {this.id,
-      this.fullname,
+      this.fullName,
       this.username,
       this.phoneNumber,
       this.intlCode,
@@ -24,7 +24,7 @@ class ProfileModel {
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    fullname = json['fullname'];
+    fullName = json['fullname'];
     username = json['username'];
     phoneNumber = json['phone_number'];
     intlCode = json['intl_code'];
@@ -38,7 +38,7 @@ class ProfileModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['fullname'] = this.fullname;
+    data['fullname'] = this.fullName;
     data['username'] = this.username;
     data['phone_number'] = this.phoneNumber;
     data['intl_code'] = this.intlCode;

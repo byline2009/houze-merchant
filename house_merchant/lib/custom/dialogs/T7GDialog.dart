@@ -19,7 +19,7 @@ class T7GDialog {
               LocalizationsUtil.of(context).translate(message),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('OK'),
                 onPressed: () async {
                   Navigator.of(context).pop();

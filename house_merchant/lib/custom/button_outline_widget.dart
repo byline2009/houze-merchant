@@ -1,13 +1,14 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 
 class ButtonOutlineWidget extends StatefulWidget {
   final String defaultHintText;
-  bool isActive = false;
+  bool isActive;
   StreamController<ButtonSubmitEvent> controller;
   final CallBackHandler callback;
 
@@ -35,8 +36,10 @@ class ButtonOutlineWidgetState extends State<ButtonOutlineWidget> {
               ),
         child: Padding(
             padding: const EdgeInsets.only(right: 5.0, left: 5.0),
-            child: FlatButton(
-                shape: ThemeConstant.formButtonBorder,
+            child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: ThemeConstant.formButtonBorder,
+                ),
                 onPressed: !widget.isActive ? null : widget.callback,
                 child: Text(widget.defaultHintText,
                     style: TextStyle(

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -41,7 +40,8 @@ class CouponScreenState extends State<CouponScreen> {
   int statusCurrent = -1; // status: tat ca
   int tagIndexCurrent = 0; // tab: tat ca
 
-  final couponListBloc = CouponListBloc();
+  final couponListBloc =
+      CouponListBloc(CouponList(data: <CouponModel>[], response: 1));
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -261,7 +261,7 @@ class CouponScreenState extends State<CouponScreen> {
                 msg: "Mã này đã hết hạn!",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
-                timeInSecForIos: 5,
+                timeInSecForIosWeb: 5,
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 16.0);
@@ -270,7 +270,7 @@ class CouponScreenState extends State<CouponScreen> {
                 msg: "Mã này đã sử dụng!",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
-                timeInSecForIos: 5,
+                timeInSecForIosWeb: 5,
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 16.0);
@@ -294,7 +294,7 @@ class CouponScreenState extends State<CouponScreen> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20),
-                Image.asset(
+                SvgPicture.asset(
                   "assets/images/dialogs/ic-scan-failed.svg",
                 ),
                 SizedBox(height: 20),

@@ -15,8 +15,8 @@ class CouponModel {
   String endDate;
   int status;
   int usedCount;
-  List<ImageModel> images = List<ImageModel>();
-  List<ShopModel> shops = List<ShopModel>();
+  List<ImageModel> images = [];
+  List<ShopModel> shops = [];
   bool isExpired;
 
   CouponModel({
@@ -45,13 +45,13 @@ class CouponModel {
     endDate = json['end_date'];
     status = json['status'];
     if (json['images'] != null) {
-      images = new List<ImageModel>();
+      images = <ImageModel>[];
       json['images'].forEach((v) {
         images.add(new ImageModel.fromJson(v));
       });
     }
     if (json['shops'] != null) {
-      shops = new List<ShopModel>();
+      shops = <ShopModel>[];
       json['shops'].forEach((v) {
         shops.add(new ShopModel.fromJson(v));
       });
@@ -130,7 +130,7 @@ class CouponModel {
     }
   }
 
-  Color satusColor() {
+  Color statusColor() {
     if (this.isExpired == true) {
       return ThemeConstant.status_canceled;
     }
@@ -167,7 +167,7 @@ class CouponList {
   CouponList.fromJson(Map<String, dynamic> json) {
     response = json['response'];
     if (json['data'] != null) {
-      data = new List<CouponModel>();
+      data = <CouponModel>[];
       json['data'].forEach((v) {
         data.add(new CouponModel.fromJson(v));
       });

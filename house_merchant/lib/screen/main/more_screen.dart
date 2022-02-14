@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
@@ -41,7 +38,7 @@ class MoreScreenState extends State<MoreScreen> {
                 msg: result,
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
-                timeInSecForIos: 5,
+                timeInSecForIosWeb: 5,
                 backgroundColor: Colors.redAccent,
                 textColor: Colors.white,
                 fontSize: 16.0);
@@ -62,10 +59,10 @@ class MoreScreenState extends State<MoreScreen> {
                         contentPadding: EdgeInsets.all(0.0),
                         leading: CircleAvatar(
                             backgroundColor: ThemeConstant.alto_color,
-                            child: Text(result.fullname[0],
+                            child: Text(result.fullName[0],
                                 style: ThemeConstant.titleLargeStyle(
                                     Colors.white))),
-                        title: Text(result.fullname,
+                        title: Text(result.fullName,
                             style: ThemeConstant.headerTitleBoldStyle(
                                 ThemeConstant.black_color)),
                         subtitle: Text('QUẢN LÝ CỬA HÀNG',
@@ -350,8 +347,8 @@ class MoreScreenState extends State<MoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final shopBloc = ShopBloc();
-    final profileBloc = ProfileBloc();
+    final shopBloc = ShopBloc(ShopInitial());
+    final profileBloc = ProfileBloc(ProfileInitial());
 
     return SafeArea(
       child: Container(

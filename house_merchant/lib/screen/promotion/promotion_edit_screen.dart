@@ -1,10 +1,7 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:house_merchant/custom/datepick_range_custom_widget.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -60,7 +57,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
   );
   //Model
 
-  List<ImageModel> _imgList = new List<ImageModel>();
+  List<ImageModel> _imgList = <ImageModel>[];
   Map<String, ImageModel> mappingImages = new Map<String, ImageModel>();
 
   bool imageValidation() {
@@ -179,7 +176,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var couponBloc = CouponBloc();
+    var couponBloc = CouponBloc(CouponInitial());
 
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
@@ -195,7 +192,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
                         msg: state.error.toString(),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 5,
+                        timeInSecForIosWeb: 5,
                         backgroundColor: Colors.black,
                         textColor: Colors.white,
                         fontSize: 14.0);
@@ -360,7 +357,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
                 msg: 'Đã có lỗi xảy ra. Vui lòng thử lại sau!',
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
-                timeInSecForIos: 4,
+                timeInSecForIosWeb: 4,
                 backgroundColor: Colors.black,
                 textColor: Colors.white,
                 fontSize: 14.0);

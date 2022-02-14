@@ -2,11 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 abstract class LoginEvent extends Equatable {
-  LoginEvent([List props = const []]) : super(props);
+  List<Object> get props => [];
 }
 
 class LoginButtonPressed extends LoginEvent {
-
   final String phoneDial;
   final String username;
   final String password;
@@ -15,7 +14,7 @@ class LoginButtonPressed extends LoginEvent {
     @required this.username,
     @required this.password,
     this.phoneDial,
-  }) : super([username, password]);
+  });
 
   @override
   String toString() =>

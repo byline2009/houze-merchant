@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
@@ -239,7 +236,7 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
                         msg: e.toString(),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 5,
+                        timeInSecForIosWeb: 5,
                         backgroundColor: Colors.black,
                         textColor: Colors.white,
                         fontSize: 14.0);

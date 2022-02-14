@@ -1,16 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 import 'package:house_merchant/middle/bloc/shop/index.dart';
-import 'package:house_merchant/middle/bloc/shop/shop_bloc.dart';
-import 'package:house_merchant/middle/bloc/shop/shop_event.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
@@ -120,7 +116,7 @@ class StoreEditDescriptionScreenState
 
   @override
   Widget build(BuildContext context) {
-    final shopBloc = ShopBloc();
+    final shopBloc = ShopBloc(ShopInitial());
     this._screenSize = MediaQuery.of(context).size;
     this._padding = this._screenSize.width * 5 / 100;
 
@@ -158,7 +154,7 @@ class StoreEditDescriptionScreenState
                         msg: 'Cập nhật mô tả thành công',
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 5,
+                        timeInSecForIosWeb: 5,
                         backgroundColor: Colors.black,
                         textColor: Colors.white,
                         fontSize: 14.0);
@@ -171,7 +167,7 @@ class StoreEditDescriptionScreenState
                         msg: state.error.toString(),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 5,
+                        timeInSecForIosWeb: 5,
                         backgroundColor: Colors.black,
                         textColor: Colors.white,
                         fontSize: 14.0);

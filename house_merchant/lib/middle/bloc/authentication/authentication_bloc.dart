@@ -5,40 +5,29 @@ import 'package:house_merchant/middle/bloc/authentication/authentication_state.d
 import 'package:house_merchant/middle/repository/user_repository.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 
-
-class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
+class AuthenticationBloc
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
   UserRepository userRepository = new UserRepository();
 
-  AuthenticationBloc();
-
-  @override
-  AuthenticationState get initialState => new AuthenticationInitial();
-
-  @override
-  Stream<AuthenticationState> mapEventToState(
-    AuthenticationEvent event,
-  ) async* {
-    if (event is AppStarted) {
+  AuthenticationBloc(AuthenticationState initialState) : super(initialState) {
+    on<AppStarted>((event, emit) async {
       final bool hasToken = await userRepository.hasToken();
-
       if (hasToken) {
-        yield AuthenticationAuthenticated();
+        emit(AuthenticationAuthenticated());
       } else {
-        yield AuthenticationUnauthenticated();
+        emit(AuthenticationUnauthenticated());
       }
-    }
-
-    if (event is LoggedIn) {
-      yield AuthenticationLoading();
-      yield AuthenticationAuthenticated();
-    }
-
-    if (event is LoggedOut) {
-      yield AuthenticationLoading();
+    });
+    on<LoggedIn>((event, emit) async {
+      emit(AuthenticationLoading());
+      emit(AuthenticationAuthenticated());
+    });
+    on<LoggedOut>((event, emit) async {
+      emit(AuthenticationLoading());
       OauthAPI.token = null;
       await userRepository.deleteToken();
       await Sqflite.flush();
-      yield AuthenticationUnauthenticated();
-    }
+      emit(AuthenticationUnauthenticated());
+    });
   }
 }

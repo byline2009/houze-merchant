@@ -15,7 +15,7 @@ class ChoiceChipsWidget extends StatefulWidget {
 
 class _ChoiceChipsWidgetState extends State<ChoiceChipsWidget> {
   _buildChoiceList() {
-    List<Widget> choices = List();
+    List<Widget> choices = [];
 
     widget.choiceChipList.forEach((item) {
       choices.add(Container(

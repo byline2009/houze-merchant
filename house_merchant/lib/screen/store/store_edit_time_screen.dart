@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
@@ -39,7 +38,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   final _fCloseHours = DropdownWidgetController();
   final _dataSourceHours = [];
   final _dataSourceWorkingDay = [];
-  List _selectedWorkingDayList = List();
+  List _selectedWorkingDayList = [];
   var messageError = "";
 
   ShopRepository shopRepository = ShopRepository();
@@ -338,7 +337,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   msg: 'Cập nhật thời gian thành công',
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.CENTER,
-                  timeInSecForIos: 5,
+                  timeInSecForIosWeb: 5,
                   backgroundColor: Colors.black,
                   textColor: Colors.white,
                   fontSize: 14.0);
@@ -348,7 +347,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   msg: e.toString(),
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.CENTER,
-                  timeInSecForIos: 5,
+                  timeInSecForIosWeb: 5,
                   backgroundColor: Colors.black,
                   textColor: Colors.white,
                   fontSize: 14.0);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/flutter_skeleton/flutter_skeleton.dart';
@@ -11,7 +10,6 @@ import 'package:house_merchant/router.dart';
 import 'package:house_merchant/screen/base/base_scaffold.dart';
 import 'package:house_merchant/screen/base/boxes_container.dart';
 import 'package:house_merchant/screen/base/image_widget.dart';
-import 'package:house_merchant/screen/base/picker_image.dart';
 import 'package:house_merchant/screen/base/sc_image_view.dart';
 import 'package:house_merchant/screen/store/list/widget_description_box.dart';
 import 'package:house_merchant/screen/store/store_edit_description_screen.dart';
@@ -35,7 +33,7 @@ class StoreScreenState extends State<StoreScreen> {
   Size _screenSize;
   double _padding;
 
-  final shopBloc = ShopBloc();
+  final shopBloc = ShopBloc(ShopInitial());
 
   Widget introStore(List<ImageModel> images) {
     return Column(

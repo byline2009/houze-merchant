@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 
@@ -30,7 +29,7 @@ class ButtonScanQRWidgetState extends State<ButtonScanQRWidget> {
         ),
         width: 140,
         padding: EdgeInsets.all(0),
-        child: FlatButton(
+        child: TextButton(
           onPressed: () {
             widget.callback();
           },

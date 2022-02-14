@@ -18,4 +18,8 @@ class TokenModel extends Equatable {
         "refresh": refresh,
         "access": access,
       };
+
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
 }

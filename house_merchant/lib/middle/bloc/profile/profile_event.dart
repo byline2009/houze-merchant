@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
 abstract class ProfileEvent extends Equatable {
-  ProfileEvent([List props = const []]) : super(props);
+  List<Object> get props => [];
 }
 
 class GetProfileEvent extends ProfileEvent {
-  GetProfileEvent() : super();
+  GetProfileEvent();
 
   @override
   String toString() => 'GetProfileEvent {}';
