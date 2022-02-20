@@ -6,18 +6,18 @@ import 'package:house_merchant/middle/model/shop_model.dart';
 import 'package:intl/intl.dart';
 
 class CouponModel {
-  String id;
-  String title;
-  int quantity;
-  int count;
-  String description;
-  String startDate;
-  String endDate;
-  int status;
-  int usedCount;
-  List<ImageModel> images = [];
-  List<ShopModel> shops = [];
-  bool isExpired;
+  String? id;
+  String? title;
+  int? quantity;
+  int? count;
+  String? description;
+  String? startDate;
+  String? endDate;
+  int? status;
+  int? usedCount;
+  List<ImageModel>? images = [];
+  List<ShopModel>? shops = [];
+  bool? isExpired;
 
   CouponModel({
     this.id,
@@ -47,13 +47,13 @@ class CouponModel {
     if (json['images'] != null) {
       images = <ImageModel>[];
       json['images'].forEach((v) {
-        images.add(new ImageModel.fromJson(v));
+        images!.add(new ImageModel.fromJson(v));
       });
     }
     if (json['shops'] != null) {
       shops = <ShopModel>[];
       json['shops'].forEach((v) {
-        shops.add(new ShopModel.fromJson(v));
+        shops!.add(new ShopModel.fromJson(v));
       });
     }
     isExpired = json['is_expired'];
@@ -71,36 +71,36 @@ class CouponModel {
     data['count'] = this.count;
     data['used_count'] = this.usedCount;
     if (this.images != null) {
-      data['images'] = this.images.map((v) => v.toJson()).toList();
+      data['images'] = this.images!.map((v) => v.toJson()).toList();
     }
     if (this.shops != null) {
-      data['shops'] = this.shops.map((v) => v.toJson()).toList();
+      data['shops'] = this.shops!.map((v) => v.toJson()).toList();
     }
     data['is_expired'] = this.isExpired;
     return data;
   }
 
-  String startDateLocal({String start}) {
+  String startDateLocal({String? start}) {
     return DateFormat(Format.timeAndDate)
-        .format(DateTime.parse(start).toLocal())
+        .format(DateTime.parse(start!).toLocal())
         .toString();
   }
 
-  String endDateLocal({String end}) {
+  String endDateLocal({String? end}) {
     return DateFormat(Format.timeAndDate)
-        .format(DateTime.parse(end).toLocal())
+        .format(DateTime.parse(end!).toLocal())
         .toString();
   }
 
   String startDateUTC() {
     return DateFormat(Format.timeAndDate)
-        .format(DateTime.parse(startDate).toLocal())
+        .format(DateTime.parse(startDate!).toLocal())
         .toString();
   }
 
   String endDateUTC() {
     return DateFormat(Format.timeAndDate)
-        .format(DateTime.parse(endDate).toUtc())
+        .format(DateTime.parse(endDate!).toUtc())
         .toString();
   }
 
@@ -159,8 +159,8 @@ class CouponModel {
 
 //** COUPON LIST **//
 class CouponList {
-  int response;
-  List<CouponModel> data;
+  int? response;
+  List<CouponModel>? data;
 
   CouponList({this.response, this.data});
 
@@ -169,7 +169,7 @@ class CouponList {
     if (json['data'] != null) {
       data = <CouponModel>[];
       json['data'].forEach((v) {
-        data.add(new CouponModel.fromJson(v));
+        data!.add(new CouponModel.fromJson(v));
       });
     }
   }
@@ -178,7 +178,7 @@ class CouponList {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['response'] = this.response;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }

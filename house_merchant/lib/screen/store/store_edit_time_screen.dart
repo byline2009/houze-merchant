@@ -17,17 +17,17 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 
 class StoreEditTimeScreen extends StatefulWidget {
-  final StoreEditArgument params;
-  StoreEditTimeScreen({Key key, this.params}) : super(key: key);
+  final StoreEditArgument? params;
+  StoreEditTimeScreen({Key? key, this.params}) : super(key: key);
 
   @override
   StoreEditTimeScreenState createState() => StoreEditTimeScreenState();
 }
 
 class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
-  Size _screenSize;
-  BuildContext _context;
-  double _padding;
+  Size? _screenSize;
+  BuildContext? _context;
+  double? _padding;
   final StreamController<ButtonSubmitEvent> saveButtonController =
       StreamController<ButtonSubmitEvent>.broadcast();
   ProgressHUD _progressToolkit = Progress.instanceCreate();
@@ -38,13 +38,13 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   final _fCloseHours = DropdownWidgetController();
   final _dataSourceHours = [];
   final _dataSourceWorkingDay = [];
-  List _selectedWorkingDayList = [];
+  List<int?> _selectedWorkingDayList = <int?>[];
   var messageError = "";
 
   ShopRepository shopRepository = ShopRepository();
   //Model
   var openTime, closeTime = "";
-  ShopModel _shopModel;
+  ShopModel? _shopModel;
 
   int _initOpeningHourIndex = 0;
   int _initCloseHourIndex = 0;
@@ -53,8 +53,8 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
 
   @override
   void dispose() {
-    _fCloseHours.controller?.dispose();
-    _fOpeningHours.controller?.dispose();
+    _fCloseHours.controller.dispose();
+    _fOpeningHours.controller.dispose();
     messageText.close();
     saveButtonController.close();
     super.dispose();
@@ -63,9 +63,9 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   @override
   void initState() {
     super.initState();
-    this._shopModel = widget.params.shopModel;
+    this._shopModel = widget.params!.shopModel;
     this._selectedWorkingDayList =
-        this._shopModel.hours.map((f) => f.weekday).toList();
+        this._shopModel!.hours!.map((f) => f.weekday).toList();
     //Init dataSourceYear
     var times = [
       "00:00",
@@ -123,11 +123,11 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
 
     _initOpeningHourIndex = _dataSourceHours.first.key;
     _initCloseHourIndex = _dataSourceHours.last.key;
-    if (this._shopModel.hours != null && this._shopModel.hours.length > 0) {
+    if (this._shopModel!.hours != null && this._shopModel!.hours!.length > 0) {
       _initOpeningHourIndex = times
-          .indexWhere((time) => time == this._shopModel.hours[0].startTime);
-      _initCloseHourIndex =
-          times.indexWhere((time) => time == this._shopModel.hours[0].endTime);
+          .indexWhere((time) => time == this._shopModel!.hours![0].startTime);
+      _initCloseHourIndex = times
+          .indexWhere((time) => time == this._shopModel!.hours![0].endTime);
     }
 
     var workingDays = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
@@ -203,7 +203,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   onSelectionChanged: (selectedList) {
                     _selectedWorkingDayList = selectedList;
                     this.checkValidation();
-                    this._shopModel.hours = _selectedWorkingDayList
+                    this._shopModel!.hours = _selectedWorkingDayList
                         .map((f) => Hours(
                               startTime: openTime,
                               endTime: closeTime,
@@ -218,7 +218,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
     }
 
     return Container(
-        padding: EdgeInsets.all(this._padding),
+        padding: EdgeInsets.all(this._padding!),
         decoration: BoxDecoration(color: ThemeConstant.white_color),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -314,14 +314,14 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
     return ButtonWidget(
         controller: saveButtonController,
         defaultHintText:
-            LocalizationsUtil.of(_context).translate('Lưu thay đổi'),
+            LocalizationsUtil.of(_context!).translate('Lưu thay đổi'),
         callback: () async {
           _progressToolkit.state.show();
 
           if (this.checkValidation()) {
             try {
               //Reupdate hours
-              this._shopModel.hours = _selectedWorkingDayList
+              this._shopModel!.hours = _selectedWorkingDayList
                   .map((f) => Hours(
                         startTime: openTime,
                         endTime: closeTime,
@@ -330,8 +330,8 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                   .toList();
 
               await shopRepository
-                  .updateInfo(this._shopModel)
-                  .then((value) => widget.params.callback(value));
+                  .updateInfo(this._shopModel!)
+                  .then((value) => widget.params!.callback!(value));
               _progressToolkit.state.dismiss();
               Fluttertoast.showToast(
                   msg: 'Cập nhật thời gian thành công',
@@ -363,7 +363,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
-    this._padding = this._screenSize.width * 5 / 100;
+    this._padding = this._screenSize!.width * 5 / 100;
 
     return Stack(children: <Widget>[
       BaseScaffoldNormal(
@@ -378,7 +378,7 @@ class StoreEditTimeScreenState extends State<StoreEditTimeScreen> {
                     Expanded(child: buildBody()),
                     Padding(
                       child: saveChangeButton(),
-                      padding: EdgeInsets.all(_padding),
+                      padding: EdgeInsets.all(_padding!),
                     ),
                   ],
                 ))),

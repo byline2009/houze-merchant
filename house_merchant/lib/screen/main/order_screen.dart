@@ -7,7 +7,7 @@ import 'package:house_merchant/screen/base/coming_soon_widget.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
 class OrderScreen extends StatefulWidget {
-  OrderScreen({Key key}) : super(key: key);
+  OrderScreen({Key? key}) : super(key: key);
 
   @override
   OrderScreenState createState() => OrderScreenState();
@@ -15,7 +15,7 @@ class OrderScreen extends StatefulWidget {
 
 class OrderScreenState extends State<OrderScreen>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  TabController? _tabController;
 
   @override
   void initState() {

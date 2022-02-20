@@ -3,8 +3,8 @@ import 'package:house_merchant/constant/theme_constant.dart';
 
 class ChoiceChipsWidget extends StatefulWidget {
   final List choiceChipList;
-  final Function(List<int>) onSelectionChanged;
-  final List<int> selectedChoices;
+  final Function(List<int?>)? onSelectionChanged;
+  final List<int?>? selectedChoices;
 
   const ChoiceChipsWidget(this.choiceChipList,
       {this.onSelectionChanged, this.selectedChoices});
@@ -23,11 +23,11 @@ class _ChoiceChipsWidgetState extends State<ChoiceChipsWidget> {
           height: 40,
           margin: EdgeInsets.all(5),
           decoration: BoxDecoration(
-              color: widget.selectedChoices.contains(item.key)
+              color: widget.selectedChoices!.contains(item.key)
                   ? ThemeConstant.listview_selected_color
                   : ThemeConstant.white_color,
               border: Border.all(
-                color: widget.selectedChoices.contains(item.key)
+                color: widget.selectedChoices!.contains(item.key)
                     ? Colors.transparent
                     : ThemeConstant.form_border_normal,
                 width: 1,
@@ -37,7 +37,7 @@ class _ChoiceChipsWidgetState extends State<ChoiceChipsWidget> {
           child: ChoiceChip(
               padding: EdgeInsets.all(0),
               backgroundColor: Colors.white,
-              avatarBorder: null,
+              avatarBorder: const CircleBorder(),
               elevation: 0.0,
               pressElevation: 0.0,
               selectedColor: ThemeConstant.listview_selected_color,
@@ -51,17 +51,17 @@ class _ChoiceChipsWidgetState extends State<ChoiceChipsWidget> {
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.26,
-                    color: widget.selectedChoices.contains(item.key)
+                    color: widget.selectedChoices!.contains(item.key)
                         ? ThemeConstant.primary_color
                         : ThemeConstant.grey_color),
               ),
-              selected: widget.selectedChoices.contains(item.key),
+              selected: widget.selectedChoices!.contains(item.key),
               onSelected: (selected) {
                 setState(() {
-                  widget.selectedChoices.contains(item.key)
-                      ? widget.selectedChoices.remove(item.key)
-                      : widget.selectedChoices.add(item.key);
-                  widget.onSelectionChanged(widget.selectedChoices);
+                  widget.selectedChoices!.contains(item.key)
+                      ? widget.selectedChoices!.remove(item.key)
+                      : widget.selectedChoices!.add(item.key);
+                  widget.onSelectionChanged!(widget.selectedChoices!);
                 });
               })));
     });

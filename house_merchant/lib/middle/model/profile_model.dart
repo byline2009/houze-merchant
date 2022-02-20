@@ -1,14 +1,14 @@
 class ProfileModel {
-  String id;
-  String fullName;
-  String username;
-  int phoneNumber;
-  int intlCode;
-  String gender;
-  String birthday;
-  String identityCard;
-  String passport;
-  String avatar;
+  String? id;
+  String? fullName;
+  String? username;
+  int? phoneNumber;
+  int? intlCode;
+  String? gender;
+  String? birthday;
+  String? identityCard;
+  String? passport;
+  String? avatar;
 
   ProfileModel(
       {this.id,

@@ -18,7 +18,7 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
-  Size _screenSize;
+  Size? _screenSize;
 
   StreamController<ButtonSubmitEvent> loginButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
@@ -48,7 +48,7 @@ class LoginScreenState extends State<LoginScreen> {
         controller: loginButtonController,
         defaultHintText: LocalizationsUtil.of(context).translate('Đăng nhập'),
         callback: () async {
-          fbKey.currentState.save();
+          fbKey.currentState!.save();
           loginBloc.add(LoginButtonPressed(
             username: fusername.text,
             password: fpassword.text,
@@ -173,7 +173,7 @@ class LoginScreenState extends State<LoginScreen> {
         ]));
 
     this._screenSize = MediaQuery.of(context).size;
-    final _padding = this._screenSize.width * 5 / 100;
+    final _padding = this._screenSize!.width * 5 / 100;
 
     return Scaffold(
         body: GestureDetector(

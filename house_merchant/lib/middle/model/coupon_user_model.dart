@@ -1,10 +1,10 @@
 import 'package:house_merchant/middle/model/profile_model.dart';
 
 class CouponUserModel {
-  String id;
-  ProfileModel customer;
-  String created;
-  String modified;
+  String? id;
+  ProfileModel? customer;
+  String? created;
+  String? modified;
 
   CouponUserModel({
     this.id,

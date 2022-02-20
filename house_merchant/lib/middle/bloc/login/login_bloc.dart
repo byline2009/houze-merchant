@@ -6,17 +6,18 @@ import 'package:house_merchant/middle/repository/user_repository.dart';
 import 'package:meta/meta.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  UserRepository userRepository;
+  UserRepository? userRepository;
   final AuthenticationBloc authenticationBloc;
 
-  LoginBloc({@required this.authenticationBloc, LoginState initialState})
+  LoginBloc(
+      {required this.authenticationBloc, required LoginState initialState})
       : super(initialState) {
     this.userRepository = authenticationBloc.userRepository;
     on<LoginButtonPressed>((event, emit) async {
       emit(LoginLoading());
 
       try {
-        final token = await userRepository.authenticate(
+        final token = await userRepository!.authenticate(
           phoneDial: event.phoneDial,
           username: event.username,
           password: event.password,

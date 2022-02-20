@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class TextWidget extends StatelessWidget {
-  final StreamController<String> controller;
+  final StreamController<String>? controller;
 
-  final TextStyle style;
+  final TextStyle? style;
   final String text;
   final int maxLines;
 
@@ -24,12 +24,12 @@ class TextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: controller.stream,
+        stream: controller!.stream,
         initialData: text,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Text(snapshot.data,
               style: this.style,
-              maxLines: this.maxLines ?? 1,
+              maxLines: this.maxLines,
               overflow: TextOverflow.ellipsis);
         });
   }

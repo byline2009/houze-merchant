@@ -5,12 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ImageWidget extends StatelessWidget {
-  Widget child;
+  Widget? child;
   final String imgUrl;
-  double width = 50;
-  double height = 50;
+  double? width = 50;
+  double? height = 50;
 
-  ImageWidget({@required this.imgUrl, this.width, this.height});
+  ImageWidget({required this.imgUrl, this.width, this.height});
 
   @override
   Widget build(BuildContext context) {

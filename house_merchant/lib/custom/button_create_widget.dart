@@ -6,11 +6,10 @@ typedef void CallBackHandler();
 
 class ButtonCreateWidget extends StatefulWidget {
   final CallBackHandler onPressed;
-  final Widget icon;
+  final Widget? icon;
   final String title;
 
-  ButtonCreateWidget(
-      {@required this.onPressed, @required this.title, this.icon});
+  ButtonCreateWidget({required this.onPressed, required this.title, this.icon});
 
   ButtonCreateWidgetState createState() => ButtonCreateWidgetState();
 }
@@ -35,7 +34,7 @@ class ButtonCreateWidgetState extends State<ButtonCreateWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              widget.icon != null ? widget.icon : Center(),
+              widget.icon != null ? widget.icon! : Center(),
               SizedBox(width: 10),
               Text(
                 LocalizationsUtil.of(context).translate(widget.title),

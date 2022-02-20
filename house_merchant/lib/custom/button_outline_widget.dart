@@ -7,10 +7,10 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/button_widget.dart';
 
 class ButtonOutlineWidget extends StatefulWidget {
-  final String defaultHintText;
+  final String? defaultHintText;
   bool isActive;
-  StreamController<ButtonSubmitEvent> controller;
-  final CallBackHandler callback;
+  StreamController<ButtonSubmitEvent>? controller;
+  final CallBackHandler? callback;
 
   ButtonOutlineWidget({
     this.defaultHintText,
@@ -41,7 +41,7 @@ class ButtonOutlineWidgetState extends State<ButtonOutlineWidget> {
                   shape: ThemeConstant.formButtonBorder,
                 ),
                 onPressed: !widget.isActive ? null : widget.callback,
-                child: Text(widget.defaultHintText,
+                child: Text(widget.defaultHintText!,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -58,11 +58,11 @@ class ButtonOutlineWidgetState extends State<ButtonOutlineWidget> {
       widget.controller = new StreamController<ButtonSubmitEvent>();
 
     return StreamBuilder(
-        stream: widget.controller.stream,
+        stream: widget.controller!.stream,
         initialData: ButtonSubmitEvent(widget.isActive),
         builder:
             (BuildContext context, AsyncSnapshot<ButtonSubmitEvent> snapshot) {
-          widget.isActive = snapshot.data.isActive;
+          widget.isActive = snapshot.data!.isActive!;
 
           return initButton();
         });

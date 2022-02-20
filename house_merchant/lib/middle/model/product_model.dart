@@ -1,12 +1,13 @@
 class ProductModel {
-  String id;
-  String title;
-  String desc;
-  double price;
-  int status;
-  String imgUrl;
+  String? id;
+  String? title;
+  String? desc;
+  double? price;
+  int? status;
+  String? imgUrl;
 
-  ProductModel({this.id, this.title, this.desc, this.price, this.status, this.imgUrl});
+  ProductModel(
+      {this.id, this.title, this.desc, this.price, this.status, this.imgUrl});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

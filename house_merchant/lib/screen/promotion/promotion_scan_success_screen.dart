@@ -20,14 +20,14 @@ class PromotionScanSuccessScreen extends StatefulWidget {
 
 class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
   var _qrCodeModel = QrCodeModel();
-  double _padding;
-  Size _screenSize;
+  double? _padding;
+  Size? _screenSize;
 
   @override
   Widget build(BuildContext context) {
     this._qrCodeModel = widget.params['qr_code_model'];
     this._screenSize = MediaQuery.of(context).size;
-    this._padding = this._screenSize.width * 5 / 100;
+    this._padding = this._screenSize!.width * 5 / 100;
     var _user = this._qrCodeModel.customer;
     var _coupon = this._qrCodeModel.coupon;
     ProgressHUD progressToolkit = Progress.instanceCreate();
@@ -39,7 +39,7 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
         var couponRepository = CouponRepository();
 
         var rs = await couponRepository.confirmCode(
-            this._qrCodeModel.id, this._qrCodeModel.code);
+            this._qrCodeModel.id!, this._qrCodeModel.code!);
         if (rs != null) {
           AppRouter.push(context, AppRouter.COUPON_DETAIL_PAGE, {
             "coupon_model": rs.coupon,
@@ -100,7 +100,7 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
             SliverToBoxAdapter(
                 child: BoxesContainer(
                     child: Padding(
-                        padding: EdgeInsets.all(this._padding),
+                        padding: EdgeInsets.all(this._padding!),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +109,7 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
                               height: 15,
                             ),
                             Text(
-                              _coupon.title,
+                              _coupon!.title!,
                               style: TextStyle(
                                   fontSize: ThemeConstant.boxes_font_title,
                                   letterSpacing: 0.38,
@@ -125,10 +125,10 @@ class PromotionScanSuccessState extends State<PromotionScanSuccessScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   BaseWidget.avatar(
-                                      _user.avatar, _user.gender, 100.0),
+                                      _user!.avatar!, _user.gender!, 100.0),
                                   SizedBox(height: 15),
                                   Text(
-                                    _user.fullName,
+                                    _user.fullName!,
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 18,

@@ -1,11 +1,11 @@
 class PromotionModel {
-  String promotionTitle;
-  int status;
-  int promotionCurrent;
-  int promotionMax;
-  String expireStart;
-  String expireEnd;
-  String imgUrl;
+  String? promotionTitle;
+  int? status;
+  int? promotionCurrent;
+  int? promotionMax;
+  String? expireStart;
+  String? expireEnd;
+  String? imgUrl;
 
   PromotionModel(
       {this.promotionTitle,

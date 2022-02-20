@@ -6,7 +6,7 @@ const double horizontalPadding = 20.0;
 typedef void CallBackHandler();
 
 class BaseWidget {
-  static Widget note(Widget text, {Color color}) {
+  static Widget note(Widget text, {Color? color}) {
     return Container(
       width: double.infinity,
       padding: new EdgeInsets.all(15.0),
@@ -24,7 +24,7 @@ class BaseWidget {
   );
 
   static Widget buttonThemePink(String text,
-      {Color color, CallBackHandler callback}) {
+      {Color? color, CallBackHandler? callback}) {
     return GestureDetector(
         onTap: () {
           if (callback != null) {
@@ -53,7 +53,7 @@ class BaseWidget {
   }
 
   static Widget buttonOutline(String text,
-      {Color color, CallBackHandler callback}) {
+      {Color? color, CallBackHandler? callback}) {
     return GestureDetector(
         onTap: () {
           if (callback != null) {

@@ -7,13 +7,13 @@ import 'package:house_merchant/utils/localizations_util.dart';
 typedef Int2VoidFunc = void Function(int);
 
 class BottomSheetWidget extends StatefulWidget {
-  String title;
-  Widget child;
+  String? title;
+  Widget? child;
   Int2VoidFunc doneEvent;
-  Int2VoidFunc cancelEvent;
+  Int2VoidFunc? cancelEvent;
 
   BottomSheetWidget(
-      {this.title, this.child, @required this.doneEvent, this.cancelEvent});
+      {this.title, this.child, required this.doneEvent, this.cancelEvent});
 
   @override
   BottomSheetWidgetState createState() => BottomSheetWidgetState();
@@ -67,7 +67,7 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                           onPressed: () {
                             if (widget.cancelEvent != null) {
                               this.selectedIndex = -1;
-                              widget.cancelEvent(this.selectedIndex);
+                              widget.cancelEvent!(this.selectedIndex);
                             }
                             Navigator.pop(context);
                           },
@@ -77,7 +77,7 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
                         alignment: Alignment.center,
                         height: _kPickerTitleHeight,
                         child: Text(
-                          widget.title != null ? widget.title : '',
+                          widget.title != null ? widget.title! : '',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16.0,
@@ -115,6 +115,6 @@ class BottomSheetWidgetState extends State<BottomSheetWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildBottomPicker(context, widget.child);
+    return _buildBottomPicker(context, widget.child!);
   }
 }

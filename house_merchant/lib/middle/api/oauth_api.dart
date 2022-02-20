@@ -13,15 +13,15 @@ import 'package:synchronized/synchronized.dart' as lock;
 
 class OauthAPI {
   static String tokenType = "Bearer";
-  static Dio dioInstance;
-  static Dio tokenDioInstance;
+  static Dio? dioInstance;
+  static Dio? tokenDioInstance;
 
-  static String token;
+  static String? token;
   static bool tokenValid = true;
 
-  String refreshAPI;
-  BaseOptions options;
-  static lock.Lock synchronized;
+  String? refreshAPI;
+  BaseOptions? options;
+  static lock.Lock? synchronized;
 
   static void init() {
     if (OauthAPI.tokenDioInstance == null) {
@@ -30,7 +30,7 @@ class OauthAPI {
 
       //Refresh token failed
       //A refresh token only refresh 1 times.
-      OauthAPI.tokenDioInstance.interceptors.add(InterceptorsWrapper(
+      OauthAPI.tokenDioInstance!.interceptors.add(InterceptorsWrapper(
           onRequest: (RequestOptions options) async {
             return options;
           },
@@ -45,17 +45,17 @@ class OauthAPI {
     if (OauthAPI.dioInstance == null) {
       //First declare
       OauthAPI.dioInstance = new Dio();
-      OauthAPI.dioInstance.options.connectTimeout = 7000;
-      OauthAPI.dioInstance.options.receiveTimeout = 15000;
+      OauthAPI.dioInstance!.options.connectTimeout = 7000;
+      OauthAPI.dioInstance!.options.receiveTimeout = 15000;
 
       //handler expire token
-      OauthAPI.dioInstance.interceptors
+      OauthAPI.dioInstance!.interceptors
           .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
         debugPrint(
             "${DateTime.now()} BEGIN REQUEST: ${options.path} with method: ${options.method}");
 
-        final TokenModel tokens = Storage.getToken();
-        OauthAPI.token = tokens.access;
+        final TokenModel? tokens = Storage.getToken();
+        OauthAPI.token = tokens!.access;
 
         options.headers["Authorization"] =
             "${CommonConstant.tokenType} ${OauthAPI.token}";
@@ -73,7 +73,7 @@ class OauthAPI {
 
         if (OauthAPI.token != null && e.response?.statusCode == 401) {
           //debugPrint("${DateTime.now()} END 401 REQUEST: ${e.request.path}");
-          await OauthAPI.synchronized.synchronized(() {
+          await OauthAPI.synchronized!.synchronized(() {
             OauthAPI.tokenValid = false;
           });
 
@@ -87,7 +87,8 @@ class OauthAPI {
             options.headers["Authorization"] =
                 "${CommonConstant.tokenType} ${OauthAPI.token}";
             options.headers["token"] = OauthAPI.token;
-            return OauthAPI.dioInstance.request(options.path, options: options);
+            return OauthAPI.dioInstance!
+                .request(options.path, options: options);
           }
 
           print("############################");
@@ -97,22 +98,22 @@ class OauthAPI {
 
           dioLock();
 
-          return await OauthAPI.synchronized.synchronized(() {
+          return await OauthAPI.synchronized!.synchronized(() {
             print(
                 '${DateTime.now()} BEGIN synchronized lock ${OauthAPI.tokenValid}');
-            final TokenModel token = Storage.getToken();
+            final TokenModel? token = Storage.getToken();
 
             if (OauthAPI.tokenValid == true) {
               options.headers["Authorization"] =
                   "${CommonConstant.tokenType} ${OauthAPI.token}";
               options.headers["token"] = OauthAPI.token;
-              return OauthAPI.dioInstance
+              return OauthAPI.dioInstance!
                   .request(options.path, options: options);
             }
 
-            return OauthAPI.tokenDioInstance
+            return OauthAPI.tokenDioInstance!
                 .post(refreshAPI,
-                    data: {"refresh": token.refresh},
+                    data: {"refresh": token!.refresh},
                     options: Options(headers: {"refresh": token.refresh}))
                 .then((d) async {
               print(
@@ -141,7 +142,7 @@ class OauthAPI {
                     fontSize: 14.0);
 
                 BlocProvider.of<AuthenticationBloc>(
-                    Storage.scaffoldKey.currentContext)
+                    Storage.scaffoldKey.currentContext!)
                   ..add(LoggedOut());
 
                 return e;
@@ -151,11 +152,11 @@ class OauthAPI {
               options.headers["Authorization"] =
                   "${CommonConstant.tokenType} ${OauthAPI.token}";
               options.headers["token"] = OauthAPI.token;
-              return OauthAPI.dioInstance
+              return OauthAPI.dioInstance!
                   .request(options.path, options: options);
             }).then((ex) {
               print('then refresh token ..... ${options.path}');
-              return OauthAPI.dioInstance
+              return OauthAPI.dioInstance!
                   .request(options.path, options: options);
             });
           });
@@ -168,24 +169,24 @@ class OauthAPI {
 
   static void dioLock() {
     //OauthAPI.dioInstance.lock();
-    OauthAPI.dioInstance.interceptors.requestLock.lock();
-    OauthAPI.dioInstance.interceptors.responseLock.lock();
+    OauthAPI.dioInstance!.interceptors.requestLock.lock();
+    OauthAPI.dioInstance!.interceptors.responseLock.lock();
   }
 
   static void dioUnlock() {
     //OauthAPI.dioInstance.unlock();
-    OauthAPI.dioInstance.interceptors.requestLock.unlock();
-    OauthAPI.dioInstance.interceptors.responseLock.unlock();
+    OauthAPI.dioInstance!.interceptors.requestLock.unlock();
+    OauthAPI.dioInstance!.interceptors.responseLock.unlock();
   }
 
   Future<dynamic> get(
-    String path, {
-    Map<String, dynamic> queryParameters,
-    Options options,
-    CancelToken cancelToken,
-    ProgressCallback onReceiveProgress,
+    String? path, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
   }) async {
-    var response = dioInstance.get(
+    var response = dioInstance!.get(
       path,
       queryParameters: queryParameters,
       options: options,
@@ -197,15 +198,15 @@ class OauthAPI {
   }
 
   Future<dynamic> post(
-    String path, {
+    String? path, {
     data,
-    Map<String, dynamic> queryParameters,
-    Options options,
-    CancelToken cancelToken,
-    ProgressCallback onSendProgress,
-    ProgressCallback onReceiveProgress,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
   }) async {
-    var response = dioInstance.post(
+    var response = dioInstance!.post(
       path,
       data: data,
       queryParameters: queryParameters,
@@ -219,14 +220,14 @@ class OauthAPI {
   }
 
   Future<dynamic> put(
-    String path, {
+    String? path, {
     data,
-    Map<String, dynamic> queryParameters,
-    Options options,
-    CancelToken cancelToken,
-    ProgressCallback onReceiveProgress,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
   }) async {
-    var response = dioInstance.put(
+    var response = dioInstance!.put(
       path,
       data: data,
       queryParameters: queryParameters,
@@ -239,14 +240,14 @@ class OauthAPI {
   }
 
   Future<dynamic> patch(
-    String path, {
+    String? path, {
     data,
-    Map<String, dynamic> queryParameters,
-    Options options,
-    CancelToken cancelToken,
-    ProgressCallback onReceiveProgress,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
   }) async {
-    var response = dioInstance.patch(
+    var response = dioInstance!.patch(
       path,
       data: data,
       queryParameters: queryParameters,
@@ -259,13 +260,13 @@ class OauthAPI {
   }
 
   Future<dynamic> delete(
-    String path, {
+    String? path, {
     data,
-    Map<String, dynamic> queryParameters,
-    Options options,
-    CancelToken cancelToken,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
   }) async {
-    var response = dioInstance.delete(
+    var response = dioInstance!.delete(
       path,
       data: data,
       queryParameters: queryParameters,
@@ -277,6 +278,6 @@ class OauthAPI {
   }
 
   static getApiUrl(String path) {
-    return APIConstant.baseMerchantUrl + path;
+    return APIConstant.baseMerchantUrl! + path;
   }
 }

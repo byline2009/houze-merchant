@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 class ProfileScreenWidget extends StatefulWidget {
   final dynamic params;
 
-  ProfileScreenWidget({Key key, this.params}) : super(key: key);
+  ProfileScreenWidget({Key? key, this.params}) : super(key: key);
 
   @override
   ProfileScreenState createState() => ProfileScreenState(params: this.params);
@@ -27,7 +27,7 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
     super.initState();
   }
 
-  Widget makeRowData(String label, String value, {Color color}) {
+  Widget makeRowData(String label, String value, {Color? color}) {
     return Padding(
       padding: const EdgeInsets.only(top: 6, bottom: 6),
       child: Row(
@@ -79,20 +79,20 @@ class ProfileScreenState extends State<ProfileScreenWidget> {
                             children: <Widget>[
                               CircleAvatar(
                                   backgroundColor: ThemeConstant.alto_color,
-                                  child: Text(result.fullName[0],
+                                  child: Text(result.fullName![0],
                                       style: ThemeConstant.titleLargeStyle(
                                           Colors.white)),
                                   radius: 33),
                               SizedBox(height: 25.0),
-                              makeRowData('Họ và tên:', result.fullName),
-                              makeRowData('Tên đăng nhập:', result.username),
+                              makeRowData('Họ và tên:', result.fullName!),
+                              makeRowData('Tên đăng nhập:', result.username!),
                               makeRowData('Chức vụ:', 'Chủ quán'),
                               result.birthday != null
                                   ? makeRowData(
                                       'Ngày sinh:',
                                       DateFormat('dd/MM/yyyy')
                                           .format(
-                                              DateTime.parse(result.birthday)
+                                              DateTime.parse(result.birthday!)
                                                   .toLocal())
                                           .toString())
                                   : Center(),

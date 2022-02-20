@@ -1,8 +1,8 @@
-class LanguageModel  {
-  String name;
-  String flag;
-  String locale;
-  bool selected;
+class LanguageModel {
+  String? name;
+  String? flag;
+  String? locale;
+  bool? selected;
 
   LanguageModel({this.name, this.flag, this.locale, this.selected});
 
@@ -21,11 +21,6 @@ class LanguageModel  {
     this.selected = obj['selected'];
   }
 
-  Map<String, dynamic> toJson() => {
-    'name': name,
-    'flag': flag,
-    'locale': locale,
-    'selected': selected
-  };
-
+  Map<String, dynamic> toJson() =>
+      {'name': name, 'flag': flag, 'locale': locale, 'selected': selected};
 }

@@ -10,12 +10,12 @@ class ProgressHUD extends StatefulWidget {
   final Color color;
   final Color containerColor;
   final double borderRadius;
-  String text;
+  String? text;
   final bool loading;
-  _ProgressHUDState state;
+  _ProgressHUDState state = _ProgressHUDState();
 
   ProgressHUD(
-      {Key key,
+      {Key? key,
       this.backgroundColor = Colors.black54,
       this.color = Colors.white,
       this.containerColor = Colors.transparent,
@@ -94,7 +94,7 @@ class _ProgressHUDState extends State<ProgressHUD> {
   }
 
   Widget _getCenterContent(BuildContext context) {
-    if (widget.text == null || widget.text.isEmpty) {
+    if (widget.text == null || widget.text!.isEmpty) {
       return _getCircularProgress();
     }
 

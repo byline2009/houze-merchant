@@ -8,7 +8,7 @@ import 'package:house_merchant/constant/theme_constant.dart';
 typedef void CallBackHandler();
 
 class ButtonSubmitEvent {
-  bool isActive;
+  bool? isActive;
 
   ButtonSubmitEvent(bool value) {
     this.isActive = value;
@@ -16,10 +16,10 @@ class ButtonSubmitEvent {
 }
 
 class ButtonWidget extends StatefulWidget {
-  final String defaultHintText;
+  final String? defaultHintText;
   bool isActive = false;
-  StreamController<ButtonSubmitEvent> controller;
-  final CallBackHandler callback;
+  StreamController<ButtonSubmitEvent>? controller;
+  final CallBackHandler? callback;
 
   ButtonWidget({
     this.defaultHintText,
@@ -57,7 +57,7 @@ class ButtonWidgetState extends State<ButtonWidget> {
                   shape: ThemeConstant.formButtonBorder,
                 ),
                 onPressed: !widget.isActive ? null : widget.callback,
-                child: Text(widget.defaultHintText,
+                child: Text(widget.defaultHintText!,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -74,11 +74,11 @@ class ButtonWidgetState extends State<ButtonWidget> {
       widget.controller = new StreamController<ButtonSubmitEvent>();
 
     return StreamBuilder(
-        stream: widget.controller.stream,
+        stream: widget.controller!.stream,
         initialData: ButtonSubmitEvent(widget.isActive),
         builder:
             (BuildContext context, AsyncSnapshot<ButtonSubmitEvent> snapshot) {
-          widget.isActive = snapshot.data.isActive;
+          widget.isActive = snapshot.data!.isActive!;
 
           return initButton();
         });

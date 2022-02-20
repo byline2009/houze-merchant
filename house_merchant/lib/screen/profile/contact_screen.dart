@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ContactScreenWidget extends StatelessWidget {
   Widget itemContact(BuildContext context, String title, String image,
-      String content, Function onTap) {
+      String content, VoidCallback onTap) {
     return Container(
         padding:
             EdgeInsets.only(left: 20.0, right: 15.0, top: 20.0, bottom: 10.0),

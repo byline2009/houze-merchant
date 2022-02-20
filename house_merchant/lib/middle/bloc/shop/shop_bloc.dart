@@ -17,7 +17,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     on<SaveButtonPressed>((event, emit) async {
       try {
         emit(ShopLoading());
-        final result = await shopRepository.updateInfo(event.shopModel);
+        final result = await shopRepository.updateInfo(event.shopModel!);
         print(result);
         emit(ShopSuccessful());
       } catch (error) {

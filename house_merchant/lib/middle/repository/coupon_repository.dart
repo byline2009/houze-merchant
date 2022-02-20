@@ -21,7 +21,7 @@ class CouponRepository {
     return rs;
   }
 
-  Future<QrCodeModel> checkQR(String id, String code) async {
+  Future<QrCodeModel?> checkQR(String id, String code) async {
     try {
       final rs = await couponAPI.checkQR(id: id, code: code);
       print(rs);
@@ -34,7 +34,7 @@ class CouponRepository {
     }
   }
 
-  Future<QrCodeModel> confirmCode(String id, String code) async {
+  Future<QrCodeModel?> confirmCode(String id, String code) async {
     try {
       final rs = await couponAPI.confirmQR(id: id, code: code);
       print(rs);
@@ -47,7 +47,7 @@ class CouponRepository {
     }
   }
 
-  Future<CouponModel> createCoupon(CouponModel couponModel) async {
+  Future<CouponModel?> createCoupon(CouponModel couponModel) async {
     try {
       final rs = await couponAPI.createCoupon(couponModel);
       if (rs != null) {
@@ -59,7 +59,7 @@ class CouponRepository {
     }
   }
 
-  Future<ImageModel> uploadImage(File file) async {
+  Future<ImageModel?> uploadImage(File file) async {
     //Call Dio API
     final rs = await couponAPI.uploadImage(file);
     if (rs != null) {
@@ -68,7 +68,8 @@ class CouponRepository {
     return null;
   }
 
-  Future<List<CouponUserModel>> getCouponUserList({String id, int page}) async {
+  Future<List<CouponUserModel>> getCouponUserList(
+      {String? id, int? page}) async {
     final rs = await couponAPI.getCouponUsers(id, page: page);
     print('[getCouponUserList] ID = $id, result = $rs');
     return rs;

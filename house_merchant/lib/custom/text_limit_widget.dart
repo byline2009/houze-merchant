@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class TextLimitWidget extends StatelessWidget {
-  final TextStyle style;
+  final TextStyle? style;
   final String text;
   int maxLines = 1;
-  TextOverflow overflow = TextOverflow.clip;
+  TextOverflow? overflow = TextOverflow.clip;
   final TextAlign textAlign;
 
   TextLimitWidget(this.text,

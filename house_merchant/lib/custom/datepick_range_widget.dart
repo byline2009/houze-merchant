@@ -16,10 +16,10 @@ typedef void CallBackHandler(List<DateTime> value);
 typedef VoidFunc = void Function();
 
 class DateRangePickerWidget extends StatefulWidget {
-  final String defaultHintText;
+  final String? defaultHintText;
   bool isActive = false;
-  StreamController<List<DateTime>> controller;
-  final CallBackHandler callback;
+  StreamController<List<DateTime>>? controller;
+  final CallBackHandler? callback;
 
   DateRangePickerWidget({this.controller, this.defaultHintText, this.callback});
 
@@ -27,8 +27,8 @@ class DateRangePickerWidget extends StatefulWidget {
 }
 
 class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
-  DateTime now;
-  List<DateTime> localDate;
+  DateTime? now;
+  List<DateTime?>? localDate;
   TextFieldWidgetController localController = new TextFieldWidgetController();
 
   DateRangePickerWidgetState() {
@@ -39,18 +39,18 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: widget.controller.stream,
+        stream: widget.controller!.stream,
         builder:
             (BuildContext context, AsyncSnapshot<List<DateTime>> snapshot) {
-          if (snapshot.data != null && snapshot.data.length > 0) {
+          if (snapshot.data != null && snapshot.data!.length > 0) {
             localController.controller.text =
-                DateFormat(Format.timeAndDate).format(snapshot.data[0]) +
+                DateFormat(Format.timeAndDate).format(snapshot.data![0]) +
                     ' đến ' +
-                    DateFormat(Format.timeAndDate).format(snapshot.data[1]);
+                    DateFormat(Format.timeAndDate).format(snapshot.data![1]);
             this.localDate = snapshot.data;
           }
 
-          if (snapshot.data != null && snapshot.data.length == 0) {
+          if (snapshot.data != null && snapshot.data!.length == 0) {
             localController.controller.clear();
             this.localDate = [];
           }
@@ -66,14 +66,14 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
                         },
                         settings: RouteSettings(name: "app://DateRangePage"),
                         fullscreenDialog: true));
-                widget.controller.sink.add(result ?? []);
-                widget.callback(result ?? []);
+                widget.controller!.sink.add(result);
+                widget.callback!(result);
               },
               child: Container(
                   color: ThemeConstant.white_color,
                   child: TextFieldWidget(
                     controller: localController,
-                    defaultHintText: widget.defaultHintText,
+                    defaultHintText: widget.defaultHintText!,
                     enabled: false,
                   )));
         });

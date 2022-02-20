@@ -6,7 +6,7 @@ class ParkingCardSkeleton extends StatefulWidget {
   final double borderRadius;
 
   ParkingCardSkeleton(
-      {Key key, this.height = 20, this.width = 200, this.borderRadius = 0})
+      {Key? key, this.height = 20, this.width = 200, this.borderRadius = 0})
       : super(key: key);
 
   createState() => ParkingCardSkeletonState();
@@ -14,9 +14,9 @@ class ParkingCardSkeleton extends StatefulWidget {
 
 class ParkingCardSkeletonState extends State<ParkingCardSkeleton>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  AnimationController? _controller;
 
-  Animation gradientPosition;
+  Animation? gradientPosition;
 
   @override
   void initState() {
@@ -28,17 +28,17 @@ class ParkingCardSkeletonState extends State<ParkingCardSkeleton>
       begin: -3,
       end: 10,
     ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.linear),
+      CurvedAnimation(parent: _controller!, curve: Curves.linear),
     )..addListener(() {
         setState(() {});
       });
 
-    _controller.repeat();
+    _controller!.repeat();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -51,7 +51,7 @@ class ParkingCardSkeletonState extends State<ParkingCardSkeleton>
         height: widget.height,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment(gradientPosition.value, 0),
+            begin: Alignment(gradientPosition!.value, 0),
             end: Alignment(-1, 0),
             colors: [Colors.black12, Colors.black26, Colors.black12],
           ),

@@ -17,7 +17,7 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 
 class MoreScreen extends StatefulWidget {
-  MoreScreen({Key key}) : super(key: key);
+  MoreScreen({Key? key}) : super(key: key);
 
   @override
   MoreScreenState createState() => MoreScreenState();
@@ -59,10 +59,10 @@ class MoreScreenState extends State<MoreScreen> {
                         contentPadding: EdgeInsets.all(0.0),
                         leading: CircleAvatar(
                             backgroundColor: ThemeConstant.alto_color,
-                            child: Text(result.fullName[0],
+                            child: Text(result.fullName![0],
                                 style: ThemeConstant.titleLargeStyle(
                                     Colors.white))),
-                        title: Text(result.fullName,
+                        title: Text(result.fullName!,
                             style: ThemeConstant.headerTitleBoldStyle(
                                 ThemeConstant.black_color)),
                         subtitle: Text('QUẢN LÝ CỬA HÀNG',
@@ -128,7 +128,7 @@ class MoreScreenState extends State<MoreScreen> {
     return Icon(Icons.arrow_forward, color: ThemeConstant.alto_color, size: 16);
   }
 
-  Widget makeBody(ProfileBloc profileBloc, ShopModel shop) {
+  Widget makeBody(ProfileBloc profileBloc, ShopModel? shop) {
     return ListView(shrinkWrap: true, children: <Widget>[
       Column(
         children: <Widget>[

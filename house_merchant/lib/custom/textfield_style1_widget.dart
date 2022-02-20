@@ -5,12 +5,12 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/custom/textfield_widget.dart';
 
 class TextFieldStyle1Widget extends TextFieldWidget {
-  String defaultHintText;
+  String? defaultHintText;
   bool isChanged = false;
   bool enabled = false;
   TextInputType keyboardType;
-  CallBackHandler callback;
-  TextFieldWidgetController controller;
+  CallBackHandler? callback;
+  TextFieldWidgetController? controller;
 
   TextFieldStyle1Widget(
       {this.controller,
@@ -19,9 +19,9 @@ class TextFieldStyle1Widget extends TextFieldWidget {
       this.callback,
       this.enabled = true})
       : super(
-          controller: controller,
-          defaultHintText: defaultHintText,
-          callback: callback,
+          controller: controller!,
+          defaultHintText: defaultHintText!,
+          callback: callback!,
           enabled: enabled,
         );
 
@@ -43,7 +43,7 @@ class TextFieldStyle1Widget extends TextFieldWidget {
               //         style: BorderStyle.solid)),
               child: new TextField(
                 cursorColor: ThemeConstant.alto_color,
-                controller: this.controller.controller,
+                controller: this.controller!.controller,
                 keyboardType: keyboardType,
                 textAlign: TextAlign.left,
                 onTap: () {},
@@ -55,7 +55,7 @@ class TextFieldStyle1Widget extends TextFieldWidget {
                   fontSize: ThemeConstant.form_font_normal,
                 ),
                 decoration:
-                    ThemeConstant.tfInputDecoration(this.defaultHintText),
+                    ThemeConstant.tfInputDecoration(this.defaultHintText!),
 //             onChanged: (String value) {
 // //              if (_textController.text.length != "") {
 // //                _textStreamController.sink.add(_textController.text);

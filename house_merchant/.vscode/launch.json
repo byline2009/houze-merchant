@@ -7,14 +7,20 @@
         {
             "name": "Flutter",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--no-sound-null-safety"
+            ]
         },
         {
             "name": "ReleaseQA",
             "type": "dart",
             "request": "launch",
             "flutterMode": "release",
-            "program": "lib/main.dart"
+            "program": "lib/main.dart",
+            "args": [
+                "--no-sound-null-safety"
+            ]
         }
     ]
 }

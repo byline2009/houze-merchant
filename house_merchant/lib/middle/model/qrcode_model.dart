@@ -2,11 +2,11 @@ import 'package:house_merchant/middle/model/coupon_model.dart';
 import 'package:house_merchant/middle/model/profile_model.dart';
 
 class QrCodeModel {
-  String id;
-  String code;
-  CouponModel coupon;
-  ProfileModel customer;
-  bool isUsed;
+  String? id;
+  String? code;
+  CouponModel? coupon;
+  ProfileModel? customer;
+  bool? isUsed;
 
   QrCodeModel({
     this.id,

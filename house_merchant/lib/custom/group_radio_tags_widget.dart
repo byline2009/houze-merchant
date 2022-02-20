@@ -10,18 +10,18 @@ typedef void CallBackHandler(dynamic value);
 
 class GroupRadioTags {
   dynamic id;
-  String title;
-  Widget icon;
+  String? title;
+  Widget? icon;
 
   GroupRadioTags({this.id, this.title, this.icon});
 }
 
 class GroupRadioTagsWidget extends StatefulWidget {
-  StreamController<dynamic> controller;
-  List<GroupRadioTags> tags;
-  CallBackHandler callback;
-  CallBackHandler callBackIndex;
-  int defaultIndex = 0;
+  StreamController<dynamic>? controller;
+  List<GroupRadioTags>? tags;
+  CallBackHandler? callback;
+  CallBackHandler? callBackIndex;
+  int? defaultIndex = 0;
 
   GroupRadioTagsWidget({
     this.callback,
@@ -54,8 +54,8 @@ class GroupRadioTagsWidgetState extends State<GroupRadioTagsWidget> {
             setState(() {
               widget.defaultIndex = index;
             });
-            if (widget.callback != null) widget.callback(id);
-            if (widget.callBackIndex != null) widget.callBackIndex(index);
+            if (widget.callback != null) widget.callback!(id);
+            if (widget.callBackIndex != null) widget.callBackIndex!(index);
           },
           child: Container(
               child: Row(
@@ -87,21 +87,21 @@ class GroupRadioTagsWidgetState extends State<GroupRadioTagsWidget> {
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.only(top: 15, bottom: 20),
         physics: const BouncingScrollPhysics(),
-        itemCount: widget.tags.length,
+        itemCount: widget.tags!.length,
         itemBuilder: (BuildContext context, int index) {
           if (index == widget.defaultIndex) {
             return buttonIcon(
-                id: widget.tags[index].id,
+                id: widget.tags![index].id,
                 index: index,
-                title: widget.tags[index].title,
-                icon: widget.tags[index].icon,
+                title: widget.tags![index].title,
+                icon: widget.tags![index].icon,
                 isSelected: true);
           }
           return buttonIcon(
-              id: widget.tags[index].id,
+              id: widget.tags![index].id,
               index: index,
-              title: widget.tags[index].title,
-              icon: widget.tags[index].icon);
+              title: widget.tags![index].title,
+              icon: widget.tags![index].icon);
         },
       ),
     );

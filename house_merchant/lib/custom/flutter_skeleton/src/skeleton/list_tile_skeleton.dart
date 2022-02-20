@@ -9,7 +9,7 @@ class ListTileSkeleton extends StatefulWidget {
   final SkeletonConfig config;
 
   ListTileSkeleton({
-    Key key,
+    Key? key,
     this.config: const SkeletonConfig.origin(),
   }) : super(key: key);
 
@@ -19,7 +19,7 @@ class ListTileSkeleton extends StatefulWidget {
 
 class _ListTileSkeletonState extends State<ListTileSkeleton>
     with SingleTickerProviderStateMixin {
-  SkeletonAnimation _skeletonAnimation;
+  SkeletonAnimation? _skeletonAnimation;
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class _ListTileSkeletonState extends State<ListTileSkeleton>
 
   @override
   void dispose() {
-    _skeletonAnimation.dispose();
+    _skeletonAnimation!.dispose();
     super.dispose();
   }
 
@@ -45,7 +45,7 @@ class _ListTileSkeletonState extends State<ListTileSkeleton>
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return AnimatedBuilder(
-      animation: _skeletonAnimation.animation,
+      animation: _skeletonAnimation!.animation as Listenable,
       builder: (context, child) {
         return Container(
           decoration: BoxDecoration(
@@ -82,7 +82,7 @@ class _ListTileSkeletonState extends State<ListTileSkeleton>
                 height: width * 0.13,
                 width: width * 0.13,
                 decoration: SkeletonDecoration(
-                  _skeletonAnimation,
+                  _skeletonAnimation!,
                   theme: widget.config.theme,
                   isCircle: widget.config.isCircleAvatar,
                 ),
@@ -104,13 +104,13 @@ class _ListTileSkeletonState extends State<ListTileSkeleton>
             Container(
               height: height * 0.009,
               width: width * 0.3,
-              decoration: SkeletonDecoration(_skeletonAnimation,
+              decoration: SkeletonDecoration(_skeletonAnimation!,
                   theme: widget.config.theme),
             ),
             Container(
               height: height * 0.007,
               width: width * 0.2,
-              decoration: SkeletonDecoration(_skeletonAnimation,
+              decoration: SkeletonDecoration(_skeletonAnimation!,
                   theme: widget.config.theme),
             ),
           ],
@@ -122,7 +122,7 @@ class _ListTileSkeletonState extends State<ListTileSkeleton>
       width: width * 0.3,
       margin: EdgeInsets.only(top: 4.0),
       decoration:
-          SkeletonDecoration(_skeletonAnimation, theme: widget.config.theme),
+          SkeletonDecoration(_skeletonAnimation!, theme: widget.config.theme),
     );
   }
 
@@ -140,7 +140,7 @@ class _ListTileSkeletonState extends State<ListTileSkeleton>
         height: height * 0.007,
         width: widths[i % widths.length],
         decoration:
-            SkeletonDecoration(_skeletonAnimation, theme: widget.config.theme),
+            SkeletonDecoration(_skeletonAnimation!, theme: widget.config.theme),
       ));
       children.add(SizedBox(height: 10));
     }

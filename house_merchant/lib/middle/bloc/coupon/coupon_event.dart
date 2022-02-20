@@ -10,16 +10,16 @@ class CouponLoadList extends CouponEvent {
   final int page;
   final int status;
 
-  CouponLoadList({this.page, this.status = -1});
+  CouponLoadList({required this.page, this.status = -1});
 
   @override
   String toString() => 'CouponLoadList { page: $page, status: $status }';
 }
 
 class CouponUserLoadList extends CouponEvent {
-  final String id;
+  final String? id;
   final int page;
-  CouponUserLoadList({this.id, @required this.page});
+  CouponUserLoadList({this.id, required this.page});
 
   @override
   String toString() => 'CouponUserLoadList { id: $id}';
@@ -30,8 +30,8 @@ class SaveButtonPressed extends CouponEvent {
   final String id;
 
   SaveButtonPressed({
-    @required this.id,
-    @required this.couponModel,
+    required this.id,
+    required this.couponModel,
   });
 
   @override
@@ -43,7 +43,7 @@ class CouponGetDetail extends CouponEvent {
   final String id;
 
   CouponGetDetail({
-    @required this.id,
+    required this.id,
   }) : super();
 
   @override

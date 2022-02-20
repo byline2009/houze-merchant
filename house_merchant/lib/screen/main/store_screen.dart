@@ -17,21 +17,21 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 
 class StoreEditArgument {
-  final CallBackHandler callback;
-  final ShopModel shopModel;
+  final CallBackHandler? callback;
+  final ShopModel? shopModel;
   StoreEditArgument({@required this.callback, @required this.shopModel});
 }
 
 class StoreScreen extends StatefulWidget {
-  StoreScreen({Key key}) : super(key: key);
+  StoreScreen({Key? key}) : super(key: key);
 
   @override
   StoreScreenState createState() => StoreScreenState();
 }
 
 class StoreScreenState extends State<StoreScreen> {
-  Size _screenSize;
-  double _padding;
+  Size? _screenSize;
+  double? _padding;
 
   final shopBloc = ShopBloc(ShopInitial());
 
@@ -60,7 +60,7 @@ class StoreScreenState extends State<StoreScreen> {
                   onTap: () {
                     List<String> _imgs = [];
 
-                    images.forEach((element) => _imgs.add(element.image));
+                    images.forEach((element) => _imgs.add(element.image!));
 
                     AppRouter.pushDialog(context, AppRouter.IMAGE_VIEW_SCREEN,
                         ImageViewScreenArgument(images: _imgs));
@@ -69,8 +69,8 @@ class StoreScreenState extends State<StoreScreen> {
                     child: ImageWidget(
                       width: 120,
                       height: 120,
-                      imgUrl: images[index].imageThumb.length > 0
-                          ? images[index].imageThumb
+                      imgUrl: images[index].imageThumb!.length > 0
+                          ? images[index].imageThumb!
                           : "https://anhdaostorage.blob.core.windows.net/qa-media/facility/20191114014630397045/meeting-room.jpg",
                     ),
                     padding: EdgeInsets.only(right: 15),
@@ -101,7 +101,7 @@ class StoreScreenState extends State<StoreScreen> {
     };
 
     hours.forEach((f) {
-      disableWeekday[f.weekday] = false;
+      disableWeekday[f.weekday!] = false;
     });
 
     return Column(
@@ -174,7 +174,7 @@ class StoreScreenState extends State<StoreScreen> {
                                 fontSize: ThemeConstant.form_font_small,
                                 fontWeight: FontWeight.w600)),
                         SizedBox(height: 5),
-                        Text(hours[0].startTime,
+                        Text(hours[0].startTime!,
                             style: TextStyle(
                                 color: ThemeConstant.black_color,
                                 fontFamily:
@@ -205,7 +205,7 @@ class StoreScreenState extends State<StoreScreen> {
                                 fontSize: ThemeConstant.form_font_small,
                                 fontWeight: FontWeight.w600)),
                         SizedBox(height: 5),
-                        Text(hours[0].endTime,
+                        Text(hours[0].endTime!,
                             style: TextStyle(
                                 color: ThemeConstant.black_color,
                                 fontFamily:
@@ -250,7 +250,7 @@ class StoreScreenState extends State<StoreScreen> {
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
-    this._padding = this._screenSize.width * 5 / 100;
+    this._padding = this._screenSize!.width * 5 / 100;
 
     return BaseScaffold(
       title: 'Cửa hàng',
@@ -264,16 +264,16 @@ class StoreScreenState extends State<StoreScreen> {
 
             if (shopState is ShopGetDetailSuccessful) {
               final shopModel = shopState.result;
-              List<ImageModel> _images = shopState.result.images;
-              List<Hours> _hours = shopState.result.hours;
-              String _description = shopModel.description;
+              List<ImageModel>? _images = shopState.result.images;
+              List<Hours>? _hours = shopState.result.hours;
+              String? _description = shopModel.description;
               return CustomScrollView(
                   physics: const BouncingScrollPhysics(),
                   slivers: [
                     SliverToBoxAdapter(
                         child: BoxesContainer(
                             child: Padding(
-                                padding: EdgeInsets.all(this._padding),
+                                padding: EdgeInsets.all(this._padding!),
                                 child: Text(
                                     LocalizationsUtil.of(context).translate(
                                         'Lưu ý, các tuỳ chỉnh thông số ở dưới sẽ được hiển thị trên ứng dụng của cư dân'),
@@ -287,7 +287,7 @@ class StoreScreenState extends State<StoreScreen> {
                     SliverToBoxAdapter(
                         child: BoxesContainer(
                       title: 'Hình ảnh',
-                      child: introStore(_images),
+                      child: introStore(_images!),
                       action: InkWell(
                           onTap: () async {
                             AppRouter.push(
@@ -302,12 +302,12 @@ class StoreScreenState extends State<StoreScreen> {
                                     shopModel: shopModel));
                           },
                           child: editButton()),
-                      padding: EdgeInsets.all(this._padding),
+                      padding: EdgeInsets.all(this._padding!),
                     )),
                     SliverToBoxAdapter(
                         child: BoxesContainer(
                       title: 'Mô tả',
-                      child: DescriptionBox(description: _description),
+                      child: DescriptionBox(description: _description!),
                       action: InkWell(
                           onTap: () async {
                             AppRouter.push(
@@ -315,8 +315,8 @@ class StoreScreenState extends State<StoreScreen> {
                                 AppRouter.SHOP_DESCRIPTION_PAGE,
                                 StoreEditArgument(
                                     callback: (shop) {
-                                      if (shop.description.toLowerCase() !=
-                                          _description.toLowerCase()) {
+                                      if (shop.description!.toLowerCase() !=
+                                          _description!.toLowerCase()) {
                                         print(shop.description);
                                         setState(() {
                                           _description = shop.description;
@@ -326,12 +326,12 @@ class StoreScreenState extends State<StoreScreen> {
                                     shopModel: shopModel));
                           },
                           child: editButton()),
-                      padding: EdgeInsets.all(this._padding),
+                      padding: EdgeInsets.all(this._padding!),
                     )),
                     SliverToBoxAdapter(
                         child: BoxesContainer(
                       title: 'Thời gian',
-                      child: timeStore(_hours),
+                      child: timeStore(_hours!),
                       action: InkWell(
                           onTap: () {
                             AppRouter.push(
@@ -349,7 +349,7 @@ class StoreScreenState extends State<StoreScreen> {
                                     shopModel: shopModel));
                           },
                           child: editButton()),
-                      padding: EdgeInsets.all(this._padding),
+                      padding: EdgeInsets.all(this._padding!),
                     )),
                   ]);
             }

@@ -6,13 +6,13 @@ abstract class LoginEvent extends Equatable {
 }
 
 class LoginButtonPressed extends LoginEvent {
-  final String phoneDial;
+  final String? phoneDial;
   final String username;
   final String password;
 
   LoginButtonPressed({
-    @required this.username,
-    @required this.password,
+    required this.username,
+    required this.password,
     this.phoneDial,
   });
 

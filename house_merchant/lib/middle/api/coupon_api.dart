@@ -14,6 +14,7 @@ import 'package:house_merchant/utils/sqflite.dart';
 
 class CouponAPI extends OauthAPI {
   CouponAPI() : super();
+  Dio? dio;
 
   //MARK: Get coupons
   Future<List<CouponModel>> getCoupons(int offset,
@@ -42,7 +43,7 @@ class CouponAPI extends OauthAPI {
 
   //MARK: Create coupon
   Future<CouponModel> createCoupon(CouponModel couponModel) async {
-    String currentShop = await Sqflite.currentShop();
+    String? currentShop = await Sqflite.currentShop();
 
     couponModel.shops = [ShopModel(id: currentShop)];
 
@@ -51,8 +52,6 @@ class CouponAPI extends OauthAPI {
 
     return CouponModel.fromJson(response.data);
   }
-
-  Dio dio;
 
   //MARK: Check QR
   Future<QrCodeModel> checkQR({id: String, code: String}) async {
@@ -63,7 +62,7 @@ class CouponAPI extends OauthAPI {
     return QrCodeModel.fromJson(response.data);
   }
 
-  Future<QrCodeModel> confirmQR({String id, String code}) async {
+  Future<QrCodeModel> confirmQR({String? id, String? code}) async {
     final response = await this.post(
         '${APIConstant.baseMerchantUrlCoupon}confirm-qr/',
         data: {"id": id, "code": code});
@@ -71,10 +70,10 @@ class CouponAPI extends OauthAPI {
   }
 
   //MARK: Get coupons
-  Future<List<CouponUserModel>> getCouponUsers(String id,
-      {int page, int limit = 10, int offset}) async {
+  Future<List<CouponUserModel>> getCouponUsers(String? id,
+      {int? page, int limit = 10, int? offset}) async {
     final Map<String, dynamic> params = {
-      "offset": page * limit,
+      "offset": page! * limit,
       "limit": limit,
     };
 
@@ -94,7 +93,7 @@ class CouponAPI extends OauthAPI {
         "image": MultipartFile.fromFileSync(image.path, filename: "ticket.jpg")
       });
 
-      final String url = APIConstant.baseMerchantUrlCouponUpload;
+      final String? url = APIConstant.baseMerchantUrlCouponUpload;
 
       final response = await this.post(
         url,

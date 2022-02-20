@@ -15,7 +15,7 @@ class ShopInitial extends ShopState {
 class ShopGetDetailSuccessful extends ShopState {
   final ShopModel result;
 
-  ShopGetDetailSuccessful({@required this.result});
+  ShopGetDetailSuccessful({required this.result});
 
   @override
   String toString() => 'ShopGetDetailSuccessful { result: $result }';
@@ -34,7 +34,7 @@ class ShopSuccessful extends ShopState {
 class ShopFailure extends ShopState {
   final String error;
 
-  ShopFailure({@required this.error}) : super([error]);
+  ShopFailure({required this.error}) : super([error]);
 
   @override
   String toString() => 'ShopFailure { error: $error }';

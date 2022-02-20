@@ -1,7 +1,7 @@
 //Create a Model class to hold key-value pair data
 class KeyValueModel {
   dynamic key;
-  String value;
+  String? value;
 
   KeyValueModel({this.key, this.value});
 

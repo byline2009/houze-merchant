@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class TokenModel extends Equatable {
-  final String refresh;
-  final String access;
+  final String? refresh;
+  final String? access;
 
   TokenModel({
     this.refresh,

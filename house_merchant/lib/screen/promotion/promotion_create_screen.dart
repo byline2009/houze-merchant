@@ -25,7 +25,7 @@ typedef void CallBackHandler(dynamic value);
 class CouponCreateScreen extends StatefulWidget {
   final dynamic params;
 
-  CouponCreateScreen({@required this.params, Key key}) : super(key: key);
+  CouponCreateScreen({@required this.params, Key? key}) : super(key: key);
 
   @override
   CouponCreateScreenState createState() => new CouponCreateScreenState();
@@ -33,8 +33,8 @@ class CouponCreateScreen extends StatefulWidget {
 
 class CouponCreateScreenState extends State<CouponCreateScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
-  Size _screenSize;
-  double _padding;
+  Size? _screenSize;
+  double? _padding;
 
   //Reposioty
   final couponRepository = CouponRepository();
@@ -43,7 +43,7 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
   final ftitle = TextFieldWidgetController();
   final famount = TextFieldWidgetController();
   final frangeTime = new StreamController<List<DateTime>>.broadcast();
-  List<DateTime> frangeTimeResult;
+  List<DateTime>? frangeTimeResult;
   final fdesc = TextFieldWidgetController();
   StreamController<ButtonSubmitEvent> sendButtonController =
       new StreamController<ButtonSubmitEvent>.broadcast();
@@ -60,7 +60,7 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
-    this._padding = this._screenSize.width * 5 / 100;
+    this._padding = this._screenSize!.width * 5 / 100;
 
     return BaseScaffoldNormal(
       title: 'Tạo ưu đãi',
@@ -75,13 +75,13 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
               child: BoxesContainer(
             title: 'Hình ảnh',
             child: this.imagePick(),
-            padding: EdgeInsets.all(this._padding),
+            padding: EdgeInsets.all(this._padding!),
           )),
           SliverToBoxAdapter(
               child: BoxesContainer(
             title: 'Thông tin',
             child: this.formCreate(),
-            padding: EdgeInsets.all(this._padding),
+            padding: EdgeInsets.all(this._padding!),
           )),
         ]),
         progressToolkit
@@ -218,8 +218,8 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
                     final _couponModel = CouponModel(
                       title: ftitle.controller.text,
                       quantity: int.parse(famount.controller.text),
-                      startDate: frangeTimeResult[0].toUtc().toString(),
-                      endDate: frangeTimeResult[1].toUtc().toString(),
+                      startDate: frangeTimeResult![0].toUtc().toString(),
+                      endDate: frangeTimeResult![1].toUtc().toString(),
                       description: fdesc.controller.text,
                       images: couponModel.images,
                     );
@@ -274,23 +274,23 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
     super.initState();
 
     imagePicker.callbackUpload = (FilePick f) async {
-      final rs = await couponRepository.uploadImage(f.file);
+      final rs = await couponRepository.uploadImage(f.file!);
       if (rs != null) {
         var uploadModel = new ImageModel(id: rs.id);
-        couponModel.images.add(uploadModel);
-        mappingImages[path.basename(f.file.path)] = uploadModel;
+        couponModel.images!.add(uploadModel);
+        mappingImages[path.basename(f.file!.path)] = uploadModel;
       }
       this.checkValidation();
     };
 
     imagePicker.callbackRemove = (FilePick f) async {
-      couponModel.images.remove(mappingImages[path.basename(f.file.path)]);
+      couponModel.images!.remove(mappingImages[path.basename(f.file!.path)]);
       this.checkValidation();
     };
   }
 
   Widget _navigatedToPromotionListScreen() {
-    final width = this._screenSize.width * 90 / 100;
+    final width = this._screenSize!.width * 90 / 100;
     return Padding(
         padding: EdgeInsets.all(20),
         child: Container(

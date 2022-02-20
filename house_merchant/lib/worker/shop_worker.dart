@@ -9,12 +9,12 @@ import 'package:house_merchant/utils/storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ArgUpload {
-  String url;
-  String token;
-  String shopId;
-  List<String> imageId;
-  SharedPreferences storageShared;
-  File file;
+  String? url;
+  String? token;
+  String? shopId;
+  List<String>? imageId;
+  SharedPreferences? storageShared;
+  File? file;
   ArgUpload(
       {this.shopId,
       this.file,
@@ -32,10 +32,11 @@ class ShopRequest extends OauthAPI {
   }
 
   Future<ImageModel> createImage(
-      String url, String token, String shopId, File image) async {
+      String? url, String? token, String? shopId, File? image) async {
     try {
-      FormData formData =
-          new FormData.fromMap({"image": MultipartFile.fromFileSync(image.path, filename : "image.jpg")});
+      FormData formData = new FormData.fromMap({
+        "image": MultipartFile.fromFileSync(image!.path, filename: "image.jpg")
+      });
 
       final response = await this.post(
         "$url$shopId/",
@@ -50,8 +51,8 @@ class ShopRequest extends OauthAPI {
   }
 
   Future<bool> removeImage(
-      String url, String token, String shopId, List<String> ids) async {
-    if (ids.length == 0) {
+      String? url, String? token, String? shopId, List<String>? ids) async {
+    if (ids!.length == 0) {
       return true;
     }
 

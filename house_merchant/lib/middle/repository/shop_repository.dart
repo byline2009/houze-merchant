@@ -22,8 +22,8 @@ class ShopRepository {
   }
 
   Future<ShopModel> updateInfo(ShopModel shopModel) async {
-    final String currentShop = await Sqflite.currentShop();
-    final rs = await shopAPI.updateInfo(currentShop, shopModel);
+    final String? currentShop = await Sqflite.currentShop();
+    final rs = await shopAPI.updateInfo(currentShop!, shopModel);
     return rs;
   }
 }

@@ -5,15 +5,15 @@ import 'package:house_merchant/middle/repository/shop_repository.dart';
 import 'package:house_merchant/utils/sqflite.dart';
 
 class OverlayBloc extends Bloc<OverlayBlocEvent, OverlayBlocState> {
-  ShopRepository shopRepository = new ShopRepository();
-  ShopModel currentShop;
+  ShopRepository? shopRepository = new ShopRepository();
+  ShopModel? currentShop;
 
   OverlayBloc(OverlayBlocState initialState) : super(initialState) {
     on<ShopPicked>((event, emit) async {
       emit(ShopLoading());
       emit(ShopChanged());
       try {
-        final result = await shopRepository.getShops();
+        final result = await shopRepository!.getShops();
         final shop = await Sqflite.updateCurrentShop(shops: result);
         currentShop = await Sqflite.getCurrentShop();
         emit(ShopSuccessful(result: result, shop: shop));

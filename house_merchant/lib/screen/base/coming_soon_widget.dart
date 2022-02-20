@@ -6,10 +6,10 @@ import 'package:house_merchant/constant/theme_constant.dart';
 
 class ComingSoonWidget extends StatefulWidget {
   var assetImgPath;
-  var description = '';
+  String? description = '';
   var subIconPath;
   ComingSoonWidget(
-      {this.assetImgPath, this.description, this.subIconPath = '', Key key})
+      {this.assetImgPath, this.description, this.subIconPath = '', Key? key})
       : super(key: key);
 
   @override

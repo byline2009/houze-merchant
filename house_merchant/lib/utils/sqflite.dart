@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class Sqflite {
-  static Database db;
+  static Database? db;
   static const int version = 1;
   static const String database_name = "shop.db";
   static String current_shop = "";
@@ -29,12 +29,12 @@ class Sqflite {
   }
 
   static Future flush() async {
-    await db.rawUpdate('DELETE FROM user_setting');
+    await db!.rawUpdate('DELETE FROM user_setting');
   }
 
-  static Future<String> currentShop() async {
+  static Future<String?> currentShop() async {
     if (Sqflite.current_shop == "") {
-      final checkIndex = await db.rawQuery(
+      final checkIndex = await db!.rawQuery(
           'SELECT * FROM user_setting WHERE key = "shop_id_select" LIMIT 1');
       if (checkIndex.length > 0) {
         Sqflite.current_shop = checkIndex[0]["value"];
@@ -46,15 +46,15 @@ class Sqflite {
   }
 
   static Future<String> pickShop(String id) async {
-    await db.rawUpdate(
+    await db!.rawUpdate(
         'UPDATE user_setting SET value = ? WHERE key = "shop_id_select"', [id]);
     Sqflite.current_shop = id;
     return id;
   }
 
-  static Future<List<ShopModel>> getListShop() async {
-    final checkIndex =
-        await db.rawQuery('SELECT * FROM user_setting WHERE key = "shop_list"');
+  static Future<List<ShopModel>?> getListShop() async {
+    final checkIndex = await db!
+        .rawQuery('SELECT * FROM user_setting WHERE key = "shop_list"');
     if (checkIndex.length > 0) {
       final shops = json.decode(checkIndex[0]["value"]).toList();
 
@@ -65,9 +65,9 @@ class Sqflite {
     return null;
   }
 
-  static Future<ShopModel> getCurrentShop() async {
-    final checkIndex =
-        await db.rawQuery('SELECT * FROM user_setting WHERE key = "shop_list"');
+  static Future<ShopModel?> getCurrentShop() async {
+    final checkIndex = await db!
+        .rawQuery('SELECT * FROM user_setting WHERE key = "shop_list"');
     if (checkIndex.length > 0) {
       final shops = json.decode(checkIndex[0]["value"]).toList();
       final shopID = await Sqflite.currentShop();
@@ -81,14 +81,14 @@ class Sqflite {
     return null;
   }
 
-  static Future<ShopModel> updateCurrentShop(
-      {List<ShopModel> shops, int indexSelected = 0}) async {
-    if (shops.length > 0) {
-      final checkIndex = await db.rawQuery(
+  static Future<ShopModel?> updateCurrentShop(
+      {List<ShopModel>? shops, int indexSelected = 0}) async {
+    if (shops!.length > 0) {
+      final checkIndex = await db!.rawQuery(
           'SELECT * FROM user_setting WHERE key = "shop_id_select" LIMIT 1');
 
       if (checkIndex.length == 0) {
-        await db.transaction((txn) async {
+        await db!.transaction((txn) async {
           await txn.rawInsert(
               'INSERT INTO user_setting(key, value) VALUES("shop_id_select", ?)',
               [shops[0].id]);
@@ -98,17 +98,17 @@ class Sqflite {
           await txn.rawInsert(
               'INSERT INTO user_setting(key, value) VALUES("shop_list", ?)',
               [json.encode(shops)]);
-          Sqflite.current_shop = shops[0].id;
+          Sqflite.current_shop = shops[0].id!;
         });
       } else {
         //Get select with id
         final shop = shops.firstWhere((l) => l.id == checkIndex[0]["value"]);
 
-        await db.rawUpdate(
+        await db!.rawUpdate(
             'UPDATE user_setting SET value = ? WHERE key = "shop_select_json"',
             [json.encode(shop.toJson())]);
 
-        await db.rawUpdate(
+        await db!.rawUpdate(
             'UPDATE user_setting SET value = ? WHERE key = "shop_list"',
             [json.encode(shops)]);
 

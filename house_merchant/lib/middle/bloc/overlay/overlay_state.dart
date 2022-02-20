@@ -14,9 +14,9 @@ class ShopInitial extends OverlayBlocState {
 
 class ShopSuccessful extends OverlayBlocState {
   final List<ShopModel> result;
-  final ShopModel shop;
+  final ShopModel? shop;
 
-  ShopSuccessful({@required this.result, this.shop});
+  ShopSuccessful({required this.result, this.shop});
 
   @override
   String toString() => 'ShopSuccessful { result: $result, shop_select: $shop }';
@@ -35,7 +35,7 @@ class ShopChanged extends OverlayBlocState {
 class ShopFailure extends OverlayBlocState {
   final String error;
 
-  ShopFailure({@required this.error});
+  ShopFailure({required this.error});
 
   @override
   String toString() => 'ShopFailure { error: $error }';
@@ -49,9 +49,9 @@ class CouponInitial extends OverlayBlocState {
 
 class CouponSuccessful extends OverlayBlocState {
   final List<CouponModel> result;
-  final CouponModel coupon;
+  final CouponModel? coupon;
 
-  CouponSuccessful({@required this.result, this.coupon});
+  CouponSuccessful({required this.result, this.coupon});
 
   @override
   String toString() =>
@@ -71,7 +71,7 @@ class CouponChanged extends OverlayBlocState {
 class CouponFailure extends OverlayBlocState {
   final String error;
 
-  CouponFailure({@required this.error});
+  CouponFailure({required this.error});
 
   @override
   String toString() => 'CouponFailure { error: $error }';

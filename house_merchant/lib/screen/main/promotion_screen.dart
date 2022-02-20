@@ -28,15 +28,15 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CouponScreen extends StatefulWidget {
-  CouponScreen({Key key}) : super(key: key);
+  CouponScreen({Key? key}) : super(key: key);
 
   @override
   CouponScreenState createState() => CouponScreenState();
 }
 
 class CouponScreenState extends State<CouponScreen> {
-  Size _screenSize;
-  double _padding;
+  Size? _screenSize;
+  double? _padding;
   int statusCurrent = -1; // status: tat ca
   int tagIndexCurrent = 0; // tab: tat ca
 
@@ -110,11 +110,11 @@ class CouponScreenState extends State<CouponScreen> {
 
   Widget itemCard(CouponModel couponModel) {
     var startDate = DateFormat(Format.timeAndDate)
-        .format(DateTime.parse(couponModel.startDate).toLocal());
+        .format(DateTime.parse(couponModel.startDate!).toLocal());
     var endDate = DateFormat(Format.timeAndDate)
-        .format(DateTime.parse(couponModel.endDate).toLocal());
+        .format(DateTime.parse(couponModel.endDate!).toLocal());
     return Container(
-        key: Key(couponModel.id),
+        key: Key(couponModel.id!),
         padding: EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,9 +125,9 @@ class CouponScreenState extends State<CouponScreen> {
                 Container(
                     width: 80,
                     height: 80,
-                    child: couponModel.images.length > 0
+                    child: couponModel.images!.length > 0
                         ? ImageWidget(
-                            imgUrl: couponModel.images.first.imageThumb,
+                            imgUrl: couponModel.images!.first.imageThumb!,
                             width: 80,
                             height: 80)
                         : SvgPicture.asset(
@@ -140,7 +140,7 @@ class CouponScreenState extends State<CouponScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Row(children: <Widget>[
-                        TextLimitWidget(couponModel.title,
+                        TextLimitWidget(couponModel.title!,
                             maxLines: 2,
                             style: new TextStyle(
                               letterSpacing: 0.26,
@@ -154,7 +154,7 @@ class CouponScreenState extends State<CouponScreen> {
                       SizedBox(height: 5),
                       statusProduct(couponModel.isExpired == true
                           ? -1
-                          : couponModel.status),
+                          : couponModel.status!),
                     ],
                   ),
                 ))
@@ -240,7 +240,7 @@ class CouponScreenState extends State<CouponScreen> {
     }
 
     if (!mounted) return null;
-    if (this.checkValidate(resultQRCode)) {
+    if (this.checkValidate(resultQRCode = '')) {
       String _id = resultQRCode.split(',').first;
       String _code = resultQRCode.split(',').last;
 
@@ -248,7 +248,7 @@ class CouponScreenState extends State<CouponScreen> {
         QrCodeModel rs;
         try {
           var couponRepository = CouponRepository();
-          rs = await couponRepository.checkQR(_id, _code);
+          rs = (await couponRepository.checkQR(_id, _code))!;
         } catch (e) {
           T7GDialog.showContentDialog(context, [showErrorPopup()],
               closeShow: false, barrierDismissible: false);
@@ -256,7 +256,7 @@ class CouponScreenState extends State<CouponScreen> {
         }
 
         if (rs != null) {
-          if (rs.coupon.isExpired == true) {
+          if (rs.coupon!.isExpired == true) {
             Fluttertoast.showToast(
                 msg: "Mã này đã hết hạn!",
                 toastLength: Toast.LENGTH_SHORT,
@@ -286,7 +286,7 @@ class CouponScreenState extends State<CouponScreen> {
   }
 
   Widget showErrorPopup() {
-    final width = this._screenSize.width * 90 / 100;
+    final width = this._screenSize!.width * 90 / 100;
     return Padding(
         padding: const EdgeInsets.all(20),
         child: Container(
@@ -368,7 +368,7 @@ class CouponScreenState extends State<CouponScreen> {
                 child: BlocBuilder(
                     bloc: couponListBloc,
                     builder: (BuildContext context, CouponList couponList) {
-                      if (couponList.data.length == 0 &&
+                      if (couponList.data!.length == 0 &&
                           this.statusCurrent == Promotion.allStatus) {
                         return Container(
                             color: Colors.white,
@@ -383,7 +383,7 @@ class CouponScreenState extends State<CouponScreen> {
 
                       if (!couponListBloc.isNext &&
                           couponList != null &&
-                          couponList.data.length == 0) {
+                          couponList.data!.length == 0) {
                         return Center(
                             child: Padding(
                                 padding: EdgeInsets.only(bottom: 20),
@@ -400,8 +400,7 @@ class CouponScreenState extends State<CouponScreen> {
                               enablePullDown: true,
                               enablePullUp: true,
                               header: MaterialClassicHeader(),
-                              footer: CustomFooter(builder:
-                                  (BuildContext context, LoadStatus mode) {
+                              footer: CustomFooter(builder: (context, mode) {
                                 Widget body = Center();
 
                                 if (couponListBloc.isNext == false) {
@@ -436,7 +435,7 @@ class CouponScreenState extends State<CouponScreen> {
                                   return GestureDetector(
                                       onTap: () {
                                         CouponModel data =
-                                            couponList.data[index];
+                                            couponList.data![index];
 
                                         AppRouter.push(context,
                                             AppRouter.COUPON_DETAIL_PAGE, {
@@ -452,14 +451,14 @@ class CouponScreenState extends State<CouponScreen> {
                                       },
                                       child: Padding(
                                         child: this
-                                            .itemCard(couponList.data[index]),
+                                            .itemCard(couponList.data![index]),
                                         padding: EdgeInsets.only(
-                                            left: this._padding,
-                                            right: this._padding,
+                                            left: this._padding!,
+                                            right: this._padding!,
                                             top: 10),
                                       ));
                                 },
-                                itemCount: couponList.data.length,
+                                itemCount: couponList.data!.length,
                               )));
                     }))),
       ]),
@@ -470,7 +469,7 @@ class CouponScreenState extends State<CouponScreen> {
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
-    this._padding = this._screenSize.width * 5 / 100;
+    this._padding = this._screenSize!.width * 5 / 100;
 
     return BaseScaffold(
         title: 'Ưu đãi',
@@ -500,5 +499,5 @@ class CouponScreenState extends State<CouponScreen> {
           });
         },
       ),
-      padding: EdgeInsets.only(right: this._padding));
+      padding: EdgeInsets.only(right: this._padding!));
 }
