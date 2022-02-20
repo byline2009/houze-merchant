@@ -13,7 +13,7 @@ import 'package:house_merchant/utils/cupertino_localizations_vi.dart';
 import 'package:house_merchant/utils/localizations_delegate_util.dart';
 
 class BootstrapScreen extends StatefulWidget {
-  BootstrapScreen({Key key}) : super(key: key);
+  BootstrapScreen({Key? key}) : super(key: key);
 
   @override
   _BootstrapScreenState createState() => _BootstrapScreenState();
@@ -26,7 +26,8 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
   @override
   Widget build(BuildContext context) {
     final _loginBloc = LoginBloc(
-        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context));
+        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+        initialState: LoginInitial());
 
     //Get default language
     final getLanguage = LanguageModel(
@@ -34,7 +35,7 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
       locale: 'vi',
       name: 'Tiếng Việt',
     );
-    locale = Locale(getLanguage.locale, getLanguage.locale.toUpperCase());
+    locale = Locale(getLanguage.locale!, getLanguage.locale!.toUpperCase());
 
     return MultiBlocProvider(
         providers: [
@@ -43,13 +44,13 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
           ),
         ],
         child: MaterialApp(
-            builder: (BuildContext context, Widget child) {
+            builder: (context, child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
                   data: data.copyWith(
                     textScaleFactor: 1.0,
                   ),
-                  child: child);
+                  child: child!);
             },
             showPerformanceOverlay: false,
             localizationsDelegates: [

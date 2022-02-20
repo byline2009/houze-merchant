@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 
 class LocalizationsUtil {
-
   static Map<String, Map<String, String>> localizedValues = {
     'en': {},
     'vi': {},
@@ -14,7 +12,7 @@ class LocalizationsUtil {
 
   /// Call in screen to use.
   static LocalizationsUtil of(BuildContext context) {
-    return Localizations.of<LocalizationsUtil>(context, LocalizationsUtil);
+    return Localizations.of<LocalizationsUtil>(context, LocalizationsUtil)!;
   }
 
   static Future<LocalizationsUtil> load(Locale locale) async {
@@ -23,7 +21,6 @@ class LocalizationsUtil {
   }
 
   String translate(key) {
-    return localizedValues[locale.languageCode][key] ?? key;
+    return localizedValues[locale.languageCode]![key] ?? key;
   }
-
 }

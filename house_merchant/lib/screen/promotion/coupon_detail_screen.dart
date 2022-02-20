@@ -19,14 +19,14 @@ import 'package:intl/intl.dart';
 class CouponDetailScreen extends StatefulWidget {
   final dynamic params;
 
-  CouponDetailScreen({@required this.params, Key key}) : super(key: key);
+  CouponDetailScreen({@required this.params, Key? key}) : super(key: key);
 
   @override
   CouponDetailScreenState createState() => new CouponDetailScreenState();
 }
 
 class CouponDetailScreenState extends State<CouponDetailScreen> {
-  Size _screenSize;
+  Size? _screenSize;
   var _padding;
   var _couponModel = new CouponModel();
   final bloc = CouponBloc(CouponInitial());
@@ -41,29 +41,29 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
-    this._padding = this._screenSize.width * 5 / 100;
-    var _heightPhoto = this._screenSize.height * (300 / 818);
+    this._padding = this._screenSize!.width * 5 / 100;
+    var _heightPhoto = this._screenSize!.height * (300 / 818);
 
     Widget headerImage() {
-      return _couponModel.images.length > 0
+      return _couponModel.images!.length > 0
           ? GestureDetector(
               onTap: () {
                 List<String> _imgs = [];
 
-                _couponModel.images
-                    .forEach((element) => _imgs.add(element.image));
+                _couponModel.images!
+                    .forEach((element) => _imgs.add(element.image!));
 
                 AppRouter.pushDialog(context, AppRouter.IMAGE_VIEW_SCREEN,
                     ImageViewScreenArgument(images: _imgs));
               },
               child: ImageWidget(
-                  width: _screenSize.width,
+                  width: _screenSize!.width,
                   height: _heightPhoto,
-                  imgUrl: _couponModel.images.first.imageThumb),
+                  imgUrl: _couponModel.images!.first.imageThumb!),
             )
           : SvgPicture.asset('assets/images/ic-promotion-default.svg',
               fit: BoxFit.contain,
-              width: _screenSize.width,
+              width: _screenSize!.width,
               height: _heightPhoto);
     }
 
@@ -82,7 +82,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
               child: Row(children: <Widget>[
             Text(_couponModel.getNumberOfUsersUsed(),
                 style: TextStyle(
-                    fontSize: _screenSize.width < 350
+                    fontSize: _screenSize!.width < 350
                         ? 20
                         : ThemeConstant.boxes_font_title,
                     color: ThemeConstant.white_color,
@@ -93,7 +93,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
             SizedBox(width: 5.0),
             Text('Lượt sử dụng',
                 style: TextStyle(
-                    fontSize: _screenSize.width < 350
+                    fontSize: _screenSize!.width < 350
                         ? 13
                         : ThemeConstant.font_size_16,
                     letterSpacing: ThemeConstant.letter_spacing_026,
@@ -129,7 +129,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
     }
 
     Widget viewUserList() {
-      return (this._couponModel.usedCount > 0)
+      return (this._couponModel.usedCount! > 0)
           ? Padding(
               padding: EdgeInsets.symmetric(vertical: 15),
               child: Row(
@@ -173,7 +173,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
               children: <Widget>[
             viewUserList(),
             Text(
-              _couponModel.title,
+              _couponModel.title!,
               style: TextStyle(
                   fontSize: ThemeConstant.font_size_24,
                   letterSpacing: ThemeConstant.letter_spacing_038,
@@ -184,12 +184,12 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
             _timeRowFormat(
                 'Thời gian bắt đầu:',
                 DateFormat(Format.timeAndDate)
-                    .format(DateTime.parse(_couponModel.startDate).toLocal())),
+                    .format(DateTime.parse(_couponModel.startDate!).toLocal())),
             SizedBox(height: 12.0),
             _timeRowFormat(
                 'Thời gian kết thúc:',
                 DateFormat(Format.timeAndDate)
-                    .format(DateTime.parse(_couponModel.endDate).toLocal())),
+                    .format(DateTime.parse(_couponModel.endDate!).toLocal())),
             SizedBox(height: 20.0),
             Container(
               height: 2.0,
@@ -208,7 +208,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                   letterSpacing: 0.29),
             ),
             SizedBox(height: 10.0),
-            Text(_couponModel.description + '\n\n\n'),
+            Text(_couponModel.description! + '\n\n\n'),
             SizedBox(height: 40.0)
           ]));
     }
@@ -262,7 +262,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
                           if (newData != null) {
                             widget.params['callback'](true);
                             this._couponModel = newData;
-                            print(_couponModel.title.toUpperCase());
+                            print(_couponModel.title!.toUpperCase());
                           }
                           return;
                         }
@@ -287,7 +287,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
           bloc: bloc,
           builder: (BuildContext context, CouponState couponState) {
             if (couponState is CouponInitial) {
-              bloc.add(CouponGetDetail(id: _couponModel.id));
+              bloc.add(CouponGetDetail(id: _couponModel.id!));
             }
 
             if (couponState is CouponGetDetailSuccessful) {

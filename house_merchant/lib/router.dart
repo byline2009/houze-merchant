@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:house_merchant/screen/login/login_screen.dart';
 import 'package:house_merchant/screen/main/notification_screen.dart';
 import 'package:house_merchant/screen/main/store_screen.dart';
 import 'package:house_merchant/screen/profile/change_password_screen.dart';
@@ -81,9 +82,9 @@ class AppRouter {
 
       case CHANGE_PASSWORD:
         return ChangePasswordScreen();
+      default:
+        return LoginScreen();
     }
-
-    return null;
   }
 
   AppRouter.replaceNoParams(BuildContext context, String url) {

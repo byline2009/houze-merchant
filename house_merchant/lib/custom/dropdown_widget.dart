@@ -17,11 +17,11 @@ typedef Int2VoidFunc = void Function(int);
 
 class DropdownWidgetController {
   FixedExtentScrollController _controller = new FixedExtentScrollController();
-  VoidFunc _callbackRefresh;
+  VoidFunc? _callbackRefresh;
 
   void refresh() {
     if (_callbackRefresh != null) {
-      _callbackRefresh();
+      _callbackRefresh!();
     }
   }
 
@@ -36,16 +36,16 @@ class DropdownWidgetController {
 
 class DropdownWidget extends StatefulWidget {
   String titleSheet = "";
-  String labelText;
-  String defaultHintText;
+  String? labelText;
+  String? defaultHintText;
   int initIndex;
   bool centerText;
-  Function buildChild;
-  Function customDialog;
-  List<dynamic> dataSource = [];
-  Int2VoidFunc doneEvent;
-  Int2VoidFunc cancelEvent;
-  DropdownWidgetController controller;
+  Function? buildChild;
+  Function? customDialog;
+  List<dynamic>? dataSource = [];
+  Int2VoidFunc? doneEvent;
+  Int2VoidFunc? cancelEvent;
+  DropdownWidgetController? controller;
 
   DropdownWidget(
       {this.controller,
@@ -57,36 +57,36 @@ class DropdownWidget extends StatefulWidget {
       this.titleSheet = "",
       this.initIndex = -1,
       this.centerText = false,
-      @required this.doneEvent,
+      required this.doneEvent,
       this.cancelEvent});
 
   _DropdownWidgetState createState() => _DropdownWidgetState(
-      labelText: this.labelText,
-      defaultHintText: this.defaultHintText,
-      dataSource: this.dataSource,
-      buildChild: this.buildChild,
+      labelText: this.labelText ?? '',
+      defaultHintText: this.defaultHintText!,
+      dataSource: this.dataSource!,
+      buildChild: this.buildChild!,
       titleSheet: this.titleSheet,
-      doneEvent: this.doneEvent,
+      doneEvent: this.doneEvent!,
       cancelEvent: this.cancelEvent,
-      controller: this.controller,
+      controller: this.controller!,
       centerText: this.centerText,
       initIndex: this.initIndex);
 }
 
 class _DropdownWidgetState extends State<DropdownWidget> {
   String titleSheet = "";
-  String labelText;
-  String defaultHintText;
+  String? labelText;
+  String? defaultHintText;
   int selectedIndex = -1;
   int initIndex;
-  List<dynamic> dataSource = [];
-  Function buildChild;
+  List<dynamic>? dataSource = [];
+  Function? buildChild;
   Int2VoidFunc doneEvent;
-  Int2VoidFunc cancelEvent;
+  Int2VoidFunc? cancelEvent;
   bool centerText;
   final _dropdownController = TextEditingController();
 
-  DropdownWidgetController controller;
+  DropdownWidgetController? controller;
   StreamController<int> _dropdownStreamController =
       new StreamController<int>.broadcast();
 
@@ -102,21 +102,21 @@ class _DropdownWidgetState extends State<DropdownWidget> {
       this.titleSheet = "",
       this.initIndex = -1,
       this.centerText = false,
-      @required this.doneEvent,
-      @required this.cancelEvent}) {
+      required this.doneEvent,
+      required this.cancelEvent}) {
     //Init controller
-    this.controller._callbackRefresh = () {
+    this.controller!._callbackRefresh = () {
       this.selectedIndex = -1;
-      this.controller.controller = FixedExtentScrollController();
+      this.controller!.controller = FixedExtentScrollController();
       _dropdownController.clear();
       _dropdownStreamController.sink.add(-1);
     };
 
-    if (this.initIndex > -1 && dataSource.length > 0) {
+    if (this.initIndex > -1 && dataSource!.length > 0) {
       this.selectedIndex = this.initIndex;
-      controller.controller =
+      controller!.controller =
           FixedExtentScrollController(initialItem: this.selectedIndex);
-      _dropdownController.text = dataSource[this.selectedIndex].value;
+      _dropdownController.text = dataSource![this.selectedIndex].value;
       // print("=======");
       // print(this.selectedIndex);
       // print(_dropdownController.text);
@@ -125,9 +125,9 @@ class _DropdownWidgetState extends State<DropdownWidget> {
   }
 
   void onCompleteNoRefreshDataSource() {
-    controller.controller =
+    controller!.controller =
         FixedExtentScrollController(initialItem: this.selectedIndex);
-    _dropdownController.text = dataSource[this.selectedIndex].value;
+    _dropdownController.text = dataSource![this.selectedIndex].value;
     _dropdownStreamController.sink.add(this.selectedIndex);
   }
 
@@ -139,7 +139,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
   }
 
   void setValue(KeyValueModel value) {
-    _dropdownController.text = value.value;
+    _dropdownController.text = value.value!;
   }
 
   Widget _buildBottomPicker(BuildContext context, Widget picker) {
@@ -179,11 +179,11 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                           onPressed: () {
                             if (cancelEvent != null) {
                               this.selectedIndex = -1;
-                              controller.controller =
+                              controller!.controller =
                                   FixedExtentScrollController();
                               _dropdownController.clear();
                               _dropdownStreamController.sink.add(-1);
-                              cancelEvent(this.selectedIndex);
+                              cancelEvent!(this.selectedIndex);
                             }
                             Navigator.pop(context);
                           },
@@ -242,7 +242,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
 
           return GestureDetector(
               onTap: () async {
-                if (dataSource.length == 0) return;
+                if (dataSource!.length == 0) return;
 
                 if (buildChild != null) {
                   await showCupertinoModalPopup<void>(
@@ -251,20 +251,20 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                         return _buildBottomPicker(
                             context,
                             CupertinoPicker(
-                              scrollController: controller.controller,
+                              scrollController: controller!.controller,
                               itemExtent: _kPickerTitleHeight,
                               backgroundColor: CupertinoColors.white,
                               onSelectedItemChanged: (int index) {
                                 this.selectedIndex = index;
                               },
-                              children: List<Widget>.generate(dataSource.length,
-                                  (int index) {
-                                return buildChild(index);
+                              children: List<Widget>.generate(
+                                  dataSource!.length, (int index) {
+                                return buildChild!(index);
                               }),
                             ));
                       });
                 } else {
-                  widget.customDialog(this);
+                  widget.customDialog!(this);
                 }
               },
               child: Container(

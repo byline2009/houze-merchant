@@ -7,7 +7,7 @@ typedef void CallBackHandler();
 class ButtonScanQRWidget extends StatefulWidget {
   final CallBackHandler callback;
 
-  ButtonScanQRWidget({@required this.callback});
+  ButtonScanQRWidget({required this.callback});
 
   ButtonScanQRWidgetState createState() => ButtonScanQRWidgetState();
 }

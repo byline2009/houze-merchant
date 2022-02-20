@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 class PageModel {
-  int count;
-  String next;
-  String previous;
+  int? count;
+  String? next;
+  String? previous;
   dynamic results;
 
   PageModel({this.count, this.next, this.previous, this.results});
@@ -33,20 +33,18 @@ class PageModel {
 }
 
 class IdNameModel extends Equatable {
-  final String id;
-  final String name;
+  final String? id;
+  final String? name;
 
   IdNameModel({
     this.id,
     this.name,
   });
 
-  factory IdNameModel.fromJson(Map<String, dynamic> json) => json != null
-      ? new IdNameModel(
-          id: json["id"],
-          name: json["name"],
-        )
-      : null;
+  factory IdNameModel.fromJson(Map<String, dynamic> json) => new IdNameModel(
+        id: json["id"] ?? null,
+        name: json["name"] ?? null,
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,

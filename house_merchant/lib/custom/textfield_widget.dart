@@ -13,27 +13,27 @@ typedef void CallBackHandler(String value);
 typedef VoidFunc = void Function();
 
 class TextFieldWidgetController {
-  TextEditingController _controller = TextEditingController();
-  VoidFunc _callbackRefresh;
+  TextEditingController? _controller = TextEditingController();
+  VoidFunc? _callbackRefresh;
 
   TextFieldWidgetController();
 
-  get text {
-    return _controller.text;
+  String get text {
+    return _controller!.text;
   }
 
   set text(String text) {
-    _controller.text = text;
+    _controller!.text = text;
   }
 
   void refresh() {
     if (_callbackRefresh != null) {
-      _callbackRefresh();
+      _callbackRefresh!();
     }
   }
 
   TextEditingController get controller {
-    return this._controller;
+    return this._controller!;
   }
 
   set controller(TextEditingController _controller) {
@@ -42,17 +42,17 @@ class TextFieldWidgetController {
 }
 
 class TextFieldWidget extends StatelessWidget {
-  String defaultHintText;
+  String? defaultHintText;
   bool isChanged = false;
   bool enabled = false;
   bool obscureText = false;
   TextInputType keyboardType;
-  CallBackHandler callback;
-  TextFieldWidgetController controller;
+  CallBackHandler? callback;
+  TextFieldWidgetController? controller;
   // ignore: close_sinks
   final StreamController<String> textStreamController =
       StreamController<String>.broadcast();
-  VoidFunc onTap;
+  VoidFunc? onTap;
 
   TextFieldWidget(
       {this.controller,
@@ -63,8 +63,8 @@ class TextFieldWidget extends StatelessWidget {
       this.onTap,
       this.enabled = true}) {
     //Init controller
-    this.controller._callbackRefresh = () {
-      this.controller.controller.clear();
+    this.controller!._callbackRefresh = () {
+      this.controller!.controller.clear();
       textStreamController.sink.add("");
     };
   }
@@ -88,12 +88,12 @@ class TextFieldWidget extends StatelessWidget {
           return TextField(
             cursorColor: ThemeConstant.alto_color,
             obscureText: this.obscureText,
-            controller: this.controller.controller,
+            controller: this.controller!.controller,
             keyboardType: keyboardType,
             textAlign: TextAlign.left,
             onTap: () {
               if (this.onTap != null) {
-                this.onTap();
+                this.onTap!();
               }
             },
             enabled: this.enabled,
@@ -110,14 +110,14 @@ class TextFieldWidget extends StatelessWidget {
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 borderSide: BorderSide(
-                    color: this.controller.controller.text != ""
+                    color: this.controller!.controller.text != ""
                         ? ThemeConstant.form_border_changed
                         : ThemeConstant.form_border_normal),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 borderSide: BorderSide(
-                    color: this.controller.controller.text != ""
+                    color: this.controller!.controller.text != ""
                         ? ThemeConstant.form_border_changed
                         : ThemeConstant.form_border_normal),
               ),

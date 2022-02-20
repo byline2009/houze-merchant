@@ -10,7 +10,7 @@ class ShopGetDetail extends ShopEvent {
   final String id;
 
   ShopGetDetail({
-    @required this.id,
+    required this.id,
   }) : super();
 
   @override
@@ -18,7 +18,7 @@ class ShopGetDetail extends ShopEvent {
 }
 
 class SaveButtonPressed extends ShopEvent {
-  final ShopModel shopModel;
+  final ShopModel? shopModel;
 
   SaveButtonPressed({
     this.shopModel,

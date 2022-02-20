@@ -1,9 +1,9 @@
 import 'package:house_merchant/middle/model/image_meta_model.dart';
 
 class Hours {
-  String startTime;
-  String endTime;
-  int weekday;
+  String? startTime;
+  String? endTime;
+  int? weekday;
 
   Hours({this.startTime, this.endTime, this.weekday});
 
@@ -23,14 +23,14 @@ class Hours {
 }
 
 class ShopModel {
-  String id;
-  String name;
-  String description;
-  int status;
-  double lat;
-  double long;
-  List<ImageModel> images = <ImageModel>[];
-  List<Hours> hours = <Hours>[];
+  String? id;
+  String? name;
+  String? description;
+  int? status;
+  double? lat;
+  double? long;
+  List<ImageModel>? images = <ImageModel>[];
+  List<Hours>? hours = <Hours>[];
 
   ShopModel(
       {this.id,
@@ -53,13 +53,13 @@ class ShopModel {
     if (json['images'] != null) {
       images = <ImageModel>[];
       json['images'].forEach((v) {
-        images.add(new ImageModel.fromJson(v));
+        images!.add(new ImageModel.fromJson(v));
       });
     }
     if (json['hours'] != null) {
       hours = <Hours>[];
       json['hours'].forEach((v) {
-        hours.add(new Hours.fromJson(v));
+        hours!.add(new Hours.fromJson(v));
       });
     }
   }
@@ -73,10 +73,10 @@ class ShopModel {
     data['lat'] = this.lat;
     data['long'] = this.long;
     if (this.images != null) {
-      data['images'] = this.images.map((v) => v.toJson()).toList();
+      data['images'] = this.images!.map((v) => v.toJson()).toList();
     }
     if (this.hours != null) {
-      data['hours'] = this.hours.map((v) => v.toJson()).toList();
+      data['hours'] = this.hours!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -87,7 +87,7 @@ class ShopModel {
 }
 
 class ImageDeleteRequest {
-  List<String> listId;
+  List<String>? listId;
 
   ImageDeleteRequest({this.listId});
 

@@ -7,7 +7,7 @@ import 'package:house_merchant/utils/localizations_util.dart';
 import 'package:house_merchant/utils/progresshub.dart';
 
 class MenuCreateScreen extends StatefulWidget {
-  MenuCreateScreen({Key key}) : super(key: key);
+  MenuCreateScreen({Key? key}) : super(key: key);
 
   @override
   MenuCreateScreenState createState() => new MenuCreateScreenState();
@@ -15,10 +15,10 @@ class MenuCreateScreen extends StatefulWidget {
 
 class MenuCreateScreenState extends State<MenuCreateScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
-  Size _screenSize;
+  Size? _screenSize;
 
   Widget showSuccessful() {
-    final width = this._screenSize.width * 90 / 100;
+    final width = this._screenSize!.width * 90 / 100;
     return Padding(
         padding: EdgeInsets.all(15),
         child: Container(

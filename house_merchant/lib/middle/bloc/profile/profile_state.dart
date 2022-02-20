@@ -9,7 +9,7 @@ abstract class ProfileState extends Equatable {
 class ProfileGetSuccessful extends ProfileState {
   final ProfileModel result;
 
-  ProfileGetSuccessful({@required this.result});
+  ProfileGetSuccessful({required this.result});
   @override
   String toString() => 'ShopGetDetailSuccessful { result: $result }';
 }
@@ -27,7 +27,7 @@ class ProfileLoading extends ProfileState {
 class ProfileFailure extends ProfileState {
   final String error;
 
-  ProfileFailure({@required this.error});
+  ProfileFailure({required this.error});
 
   @override
   String toString() => 'ProfileFailure { error: $error }';

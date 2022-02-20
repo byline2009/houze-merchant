@@ -19,29 +19,29 @@ typedef void CallBackUploadHandler(FilePick file);
 enum PickerImageType { grid, list }
 
 class FilePick {
-  String id;
-  String url;
-  String urlThumb;
-  File file;
+  String? id;
+  String? url;
+  String? urlThumb;
+  File? file;
 
   FilePick({this.id, this.file, this.url, this.urlThumb});
 }
 
 class PickerImage extends StatefulWidget {
-  CallBackUploadHandler callbackUpload;
-  CallBackUploadHandler callbackRemove;
+  CallBackUploadHandler? callbackUpload;
+  CallBackUploadHandler? callbackRemove;
 
   int maxImage;
-  double width, height;
+  double? width, height;
   PickerImageType type;
   PickerImageState state = PickerImageState();
-  List<FilePick> imagesInit = <FilePick>[];
+  List<FilePick>? imagesInit = <FilePick>[];
 
   PickerImage(
-      {Key key,
+      {Key? key,
       this.maxImage = 1,
-      this.width,
       this.height,
+      this.width,
       this.imagesInit,
       this.type = PickerImageType.grid})
       : super(key: key) {
@@ -76,12 +76,12 @@ class PickerImageState extends State<PickerImage> {
   }
 
   void fillWithInitImages() {
-    this.filesPick = this.filesPick + widget.imagesInit;
-    this.validationFilesPick = this.validationFilesPick + widget.imagesInit;
+    this.filesPick = this.filesPick + widget.imagesInit!;
+    this.validationFilesPick = this.validationFilesPick + widget.imagesInit!;
   }
 
   Future<void> uploadImage(FilePick file) async {
-    widget.callbackUpload(file);
+    widget.callbackUpload!(file);
   }
 
   void uploadProcessing(BuildContext context) async {
@@ -148,7 +148,7 @@ class PickerImageState extends State<PickerImage> {
                 children: <Widget>[
                   f.file != null
                       ? Image.file(
-                          f.file,
+                          f.file!,
                           fit: BoxFit.cover,
                           width: widget.width,
                           height: widget.height,
@@ -196,7 +196,7 @@ class PickerImageState extends State<PickerImage> {
                   this.validationFilesPick.remove(f);
                   // Clear main picture
                   if (this.filesPick.length == 0) {}
-                  widget.callbackRemove(f);
+                  widget.callbackRemove!(f);
                 });
               },
             ))

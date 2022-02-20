@@ -4,19 +4,19 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class ImageViewScreenArgument {
-  final String title;
-  final List<String> images;
+  final String? title;
+  final List<String>? images;
   const ImageViewScreenArgument({@required this.images, this.title});
 }
 
 class ImageViewScreen extends StatelessWidget {
-  final ImageViewScreenArgument params;
+  final ImageViewScreenArgument? params;
 
   const ImageViewScreen({this.params});
 
   @override
   Widget build(BuildContext context) {
-    final title = params.title ?? '';
+    final title = params!.title ?? '';
 
     return Scaffold(
       appBar: PreferredSize(
@@ -43,11 +43,11 @@ class ImageViewScreen extends StatelessWidget {
           builder: (BuildContext context, int index) {
             return PhotoViewGalleryPageOptions(
               imageProvider:
-                  CachedNetworkImageProvider(params.images.elementAt(index)),
+                  CachedNetworkImageProvider(params!.images!.elementAt(index)),
               initialScale: PhotoViewComputedScale.contained * 0.8,
             );
           },
-          itemCount: params.images.length,
+          itemCount: params!.images!.length,
         ),
       ),
     );

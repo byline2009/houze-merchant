@@ -16,12 +16,12 @@ typedef void CallBackHandler(List<DateTime> value);
 typedef VoidFunc = void Function();
 
 class DateRangePickerCustomWidget extends StatefulWidget {
-  String defaultHintText;
+  String? defaultHintText;
   bool isActive = false;
-  StreamController<List<DateTime>> controller;
-  CallBackHandler callback;
-  DateTime firstDate;
-  DateTime lastDate;
+  StreamController<List<DateTime>>? controller;
+  CallBackHandler? callback;
+  DateTime? firstDate;
+  DateTime? lastDate;
 
   DateRangePickerCustomWidget(
       {this.firstDate,
@@ -36,7 +36,7 @@ class DateRangePickerCustomWidget extends StatefulWidget {
 
 class DateRangePickerCustomWidgetState
     extends State<DateRangePickerCustomWidget> {
-  DateTime now;
+  DateTime? now;
   final localController = TextFieldWidgetController();
 
   DateRangePickerCustomWidgetState();
@@ -46,25 +46,25 @@ class DateRangePickerCustomWidgetState
     super.initState();
 
     localController.controller.text =
-        DateFormat(Format.timeAndDate).format(widget.firstDate) +
+        DateFormat(Format.timeAndDate).format(widget.firstDate!) +
             ' đến ' +
-            DateFormat(Format.timeAndDate).format(widget.lastDate);
+            DateFormat(Format.timeAndDate).format(widget.lastDate!);
     print(localController);
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: widget.controller.stream,
+        stream: widget.controller!.stream,
         builder:
             (BuildContext context, AsyncSnapshot<List<DateTime>> snapshot) {
-          if (snapshot.data != null && snapshot.data.length > 0) {
+          if (snapshot.data != null && snapshot.data!.length > 0) {
             localController.controller.text =
-                DateFormat(Format.timeAndDate).format(snapshot.data.first) +
+                DateFormat(Format.timeAndDate).format(snapshot.data!.first) +
                     ' đến ' +
-                    DateFormat(Format.timeAndDate).format(snapshot.data.last);
-            widget.firstDate = snapshot.data.first;
-            widget.lastDate = snapshot.data.last;
+                    DateFormat(Format.timeAndDate).format(snapshot.data!.last);
+            widget.firstDate = snapshot.data!.first;
+            widget.lastDate = snapshot.data!.last;
           }
 
           return GestureDetector(
@@ -79,14 +79,14 @@ class DateRangePickerCustomWidgetState
                         },
                         settings: RouteSettings(name: "app://DateRangePage"),
                         fullscreenDialog: true));
-                widget.controller.sink.add(result ?? []);
-                widget.callback(result ?? []);
+                widget.controller!.sink.add(result);
+                widget.callback!(result);
               },
               child: Container(
                   color: ThemeConstant.white_color,
                   child: TextFieldWidget(
                       controller: localController,
-                      defaultHintText: widget.defaultHintText,
+                      defaultHintText: widget.defaultHintText!,
                       enabled: false)));
         });
   }

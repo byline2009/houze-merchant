@@ -11,7 +11,7 @@ import 'package:house_merchant/screen/base/image_widget.dart';
 import 'package:intl/intl.dart';
 
 class MenuScreen extends StatefulWidget {
-  MenuScreen({Key key}) : super(key: key);
+  MenuScreen({Key? key}) : super(key: key);
 
   @override
   MenuScreenState createState() => MenuScreenState();
@@ -123,7 +123,7 @@ class MenuScreenState extends State<MenuScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ImageWidget(
-                  imgUrl: product.imgUrl,
+                  imgUrl: product.imgUrl!,
                   width: 60,
                   height: 60,
                 ),
@@ -133,14 +133,14 @@ class MenuScreenState extends State<MenuScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(product.title,
+                      Text(product.title!,
                           style: TextStyle(
                               color: ThemeConstant.normal_color,
                               fontFamily:
                                   ThemeConstant.form_font_family_display,
                               fontSize: ThemeConstant.label_font_size,
                               fontWeight: ThemeConstant.appbar_text_weight)),
-                      Text(product.desc,
+                      Text(product.desc!,
                           style: TextStyle(
                               color: Color(0xff838383),
                               fontFamily:
@@ -148,7 +148,7 @@ class MenuScreenState extends State<MenuScreen> {
                               fontSize: ThemeConstant.form_font_small,
                               fontWeight: ThemeConstant.appbar_text_weight)),
                       SizedBox(height: 3),
-                      this.statusProduct(product.status),
+                      this.statusProduct(product.status!),
                     ],
                   ),
                 ),

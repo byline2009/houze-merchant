@@ -9,7 +9,7 @@ class ListSkeleton extends StatelessWidget {
   final bool shrinkWrap;
 
   ListSkeleton({
-    Key key,
+    Key? key,
     this.config: const SkeletonConfig.origin(),
     this.length: 10,
     this.shrinkWrap = false,

@@ -9,25 +9,28 @@ const String API_TOKEN = 'api_token';
 const String DEVICE_TOKEN = 'device_token';
 
 class Storage {
-  
-  static SharedPreferences prefs;
+  static SharedPreferences? prefs;
 
-  static GlobalKey<NavigatorState> scaffoldKey = new GlobalKey<NavigatorState>();
+  static GlobalKey<NavigatorState> scaffoldKey =
+      new GlobalKey<NavigatorState>();
 
   // Token
   static Future<bool> saveToken(TokenModel token) {
     final prefs = Storage.prefs;
-    return prefs.setString(API_TOKEN, json.encode(token));
+    return prefs!.setString(API_TOKEN, json.encode(token));
   }
 
   static Future<bool> removeToken() {
     final prefs = Storage.prefs;
-    return prefs.remove(API_TOKEN);
+    return prefs!.remove(API_TOKEN);
   }
 
-  static TokenModel getToken() {
+  static TokenModel? getToken() {
     final prefs = Storage.prefs;
-    String token = prefs.getString(API_TOKEN);
+    String? token = prefs?.getString(API_TOKEN);
+    if (token == null) {
+      return null;
+    }
     if (Utils.isEmpty(token)) {
       return null;
     }
@@ -38,16 +41,15 @@ class Storage {
   /// Device Token
   static void saveDeviceToken(String deviceToken) async {
     final prefs = Storage.prefs;
-    prefs.setString(DEVICE_TOKEN, deviceToken);
+    prefs!.setString(DEVICE_TOKEN, deviceToken);
   }
-  
-  static String getDeviceToken() {
+
+  static String? getDeviceToken() {
     final prefs = Storage.prefs;
-    String strSignIn = prefs.getString(DEVICE_TOKEN);
-    if (StringUtil.isEmpty(strSignIn)) {
+    String? strSignIn = prefs!.getString(DEVICE_TOKEN);
+    if (StringUtil.isEmpty(strSignIn!)) {
       return null;
     }
     return strSignIn;
   }
-
 }

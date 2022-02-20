@@ -1,20 +1,19 @@
 import 'package:equatable/equatable.dart';
 
 class ImageMetaModel extends Equatable {
-  final String id;
-  final String url;
+  final String? id;
+  final String? url;
 
   ImageMetaModel({
     this.id,
     this.url,
   });
 
-  factory ImageMetaModel.fromJson(Map<String, dynamic> json) => json != null
-      ? new ImageMetaModel(
-          id: json['id'],
-          url: json['url'] ?? json['image'],
-        )
-      : null;
+  factory ImageMetaModel.fromJson(Map<String, dynamic> json) =>
+      new ImageMetaModel(
+        id: json['id'],
+        url: json['url'] ?? json['image'],
+      );
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -27,9 +26,9 @@ class ImageMetaModel extends Equatable {
 }
 
 class ImageModel {
-  String id;
-  String image;
-  String imageThumb;
+  String? id;
+  String? image;
+  String? imageThumb;
 
   ImageModel({
     this.id,
@@ -56,7 +55,7 @@ class ImageModel {
 }
 
 class ImageUploadModel {
-  String id;
+  String? id;
 
   ImageUploadModel({this.id});
 

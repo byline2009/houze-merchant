@@ -22,9 +22,9 @@ import 'package:house_merchant/worker/shop_worker.dart';
 import 'package:worker_manager/worker_manager.dart';
 
 class StoreEditImageScreen extends StatefulWidget {
-  final StoreEditArgument params;
+  final StoreEditArgument? params;
 
-  StoreEditImageScreen({Key key, this.params}) : super(key: key);
+  StoreEditImageScreen({Key? key, this.params}) : super(key: key);
 
   @override
   StoreEditImageScreenState createState() => StoreEditImageScreenState();
@@ -32,12 +32,12 @@ class StoreEditImageScreen extends StatefulWidget {
 
 class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
-  Size _screenSize;
-  BuildContext _context;
-  double _padding;
+  Size? _screenSize;
+  BuildContext? _context;
+  double? _padding;
   StreamController<ButtonSubmitEvent> saveButtonController =
       StreamController<ButtonSubmitEvent>.broadcast();
-  PickerImage imagePicker;
+  PickerImage? imagePicker;
   final int maxImage = 4;
   int initImageCount = 0;
   final StreamController<String> statusPickedText = StreamController<String>();
@@ -52,20 +52,20 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   Future<dynamic> runTaskUpload(File f) async {
     var completer = Completer();
 
-    String currentShop = await Sqflite.currentShop();
+    String? currentShop = await Sqflite.currentShop();
 
     Executor()
         .execute(
             arg1: ArgUpload(
-                url: APIConstant.baseMerchantUrlShopImageCreate,
-                token: OauthAPI.token,
-                shopId: currentShop,
-                storageShared: Storage.prefs,
+                url: APIConstant.baseMerchantUrlShopImageCreate!,
+                token: OauthAPI.token!,
+                shopId: currentShop!,
+                storageShared: Storage.prefs!,
                 file: f),
             fun1: uploadShopImageWorker)
         .then((result) async {
       if (result != null && result.id != "") {
-        this.imagePicker.state.validationFilesPick.insert(
+        this.imagePicker!.state.validationFilesPick.insert(
             0,
             FilePick(
                 id: result.id, url: result.image, urlThumb: result.imageThumb));
@@ -81,15 +81,15 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   Future<dynamic> runTaskRemove(List<String> ids) async {
     var completer = Completer();
 
-    String currentShop = await Sqflite.currentShop();
+    String? currentShop = await Sqflite.currentShop();
 
     Executor()
         .execute(
             arg1: ArgUpload(
-                url: APIConstant.baseMerchantUrlShopImageDelete,
-                token: OauthAPI.token,
-                shopId: currentShop,
-                storageShared: Storage.prefs,
+                url: APIConstant.baseMerchantUrlShopImageDelete!,
+                token: OauthAPI.token!,
+                shopId: currentShop!,
+                storageShared: Storage.prefs!,
                 imageId: ids),
             fun1: removeShopImageWorker)
         .then((result) async {
@@ -115,9 +115,9 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
   @override
   void initState() {
-    shopModel = widget.params.shopModel;
+    shopModel = widget.params!.shopModel!;
 
-    final initImages = shopModel.images
+    final initImages = shopModel.images!
         .map(
           (f) => FilePick(id: f.id, url: f.image, urlThumb: f.imageThumb),
         )
@@ -131,18 +131,18 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
         maxImage: maxImage,
         imagesInit: initImages);
 
-    imagePicker.callbackUpload = (FilePick f) async {
-      if (imagePicker.state.filesPick.length <= maxImage) {
-        statusPickedText.add(imagePicker.state.filesPick.length.toString());
-        this.filesCompressedPick.add(f.file);
+    imagePicker!.callbackUpload = (FilePick f) async {
+      if (imagePicker!.state.filesPick.length <= maxImage) {
+        statusPickedText.add(imagePicker!.state.filesPick.length.toString());
+        this.filesCompressedPick.add(f.file!);
         this.checkValidation();
       }
     };
 
-    imagePicker.callbackRemove = (FilePick f) async {
-      statusPickedText.add(imagePicker.state.filesPick.length.toString());
+    imagePicker!.callbackRemove = (FilePick f) async {
+      statusPickedText.add(imagePicker!.state.filesPick.length.toString());
       this.filesCompressedPick.remove(f.file);
-      this.filesIdDeletedPick.add(f.id);
+      this.filesIdDeletedPick.add(f.id!);
       this.checkValidation();
     };
 
@@ -173,7 +173,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
   Widget buildBody() {
     return Container(
-      padding: EdgeInsets.all(this._padding),
+      padding: EdgeInsets.all(this._padding!),
       decoration: BoxDecoration(color: ThemeConstant.white_color),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -183,7 +183,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
               'Hình ảnh đẹp sẽ để lại một ấn tượng tốt cho khách hàng'),
           SizedBox(height: 15),
           Expanded(
-            child: imagePicker,
+            child: imagePicker!,
           )
         ],
       ),
@@ -192,7 +192,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
   bool checkValidation() {
     var isActive = false;
-    if (imagePicker.state.filesPick.length > 0) {
+    if (imagePicker!.state.filesPick.length > 0) {
       isActive = true;
     }
     saveButtonController.sink.add(ButtonSubmitEvent(isActive));
@@ -200,14 +200,14 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
   }
 
   void clearForm() {
-    this.imagePicker.clear();
+    this.imagePicker!.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
     this._context = context;
-    this._padding = this._screenSize.width * 5 / 100;
+    this._padding = this._screenSize!.width * 5 / 100;
 
     return Stack(children: <Widget>[
       BaseScaffoldNormal(
@@ -223,7 +223,7 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
                     Expanded(child: buildBody()),
                     Padding(
                       child: saveButton(),
-                      padding: EdgeInsets.all(_padding),
+                      padding: EdgeInsets.all(_padding!),
                     ),
                   ],
                 ))),
@@ -249,19 +249,20 @@ class StoreEditImageScreenState extends State<StoreEditImageScreen> {
 
   Widget saveButton() => ButtonWidget(
       controller: saveButtonController,
-      defaultHintText: LocalizationsUtil.of(_context).translate('Lưu thay đổi'),
+      defaultHintText:
+          LocalizationsUtil.of(_context!).translate('Lưu thay đổi'),
       callback: () async {
         try {
           progressToolkit.state.show();
           await sendData();
-          if (widget.params.callback != null) {
+          if (widget.params!.callback != null) {
             List<ImageModel> imgs =
-                this.imagePicker.state.validationFilesPick.map((f) {
+                this.imagePicker!.state.validationFilesPick.map((f) {
               return ImageModel(id: f.id, image: f.url, imageThumb: f.urlThumb);
             }).toList();
 
             shopModel.images = imgs;
-            widget.params.callback(shopModel);
+            widget.params!.callback!(shopModel);
           }
           progressToolkit.state.dismiss();
           Fluttertoast.showToast(

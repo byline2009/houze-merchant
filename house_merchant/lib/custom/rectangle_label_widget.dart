@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 
 class RectangleLabelWidget extends StatefulWidget {
-  final String text;
-  final Color color;
+  final String? text;
+  final Color? color;
 
   RectangleLabelWidget({this.text, this.color});
 
@@ -21,7 +21,7 @@ class RectangleLabelWidgetState extends State<RectangleLabelWidget> {
           borderRadius: BorderRadius.all(Radius.circular(4.0)),
         ),
         child: Center(
-            child: Text(widget.text != null ? widget.text.toUpperCase() : '',
+            child: Text(widget.text != null ? widget.text!.toUpperCase() : '',
                 style: TextStyle(
                     letterSpacing: ThemeConstant.letter_spacing_026,
                     color: ThemeConstant.white_color,

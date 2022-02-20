@@ -5,9 +5,9 @@ import 'package:house_merchant/utils/localizations_util.dart';
 typedef void CallBackHandler();
 
 class BaseScaffoldNormal extends StatelessWidget {
-  final Widget child;
-  final String title;
-  final CallBackHandler callback;
+  final Widget? child;
+  final String? title;
+  final CallBackHandler? callback;
 
   BaseScaffoldNormal({this.title, this.child, this.callback});
 
@@ -28,7 +28,7 @@ class BaseScaffoldNormal extends StatelessWidget {
                 color: ThemeConstant.appbar_icon_color,
               ),
               onPressed: () {
-                callback == null ? Navigator.pop(context) : callback();
+                callback == null ? Navigator.pop(context) : callback!();
               },
             )),
         body: GestureDetector(

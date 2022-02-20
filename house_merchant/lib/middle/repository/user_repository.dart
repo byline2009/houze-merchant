@@ -5,7 +5,6 @@ import 'package:house_merchant/utils/storage.dart';
 import 'package:meta/meta.dart';
 
 class UserRepository {
-
   final loginAPI = new LoginAPI();
 
   UserRepository() {
@@ -13,11 +12,10 @@ class UserRepository {
   }
 
   Future<String> authenticate({
-    @required String username,
-    @required String password,
-    String phoneDial,
+    required String username,
+    required String password,
+    String? phoneDial,
   }) async {
-    
     //await Future.delayed(Duration(milliseconds: 1000));
 
     var token = "";
@@ -27,18 +25,16 @@ class UserRepository {
       final rs = await loginAPI.login(username: username, password: password);
 
       if (rs != null) {
-        token = rs.access;
+        token = rs.access!;
         Storage.saveToken(rs);
       }
-
     } catch (e) {
-      return throw(e.toString());
+      return throw (e.toString());
     } finally {
       //integrate Feed API
     }
 
     return token;
-
   }
 
   Future<void> deleteToken() async {
@@ -46,7 +42,6 @@ class UserRepository {
     //feedAPI.UnRegisterDeviceToken();
     return;
   }
-
 
   Future<void> persistToken(TokenModel token) async {
     Storage.saveToken(token);

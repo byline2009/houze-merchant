@@ -4,23 +4,23 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/screen/base/base_scaffold_normal.dart';
 
 class NotificationModel {
-  String icon;
-  String title;
-  String content;
-  bool isRead;
+  String? icon;
+  String? title;
+  String? content;
+  bool? isRead;
 
   NotificationModel({this.icon, this.title, this.content, this.isRead});
 }
 
 class NotificationScreen extends StatefulWidget {
-  NotificationScreen({Key key}) : super(key: key);
+  NotificationScreen({Key? key}) : super(key: key);
 
   @override
   NotificationScreenState createState() => new NotificationScreenState();
 }
 
 class NotificationScreenState extends State<NotificationScreen> {
-  List notifications;
+  List? notifications;
 
   @override
   void initState() {

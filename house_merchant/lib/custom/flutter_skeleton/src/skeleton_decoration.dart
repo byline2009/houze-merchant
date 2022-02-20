@@ -19,15 +19,16 @@ class SkeletonDecoration extends BoxDecoration {
       {theme: SkeletonTheme.Light, isCircle: false, borderRadius = 0.0})
       : super(
           shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-          borderRadius: isCircle ? null : BorderRadius.all(Radius.circular(borderRadius)),
+          borderRadius:
+              isCircle ? null : BorderRadius.all(Radius.circular(borderRadius)),
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: theme != SkeletonTheme.Dark ? lightColors : darkColors,
             stops: [
-              animation.animation.value - 1,
-              animation.animation.value,
-              animation.animation.value + 1,
+              animation.animation!.value - 1,
+              animation.animation!.value,
+              animation.animation!.value + 1,
             ],
           ),
         );

@@ -6,13 +6,12 @@ import '../skeleton_decoration.dart';
 import '../skeleton_theme.dart';
 
 class CardListHorizontalSkeleton extends StatefulWidget {
-
   final SkeletonConfig config;
   final int length;
   final bool shrinkWrap;
 
   CardListHorizontalSkeleton({
-    Key key,
+    Key? key,
     this.config: const SkeletonConfig.origin(),
     this.length: 5,
     this.shrinkWrap = false,
@@ -22,10 +21,9 @@ class CardListHorizontalSkeleton extends StatefulWidget {
   State<StatefulWidget> createState() => _CardListHorizontalSkeletonState();
 }
 
-class _CardListHorizontalSkeletonState extends State<CardListHorizontalSkeleton> 
-    with SingleTickerProviderStateMixin  {
-
-  SkeletonAnimation _skeletonAnimation;
+class _CardListHorizontalSkeletonState extends State<CardListHorizontalSkeleton>
+    with SingleTickerProviderStateMixin {
+  SkeletonAnimation? _skeletonAnimation;
 
   @override
   void initState() {
@@ -35,7 +33,7 @@ class _CardListHorizontalSkeletonState extends State<CardListHorizontalSkeleton>
 
   @override
   void dispose() {
-    _skeletonAnimation.dispose();
+    _skeletonAnimation!.dispose();
     super.dispose();
   }
 
@@ -48,35 +46,31 @@ class _CardListHorizontalSkeletonState extends State<CardListHorizontalSkeleton>
 
   @override
   Widget build(BuildContext context) {
-
     var width = MediaQuery.of(context).size.width;
 
     return AnimatedBuilder(
-      animation: _skeletonAnimation.animation,
-      builder: (context, child) {
-
-        return ListView.builder(
-          scrollDirection: Axis.horizontal,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: widget.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              padding: EdgeInsets.only(bottom: 30.0, right: 20),
-              decoration: BoxDecoration(
-                color: backgroundColor,
-              ),
-              child: Container(
-                width: width * 35/100,
-                decoration: SkeletonDecoration(
-                  _skeletonAnimation,
-                  theme: widget.config.theme,
-                  borderRadius: 16.0,
-                ),
-              ),
-            );
-          });
-
-      }
-    );
+        animation: _skeletonAnimation!.animation as Listenable,
+        builder: (context, child) {
+          return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: widget.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  padding: EdgeInsets.only(bottom: 30.0, right: 20),
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                  ),
+                  child: Container(
+                    width: width * 35 / 100,
+                    decoration: SkeletonDecoration(
+                      _skeletonAnimation!,
+                      theme: widget.config.theme,
+                      borderRadius: 16.0,
+                    ),
+                  ),
+                );
+              });
+        });
   }
 }

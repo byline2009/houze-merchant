@@ -6,7 +6,7 @@ typedef SubmitFunc = Future Function(BuildContext context);
 class T7GDialog {
   static void showAlertDialog(
       BuildContext context, String title, String message,
-      {SubmitFunc submit}) {
+      {SubmitFunc? submit}) {
     showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -33,9 +33,9 @@ class T7GDialog {
         });
   }
 
-  static Future<String> showContentDialog(
+  static Future<String?> showContentDialog(
       BuildContext context, List<Widget> widgets,
-      {String title,
+      {String? title,
       bool closeShow = true,
       bool barrierDismissible = true}) async {
     return await showDialog<String>(
@@ -70,7 +70,7 @@ class T7GDialog {
   }
 
   static void showSimpleDialog(BuildContext context, List<Widget> widgets,
-      {String title, bool barrierDismissible = true}) async {
+      {String? title, bool barrierDismissible = true}) async {
     showDialog<Null>(
       context: context,
       barrierDismissible: barrierDismissible,

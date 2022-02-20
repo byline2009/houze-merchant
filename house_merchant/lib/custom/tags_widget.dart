@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:house_merchant/constant/theme_constant.dart';
 
 class TagsWidget extends StatefulWidget {
-  final String text;
-  final bool isDisable;
+  final String? text;
+  final bool? isDisable;
 
   TagsWidget({this.text, this.isDisable});
 
@@ -22,7 +22,7 @@ class TagsWidgetState extends State<TagsWidget> {
                 color: ThemeConstant.background_grey_color,
                 borderRadius: BorderRadius.all(Radius.circular(4.0))),
             child: Center(
-                child: Text(widget.text,
+                child: Text(widget.text!,
                     style: TextStyle(
                         color: Color(0xffd0d0d0),
                         fontFamily: ThemeConstant.form_font_family_display,
@@ -34,7 +34,7 @@ class TagsWidgetState extends State<TagsWidget> {
             width: 40,
             decoration: ThemeConstant.borderFull,
             child: Center(
-                child: Text(widget.text,
+                child: Text(widget.text!,
                     style: TextStyle(
                         color: ThemeConstant.black_color,
                         fontFamily: ThemeConstant.form_font_family_display,

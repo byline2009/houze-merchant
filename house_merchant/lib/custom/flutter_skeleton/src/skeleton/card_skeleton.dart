@@ -4,11 +4,10 @@ import '../skeleton_config.dart';
 import './list_tile_skeleton.dart';
 
 class CardSkeleton extends StatelessWidget {
-  
   final SkeletonConfig config;
 
   CardSkeleton({
-    Key key,
+    Key? key,
     this.config: const SkeletonConfig.origin(),
   }) : super(key: key);
 

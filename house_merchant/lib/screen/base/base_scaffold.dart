@@ -5,11 +5,11 @@ import 'package:house_merchant/router.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
 class BaseScaffold extends StatelessWidget {
-  final Widget child;
-  final Widget bottom;
-  final String title;
-  final Widget trailing;
-  final Color backgroundColor;
+  final Widget? child;
+  final Widget? bottom;
+  final String? title;
+  final Widget? trailing;
+  final Color? backgroundColor;
 
   BaseScaffold(
       {this.title,
@@ -78,7 +78,7 @@ class BaseScaffold extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                this.trailing != null ? this.trailing : Center()
+                this.trailing != null ? this.trailing! : Center()
               ],
             ),
           ],
@@ -93,8 +93,8 @@ class BaseScaffold extends StatelessWidget {
               : ThemeConstant.appbar_background_color,
           elevation: 0.0,
         ),
-        this.bottom != null ? this.bottom : Center(),
-        Expanded(child: child)
+        this.bottom != null ? this.bottom! : Center(),
+        Expanded(child: child!)
       ],
     ));
   }

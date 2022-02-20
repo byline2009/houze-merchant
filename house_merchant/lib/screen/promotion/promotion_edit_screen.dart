@@ -26,7 +26,7 @@ typedef void CallBackHandler(dynamic value);
 class CouponEditScreen extends StatefulWidget {
   final dynamic params;
 
-  CouponEditScreen({@required this.params, Key key}) : super(key: key);
+  CouponEditScreen({@required this.params, Key? key}) : super(key: key);
 
   @override
   CouponEditScreenState createState() => new CouponEditScreenState();
@@ -34,8 +34,8 @@ class CouponEditScreen extends StatefulWidget {
 
 class CouponEditScreenState extends State<CouponEditScreen> {
   ProgressHUD progressToolkit = Progress.instanceCreate();
-  Size _screenSize;
-  double _padding;
+  Size? _screenSize;
+  double? _padding;
 
   //Reposioty
   final couponRepository = CouponRepository();
@@ -44,7 +44,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
   final ftitle = TextFieldWidgetController();
   final famount = TextFieldWidgetController();
   final frangeTime = new StreamController<List<DateTime>>.broadcast();
-  List<DateTime> frangeTimeResult;
+  List<DateTime>? frangeTimeResult;
   final fdesc = TextFieldWidgetController();
 
   StreamController<ButtonSubmitEvent> saveButtonController =
@@ -64,7 +64,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
     if (_imgList.length > 0) {
       var img = _imgList.first;
       var rs =
-          img.id != null && img.image.length > 0 && img.imageThumb.length > 0;
+          img.id != null && img.image!.length > 0 && img.imageThumb!.length > 0;
       return rs;
     }
     return false;
@@ -96,13 +96,13 @@ class CouponEditScreenState extends State<CouponEditScreen> {
     var data = new CouponModel();
 
     data = widget.params['coupon_model'];
-    _imgList = data.images;
-    ftitle.controller.text = data.title;
-    fdesc.controller.text = data.description;
+    _imgList = data.images!;
+    ftitle.controller.text = data.title!;
+    fdesc.controller.text = data.description!;
     famount.controller.text = data.quantity.toString();
     frangeTimeResult = [
-      DateTime.parse(data.startDate).toLocal(),
-      DateTime.parse(data.endDate).toLocal()
+      DateTime.parse(data.startDate!).toLocal(),
+      DateTime.parse(data.endDate!).toLocal()
     ];
 
     final initImages = _imgList
@@ -110,18 +110,18 @@ class CouponEditScreenState extends State<CouponEditScreen> {
           (f) => FilePick(id: f.id, url: f.image, urlThumb: f.imageThumb),
         )
         .toList();
-    mappingImages[_imgList.last.imageThumb] = _imgList.last;
+    mappingImages[_imgList.last.imageThumb!] = _imgList.last;
     imagePicker.imagesInit = initImages;
   }
 
   void callbackImagePickerDelegate() {
     imagePicker.callbackUpload = (FilePick f) async {
-      final rs = await couponRepository.uploadImage(f.file);
+      final rs = await couponRepository.uploadImage(f.file!);
 
       if (rs != null) {
-        ImageModel img = mappingImages[rs.imageThumb];
+        ImageModel? img = mappingImages[rs.imageThumb];
         if (img == null) {
-          mappingImages[rs.imageThumb] = rs;
+          mappingImages[rs.imageThumb!] = rs;
           _imgList.add(rs);
         }
       }
@@ -130,9 +130,9 @@ class CouponEditScreenState extends State<CouponEditScreen> {
     };
 
     imagePicker.callbackRemove = (FilePick f) async {
-      ImageModel img = mappingImages[f.urlThumb];
+      ImageModel? img = mappingImages[f.urlThumb];
 
-      if (img.imageThumb != null) {
+      if (img!.imageThumb != null) {
         _imgList.remove(img);
       }
 
@@ -161,13 +161,13 @@ class CouponEditScreenState extends State<CouponEditScreen> {
             child: BoxesContainer(
           title: 'Hình ảnh',
           child: this.imagePick(),
-          padding: EdgeInsets.all(this._padding),
+          padding: EdgeInsets.all(this._padding!),
         )),
         SliverToBoxAdapter(
             child: BoxesContainer(
           title: 'Thông tin',
           child: this.formCreate(bloc),
-          padding: EdgeInsets.all(this._padding),
+          padding: EdgeInsets.all(this._padding!),
         )),
       ]),
       progressToolkit
@@ -179,7 +179,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
     var couponBloc = CouponBloc(CouponInitial());
 
     this._screenSize = MediaQuery.of(context).size;
-    this._padding = this._screenSize.width * 5 / 100;
+    this._padding = this._screenSize!.width * 5 / 100;
 
     return BaseScaffoldNormal(
         title: 'Chỉnh sửa ưu đãi',
@@ -286,10 +286,10 @@ class CouponEditScreenState extends State<CouponEditScreen> {
             ),
             SizedBox(height: 5),
             Container(
-                child: frangeTimeResult.length == 2
+                child: frangeTimeResult!.length == 2
                     ? DateRangePickerCustomWidget(
-                        firstDate: frangeTimeResult[0].toLocal(),
-                        lastDate: frangeTimeResult[1].toLocal(),
+                        firstDate: frangeTimeResult![0].toLocal(),
+                        lastDate: frangeTimeResult![1].toLocal(),
                         controller: frangeTime,
                         defaultHintText:
                             '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY',
@@ -332,15 +332,15 @@ class CouponEditScreenState extends State<CouponEditScreen> {
           final data = CouponModel(
               title: ftitle.controller.text,
               quantity: int.parse(famount.controller.text),
-              startDate: frangeTimeResult[0].toUtc().toString(),
-              endDate: frangeTimeResult[1].toUtc().toString(),
+              startDate: frangeTimeResult![0].toUtc().toString(),
+              endDate: frangeTimeResult![1].toUtc().toString(),
               description: fdesc.controller.text,
               images: [_imgList.first],
               shops: coupon.shops);
 
           print(data.toJson().toString());
 
-          final result = await couponRepository.updateCoupon(coupon.id, data);
+          final result = await couponRepository.updateCoupon(coupon.id!, data);
 
           if (result != null) {
             if (widget.params['callback'] != null) {
@@ -389,7 +389,7 @@ class CouponEditScreenState extends State<CouponEditScreen> {
   }
 
   Widget _navigatedToPromotionListScreen(CouponModel rs) {
-    final width = this._screenSize.width * 90 / 100;
+    final width = this._screenSize!.width * 90 / 100;
     return Padding(
         padding: EdgeInsets.all(20),
         child: Container(

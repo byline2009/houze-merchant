@@ -8,26 +8,26 @@ class CupertinoLocalizationsVi implements CupertinoLocalizations {
   final widgetsDelegate = GlobalWidgetsLocalizations.delegate;
   final local = const Locale('vi');
 
-  MaterialLocalizations ml;
+  MaterialLocalizations? ml;
 
   Future init() async {
     ml = await materialDelegate.load(local);
   }
 
   @override
-  String get alertDialogLabel => ml.alertDialogLabel;
+  String get alertDialogLabel => ml!.alertDialogLabel;
 
   // TODO: implement anteMeridiemAbbreviation
   @override
-  String get anteMeridiemAbbreviation => ml.anteMeridiemAbbreviation;
+  String get anteMeridiemAbbreviation => ml!.anteMeridiemAbbreviation;
 
   // TODO: implement copyButtonLabel
   @override
-  String get copyButtonLabel => ml.copyButtonLabel;
+  String get copyButtonLabel => ml!.copyButtonLabel;
 
   // TODO: implement cutButtonLabel
   @override
-  String get cutButtonLabel => ml.cutButtonLabel;
+  String get cutButtonLabel => ml!.cutButtonLabel;
 
   // TODO: implement datePickerDateOrder
   @override
@@ -53,7 +53,7 @@ class CupertinoLocalizationsVi implements CupertinoLocalizations {
 
   @override
   String datePickerMediumDate(DateTime date) {
-    return ml.formatMediumDate(date);
+    return ml!.formatMediumDate(date);
   }
 
   @override
@@ -79,15 +79,15 @@ class CupertinoLocalizationsVi implements CupertinoLocalizations {
 
   // TODO: implement pasteButtonLabel
   @override
-  String get pasteButtonLabel => ml.pasteButtonLabel;
+  String get pasteButtonLabel => ml!.pasteButtonLabel;
 
   // TODO: implement postMeridiemAbbreviation
   @override
-  String get postMeridiemAbbreviation => ml.postMeridiemAbbreviation;
+  String get postMeridiemAbbreviation => ml!.postMeridiemAbbreviation;
 
   // TODO: implement selectAllButtonLabel
   @override
-  String get selectAllButtonLabel => ml.selectAllButtonLabel;
+  String get selectAllButtonLabel => ml!.selectAllButtonLabel;
 
   @override
   String timerPickerHour(int hour) {
@@ -124,14 +124,14 @@ class CupertinoLocalizationsVi implements CupertinoLocalizations {
 
   @override
   // TODO: implement todayLabel
-  String get todayLabel => null;
+  String get todayLabel => throw UnimplementedError();
 
   @override
   // TODO: implement modalBarrierDismissLabel
   String get modalBarrierDismissLabel => throw UnimplementedError();
 
   @override
-  String tabSemanticsLabel({int tabIndex, int tabCount}) {
+  String tabSemanticsLabel({int? tabIndex, int? tabCount}) {
     // TODO: implement tabSemanticsLabel
     throw UnimplementedError();
   }

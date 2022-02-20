@@ -29,10 +29,10 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
   List<CouponUserModel> listTemp = [];
   int page = 0;
 
-  CouponModel _couponModel;
+  CouponModel? _couponModel;
   final _couponBloc = CouponBloc(CouponInitial());
   bool shouldLoadMore = true;
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
@@ -47,7 +47,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
   @override
   void dispose() {
     refreshController.dispose();
-    scrollController.dispose();
+    scrollController!.dispose();
 
     super.dispose();
   }
@@ -57,7 +57,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
     listTemp.clear();
     list.clear();
     shouldLoadMore = true;
-    _couponBloc.add(CouponUserLoadList(id: _couponModel.id, page: page));
+    _couponBloc.add(CouponUserLoadList(id: _couponModel!.id, page: page));
     refreshController.refreshCompleted();
     refreshController.loadComplete();
   }
@@ -66,7 +66,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
     if (this.shouldLoadMore) {
       this.page++;
       listTemp.clear();
-      _couponBloc.add(CouponUserLoadList(id: _couponModel.id, page: page));
+      _couponBloc.add(CouponUserLoadList(id: _couponModel!.id, page: page));
       refreshController.loadComplete();
     }
   }
@@ -80,7 +80,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-              HeaderNumberUsersUsed(couponModel: _couponModel),
+              HeaderNumberUsersUsed(couponModel: _couponModel!),
               Expanded(
                 child: Container(
                   color: Colors.white,
@@ -91,7 +91,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
                         print("Status: $currentState");
                         if (currentState is CouponInitial && page == 0) {
                           _couponBloc.add(CouponUserLoadList(
-                              id: _couponModel.id, page: page));
+                              id: _couponModel!.id, page: page));
                         }
 
                         if (currentState is CouponLoading && page == 0) {
@@ -133,8 +133,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
                             enablePullDown: true,
                             enablePullUp: true,
                             header: MaterialClassicHeader(color: Colors.white),
-                            footer: CustomFooter(builder:
-                                (BuildContext context, LoadStatus mode) {
+                            footer: CustomFooter(builder: (context, mode) {
                               Widget body;
                               if (shouldLoadMore == false) {
                                 mode = LoadStatus.noMore;
@@ -176,7 +175,7 @@ class PromotionUsersScreenState extends State<CouponUserListScreen> {
 }
 
 class UserItem extends StatelessWidget {
-  final CouponUserModel user;
+  final CouponUserModel? user;
 
   const UserItem({this.user});
 
@@ -184,7 +183,7 @@ class UserItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 80.0,
-        key: Key(user.id),
+        key: Key(user!.id!),
         color: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: ListTile(
@@ -194,18 +193,18 @@ class UserItem extends StatelessWidget {
               height: 50,
               child: CircleAvatar(
                   backgroundColor: ThemeConstant.alto_color,
-                  child: user.customer.avatar != null
-                      ? BaseWidget.avatar(user.customer.avatar, 'O', 50)
+                  child: user!.customer!.avatar != null
+                      ? BaseWidget.avatar(user!.customer!.avatar!, 'O', 50)
                       : Text(
-                          user.customer.fullName[0],
+                          user!.customer!.fullName![0],
                           style: ThemeConstant.titleLargeStyle(Colors.white),
                         ))),
-          title:
-              Text(user.customer.fullName, style: ThemeConstant.titleTileStyle),
+          title: Text(user!.customer!.fullName!,
+              style: ThemeConstant.titleTileStyle),
           subtitle: Text(
               'Ngày sử dụng: ' +
                   DateFormat(Format.timeAndDate)
-                      .format(DateTime.parse(user.modified).toLocal())
+                      .format(DateTime.parse(user!.modified!).toLocal())
                       .toString(),
               style: ThemeConstant.subtitleTileStyle),
         ));

@@ -1,6 +1,6 @@
 class CategoryModel {
-  String id;
-  String categoryName;
+  String? id;
+  String? categoryName;
 
   CategoryModel({this.id, this.categoryName});
 

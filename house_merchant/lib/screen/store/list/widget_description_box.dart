@@ -3,7 +3,7 @@ import 'package:house_merchant/constant/theme_constant.dart';
 import 'package:house_merchant/utils/localizations_util.dart';
 
 class DescriptionBox extends StatelessWidget {
-  final String description;
+  final String? description;
   DescriptionBox({this.description});
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class DescriptionBox extends StatelessWidget {
               color: ThemeConstant.background_grey_color,
               borderRadius: BorderRadius.all(Radius.circular(4.0)),
             ),
-            child: Text(description != null && description.length > 0
-                ? description
+            child: Text(description != null && description!.length > 0
+                ? description!
                 : 'Chưa có mô tả'))
       ],
     );

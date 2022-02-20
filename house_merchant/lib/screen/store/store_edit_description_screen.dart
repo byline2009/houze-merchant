@@ -18,9 +18,9 @@ import 'package:house_merchant/utils/string_util.dart';
 typedef void CallBackHandler(ShopModel shop);
 
 class StoreEditDescriptionScreen extends StatefulWidget {
-  final StoreEditArgument params;
+  final StoreEditArgument? params;
 
-  StoreEditDescriptionScreen({Key key, this.params}) : super(key: key);
+  StoreEditDescriptionScreen({Key? key, this.params}) : super(key: key);
 
   @override
   StoreEditDescriptionScreenState createState() =>
@@ -29,8 +29,8 @@ class StoreEditDescriptionScreen extends StatefulWidget {
 
 class StoreEditDescriptionScreenState
     extends State<StoreEditDescriptionScreen> {
-  Size _screenSize;
-  double _padding;
+  Size? _screenSize;
+  double? _padding;
 
   final shopRepository = new ShopRepository();
   final fdesc = TextFieldWidgetController();
@@ -39,12 +39,12 @@ class StoreEditDescriptionScreenState
       new StreamController<ButtonSubmitEvent>.broadcast();
   ProgressHUD progressToolkit = Progress.instanceCreate();
 
-  ShopModel _shopModel;
+  ShopModel? _shopModel;
 
   @override
   void initState() {
-    _shopModel = widget.params.shopModel; //widget.params['shop_model'];
-    fdesc.controller.text = _shopModel.description;
+    _shopModel = widget.params!.shopModel; //widget.params['shop_model'];
+    fdesc.controller.text = _shopModel!.description!;
     super.initState();
   }
 
@@ -57,7 +57,7 @@ class StoreEditDescriptionScreenState
   bool checkValidation(String value) {
     var isActive = false;
     if (!StringUtil.isEmpty(fdesc.controller.text) &&
-        (value.toLowerCase() != _shopModel.description.toLowerCase())) {
+        (value.toLowerCase() != _shopModel!.description!.toLowerCase())) {
       isActive = true;
     }
     saveButtonController.sink.add(ButtonSubmitEvent(isActive));
@@ -88,7 +88,7 @@ class StoreEditDescriptionScreenState
         bottom: 0,
         top: 10.0,
         child: Container(
-            padding: EdgeInsets.all(_padding),
+            padding: EdgeInsets.all(_padding!),
             decoration: BoxDecoration(color: ThemeConstant.white_color),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -118,7 +118,7 @@ class StoreEditDescriptionScreenState
   Widget build(BuildContext context) {
     final shopBloc = ShopBloc(ShopInitial());
     this._screenSize = MediaQuery.of(context).size;
-    this._padding = this._screenSize.width * 5 / 100;
+    this._padding = this._screenSize!.width * 5 / 100;
 
     Widget saveDataButton(ShopBloc shopBloc) {
       return Positioned(
@@ -130,7 +130,7 @@ class StoreEditDescriptionScreenState
               defaultHintText:
                   LocalizationsUtil.of(context).translate('Lưu thay đổi'),
               callback: () async {
-                this._shopModel.description = fdesc.controller.text;
+                this._shopModel!.description = fdesc.controller.text;
                 shopBloc.add(SaveButtonPressed(shopModel: this._shopModel));
               }));
     }
@@ -147,8 +147,8 @@ class StoreEditDescriptionScreenState
                     progressToolkit.state.dismiss();
                     saveButtonController.sink.add(ButtonSubmitEvent(false));
 
-                    this._shopModel.description = fdesc.controller.text;
-                    widget.params.callback(_shopModel);
+                    this._shopModel!.description = fdesc.controller.text;
+                    widget.params!.callback!(_shopModel!);
 
                     Fluttertoast.showToast(
                         msg: 'Cập nhật mô tả thành công',

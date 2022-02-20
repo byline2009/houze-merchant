@@ -5,7 +5,7 @@ import 'package:house_merchant/screen/base/base_widget.dart';
 
 class HeaderNumberUsersUsed extends StatelessWidget {
   final CouponModel couponModel;
-  const HeaderNumberUsersUsed({@required this.couponModel});
+  const HeaderNumberUsersUsed({required this.couponModel});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,7 +16,7 @@ class HeaderNumberUsersUsed extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(couponModel.title,
+          Text(couponModel.title!,
               style: ThemeConstant.titleLargeStyle(ThemeConstant.black_color)),
           SizedBox(height: 12),
           BaseWidget.dividerBottom,

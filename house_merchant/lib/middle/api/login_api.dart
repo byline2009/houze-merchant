@@ -4,13 +4,13 @@ import 'package:house_merchant/middle/api/base_api.dart';
 import 'package:house_merchant/middle/model/token_model.dart';
 
 class LoginAPI extends BaseAPI {
-  Dio dio;
+  Dio? dio;
 
   LoginAPI() : super(APIConstant.baseMerchantUrlLogin);
 
   Future<TokenModel> login({username: String, password: String}) async {
     try {
-      final response = await dio.post(
+      final response = await dio!.post(
         this.baseUrl,
         data: {"username": username, "password": password},
       );

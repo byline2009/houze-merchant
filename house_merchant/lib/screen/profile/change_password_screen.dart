@@ -21,14 +21,14 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 typedef void CheckHandler(String value);
 
 class ChangePasswordScreen extends StatefulWidget {
-  ChangePasswordScreen({Key key}) : super(key: key);
+  ChangePasswordScreen({Key? key}) : super(key: key);
 
   @override
   ChangePasswordScreenState createState() => ChangePasswordScreenState();
 }
 
 class ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  Size _screenSize;
+  Size? _screenSize;
 
   var padding;
 
@@ -87,7 +87,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
               builder: (FormFieldState<dynamic> field) {
                 return Column(children: <Widget>[
                   Container(
-                    width: _screenSize.width,
+                    width: _screenSize!.width,
                     alignment: Alignment.center,
                     margin: const EdgeInsets.only(bottom: 10.0),
                     padding: const EdgeInsets.only(left: 0.0, right: 10.0),
@@ -112,7 +112,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     Text(
                       StringUtil.isEmpty(field.errorText)
                           ? ""
-                          : field.errorText,
+                          : field.errorText!,
                       style: TextStyle(color: Colors.red),
                     )
                   ]),
@@ -123,7 +123,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   Widget showSuccessful() {
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
-    final width = this._screenSize.width * 90 / 100;
+    final width = this._screenSize!.width * 90 / 100;
     return Padding(
         padding: EdgeInsets.all(20),
         child: Container(
@@ -166,7 +166,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   Widget initContent(BuildContext context) {
-    final padding = this._screenSize.width * 5 / 100;
+    final padding = this._screenSize!.width * 5 / 100;
     final paddingButton = EdgeInsets.all(padding);
 
     return FormBuilder(
@@ -205,7 +205,8 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   } catch (e) {
                     _oldPassword.text = "";
                     _newPassword.text = "";
-                    T7GDialog.showAlertDialog(context, "Cảnh báo", e);
+                    T7GDialog.showAlertDialog(
+                        context, "Cảnh báo", e.toString());
                   } finally {
                     progressToolkit.state.dismiss();
                   }
@@ -217,7 +218,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     this._screenSize = MediaQuery.of(context).size;
-    this.padding = this._screenSize.width * 5 / 100;
+    this.padding = this._screenSize!.width * 5 / 100;
     final _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
 
     return BaseScaffoldNormal(
@@ -237,7 +238,8 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             child: ListView(
                               children: <Widget>[
                                 Container(
-                                    height: this._screenSize.height * 10 / 100),
+                                    height:
+                                        this._screenSize!.height * 10 / 100),
                                 initContent(context)
                               ],
                             ))),
