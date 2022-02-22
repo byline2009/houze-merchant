@@ -187,8 +187,8 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
             DateRangePickerWidget(
               controller: frangeTime,
               defaultHintText: '00:00 - DD/MM/YYYY đến 00:00 - DD/MM/YYYY',
-              callback: (List<DateTime> values) {
-                if (values.length == 2) {
+              callback: (List<DateTime>? values) {
+                if (values != null && values.length == 2) {
                   frangeTimeResult = values;
                   this.checkValidation();
                 }
@@ -328,10 +328,10 @@ class CouponCreateScreenState extends State<CouponCreateScreen> {
                 )),
                 SizedBox(height: 20),
                 BaseWidget.buttonThemePink('Về trang chính', callback: () {
+                  if (widget.params['callback'] != null) {
+                    widget.params['callback'](true);
+                  }
                   Navigator.of(context).popUntil((route) {
-                    if (widget.params['callback'] != null) {
-                      widget.params['callback'](true);
-                    }
                     return route.isFirst;
                   });
                 })

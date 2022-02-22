@@ -176,15 +176,29 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
             children: [
           inputContent(context, "Mật khẩu cũ", _oldPassword, [],
               (String oldPassword) {
-            if (_oldPassword.text.length >= 5 &&
-                _newPassword.text.length >= 5) {
-            } else {}
+            if (_oldPassword.text.length > 5 && _newPassword.text.length > 5) {
+              _confirmButtonController.add(ButtonSubmitEvent(true));
+            } else {
+              _confirmButtonController.add(ButtonSubmitEvent(false));
+            }
           }, attribute: "old_password", obscureText: true),
-          inputContent(context, "Mật khẩu mới", _newPassword, [],
-              (String newPassword) {
-            if (_oldPassword.text.length >= 5 &&
-                _newPassword.text.length >= 5) {
-            } else {}
+          inputContent(context, "Mật khẩu mới", _newPassword, [
+            (val) {
+              if (_oldPassword.text == _newPassword.text) {
+                _confirmButtonController.add(ButtonSubmitEvent(false));
+                return 'Mật khẩu trùng nhau';
+              }
+              if (_newPassword.text.length < 6) {
+                return 'Mật khẩu mới phải gồm 6 kí tự trở lên';
+              }
+              return null;
+            }
+          ], (String newPassword) {
+            if (_oldPassword.text.length > 5 && _newPassword.text.length > 5) {
+              _confirmButtonController.add(ButtonSubmitEvent(true));
+            } else {
+              _confirmButtonController.add(ButtonSubmitEvent(false));
+            }
           }, attribute: "new_password", obscureText: true),
           Padding(
               padding: paddingButton,

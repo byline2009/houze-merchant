@@ -27,6 +27,10 @@ class DateRangePageState extends State<DateRangePage> {
 
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () => {Navigator.pop(context)},
+              icon: Icon(Icons.arrow_back,
+                  color: Colors.black87)), // appbar leading icon.
           title: Text(LocalizationsUtil.of(context).translate('Chọn thời gian'),
               style: TextStyle(
                   fontSize: ThemeConstant.appbar_scaffold_font_title,

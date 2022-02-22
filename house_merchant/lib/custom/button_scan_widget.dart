@@ -16,6 +16,7 @@ class ButtonScanQRWidgetState extends State<ButtonScanQRWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+        height: 45,
         margin: EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(24.0)),
@@ -30,11 +31,17 @@ class ButtonScanQRWidgetState extends State<ButtonScanQRWidget> {
         width: 140,
         padding: EdgeInsets.all(0),
         child: TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24.0), // <-- Radius
+            ),
+          ),
           onPressed: () {
             widget.callback();
           },
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SvgPicture.asset('assets/images/qr-icon.svg'),
               Text(

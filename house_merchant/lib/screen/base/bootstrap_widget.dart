@@ -11,6 +11,7 @@ import 'package:house_merchant/screen/login/login_screen.dart';
 import 'package:house_merchant/screen/main/main_screen.dart';
 import 'package:house_merchant/utils/cupertino_localizations_vi.dart';
 import 'package:house_merchant/utils/localizations_delegate_util.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
 class BootstrapScreen extends StatefulWidget {
   BootstrapScreen({Key? key}) : super(key: key);
@@ -54,6 +55,7 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
             },
             showPerformanceOverlay: false,
             localizationsDelegates: [
+              FormBuilderLocalizations.delegate,
               LocalizationsDelegateUtil(),
               CupertinoLocalizationsVi.delegate,
               DefaultCupertinoLocalizations.delegate,

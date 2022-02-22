@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:io' show Platform;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -93,7 +94,9 @@ class PickerImageState extends State<PickerImage> {
     } catch (e) {
       print(e.toString());
     } finally {
-      Navigator.of(context).pop();
+      if (!Platform.isAndroid) {
+        Navigator.of(context).pop();
+      }
 
       setState(() {
         if (images.length > 0) {}
@@ -121,17 +124,23 @@ class PickerImageState extends State<PickerImage> {
   }
 
   Future pickImage(BuildContext context) async {
-    var isShow = false;
-    showDialog<Null>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          if (!isShow) {
-            isShow = true;
-            uploadProcessing(context);
-          }
-          return Center();
-        });
+    if (Platform.isAndroid) {
+      // Android-specific code
+      uploadProcessing(context);
+    } else if (Platform.isIOS) {
+      // iOS-specific code
+      var isShow = false;
+      showDialog<Null>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            if (!isShow) {
+              isShow = true;
+              uploadProcessing(context);
+            }
+            return Center();
+          });
+    }
   }
 
   Widget photoImage(FilePick f) {

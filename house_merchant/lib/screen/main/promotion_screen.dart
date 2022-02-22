@@ -39,8 +39,9 @@ class CouponScreenState extends State<CouponScreen> {
   double? _padding;
   int statusCurrent = -1; // status: tat ca
   int tagIndexCurrent = 0; // tab: tat ca
+  final _refreshControllerKey = UniqueKey();
 
-  final couponListBloc =
+  var couponListBloc =
       CouponListBloc(CouponList(data: <CouponModel>[], response: 1));
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -48,7 +49,9 @@ class CouponScreenState extends State<CouponScreen> {
   @override
   void initState() {
     super.initState();
-    this.getCouponsByStatus();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      this.getCouponsByStatus();
+    });
   }
 
   void getCouponsByStatus({int status = Promotion.allStatus}) {
@@ -382,7 +385,6 @@ class CouponScreenState extends State<CouponScreen> {
                       }
 
                       if (!couponListBloc.isNext &&
-                          couponList != null &&
                           couponList.data!.length == 0) {
                         return Center(
                             child: Padding(
@@ -390,12 +392,12 @@ class CouponScreenState extends State<CouponScreen> {
                                 child: Text(LocalizationsUtil.of(context)
                                     .translate("Chưa có lịch sử đăng ký"))));
                       }
-
                       _refreshController.loadComplete();
                       _refreshController.refreshCompleted();
 
                       return Scrollbar(
                           child: SmartRefresher(
+                              key: _refreshControllerKey,
                               controller: _refreshController,
                               enablePullDown: true,
                               enablePullUp: true,
@@ -419,10 +421,10 @@ class CouponScreenState extends State<CouponScreen> {
                                 return Container(
                                     height: 50, child: Center(child: body));
                               }),
-                              onRefresh: () {
+                              onRefresh: () async {
                                 this.getCouponsByStatus(status: statusCurrent);
                               },
-                              onLoading: () {
+                              onLoading: () async {
                                 if (mounted) {
                                   this.getCouponsByStatus(
                                       status: statusCurrent);
@@ -492,7 +494,7 @@ class CouponScreenState extends State<CouponScreen> {
           AppRouter.push(context, AppRouter.COUPON_CREATE, {
             "callback": (isReloadData) {
               if (isReloadData) {
-                this.getCouponsByStatus();
+                this.getCouponsByStatus(status: this.statusCurrent);
               }
               return;
             }
