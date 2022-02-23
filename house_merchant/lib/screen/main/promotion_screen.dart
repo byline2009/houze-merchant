@@ -467,6 +467,8 @@ class CouponScreenState extends State<CouponScreen> {
                                           "coupon_model": data,
                                           "callback": (bool isReloadData) {
                                             if (isReloadData) {
+                                              _isLoadMore = false;
+                                              _currentPage = -1;
                                               this.getCouponsByStatus(
                                                   status: this.statusCurrent);
                                             }

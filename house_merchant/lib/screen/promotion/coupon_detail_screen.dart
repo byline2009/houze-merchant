@@ -275,11 +275,11 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
     return BaseScaffoldNormal(
       title: 'Chi tiết ưu đãi',
       callback: () {
+        //scan qr code success => promotion list need to reload data
+        if (widget.params['callback'] != null) {
+          widget.params['callback'](true);
+        }
         Navigator.of(context).popUntil((route) {
-          //scan qr code success => promotion list need to reload data
-          if (widget.params['callback'] != null) {
-            widget.params['callback'](true);
-          }
           return route.isFirst;
         });
       },

@@ -184,11 +184,19 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
           }, attribute: "old_password", obscureText: true),
           inputContent(context, "Mật khẩu mới", _newPassword, [
             (val) {
-              if (_oldPassword.text == _newPassword.text) {
+              if (_oldPassword.text == _newPassword.text &&
+                  _oldPassword.text.length > 0) {
                 _confirmButtonController.add(ButtonSubmitEvent(false));
                 return 'Mật khẩu trùng nhau';
               }
-              if (_newPassword.text.length < 6) {
+              String pattern = r'^(?!.* )'; // Regex for lowercase only
+              RegExp regex = new RegExp(pattern);
+              if (!regex.hasMatch(_newPassword.text)) {
+                _confirmButtonController.add(ButtonSubmitEvent(false));
+                return 'Mật khẩu không được chứa khoảng trắng';
+              }
+              if (_newPassword.text.length < 6 &&
+                  _newPassword.text.length != 0) {
                 return 'Mật khẩu mới phải gồm 6 kí tự trở lên';
               }
               return null;
@@ -221,6 +229,7 @@ class ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     _newPassword.text = "";
                     T7GDialog.showAlertDialog(
                         context, "Cảnh báo", e.toString());
+                    _confirmButtonController.add(ButtonSubmitEvent(false));
                   } finally {
                     progressToolkit.state.dismiss();
                   }

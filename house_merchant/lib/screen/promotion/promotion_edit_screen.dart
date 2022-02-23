@@ -110,7 +110,9 @@ class CouponEditScreenState extends State<CouponEditScreen> {
           (f) => FilePick(id: f.id, url: f.image, urlThumb: f.imageThumb),
         )
         .toList();
-    mappingImages[_imgList.last.imageThumb!] = _imgList.last;
+    if (_imgList.length > 0) {
+      mappingImages[_imgList.last.imageThumb!] = _imgList.last;
+    }
     imagePicker.imagesInit = initImages;
   }
 
