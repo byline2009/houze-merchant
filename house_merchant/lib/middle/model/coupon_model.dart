@@ -160,9 +160,10 @@ class CouponModel {
 //** COUPON LIST **//
 class CouponList {
   int? response;
+  int? page;
   List<CouponModel>? data;
 
-  CouponList({this.response, this.data});
+  CouponList({this.response, this.data, this.page});
 
   CouponList.fromJson(Map<String, dynamic> json) {
     response = json['response'];

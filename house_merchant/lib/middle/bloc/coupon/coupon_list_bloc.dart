@@ -18,18 +18,9 @@ class CouponListBloc extends Bloc<CouponEvent, CouponList> {
         this.page = event.page;
       }
 
-      //first init
-      if (event.page == 0) {
-        emit(CouponList(
-          data: result,
-          response: 0,
-        ));
-        return;
-      }
-
       var currentOffset = (this.page * APIConstant.limitDefault) + this.offset;
       if (result.length <= APIConstant.limitDefault) {
-        currentOffset = result.length;
+        currentOffset = this.result.length;
       }
 
       //for refresh drag
@@ -60,6 +51,7 @@ class CouponListBloc extends Bloc<CouponEvent, CouponList> {
       emit(CouponList(
         data: _results,
         response: 0,
+        page: this.page,
       ));
     });
   }

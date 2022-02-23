@@ -39,6 +39,8 @@ class CouponScreenState extends State<CouponScreen> {
   double? _padding;
   int statusCurrent = -1; // status: tat ca
   int tagIndexCurrent = 0; // tab: tat ca
+  bool _isLoadMore = false;
+  int _currentPage = -1;
   final _refreshControllerKey = UniqueKey();
 
   var couponListBloc =
@@ -54,17 +56,29 @@ class CouponScreenState extends State<CouponScreen> {
     });
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   void getCouponsByStatus({int status = Promotion.allStatus}) {
     this.statusCurrent = status;
     this.tagIndexCurrent =
         statusCurrent == Promotion.allStatus ? 0 : tagIndexCurrent;
-    couponListBloc.add(CouponLoadList(page: -1, status: statusCurrent));
+
+    couponListBloc.add(CouponLoadList(
+        page: _isLoadMore ? _currentPage : -1, status: statusCurrent));
   }
 
   Widget tags() {
     return GroupRadioTagsWidget(
       tags: Promotion.statusTags.toList(),
-      callback: (dynamic id) => this.getCouponsByStatus(status: id),
+      callback: (dynamic id) {
+        _isLoadMore = false;
+        _currentPage = -1;
+        this.getCouponsByStatus(status: id);
+      },
       callBackIndex: (dynamic index) => tagIndexCurrent = index,
       defaultIndex: this.tagIndexCurrent,
     );
@@ -394,6 +408,9 @@ class CouponScreenState extends State<CouponScreen> {
                       }
                       _refreshController.loadComplete();
                       _refreshController.refreshCompleted();
+                      if (couponList.page != null) {
+                        _currentPage = couponList.page!;
+                      }
 
                       return Scrollbar(
                           child: SmartRefresher(
@@ -422,10 +439,16 @@ class CouponScreenState extends State<CouponScreen> {
                                     height: 50, child: Center(child: body));
                               }),
                               onRefresh: () async {
-                                this.getCouponsByStatus(status: statusCurrent);
+                                WidgetsBinding.instance!
+                                    .addPostFrameCallback((_) {
+                                  _isLoadMore = false;
+                                  this.getCouponsByStatus(
+                                      status: statusCurrent);
+                                });
                               },
                               onLoading: () async {
                                 if (mounted) {
+                                  _isLoadMore = true;
                                   this.getCouponsByStatus(
                                       status: statusCurrent);
                                 }

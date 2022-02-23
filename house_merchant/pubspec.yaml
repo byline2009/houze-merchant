@@ -22,10 +22,8 @@ dependencies:
   dio: 3.0.10
   equatable: ^2.0.3
   flutter_dotenv: ^2.0.3
-
   flutter_offline: "^0.2.4"
   intl: ^0.17.0
-
   cached_network_image: ^2.3.3
   photo_view: ^0.9.2
   flutter_svg: ^1.0.3
