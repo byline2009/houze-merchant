@@ -27,6 +27,7 @@ class ImageWidget extends StatelessWidget {
               width: this.width,
               height: this.height,
               fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
             )
           ])),
       width: this.width,

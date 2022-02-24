@@ -110,7 +110,7 @@ class PickerImageState extends State<PickerImage> {
 
             var compressImage = await FlutterImageCompress.compressAndGetFile(
                 image.absolute.path, targetPath,
-                minHeight: 1280, minWidth: 1280, quality: 60, keepExif: false);
+                minHeight: 1280, minWidth: 1280, quality: 95, keepExif: false);
 
             if (Platform.isIOS) {
               image.deleteSync();
