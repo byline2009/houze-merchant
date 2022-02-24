@@ -46,6 +46,7 @@ class ImageViewScreen extends StatelessWidget {
                   CachedNetworkImageProvider(params!.images!.elementAt(index)),
               initialScale: PhotoViewComputedScale.contained * 0.8,
               maxScale: PhotoViewComputedScale.contained,
+              minScale: PhotoViewComputedScale.contained * 0.8,
             );
           },
           itemCount: params!.images!.length,
