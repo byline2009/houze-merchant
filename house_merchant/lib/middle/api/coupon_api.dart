@@ -96,7 +96,7 @@ class CouponAPI extends OauthAPI {
       final String? url = APIConstant.baseMerchantUrlCouponUpload;
 
       final response = await this.post(
-        url,
+        url!,
         data: formData,
       );
 

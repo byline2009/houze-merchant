@@ -59,7 +59,7 @@ class CouponDetailScreenState extends State<CouponDetailScreen> {
               child: ImageWidget(
                   width: _screenSize!.width,
                   height: _heightPhoto,
-                  imgUrl: _couponModel.images!.first.imageThumb!),
+                  imgUrl: _couponModel.images!.first.image!),
             )
           : SvgPicture.asset('assets/images/ic-promotion-default.svg',
               fit: BoxFit.contain,

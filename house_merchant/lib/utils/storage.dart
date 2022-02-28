@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:house_merchant/middle/model/language_model.dart';
 import 'package:house_merchant/middle/model/token_model.dart';
+import 'package:house_merchant/utils/app_contant.dart';
 import 'package:house_merchant/utils/string_util.dart';
 import 'package:house_merchant/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +9,7 @@ import 'dart:convert';
 
 const String API_TOKEN = 'api_token';
 const String DEVICE_TOKEN = 'device_token';
+const String LANGUAGE = 'language';
 
 class Storage {
   static SharedPreferences? prefs;
@@ -51,5 +54,18 @@ class Storage {
       return null;
     }
     return strSignIn;
+  }
+
+  // Get language
+  static LanguageModel getLanguage() {
+    final prefs = Storage.prefs;
+    String? strLanguage = prefs?.getString(LANGUAGE);
+    LanguageModel item;
+    if (StringUtil.isEmpty(strLanguage ?? "")) {
+      item = AppConstant.languages[0];
+    } else {
+      item = LanguageModel.fromJson(json.decode(strLanguage ?? ""));
+    }
+    return item;
   }
 }

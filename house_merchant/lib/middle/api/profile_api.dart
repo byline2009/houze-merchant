@@ -17,12 +17,12 @@ class ProfileAPI extends OauthAPI {
   Future<String> changePassword(String oldPass, String newPass) async {
     try {
       final response = await this.put(
-        APIConstant.baseMerchantUrlChangePass,
+        APIConstant.baseMerchantUrlChangePass!,
         data: {"old_password": oldPass, "new_password": newPass},
       );
       return response.data;
     } on DioError catch (e) {
-      if (e.response.statusCode != 200) throw ("Mật khẩu cũ không hợp lệ");
+      if (e.response!.statusCode != 200) throw ("Mật khẩu cũ không hợp lệ");
       return 'Mật khẩu cũ không hợp lệ';
     }
   }

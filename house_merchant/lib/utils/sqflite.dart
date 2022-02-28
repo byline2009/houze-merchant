@@ -1,13 +1,15 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:house_merchant/middle/model/shop_model.dart';
+import 'package:house_merchant/utils/custom_exception.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class Sqflite {
   static Database? db;
-  static const int version = 1;
+  static const int version = 2;
   static const String database_name = "shop.db";
   static String current_shop = "";
 
@@ -17,12 +19,21 @@ class Sqflite {
 
     try {
       debugPrint("Sqflite init in path: $path");
-      db = await openDatabase(path, version: version,
-          onCreate: (Database db, int version) async {
-        // When creating the db, create the table
-        await db.execute(
-            'CREATE TABLE IF NOT EXISTS user_setting (key TEXT, value TEXT)');
-      });
+      db = await openDatabase(
+        path,
+        version: version,
+        onCreate: (Database db, int version) async {
+          // When creating the db, create the table
+          await db.execute(
+              'CREATE TABLE IF NOT EXISTS user_setting (key TEXT, value TEXT)');
+          await db.execute(
+              'CREATE TABLE IF NOT EXISTS responses (path TEXT PRIMARY KEY, data TEXT)');
+        },
+        onUpgrade: (Database db, int oldVersion, int newVersion) async {
+          await db.execute(
+              'CREATE TABLE IF NOT EXISTS responses (path TEXT PRIMARY KEY, data TEXT)');
+        },
+      );
     } catch (e) {
       print("Error $e");
     }
@@ -30,6 +41,52 @@ class Sqflite {
 
   static Future flush() async {
     await db!.rawUpdate('DELETE FROM user_setting');
+    await db?.rawUpdate('DELETE FROM responses');
+  }
+
+  static Future<void> insertResponse(Response response) async {
+    // Get a reference to the database.
+
+    final String pathWithParams = response.requestOptions.path +
+        getParamsPath(response.requestOptions.queryParameters);
+
+    final Map<String, dynamic> instance = {
+      "path": pathWithParams,
+      "data": json.encode(response.data),
+    };
+
+    await db?.insert(
+      'responses',
+      instance,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  static Future<String> getCachingResponse(DioError error) async {
+    // Get a reference to the database.
+
+    final String pathWithParams = error.requestOptions.path +
+        getParamsPath(error.requestOptions.queryParameters);
+
+    try {
+      final Map<String, dynamic> cachingResponse = (await db?.rawQuery(
+        'SELECT data FROM responses WHERE path = "$pathWithParams" LIMIT 1',
+      ))!
+          .single;
+
+      return cachingResponse['data'];
+    } on StateError {
+      if (!error.requestOptions.queryParameters.containsKey('offset') ||
+          <dynamic>[0, null].any((e) =>
+              e ==
+              error.requestOptions.queryParameters.entries
+                  .firstWhere((e) => e.key == 'offset')
+                  .value))
+        throw NoDataException();
+      else {
+        throw NoDataToLoadMoreException();
+      }
+    }
   }
 
   static Future<String?> currentShop() async {
@@ -119,5 +176,25 @@ class Sqflite {
 
       return shops.first;
     }
+  }
+
+  static String getParamsPath(Map<String, dynamic> queryParameters) {
+    String params = '';
+
+    final temp = <dynamic>[];
+
+    queryParameters.entries.forEach((e) {
+      if (e.value != null && e.value.toString().isNotEmpty)
+        temp.add([e.key, e.value.toString()]);
+    });
+
+    if (temp.isNotEmpty) {
+      params = '?';
+
+      temp.forEach(
+          (e) => params += '${e.first}=${e.last}${e == temp.last ? '' : '&'}');
+    }
+
+    return params;
   }
 }
